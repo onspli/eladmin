@@ -1,0 +1,19 @@
+{
+    "name": "onspli/eladmin",
+    "description": "Eladmin generates CRUD/admin interface for Eloquent.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ondřej Šplíchal",
+            "email": "ondrej.splichal@gmail.com"
+        }
+    ],
+    "require": {
+      "php" : "^7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Onspli\\Eladmin\\": "src"
+        }
+    }
+}
