@@ -92,6 +92,21 @@ function elaQuery(options){
 
 }
 
+function elaAuth(action, actionAuthRoles){
+  @if($authroles)
+  var userRoles = <?php echo json_encode($authroles, JSON_UNESCAPED_UNICODE); ?>;
+  @else
+  var userRoles = [];
+  @endif
+  var authRoles = actionAuthRoles[action.toLowerCase()];
+  if(!authRoles || !authRoles.length) return true;
+  var granted = false;
+  $.each(userRoles, function(){
+    if(authRoles.indexOf(this.toString()) >= 0) granted = true;
+  });
+  return granted;
+}
+
 
 /**
 * Create responsive table element.

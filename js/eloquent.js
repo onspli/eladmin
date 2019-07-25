@@ -1,6 +1,4 @@
-$('#content').empty();
-$('#content').append('<div><button id="crudadd" type="button" class="btn btn-primary">Přidat záznam</button></div>');
-$('#content').append(elaTable({id:'crudtable'}));
+
 
 var crudFilters = {
   sort: 'id',
@@ -40,6 +38,16 @@ elaQuery({
 }).done(function(data){
     crudConfig = data;
     console.debug(crudConfig);
+
+    $('#content').empty();
+
+    if(elaAuth('postRow', crudConfig.authorizedRoles))
+      $('#content').append('<div><button id="crudadd" type="button" class="btn btn-primary">Přidat záznam</button></div>');
+
+    $('#content').append(elaTable({id:'crudtable'}));
+
+
+
     crudFilters.sort = data.primaryKey;
     var tr = $('<tr></tr>');
     $.each(crudConfig.visibleColumns, function(){
@@ -66,12 +74,12 @@ elaQuery({
       }
       redrawTable();
     })
-});
 
 
 
 
-$('#crudtable tbody').on('click', 'tr', function(e){
+if(elaAuth('putRow', crudConfig.authorizedRoles))
+  $('#crudtable tbody').on('click', 'tr', function(e){
     e.preventDefault();
 
     console.debug('#'+$(this).data('id'));
@@ -134,7 +142,8 @@ $('#crudtable tbody').on('click', 'tr', function(e){
         }
       });
 
-      footer.prepend(delbut);
+      if(elaAuth('delRow', crudConfig.authorizedRoles))
+        footer.prepend(delbut);
       elaModal({title: 'Záznam #'+id, body: form, footer: footer});
 
     });
@@ -183,3 +192,5 @@ $('#crudadd').click(function(e){
   elaModal({title: 'Nová položka', body: form, footer, footer});
 
 })
+
+});

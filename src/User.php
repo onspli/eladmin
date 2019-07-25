@@ -86,6 +86,12 @@ class User extends Eloquent\Model implements Iface\Authorization
     return false;
   }
 
+  public function elaRoles():array{
+    $user = static::get();
+    if($user) return [$user->role];
+    return [];
+  }
+
   public static function get(){
     $user = static::find($_SESSION['elauser']??0);
     return $user;

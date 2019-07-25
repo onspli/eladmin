@@ -158,6 +158,14 @@ class Eladmin
 
       if(!method_exists($imodule, $method))
         throw new \Exception('Module "'.$module.'" has not defined action method "'.$method.'".');
+
+      $authroles = $imodule->elaGetAuthorizedRolesActions()[strtolower($elaaction)]??[];
+      if(!$this->iauthorization->elaAuth($authroles)){
+        header("HTTP/1.1 401 Unauthorized");
+        echo "Not authorized!";
+        return;
+      }
+
       call_user_func(array($imodule, $method));
 
     } catch(\Exception $e){
@@ -196,7 +204,8 @@ class Eladmin
       'modules'=>$this->imodules,
       'useauth'=>!is_null($this->authorization),
       'accountfields'=>$this->iauthorization?$this->iauthorization->elaAccountFields():null,
-      'csrftoken'=>$this->getCSRFToken()
+      'csrftoken'=>$this->getCSRFToken(),
+      'authroles'=>$this->iauthorization?$this->iauthorization->elaRoles():null,
       ])->render();
   }
 

@@ -39,4 +39,9 @@ interface Authorization
   * Authorize logged user.
   */
     public function elaAuth(?array $authorizedRoles=null):bool;
+
+  /**
+  * User's roles.
+  */
+  public function elaRoles():array;
 }

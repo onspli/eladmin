@@ -3,7 +3,7 @@ namespace Onspli\Eladmin\Eloquent;
 
 /**
 *
-* TODO: stránkování, vyhledávání a filtry výsledků
+* TODO: paging, searching and filtering results
 * TODO: custom column labels
 * TODO: custom inputs
 */
@@ -12,9 +12,13 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
 
   protected $elaTitle = null;
   protected $elaFasIcon = 'fas fa-puzzle-piece';
-  protected $elaJs = __DIR__.'/../../js/eloquent.js';
-  protected $elaAuthorizedRoles = [];
 
+  protected $elaAuthorizedRoles = [];
+  protected $elaAuthorizedRolesForLowercaseActions = [
+    'postrow' => [],
+    'putrow' => [],
+    'delrow' => []
+  ];
 
   /**
   * Check if table for the model exists in the database;
@@ -59,12 +63,16 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
     return $this->elaFasIcon;
   }
 
-  public function elaGetJs(): string{
-    return $this->elaJs;
+  public function elaGetJs(): array{
+    return [__DIR__.'/../../js/eloquent.js'];
   }
 
   public function elaGetAuthorizedRoles(): array{
     return $this->elaAuthorizedRoles;
+  }
+
+  public function elaGetAuthorizedRolesActions(): array{
+    return $this->elaAuthorizedRolesForLowercaseActions;
   }
 
 
@@ -201,7 +209,8 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
       'disabledColumns'=>$this->elaDisabledColumns(),
       'visibleColumns'=>$visibleColumns,
       'extraInputs'=>$this->elaExtraInputs(),
-      'extraActions'=>$this->elaExtraActions()
+      'extraActions'=>$this->elaExtraActions(),
+      'authorizedRoles'=>$this->elaGetAuthorizedRolesActions()
     ], JSON_UNESCAPED_UNICODE);
   }
 

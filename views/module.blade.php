@@ -8,6 +8,10 @@
 
 @section('scripts')
 <script>
-<?php readfile($js); ?>
+<?php
+foreach($js as $script){
+  readfile($script);
+  echo "\n";
+} ?>
 </script>
 @endsection
