@@ -1,6 +1,12 @@
 <?php
 namespace Onspli\Eladmin\Eloquent;
 
+/**
+*
+* TODO: stránkování, vyhledávání a filtry výsledků
+* TODO: custom column labels
+* TODO: custom inputs
+*/
 class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladmin\Iface\Module
 {
 
