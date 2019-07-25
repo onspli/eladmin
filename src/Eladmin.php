@@ -25,6 +25,8 @@ class Eladmin
   protected $iauthorization = null;
 
   public function __construct(){
+    if(!session_id()) session_start();
+
     $this->blade = new \Philo\Blade\Blade($this->bladeViews, $this->bladeCache);
 
     /**
@@ -40,7 +42,7 @@ class Eladmin
     */
     foreach($this->modules as $key=>$module){
       $imodule = new $module();
-      if($this->authorization && !$this->iauthorization->elaAuth($imodule->elaGetAuthorizedGroups())){
+      if($this->authorization && !$this->iauthorization->elaAuth($imodule->elaGetAuthorizedRoles())){
         unset($this->modules[$key]);
         continue;
       }
@@ -91,14 +93,33 @@ class Eladmin
 
     $elamodule = $_GET['elamodule']??null;
     $elaaction = $_GET['elaaction']??null;
+    $elatoken = $_GET['elatoken']??null;
     if($elamodule === null || $elamodule === ''){
 
+      if($elaaction == 'csrftoken'){
+        echo $this->getCSRFToken();
+        return;
+      }
+
+      if(!$elaaction){
+        echo $this->view('hello');
+        return;
+      }
+
+      if($elatoken != $this->getCSRFToken()){
+        header("HTTP/1.1 401 Unauthorized");
+        echo "CSRF token not valid!";
+        return;
+      }
+
       if($elaaction == 'account'){
+
+
 
         try{
           $this->iauthorization->elaAccount();
         } catch(\Exception $e){
-          header("HTTP/1.1 500 Internal Server Error");
+          header("HTTP/1.1 400 Bad Request");
           echo $e->getMessage();
           return;
         }
@@ -107,36 +128,63 @@ class Eladmin
         return;
       }
 
-      echo $this->view('hello');
+      header("HTTP/1.1 400 Bad Request");
+      echo 'No action!';
       return;
+
     }
 
-    if(!isset($this->modules[$elamodule]))
-      throw new \Exception('Requested module does not exist.');
 
-    $imodule = $this->imodules[$elamodule];
-    $module = $this->modules[$elamodule];
-
-    if($elaaction === null){
-      echo $this->view('module', ['module'=>$module, 'elamodule'=>$elamodule, 'title'=>$imodule->elaGetTitle(), 'js'=>$imodule->elaGetJs()]);
-      return;
-    }
-
-    $method = $this->getActionMethodName($elaaction);
-    if(!method_exists($imodule, $method))
-      throw new \Exception('Module "'.$module.'" does not support requested action "'.$elaaction.'".');
 
     try{
+      if(!isset($this->modules[$elamodule]))
+        throw new \Exception('Requested module does not exist.');
+
+      $imodule = $this->imodules[$elamodule];
+      $module = $this->modules[$elamodule];
+
+      if($elaaction === null){
+        echo $this->view('module', ['module'=>$module, 'elamodule'=>$elamodule, 'title'=>$imodule->elaGetTitle(), 'js'=>$imodule->elaGetJs()]);
+        return;
+      }
+
+      if($elatoken != $this->getCSRFToken()){
+        header("HTTP/1.1 401 Unauthorized");
+        echo "CSRF token not valid!";
+        return;
+      }
+
+      $method = $this->getActionMethodName($elaaction);
+
+      if(!method_exists($imodule, $method))
+        throw new \Exception('Module "'.$module.'" has not defined action method "'.$method.'".');
       call_user_func(array($imodule, $method));
+
     } catch(\Exception $e){
-      header("HTTP/1.1 500 Internal Server Error");
+      header("HTTP/1.1 400 Bad Request");
       echo $e->getMessage();
       return;
     }
   }
 
+  protected function getCSRFToken(){
+    $token = $_SESSION['elacsrftoken']??null;
+    if(!$token){
+      $token = $_SESSION['elacsrftoken'] = $this->randomString(16);
+    }
+    return $token;
+  }
+
+  private function randomString($len){
+    $chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $res = '';
+    for($i=0; $i<$len; $i++)
+     $res .= substr($chars, rand(0, strlen($chars)-1), 1);
+    return $res;
+  }
+
   protected function getActionMethodName($action){
-    return 'elaAction'.$action;
+    return 'elaAction'.ucfirst($action);
   }
 
 
@@ -147,7 +195,8 @@ class Eladmin
     return $this->blade->view()->make($name, $args+[
       'modules'=>$this->imodules,
       'useauth'=>!is_null($this->authorization),
-      'accountfields'=>$this->iauthorization?$this->iauthorization->elaAccountFields():null
+      'accountfields'=>$this->iauthorization?$this->iauthorization->elaAccountFields():null,
+      'csrftoken'=>$this->getCSRFToken()
       ])->render();
   }
 

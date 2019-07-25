@@ -49,7 +49,7 @@ class Behy extends \Onspli\Eladmin\Eloquent\Model
     protected $primaryKey = 'id';
     public $timestamps = false;
 
-    protected $elaAuthorizedGroups = ['admin'];
+    protected $elaAuthorizedRoles = ['admin'];
 
 }
 

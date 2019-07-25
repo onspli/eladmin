@@ -7,6 +7,8 @@ class User extends Eloquent\Model implements Iface\Authorization
 {
 
   protected $table = 'elausers';
+  protected $hidden = ['passwordhash'];
+
   protected $elaTitle = 'Eladmin Users';
   protected $elaFasIcon = 'fas fa-users';
 
@@ -21,7 +23,7 @@ class User extends Eloquent\Model implements Iface\Authorization
     $this->getSchema()->create($this->getTable(), function ($table) {
             $table->bigIncrements('id');
             $table->string('login')->unique();;
-            $table->string('group');
+            $table->string('role');
             $table->timestamps();
             $table->string('passwordhash');
         });
@@ -29,7 +31,7 @@ class User extends Eloquent\Model implements Iface\Authorization
     $firstUser = new static();
     $firstUser->login = 'eladmin';
     $firstUser->passwordhash = 'nimdale';
-    $firstUser->group = 'admin';
+    $firstUser->role = 'admin';
     $firstUser->save();
 
   }
@@ -44,7 +46,20 @@ class User extends Eloquent\Model implements Iface\Authorization
       'password' => ['label'=>'Password', 'type'=>'password']
     ];
   }
-  public function elaLogin():void{
+
+  public function elaExtraInputs(): array{
+    return [
+      'password' => ['label'=>'Nové heslo', 'type'=>'text']
+    ];
+  }
+
+  protected function elaModifyPost(): void{
+    $newpassword = $_POST['password']??null;
+    if($newpassword)
+      $_POST['passwordhash'] = $newpassword;
+  }
+
+  public function elaLogin():void {
     $login = $_POST['login']??'';
     $password = $_POST['password']??'';
 
@@ -60,14 +75,14 @@ class User extends Eloquent\Model implements Iface\Authorization
     $_SESSION['elauser'] = null;
   }
 
-  public function elaAuth(?array $authorizedGroups=null):bool{
+  public function elaAuth(?array $authorizedRoles=null):bool{
     $user = static::get();
     if(!$user){
       $this->elaLogout();
       return false;
     }
-    if(!$authorizedGroups) return true;
-    if($authorizedGroups && in_array($user->group, $authorizedGroups)) return true;
+    if(!$authorizedRoles) return true;
+    if($authorizedRoles && in_array($user->role, $authorizedRoles)) return true;
     return false;
   }
 
@@ -83,6 +98,8 @@ class User extends Eloquent\Model implements Iface\Authorization
       'newpasswordconfirm' => ['label'=>'Potvrď nové heslo', 'type'=>'password']
     ];
   }
+
+
 
   /**
   * Eladmin calls this method during profile update. Login Fields are passed through POST variable

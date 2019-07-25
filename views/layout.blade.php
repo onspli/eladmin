@@ -64,17 +64,30 @@
 
 <script>
 
+var csrftoken = '{{$csrftoken}}';
+function reloadCSRFToken(){
+
+  $.ajax({
+    method: 'POST',
+    url: '?elaaction=csrftoken'
+  }).done(function(data){
+    csrftoken = data;
+    console.debug('CSRFToken '+csrftoken);
+  });
+}
+
 function elaQuery(options){
   var settings = $.extend( {}, {
     action: 'action',
     module: '{{$elamodule??''}}',
     data: []
   }, options );
-
   return $.ajax({
-    method: 'POST',
-    url: '?elamodule='+settings.module+'&elaaction='+settings.action,
-    data: settings.data
+      method: 'POST',
+      url: '?elamodule='+settings.module+'&elaaction='+settings.action+'&elatoken='+csrftoken,
+      data: settings.data
+  }).fail(function(){
+    reloadCSRFToken();
   });
 
 }

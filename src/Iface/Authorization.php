@@ -38,5 +38,5 @@ interface Authorization
   /**
   * Authorize logged user.
   */
-    public function elaAuth(?array $authorizedGroups=null):bool;
+    public function elaAuth(?array $authorizedRoles=null):bool;
 }

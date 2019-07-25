@@ -1,25 +1,21 @@
 <?php
 namespace Onspli\Eladmin\Eloquent;
 
-class Model extends \Illuminate\Database\Eloquent\Model
+class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladmin\Iface\Module
 {
 
   protected $elaTitle = null;
   protected $elaFasIcon = 'fas fa-puzzle-piece';
   protected $elaJs = __DIR__.'/../../js/eloquent.js';
-  protected $elaAuthorizedGroups = [];
+  protected $elaAuthorizedRoles = [];
 
 
   /**
   * Check if table for the model exists in the database;
   * @return bool
   */
-  protected function tableExists(){
+  public function tableExists(){
     return $this->getSchema()->hasTable($this->getTable());
-  }
-
-  public function elaGetAuthorizedGroups(){
-    return $this->elaAuthorizedGroups;
   }
 
   /**
@@ -41,48 +37,97 @@ class Model extends \Illuminate\Database\Eloquent\Model
   /**
   * Get schema manager.
   */
-  protected function getSchema(){
+  public function getSchema(){
     return $this->getConnection()->getSchemaBuilder();
   }
 
-  public function elaGetTitle(){
+  /**
+  * Getters
+  */
+  public function elaGetTitle(): string {
     if($this->elaTitle) return $this->elaTitle;
     else return $this->getTable();
   }
 
-  public function elaGetFasIcon(){
+  public function elaGetFasIcon(): string {
     return $this->elaFasIcon;
   }
 
-  public function elaGetJs(){
+  public function elaGetJs(): string{
     return $this->elaJs;
   }
 
+  public function elaGetAuthorizedRoles(): array{
+    return $this->elaAuthorizedRoles;
+  }
 
 
+  /**
+  * Returns an array of columns that cannot be edited from crud. (i.e. automanaged timestamps)
+  */
+  public function elaDisabledColumns(){
+    $columns = [];
+    if($this->timestamps){
+      $columns[] = static::CREATED_AT;
+      $columns[] = static::UPDATED_AT;
+    }
+    return $columns;
+  }
+
+  public function elaExtraInputs(): array{
+    return [];
+  }
+
+  public function elaExtraActions(): array{
+    return [];
+  }
+
+  /**
+  * List database entries.
+  */
   public function elaActionGetRows(){
-    $rows = static::all();
+    $sort = $_POST['sort']??$this->primaryKey;
+    $direction = $_POST['direction']??'asc';
+
+    $rows = static::orderBy($sort, $direction)->get();
 
     Header('Content-type: application/json');
     echo $rows->toJson();
   }
 
+  /**
+  * Get database entry.
+  */
   public function elaActionGetRow(){
     $id = $_POST[$this->primaryKey];
     $row = static::find($id);
+
+    if(!$row)
+      throw new \Exception('Entry not found!');
 
     Header('Content-type: application/json');
     echo $row->toJson();
   }
 
+  /**
+  * Edit database entry.
+  */
   public function elaActionPutRow(){
+
     $id = $_POST[$this->primaryKey];
     $row = static::find($id);
+
+    if(!$row)
+      throw new \Exception('Entry not found!');
+
+    $this->elaModifyPost();
 
     /**
     * TODO: some protection?
     */
     $columns = $this->getTableColumns();
+    $columns = array_diff($columns, $this->elaDisabledColumns());
+
     foreach($columns as $column){
       $value = $_POST[$column]??null;
       if($value === null || $column == $this->primaryKey) continue;
@@ -92,18 +137,17 @@ class Model extends \Illuminate\Database\Eloquent\Model
     $this->elaActionGetRow();
   }
 
-  public function elaActionDelRow(){
-    $id = $_POST[$this->primaryKey];
-    $row = static::find($id);
-    $row->delete();
-  }
-
+  /**
+  * Create database entry.
+  */
   public function elaActionPostRow(){
-    $row = new static;
+    $row = new static();
+    $this->elaModifyPost();
     /**
     * TODO: some protection?
     */
     $columns = $this->getTableColumns();
+    $columns = array_diff($columns, $this->elaDisabledColumns());
     foreach($columns as $column){
       $value = $_POST[$column]??null;
       if($value === null || $column == $this->primaryKey) continue;
@@ -115,17 +159,43 @@ class Model extends \Illuminate\Database\Eloquent\Model
     $this->elaActionGetRow();
   }
 
+  /**
+  * Delete database entry.
+  */
+  public function elaActionDelRow(){
+    $id = $_POST[$this->primaryKey];
+    $row = static::find($id);
+    $row->delete();
+  }
+
+
+  /**
+  * Here you can modify $_POST variable before the data is stored to the database.
+  */
+  protected function elaModifyPost():void {
+
+  }
+
+  /**
+  * Transfer configuration to client-side.
+  */
   public function elaActionGetConfig(){
     $columns = $this->getTableColumns();
     $schema = [];
     foreach($columns as $column)
       $schema[$column] = $this->getColumnType($column);
 
+    $visibleColumns = array_diff($columns, $this->hidden??[]);
+
     Header('Content-type: application/json');
     echo json_encode([
       'schema'=>$schema,
       'columns'=>$columns,
-      'primaryKey'=>$this->primaryKey
+      'primaryKey'=>$this->primaryKey,
+      'disabledColumns'=>$this->elaDisabledColumns(),
+      'visibleColumns'=>$visibleColumns,
+      'extraInputs'=>$this->elaExtraInputs(),
+      'extraActions'=>$this->elaExtraActions()
     ], JSON_UNESCAPED_UNICODE);
   }
 
