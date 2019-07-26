@@ -1,12 +1,7 @@
 <?php
 namespace Onspli\Eladmin\Eloquent;
 
-/**
-*
-* TODO: paging, searching and filtering results
-* TODO: custom column labels
-* TODO: custom inputs
-*/
+
 class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladmin\Iface\Module
 {
 
@@ -34,14 +29,6 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
   */
   public function getTableColumns() {
     return $this->getSchema()->getColumnListing($this->getTable());
-  }
-
-  /**
-  * Get type of a column.
-  * @return string
-  */
-  public function getColumnType($column) {
-    return $this->getSchema()->getColumnType($this->getTable(), $column);
   }
 
   /**
@@ -147,6 +134,7 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
       if($value === null || $column == $this->primaryKey) continue;
       $row->{$column} = $value;
     }
+
     $row->save();
     $this->elaActionGetRow();
   }
@@ -184,7 +172,7 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
 
 
   /**
-  * Here you can modify $_POST variable before the data is stored to the database.
+  * Here you can modify or validate $_POST variable before the data is stored to the database.
   */
   protected function elaModifyPost():void {
 
@@ -195,15 +183,13 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
   */
   public function elaActionGetConfig(){
     $columns = $this->getTableColumns();
-    $schema = [];
-    foreach($columns as $column)
-      $schema[$column] = $this->getColumnType($column);
-
-    $visibleColumns = array_diff($columns, $this->hidden??[]);
+    if($this->visible) $visibleColumns = $this->visible;
+    else $visibleColumns = array_diff($columns, $this->hidden??[]);
 
     Header('Content-type: application/json');
     echo json_encode([
-      'schema'=>$schema,
+      'title'=>$this->elagetTitle(),
+      'fasicon' =>$this->elaGetFasIcon(),
       'columns'=>$columns,
       'primaryKey'=>$this->primaryKey,
       'disabledColumns'=>$this->elaDisabledColumns(),

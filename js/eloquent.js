@@ -42,9 +42,9 @@ elaQuery({
     $('#content').empty();
 
     if(elaAuth('postRow', crudConfig.authorizedRoles))
-      $('#content').append('<div><button id="crudadd" type="button" class="btn btn-primary">Přidat záznam</button></div>');
+      $('#content').append(elaCard('<div><button id="crudadd" type="button" class="btn btn-primary"><i class="fas fa-plus-circle"></i> Přidat</button></div>', '<h2><i class="'+crudConfig.fasicon+'"></i> '+crudConfig.title+'</h2>'));
 
-    $('#content').append(elaTable({id:'crudtable'}));
+    $('#content').append(elaCard(elaTable({id:'crudtable'})));
 
 
 
@@ -99,15 +99,14 @@ if(elaAuth('putRow', crudConfig.authorizedRoles))
         }
       });
 
-      $.each(crudConfig.schema, function(key,value){
-        if(crudConfig.visibleColumns.indexOf(key)<0) return;
-        if(key == crudConfig.primaryKey){
-          form.append(elaInput({label: key, name: key, type: 'hidden', value: data[key] }));
-          form.append(elaInput({label: key, name: key, type: 'text', value: data[key], disabled: true }));
+      $.each(crudConfig.visibleColumns, function(key,value){
+        if(value == crudConfig.primaryKey){
+          form.append(elaInput({label: value, name: value, type: 'hidden', value: data[value] }));
+          form.append(elaInput({label: value, name: value, type: 'text', value: data[value], disabled: true }));
         } else if(value=="text")
-          form.append(elaInput({label: key, name: key, type: 'textarea', value: data[key], disabled: crudConfig.disabledColumns.indexOf(key)>=0 }));
+          form.append(elaInput({label: value, name: value, type: 'textarea', value: data[value], disabled: crudConfig.disabledColumns.indexOf(value)>=0 }));
         else
-          form.append(elaInput({label: key, name: key, type: 'text', value: data[key], disabled: crudConfig.disabledColumns.indexOf(key)>=0 }));
+          form.append(elaInput({label: value, name: value, type: 'text', value: data[value], disabled: crudConfig.disabledColumns.indexOf(value)>=0 }));
       });
 
       $.each(crudConfig.extraInputs, function(key, value){
@@ -162,20 +161,19 @@ $('#crudadd').click(function(e){
     }
   });
 
-  $.each(crudConfig.schema, function(key,value){
-    if(crudConfig.visibleColumns.indexOf(key)<0) return;
-    if(key == crudConfig.primaryKey) return;
+  $.each(crudConfig.visibleColumns, function(value,value){
+    if(value == crudConfig.primaryKey) return;
     if(value=="text")
-      form.append(elaInput({label: key, name: key, type: 'textarea', disabled: crudConfig.disabledColumns.indexOf(key)>=0 }));
+      form.append(elaInput({label: value, name: value, type: 'textarea', disabled: crudConfig.disabledColumns.indexOf(value)>=0 }));
     else
-      form.append(elaInput({label: key, name: key, type: 'text', disabled: crudConfig.disabledColumns.indexOf(key)>=0 }));
+      form.append(elaInput({label: value, name: value, type: 'text', disabled: crudConfig.disabledColumns.indexOf(value)>=0 }));
   });
 
   $.each(crudConfig.extraInputs, function(key, value){
     form.append(elaInput({label: this.label, name: key, type: 'text'}));
   });
 
-  $.each(crudConfig.extraActions, function(key, value){
+  /*$.each(crudConfig.extraActions, function(key, value){
     var but = elaButton({label: this.label, style: this.style});
     but.click(function(){
       elaQuery({action:key}).done(function(data){
@@ -186,7 +184,7 @@ $('#crudadd').click(function(e){
       });
     });
     form.append('<div class="form-group"></div>').append(but);
-  });
+  });*/
 
   var footer = $('<button type="button" class="btn btn-secondary" data-dismiss="modal">Zrušit</button> <button type="submit" class="btn btn-primary" form="crudform">Uložit</button>');
   elaModal({title: 'Nová položka', body: form, footer, footer});

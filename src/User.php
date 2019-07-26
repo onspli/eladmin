@@ -9,7 +9,7 @@ class User extends Eloquent\Model implements Iface\Authorization
   protected $table = 'elausers';
   protected $hidden = ['passwordhash'];
 
-  protected $elaTitle = 'Eladmin Users';
+  protected $elaTitle = 'Uživatelé';
   protected $elaFasIcon = 'fas fa-users';
 
   public function __construct(){
@@ -54,6 +54,15 @@ class User extends Eloquent\Model implements Iface\Authorization
   }
 
   protected function elaModifyPost(): void{
+    $login = $_POST['login']??null;
+    if($login === '')
+      throw new \Exception('Login nemůže být prázdný!');
+
+    $oldlogin = static::where('login',$login)->first();
+    $oldid = $_POST['id']??0;
+    if($oldlogin && $oldlogin->id != $oldid)
+      throw new \Exception('Login už existuje!');
+
     $newpassword = $_POST['password']??null;
     if($newpassword)
       $_POST['passwordhash'] = $newpassword;
@@ -105,6 +114,10 @@ class User extends Eloquent\Model implements Iface\Authorization
     ];
   }
 
+
+  public function elaUserName():string{
+    return $this->get()->login??'';
+  }
 
 
   /**

@@ -29,6 +29,7 @@ class Prihlasky extends \Onspli\Eladmin\Eloquent\Model
     public $timestamps = false;
 
     protected $elaTitle = 'Přihlášky';
+    protected $elaFasIcon = 'fas fa-clipboard';
 
 }
 
@@ -60,6 +61,8 @@ class Eladmin extends \Onspli\Eladmin\Eladmin
   * Register modules accessible from admin.
   */
   protected $modules = ['prihlasky'=>Prihlasky::class, Behy::class, Chat::class];
+
+  protected $title = 'Retro tábor';
 }
 
 $admin = new Eladmin();

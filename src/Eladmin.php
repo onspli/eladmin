@@ -5,6 +5,8 @@ namespace Onspli\Eladmin;
 class Eladmin
 {
 
+  protected $title = "Eladmin";
+
   /**
   * Register admin modules (i.e. eloquent models).
   */
@@ -201,11 +203,13 @@ class Eladmin
   */
   protected function view($name, $args=[]){
     return $this->blade->view()->make($name, $args+[
+      'admintitle'=>$this->title,
       'modules'=>$this->imodules,
       'useauth'=>!is_null($this->authorization),
+      'username'=>$this->iauthorization?$this->iauthorization->elaUserName():'',
       'accountfields'=>$this->iauthorization?$this->iauthorization->elaAccountFields():null,
-      'csrftoken'=>$this->getCSRFToken(),
       'authroles'=>$this->iauthorization?$this->iauthorization->elaRoles():null,
+      'csrftoken'=>$this->getCSRFToken()
       ])->render();
   }
 

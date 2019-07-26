@@ -1,5 +1,9 @@
 @extends('layout')
 
 @section('content')
-    <p>Vítej v Eladminu.</p>
+    <div class="card">
+      <div class="card-body">
+        <p>Vítej v Eladminu.</p>
+      </div>
+    </div>
 @endsection

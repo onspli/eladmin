@@ -44,4 +44,6 @@ interface Authorization
   * User's roles.
   */
   public function elaRoles():array;
+
+  public function elaUserName():string;
 }
