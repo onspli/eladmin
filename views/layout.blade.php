@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>{{$admintitle}} | @yield('title')</title>
+  <title>{{$eladmin->title()}} | @yield('title')</title>
 
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
@@ -106,13 +106,81 @@ h1.sidebar-heading a{
 
 </head>
 <body>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
+  <script>
+
+  $(document).on('click', "#menu-toggle", function(e) {
+    e.preventDefault();
+    $("#wrapper").toggleClass("toggled");
+  });
+
+  function elaRequest(action, module, args){
+    if(module === null) module = '{{$eladmin->moduleKey()}}';
+    return $.ajax({
+        method: 'POST',
+        url: '?elamodule='+module+'&elaaction='+action+'&elatoken={{$eladmin->CSRFToken()}}',
+        data: args
+    });
+  }
+
+  $(document).on('click', '*[data-confirm]', function(e){
+    e.preventDefault();
+    var confirm = window.confirm($(this).data('confirm'));
+    if(!confirm) e.stopImmediatePropagation();
+  });
+
+  $(document).on('click', '*[data-elaaction]', function(e){
+    e.preventDefault();
+    var el = this;
+    var data = $(this).data();
+    var args = {};
+    $.each(data, function(key,val){
+      if(!key.startsWith('elaarg')) return;
+      args[key.substr(6)] = val;
+    });
+    elaRequest($(this).data('elaaction'), $(this).data('elamodule')?$(this).data('elamodule'):null, args).fail(function(data){
+      toastr.error(data.responseText);
+    }).done(function(data, status, xhr){
+      eval('with(data){'+$(el).data('eladone')+'}');
+      if($(el).data('eladonotprocess')) return;
+
+      var ct = xhr.getResponseHeader("content-type") || "";
+      console.debug(ct);
+
+      // HTML response
+      if (ct.indexOf('html') > -1) {
+        console.debug('html');
+        var html = $(data);
+        if(html.hasClass('modal')){
+          $('#dynamic').html(html);
+          html.modal();
+        } else{
+          toastr.success(data?data:'OK');
+        }
+      }
+      // JSON response
+      if (ct.indexOf('json') > -1) {
+        console.debug('json');
+      }
+
+      // Text response
+      if (ct.indexOf('plain') > -1) {
+        console.debug('plain');
+        toastr.success(data?data:'OK');
+      }
+    });
+  });
+
+  </script>
 
     <div class="d-flex" id="wrapper">
 
       <!-- Sidebar -->
       <div class=" border-right" id="sidebar-wrapper">
-        <h1 class="sidebar-heading"><a href=".">{{$admintitle}}</a></h1>
+        <h1 class="sidebar-heading"><a href=".">{{$eladmin->title()}}</a></h1>
         <div>
 
 
@@ -120,13 +188,13 @@ h1.sidebar-heading a{
 
           @section('sidebar')
             <div class="list-group list-group-flush">
-              @foreach($modules as $key=>$module)
+              @foreach($eladmin->modules() as $key=>$module)
                 <a href="?elamodule={{$key}}" class="list-group-item  menumodul list-group-item-action
-                @if(isset($elamodule) && ''.$key==$elamodule)
+                @if(isset($elaModule) && ''.$eladmin->moduleKey() === ''.$key)
                  selected
                 @endif
                  ">
-                  <i class="{{ $module->elaGetFasIcon() }}"></i> {{ $module->elaGetTitle() }}
+                  {!! $module->elaGetIcon() !!} {{ $module->elaGetTitle() }}
                 </a>
               @endforeach
             </div>
@@ -141,15 +209,17 @@ h1.sidebar-heading a{
         <div id="mainbar">
           <button class="btn btn-primary" id="menu-toggle"><i class="fas fa-bars"></i></button>
 
-          @if($useauth)
+          @if($eladmin->username() !== null)
             <span class="float-right">
-              <span>Přihlášen <strong>{{$username}}</strong> </span>&nbsp;
-              @if($accountfields)
+              <span>Přihlášen <strong>{{$eladmin->username()}}</strong> </span>&nbsp;
+              @if(0==1)
               <button class="btn btn-primary" id="elaeditaccount"><i class="fas fa-key"></i> <span class="d-none d-sm-inline">Účet</span> </button>
               @endif
               &nbsp;
               <a href="?elalogout=true" class="btn btn-primary"><i class="fas fa-sign-out-alt"></i> <span class="d-none d-sm-inline">Odhlásit</span> </a>
             </span>
+          @else
+            <span class="float-right"><strong>Autorizace je vypnutá!</strong></span>
           @endif
         </div>
 
@@ -175,205 +245,6 @@ h1.sidebar-heading a{
 
 <div id="dynamic">
 </div>
-
-
-
-
-
-<script
-  src="https://code.jquery.com/jquery-3.4.1.min.js"
-  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-  crossorigin="anonymous"></script>
-
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-
-<!-- Menu Toggle Script -->
-  <script>
-    $("#menu-toggle").click(function(e) {
-      e.preventDefault();
-      $("#wrapper").toggleClass("toggled");
-    });
-  </script>
-
-<script>
-
-var csrftoken = '{{$csrftoken}}';
-function reloadCSRFToken(){
-
-  $.ajax({
-    method: 'POST',
-    url: '?elaaction=csrftoken'
-  }).done(function(data){
-    csrftoken = data;
-    console.debug('CSRFToken '+csrftoken);
-  });
-}
-
-function elaQuery(options){
-  var settings = $.extend( {}, {
-    action: 'action',
-    module: '{{$elamodule??''}}',
-    data: []
-  }, options );
-  return $.ajax({
-      method: 'POST',
-      url: '?elamodule='+settings.module+'&elaaction='+settings.action+'&elatoken='+csrftoken,
-      data: settings.data
-  }).fail(function(){
-    reloadCSRFToken();
-  });
-
-}
-
-function elaAuth(action, actionAuthRoles){
-  @if($authroles)
-  var userRoles = <?php echo json_encode($authroles, JSON_UNESCAPED_UNICODE); ?>;
-  @else
-  var userRoles = [];
-  @endif
-  var authRoles = actionAuthRoles[action.toLowerCase()];
-  if(!authRoles || !authRoles.length) return true;
-  var granted = false;
-  $.each(userRoles, function(){
-    if(authRoles.indexOf(this.toString()) >= 0) granted = true;
-  });
-  return granted;
-}
-
-
-/**
-* Create responsive table element.
-*/
-function elaTable(options){
-  return $('<div class="table-responsive"><table id="'+options.id+'" class="table table-striped table-sm table-bordered table-hover"><thead></thead><tbody></tbody><tfoot></tfoot></table></div>');
-}
-
-function elaCard(content, header){
-  var card = $('<div class="card"></div>');
-  if(header)
-    card.append($('<div class="card-header"></div>').append($(header)));
-  return card.append($('<div class="card-body"></div>').append($(content)));
-}
-
-/**
-* Create row element from data.
-*/
-function elaRow(data, options){
-  var settings = $.extend( {}, {
-    cell: 'td',
-    useKeys:false
-  }, options );
-
-  var row = $('<tr></tr>');
-  $.each(data, function(key,val){
-    row.append($('<'+settings.cell+'></'+settings.cell+'>').text(settings.useKeys?key:val));
-  });
-  return row;
-}
-
-function elaInput(options){
-  var opts = $.extend( {}, {
-    label: '',
-    name:'',
-    value:'',
-    placeholder: '',
-    type:'text',
-    disabled:false
-  }, options );
-  if(opts.type == 'hidden'){
-    return $('<input type="hidden" name="'+opts.name+'" value="'+opts.value+'" >');
-  }
-  else if(opts.type == 'textarea'){
-    return $('<div class="form-group"><label>'+opts.label+'</label><textarea '+(opts.disabled?' disabled="disabled" ':'')+' class="form-control" name="'+opts.name+'" placeholder="'+opts.placeholder+'">'+opts.value+'</textarea></div>');
-  }
-  return $('<div class="form-group"><label>'+opts.label+'</label><input '+(opts.disabled?' disabled="disabled" ':'')+' type="'+opts.type+'" class="form-control" name="'+opts.name+'" placeholder="'+opts.placeholder+'" '+(opts.value?' value="'+opts.value+'"':'')+'></div>');
-}
-
-function elaModal(options){
-  var opts = $.extend( {}, {
-    title:'Dialog',
-    body:'',
-    footer:''
-  }, options );
-
-  var elamodal = $('#elamodal');
-  if(elamodal.length == 0){
-    elamodal = $('<div id="elamodal" class="modal"><div class="modal-dialog"><div class="modal-content">\
-                  <div class="modal-header">\
-                          <h5 class="modal-title""></h5>\
-                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>\
-                        </div>\
-                        <div class="modal-body"></div>\
-                        <div class="modal-footer"></div>\
-                  </div></div></div>');
-    $('#dynamic').append(elamodal);
-  }
-  elamodal.find('.modal-title').html(opts.title);
-  elamodal.find('.modal-body').html(opts.body);
-  elamodal.find('.modal-footer').html(opts.footer);
-  elamodal.modal();
-}
-
-function elaModalHide(){
-  $('#elamodal').modal('hide');
-}
-
-function elaForm(options){
-  var form = $('<form id="'+options.id+'"></form>');
-  form.on('submit', function(e){
-    e.preventDefault();
-    elaQuery($.extend( {}, options, {
-      data: $(this).serialize()
-    })).done(function(data){
-      options.done(data);
-    }).fail(function(data){
-      console.error(data);
-      toastr.error(data.responseText);
-    });
-  });
-  return form;
-}
-
-function elaButton(options){
-  var opts = $.extend( {}, {
-    type: 'button',
-    style: 'primary',
-    label: 'Button'
-  }, options );
-  return $('<button type="'+opts.type+'" class="btn btn-'+opts.style+'">'+opts.label+'</button>');
-}
-
-@if($accountfields)
-
-$('#elaeditaccount').click(function(e){
-  e.preventDefault();
-  var form = elaForm( {
-    id: 'elaaccountedit',
-    action: 'account',
-    module: '',
-    done: function(){
-      elaModalHide();
-      toastr.success('Uloženo!');
-    }
-  } );
-  @foreach($accountfields as $name=>$field)
-    form.append(elaInput({
-      label: "{{ $field['label'] }}",
-      type: "{{ $field['type'] }}",
-      name: "{{ $name }}"
-    }));
-  @endforeach
-  var footer = $(' <button type="button" class="btn btn-secondary" data-dismiss="modal">Zrušit</button> <button type="submit" class="btn btn-primary" form="elaaccountedit">Uložit změny</button>');
-  elaModal({title: 'Tvůj účet', body: form, footer: footer});
-})
-
-
-
-
-@endif
-
-</script>
 
 @yield('scripts')
 

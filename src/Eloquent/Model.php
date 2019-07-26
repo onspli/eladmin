@@ -6,7 +6,17 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
 {
 
   protected $elaTitle = null;
-  protected $elaFasIcon = 'fas fa-puzzle-piece';
+  protected $elaIcon = '<i class="fas fa-puzzle-piece"></i>';
+
+  /**
+  * Blade configuration
+  */
+  protected $bladeViews = __DIR__ . '/../../views/modules/Model';
+  protected $bladeCache = __DIR__ . '/../../cache';
+  protected $bladeViewRender = 'render';
+  protected $blade = null;
+
+  public $eladmin = null;
 
   protected $elaAuthorizedRoles = [];
   protected $elaAuthorizedRolesForLowercaseActions = [
@@ -14,6 +24,18 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
     'putrow' => [],
     'delrow' => []
   ];
+
+  public function __construct(){
+    parent::__construct();
+    $this->blade = new \Philo\Blade\Blade($this->bladeViews, $this->bladeCache);
+  }
+
+  /**
+  * Render a view.
+  */
+  protected function view($name, $args=[]){
+    return $this->blade->view()->make($name, $args+['eladmin'=>$this->eladmin, 'elaModule'=>$this]);
+  }
 
   /**
   * Check if table for the model exists in the database;
@@ -46,12 +68,8 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
     else return $this->getTable();
   }
 
-  public function elaGetFasIcon(): string {
-    return $this->elaFasIcon;
-  }
-
-  public function elaGetJs(): array{
-    return [__DIR__.'/../../js/eloquent.js'];
+  public function elaGetIcon(): string {
+    return $this->elaIcon;
   }
 
   public function elaGetAuthorizedRoles(): array{
@@ -62,24 +80,68 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
     return $this->elaAuthorizedRolesForLowercaseActions;
   }
 
-
   /**
-  * Returns an array of columns that cannot be edited from crud. (i.e. automanaged timestamps)
+  * Render page in administration.
   */
-  public function elaDisabledColumns(){
+  public function elaRender(){
+    echo $this->view($this->bladeViewRender,['elaModule' => $this]);
+  }
+
+  public function elaColumns(){
+    $visibleColumns = $this->elaVisibleColumns();
+    $disabledColumns = $this->elaDisabledColumns();
     $columns = [];
-    if($this->timestamps){
-      $columns[] = static::CREATED_AT;
-      $columns[] = static::UPDATED_AT;
+    foreach($visibleColumns as $column){
+      $columns[$column] = new \StdClass;
+      if(in_array($column, $disabledColumns))
+        $columns[$column]->disabled = true;
     }
     return $columns;
   }
 
-  public function elaExtraInputs(): array{
-    return [];
+  protected function elaPutColumnAfter($columns, $move, $target=null){
+    $moved = [];
+    if($target === null || !isset($columns[$target])) $moved[$move] = $columns[$move];
+    foreach($columns as $key=>$column){
+      if($key != $move) $moved[$key] = $columns[$key];
+      if($key == $target) $moved[$move] = $columns[$move];
+    }
+    return $moved;
   }
 
-  public function elaExtraActions(): array{
+  protected function elaPutColumnBefore($columns, $move, $target=null){
+    $moved = [];
+    foreach($columns as $key=>$column){
+      if($key == $target) $moved[$move] = $columns[$move];
+      if($key != $move) $moved[$key] = $columns[$key];
+    }
+    if($target === null || !isset($columns[$target])) $moved[$move] = $columns[$move];
+    return $moved;
+  }
+
+  /**
+  * Returns an array of columns that cannot be edited from crud. (i.e. primary key, automanaged timestamps)
+  */
+  public function elaDisabledColumns(){
+    $columns = [$this->getKeyName()];
+    if($this->timestamps){
+      $columns[] = static::CREATED_AT;
+      $columns[] = static::UPDATED_AT;
+    }
+    $columns = array_merge($columns, $this->appends);
+    return $columns;
+  }
+
+  public function elaVisibleColumns(){
+
+    $columns = $this->getTableColumns();
+    $columns = array_merge($columns, $this->appends);
+    if($this->visible) $visibleColumns = $this->visible;
+    else $visibleColumns = array_diff($columns, $this->hidden??[]);
+    return $visibleColumns;
+  }
+
+  public function elaActions(){
     return [];
   }
 
@@ -91,23 +153,12 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
     $direction = $_POST['direction']??'asc';
 
     $rows = static::orderBy($sort, $direction)->get();
-
-    Header('Content-type: application/json');
-    echo $rows->toJson();
+    foreach($rows as $row)
+      $this->elaRenderRow($row);
   }
 
-  /**
-  * Get database entry.
-  */
-  public function elaActionGetRow(){
-    $id = $_POST[$this->primaryKey];
-    $row = static::find($id);
-
-    if(!$row)
-      throw new \Exception('Entry not found!');
-
-    Header('Content-type: application/json');
-    echo $row->toJson();
+  protected function elaRenderRow($row){
+    echo $this->view('row', ['row'=>$row]);
   }
 
   /**
@@ -115,7 +166,7 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
   */
   public function elaActionPutRow(){
 
-    $id = $_POST[$this->primaryKey];
+    $id = $_POST[$this->primaryKey]??null;
     $row = static::find($id);
 
     if(!$row)
@@ -136,7 +187,19 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
     }
 
     $row->save();
-    $this->elaActionGetRow();
+  }
+
+  public function elaActionPostForm(){
+    echo $this->view('postForm');
+  }
+
+  public function elaActionPutForm(){
+    $id = $_POST[$this->primaryKey]??null;
+    $row = static::find($id);
+    if(!$row)
+      throw new \Exception('Entry not found!');
+
+    echo $this->view('putForm', ['row'=>$row]);
   }
 
   /**
@@ -156,9 +219,6 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
       $row->{$column} = $value;
     }
     $row->save();
-
-    $_POST[$this->primaryKey] = $row->{$this->primaryKey};
-    $this->elaActionGetRow();
   }
 
   /**

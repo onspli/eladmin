@@ -13,9 +13,8 @@ class User extends Eloquent\Model implements Iface\Authorization
   protected $elaFasIcon = 'fas fa-users';
 
   public function __construct(){
-    if(!$this->tableExists())
-      $this->createTable();
-
+    parent::__construct();
+    if(!$this->tableExists()) $this->createTable();
     if(!session_id()) session_start();
   }
 

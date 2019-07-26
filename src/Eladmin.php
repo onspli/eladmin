@@ -10,8 +10,8 @@ class Eladmin
   /**
   * Register admin modules (i.e. eloquent models).
   */
-  protected $modules = [];
-  protected $imodules = [];
+  protected $modules = [];  // class names
+  protected $imodules = []; // instances
 
   /**
   * Blade configuration
@@ -23,20 +23,20 @@ class Eladmin
   /**
   * Authorization manager.
   */
-  protected $authorization = User::class;
-  protected $iauthorization = null;
+  protected $auth = User::class; // class name
+  protected $iauth = null;       // instance
+  public $disableNoAuthorizationMessage = false;
 
   public function __construct(){
     if(!session_id()) session_start();
-
     $this->blade = new \Philo\Blade\Blade($this->bladeViews, $this->bladeCache);
 
     /**
-    * TODO: Ověřit authorization interface
+    * TODO: Ověřit auth interface
     */
-    if($this->authorization){
-      $this->modules[] = $this->authorization;
-      $this->iauthorization = new $this->authorization();
+    if($this->auth){
+      $this->modules[] = $this->auth;
+      $this->iauth = new $this->auth;
     }
 
     /**
@@ -44,178 +44,193 @@ class Eladmin
     */
     foreach($this->modules as $key=>$module){
       $imodule = new $module();
-      if($this->authorization && !$this->iauthorization->elaAuth($imodule->elaGetAuthorizedRoles())){
+      if($this->auth && !$this->iauth->elaAuth($imodule->elaGetAuthorizedRoles())){
         unset($this->modules[$key]);
         continue;
       }
+      $imodule->eladmin = $this;
       $this->imodules[$key] = $imodule;
     }
   }
 
+  public function title(){
+    return $this->title;
+  }
+
   /**
-  * Do the magic.
+  * Returns true if user is authorized.
   */
-  public function run(): void
-  {
-    if($this->authorization){
+  public function auth($action=null, $module=null): bool{
+    if(!$this->iauth) return true; // authorization off
 
-
-
-      $isLogout = $_POST['elalogout']??$_GET['elalogout']??false;
-      if($isLogout){
-        $this->iauthorization->elaLogout();
-        if(!$this->isAjaxCall()){
-          Header('location:.');
-          return;
-        }
-      }
-
-      $isLogin = $_POST['elalogin']??$_GET['elalogin']??false;
-      if($isLogin){
-        $this->iauthorization->elaLogin();
-        if(!$this->isAjaxCall()){
-          Header('location:.');
-          return;
-        }
-      }
-
-      $isAuthorized = $this->iauthorization->elaAuth();
-      $loginFields = $this->iauthorization->elaLoginFields();
-      if(!$isAuthorized && ($loginFields === null || $isLogin)){
-        header("HTTP/1.1 401 Unauthorized");
-        echo "Neplatné přihlašovací údaje!";
-        return;
-      }
-      if(!$isAuthorized){
-        if(!$this->isAjaxCall())
-          echo $this->view('login', ['loginFields'=>$loginFields]);
-        return;
-      }
+    if(!$action){
+      if(!$this->iauth->elaAuth($this->module($module)->elaGetAuthorizedRoles())) return false;
+      else return true;
     }
 
-    $elamodule = $_GET['elamodule']??null;
-    $elaaction = $_GET['elaaction']??null;
-    $elatoken = $_GET['elatoken']??null;
-    if($elamodule === null || $elamodule === ''){
-
-      if($elaaction == 'csrftoken'){
-        echo $this->getCSRFToken();
-        return;
-      }
-
-      if(!$elaaction){
-        echo $this->view('hello');
-        return;
-      }
-
-      if($elatoken != $this->getCSRFToken()){
-        header("HTTP/1.1 401 Unauthorized");
-        echo "CSRF token not valid!";
-        return;
-      }
-
-      if($elaaction == 'account'){
-
-
-
-        try{
-          $this->iauthorization->elaAccount();
-        } catch(\Exception $e){
-          header("HTTP/1.1 400 Bad Request");
-          echo $e->getMessage();
-          return;
-        }
-        if(!$this->isAjaxCall())
-          Header('location:.');
-        return;
-      }
-
-      header("HTTP/1.1 400 Bad Request");
-      echo 'No action!';
-      return;
-
-    }
-
-
-
-    try{
-      if(!isset($this->modules[$elamodule]))
-        throw new \Exception('Requested module does not exist.');
-
-      $imodule = $this->imodules[$elamodule];
-      $module = $this->modules[$elamodule];
-
-      if($elaaction === null){
-        echo $this->view('module', ['module'=>$module, 'elamodule'=>$elamodule, 'title'=>$imodule->elaGetTitle(), 'js'=>$imodule->elaGetJs()]);
-        return;
-      }
-
-      if($elatoken != $this->getCSRFToken()){
-        header("HTTP/1.1 401 Unauthorized");
-        echo "CSRF token not valid!";
-        return;
-      }
-
-      $method = $this->getActionMethodName($elaaction);
-
-      if(!method_exists($imodule, $method))
-        throw new \Exception('Module "'.$module.'" has not defined action method "'.$method.'".');
-
-      $authroles = $imodule->elaGetAuthorizedRolesActions()[strtolower($elaaction)]??[];
-      if(!$this->iauthorization->elaAuth($authroles)){
-        header("HTTP/1.1 401 Unauthorized");
-        echo "Not authorized!";
-        return;
-      }
-
-      call_user_func(array($imodule, $method));
-
-    } catch(\Exception $e){
-      header("HTTP/1.1 400 Bad Request");
-      echo $e->getMessage();
-      return;
-    }
+    // Check if user is authorized to do the action
+    $authroles = $this->module($module)->elaGetAuthorizedRolesActions()[strtolower($action)]??[];
+    if(!$this->iauth->elaAuth($authroles)) return false;
+    return true;
   }
 
-  protected function getCSRFToken(){
-    $token = $_SESSION['elacsrftoken']??null;
-    if(!$token){
-      $token = $_SESSION['elacsrftoken'] = $this->randomString(16);
-    }
-    return $token;
+  /**
+  * Returns username or null if authorization is off.
+  */
+  public function username(): ?string{
+    return $this->iauth? $this->iauth->elaUserName():null;
   }
 
-  private function randomString($len){
-    $chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    $res = '';
-    for($i=0; $i<$len; $i++)
-     $res .= substr($chars, rand(0, strlen($chars)-1), 1);
-    return $res;
+
+  public function modules(){
+    return $this->imodules;
   }
 
-  protected function getActionMethodName($action){
-    return 'elaAction'.ucfirst($action);
+  public function action(){
+    return $_GET['elaaction']??null;
   }
 
+  public function moduleKey(){
+    return $_GET['elamodule']??null;
+  }
+
+  public function module($key=null){
+    return $this->imodules[$key??$this->moduleKey()]??$this;
+  }
+
+  public function request($action, $moduleKey=null, $args=[]){
+    $data = $args;
+    if($action) $data['elaaction'] = $action;
+    $data['elamodule'] = $moduleKey??$this->moduleKey();
+    $data['elatoken'] = $this->CSRFToken();
+    return '?'.http_build_query($data);
+  }
 
   /**
   * Render a view.
   */
   protected function view($name, $args=[]){
-    return $this->blade->view()->make($name, $args+[
-      'admintitle'=>$this->title,
-      'modules'=>$this->imodules,
-      'useauth'=>!is_null($this->authorization),
-      'username'=>$this->iauthorization?$this->iauthorization->elaUserName():'',
-      'accountfields'=>$this->iauthorization?$this->iauthorization->elaAccountFields():null,
-      'authroles'=>$this->iauthorization?$this->iauthorization->elaRoles():null,
-      'csrftoken'=>$this->getCSRFToken()
-      ])->render();
+    return $this->blade->view()->make($name, $args+['eladmin'=>$this])->render();
   }
 
-  protected function isAjaxCall(){
-    if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest')
-      return true;
+  public function CSRFToken(){
+    $token = $_SESSION['elacsrftoken']??null;
+    if(!$token){
+      $token = '';
+      $chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      for($i=0; $i<16; $i++)
+       $token .= substr($chars, rand(0, strlen($chars)-1), 1);
+      $_SESSION['elacsrftoken'] = $token;
+    }
+    return $token;
+  }
+
+  protected function CSRFAuth(){
+    if(($_GET['elatoken']??null) != $this->CSRFToken())
+      throw new Exception\UnauthorizedException("CSRF token not valid!");
+  }
+
+  private function isAjaxCall(){
+    if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') return true;
     return false;
   }
+
+  private function refreshNoAjax(){
+    if($this->isAjaxCall()) return;
+    Header('Location: .');
+    exit;
+  }
+
+
+  /**
+  * Run Eladmin. It's just a wrapper of method runNoCatch catching exceptions.
+  */
+  public function run():void
+  {
+    try{
+      $this->runNoCatch();
+    } catch(Exception\UnauthorizedException $e){
+      header("HTTP/1.1 401 Unauthorized");
+      echo $e->getMessage();
+    } catch(Exception\BadRequestException $e){
+      header("HTTP/1.1 400 Bad Request");
+      echo $e->getMessage();
+    } catch(\Exception $e){
+      header("HTTP/1.1 500 Internal Server Error");
+      echo $e->getMessage();
+    }
+  }
+
+  /**
+  * Run Eladmin.
+  */
+  public function runNoCatch(): void
+  {
+    /**
+    * Authentication and authorization.
+    */
+    if($this->auth){
+      $isLogout = $_GET['elalogout']??false;
+      if($isLogout){
+        $this->iauth->elaLogout();
+        $this->refreshNoAjax();
+      }
+
+      $isLogin = $_GET['elalogin']??false;
+      if($isLogin) $this->iauth->elaLogin();
+
+      $isAuthorized = $this->iauth->elaAuth();
+      if($isLogin){
+        if(!$isAuthorized)
+          throw new Exception\UnauthorizedException("Neplatné přihlašovací údaje!");
+        else
+          $this->refreshNoAjax();
+      }
+
+      $loginFields = $this->iauth->elaLoginFields();
+      if(!$isAuthorized){
+        if($loginFields === null)
+          throw new Exception\UnauthorizedException("Neautorizovaný přístup!");
+        else{
+          echo $this->view('login', ['loginFields'=>$loginFields]);
+          return;
+        }
+      }
+      // it is not an attempt to login and user is authorized to continue execution
+    }
+
+    // no action, render module view
+    if(!$this->action()){
+      if($this->module() == $this)
+        echo $this->view('hello', ['elaModule'=>$this->module()]);
+      else
+        echo $this->view('module', ['elaModule'=>$this->module()]);
+      return;
+    }
+
+    // CSRF token comparsion
+    $this->CSRFAuth();
+
+    // Check if user is authorized to do the action
+    if(!$this->auth($this->action()))
+      throw new Exception\UnauthorizedException("Not authorized!");
+
+    // do the action
+    call_user_func([$this->module(), 'elaAction'.ucfirst($this->action())]);
+  }
+
+  public function elaGetAuthorizedRolesActions(){
+    return [];
+  }
+
+  public function elaGetAuthorizedRoles(){
+    return [];
+  }
+
+  public function elaActionAccount(){
+    $this->iauth->elaAccount();
+  }
+
+
+
 }

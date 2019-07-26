@@ -29,21 +29,23 @@ interface Authorization
   */
   public function elaAccount():void;
 
-
   /**
   * Logout.
   */
   public function elaLogout():void;
 
   /**
-  * Authorize logged user.
+  * Authorize logged user againts authorizedRoles.
   */
-    public function elaAuth(?array $authorizedRoles=null):bool;
+  public function elaAuth(?array $authorizedRoles=null):bool;
 
   /**
-  * User's roles.
+  * Return user's roles.
   */
   public function elaRoles():array;
 
+  /**
+  * Get user's name to show it in admin.
+  */
   public function elaUserName():string;
 }
