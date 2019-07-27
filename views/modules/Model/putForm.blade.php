@@ -29,9 +29,12 @@
 
   @section('actions')
     @foreach($elaModule->elaActions() as $action=>$config)
-      <?php if(!$eladmin->auth($action)) continue; ?>
+      <?php
+      if(!$eladmin->auth($action)) continue;
+      if($config->noneditable) continue;
+      ?>
       <div class="form-group">
-        <button data-elaaction="{{$action}}" data-elaarg{{$elaModule->getKeyName()}}="{{$row->getKey()}}" class="btn btn-{{ $config->style??'primary' }}">{!! $config->icon??'' !!} {{ $config->label??$action }}</button>
+        <button data-elaaction="{{$action}}" data-eladon="redrawCrudTable();" data-elaarg{{$elaModule->getKeyName()}}="{{$row->getKey()}}" class="btn btn-{{ $config->style }}">{!! $config->icon !!} {{ $config->label??$action }}</button>
       </div>
     @endforeach
   @show

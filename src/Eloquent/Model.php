@@ -87,7 +87,7 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
   }
 
   public function elaActions(){
-    return new \Onspli\Eladmin\Chainset\Chainset();
+    return new \Onspli\Eladmin\Eloquent\Action\Action(true);
   }
 
   public function elaActionPostForm(){
