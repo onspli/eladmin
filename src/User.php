@@ -9,8 +9,13 @@ class User extends Eloquent\Model implements Iface\Authorization
   protected $table = 'elausers';
   protected $hidden = ['passwordhash'];
 
-  protected $elaTitle = 'Uživatelé';
+  protected $elaTitle = 'Users';
   protected $elaIcon = '<i class="fas fa-users"></i>';
+
+  protected function defaultProperties(){
+    parent::defaultProperties();
+    $this->elaTitle = __('Users');
+  }
 
   public function __construct(){
     parent::__construct();
@@ -41,30 +46,30 @@ class User extends Eloquent\Model implements Iface\Authorization
 
   public function elaLoginFields(): ?array{
     return [
-      'login' => ['label'=>'Login', 'type'=>'text'],
-      'password' => ['label'=>'Heslo', 'type'=>'password']
+      'login' => ['label'=>__('Login'), 'type'=>'text'],
+      'password' => ['label'=>__('Password'), 'type'=>'password']
     ];
   }
 
   public function elaColumns(){
     $cols = parent::elaColumns();
-    $cols->newpassword->label('Nové heslo')->nonlistable()->editable();
+    $cols->newpassword->label(__('New password'))->nonlistable()->editable();
     return $cols;
   }
 
   protected function elaModifyPost(): void{
     $login = $_POST['login']??null;
     if($login === '')
-      throw new \Exception('Login nemůže být prázdný!');
+      throw new Exception\BadRequestException(__('Login must not be empty!'));
 
     $oldlogin = static::where('login',$login)->first();
     $oldid = $_POST['id']??0;
     if($oldlogin && $oldlogin->id != $oldid)
-      throw new \Exception('Login už existuje!');
+      throw new Exception\BadRequestException(__('Login already exists!'));
 
     $newpassword = $_POST['newpassword']??null;
     if(!$oldid && !$newpassword)
-    throw new \Exception('Heslo nemůže být prázdné!');
+      throw new Exception\BadRequestException(__('New password must not be empty!'));
     if($newpassword)
       $_POST['passwordhash'] = $newpassword;
   }
@@ -113,12 +118,11 @@ class User extends Eloquent\Model implements Iface\Authorization
 
   public function elaAccountFields(): ?array{
     return [
-      'oldpassword' => ['label'=>'Současné heslo', 'type'=>'password'],
-      'newpassword' => ['label'=>'Nové heslo', 'type'=>'password'],
-      'newpasswordconfirm' => ['label'=>'Potvrď nové heslo', 'type'=>'password']
+      'oldpassword' => ['label'=>__('Current password'), 'type'=>'password'],
+      'newpassword' => ['label'=>__('New password'), 'type'=>'password'],
+      'newpasswordconfirm' => ['label'=>__('Confirm new password'), 'type'=>'password']
     ];
   }
-
 
   /**
   * Eladmin calls this method during profile update. Login Fields are passed through POST variable
@@ -129,13 +133,13 @@ class User extends Eloquent\Model implements Iface\Authorization
     $newpasswordconfirm = $_POST['newpasswordconfirm']??'';
     $user = static::get();
     if(!$user)
-      throw new Exception\UnauthorizedException('Unathorized!');
+      throw new Exception\UnauthorizedException();
     if(!password_verify($oldpassword , $user->passwordhash))
-      throw new Exception\BadRequestException('Současné heslo není správně!');
+      throw new Exception\UnauthorizedException(__('Current password is not correct!'));
     if(!$newpassword)
-      throw new Exception\BadRequestException('Nové heslo nesmí být prázdné!');
+      throw new Exception\BadRequestException(__('New password must not be empty!'));
     if($newpassword != $newpasswordconfirm)
-      throw new Exception\BadRequestException('Hesla se neshodují!');
+      throw new Exception\BadRequestException(__('Passwords do not match!'));
     $user->passwordhash = $newpassword;
     $user->save();
   }

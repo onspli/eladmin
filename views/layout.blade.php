@@ -27,7 +27,7 @@
                   @endif
                   ">
                   {!! $module->elaGetIcon() !!} {{ $module->elaGetTitle() }}
-              </a>
+                </a>
             @endforeach
         </div>
       </div>
@@ -41,15 +41,15 @@
 
           @if($eladmin->username() !== null)
             <span class="float-right">
-              <span>Přihlášen <strong>{{$eladmin->username()}}</strong> </span>&nbsp;
+              <span>{{ __('Logged in as') }} <strong>{{$eladmin->username()}}</strong> </span>&nbsp;
               @if($eladmin->accountFields())
-              <button class="btn btn-primary" id="elaeditaccount" data-elaaction="accountForm" data-elamodule=""><i class="fas fa-key"></i> <span class="d-none d-sm-inline">Účet</span> </button>
+              <button class="btn btn-primary" id="elaeditaccount" data-elaaction="accountForm" data-elamodule=""><i class="fas fa-key"></i> <span class="d-none d-sm-inline"> {{__('Account')}}</span> </button>
               @endif
               &nbsp;
-              <a href="?elalogout=true" class="btn btn-primary"><i class="fas fa-sign-out-alt"></i> <span class="d-none d-sm-inline">Odhlásit</span> </a>
+              <a href="?elalogout=true" class="btn btn-primary"><i class="fas fa-sign-out-alt"></i> <span class="d-none d-sm-inline"> {{__('Log out')}}</span> </a>
             </span>
           @else
-            <span class="float-right"><strong>Autorizace je vypnutá!</strong></span>
+            <span class="float-right"><strong>{{ __('Authorization is disabled!!!') }}</strong></span>
           @endif
         </div>
 

@@ -1,5 +1,6 @@
 <?php
 namespace Onspli\Eladmin\Eloquent;
+use \Onspli\Eladmin\Exception;
 
 
 class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladmin\Iface\Module
@@ -22,6 +23,13 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
     'putrow' => [],
     'delrow' => []
   ];
+
+  protected function defaultProperties(){
+  }
+
+  public function __construct(){
+    $this->defaultProperties();
+  }
 
   /**
   * Check if table for the model exists in the database;
@@ -90,7 +98,7 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
     $id = $_POST[$this->primaryKey]??null;
     $row = static::find($id);
     if(!$row)
-      throw new \Exception('Entry not found!');
+      throw new Exception\BadRequestException(__('Entry not found!'));
 
     echo $this->eladmin->view($this->bladeViewPutForm, ['row'=>$row]);
   }
@@ -137,7 +145,7 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
 
     $id = $_POST[$this->primaryKey]??null;
     $row = static::find($id);
-    if(!$row) throw new \Exception('Entry not found!');
+    if(!$row) throw new Exception\BadRequestException( __('Entry not found!') );
 
     $this->elaModifyPost();
     $columns = $this->getTableColumns();
@@ -150,6 +158,8 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
     }
 
     $row->save();
+    Header('Content-type: text/plain');
+    echo __('Entry modified.');
   }
 
   /**
@@ -167,6 +177,8 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
       $row->{$column} = $value;
     }
     $row->save();
+    Header('Content-type: text/plain');
+    echo __('Entry added.');
   }
 
   /**
@@ -176,6 +188,8 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
     $id = $_POST[$this->primaryKey];
     $row = static::find($id);
     $row->delete();
+    Header('Content-type: text/plain');
+    echo __('Entry deleted.');
   }
 
   /**

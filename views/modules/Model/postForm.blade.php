@@ -1,7 +1,7 @@
 @extends('components.modal')
 
 @section('modal-title')
-  Přidat záznam
+  {{ __('Create new entry')}}
 @endsection
 
 @section('modal-body')
@@ -24,6 +24,6 @@
 @endsection
 
 @section('modal-footer')
-  <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="far fa-times-circle"></i> Zrušit</button>
-  <button type="submit" form="modal-form" class="btn btn-primary"><i class="fas fa-save"></i> Přidat</button>
+  <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="far fa-times-circle"></i> {{__('Cancel')}}</button>
+  <button type="submit" form="modal-form" class="btn btn-primary"><i class="fas fa-save"></i> {{__('Create')}}</button>
 @endsection

@@ -13,7 +13,7 @@
       <button class="btn btn-primary"
               data-elaaction="putForm"
               data-elaarg{{$elaModule->getKeyName()}}="{{$row->getKey()}}">
-        <i class="fas fa-edit"></i>
+        <i class="fas fa-edit"></i> <span class="d-none d-lg-inline">{{ __('Edit') }}</span>
       </button>
   </td>
 </tr>

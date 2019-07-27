@@ -47,8 +47,11 @@ h4{text-transform: uppercase;}
           <input type="{{$field['type']}}" class="form-control" name="{{$name}}">
         </div>
         @endforeach
-        <button type="submit" class="btn btn-primary btn-block">Přihlásit</button>
+        <button type="submit" class="btn btn-primary btn-block">{{ __('Log in') }}</button>
       </form>
+
+      <hr>
+      <small class="text-center d-block"><a href="https://github.com/onspli/eladmin">Eladmin</a> | CRUD and admin for Eloquent</small>
 
     </article>
 </div>

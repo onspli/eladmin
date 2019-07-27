@@ -8,7 +8,7 @@
 
     @if($eladmin->auth('postRow'))
     <button id="crudadd" type="button" class="btn btn-primary mb-3" data-elaaction="postForm">
-      <i class="fas fa-plus-circle"></i> Přidat
+      <i class="fas fa-plus-circle"></i> {{ __('Add') }}
     </button>
     @endif
 

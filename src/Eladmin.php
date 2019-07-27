@@ -6,6 +6,7 @@ class Eladmin
 {
 
   protected $title = "Eladmin";
+  protected $lang = "en_US";
 
   /**
   * Register admin modules (i.e. eloquent models).
@@ -27,12 +28,35 @@ class Eladmin
   protected $iauth = null;       // instance
   public $disableNoAuthorizationMessage = false;
 
+  // gettext translator
+  public $t;
+
+  protected function defaultProperties(){
+
+  }
+
   public function __construct(){
+    $this->defaultProperties();
+    try{
+      $this->t = new \Gettext\Translator();
+      $translations = \Gettext\Translations::fromPoFile(__DIR__.'/../locale/'.$this->lang.'/LC_MESSAGES/messages.po');
+      $this->t->loadTranslations($translations);
+    } catch(\Exception $e){
+      throw new \Exception('Locale "'.$this->lang.'" is not supported.');
+    }
+
+  /*
+    $this->t = new \Gettext\GettextTranslator();
+    $this->t->setLanguage($this->lang);
+    $this->t->loadDomain('messages', __DIR__.'/../locale');
+    */
+    $this->t->register();
+
     if(!$this->cache)
       throw new \Exception('Give '.static::class.'->cache property a path to some writeable directory.');
 
     if(!session_id()) session_start();
-    
+
     if(is_array($this->views))
       $views = array_merge($this->views, [__DIR__ . '/../views']);
     else
@@ -140,7 +164,7 @@ class Eladmin
 
   protected function CSRFAuth(){
     if(($_GET['elatoken']??null) != $this->CSRFToken())
-      throw new Exception\UnauthorizedException("CSRF token not valid!");
+      throw new Exception\UnauthorizedException(__("CSRF token not valid! Try reloading page."));
   }
 
   private function isAjaxCall(){
@@ -168,6 +192,9 @@ class Eladmin
     } catch(Exception\BadRequestException $e){
       header("HTTP/1.1 400 Bad Request");
       echo $e->getMessage();
+    } catch(Exception\Exception $e){
+      header("HTTP/1.1 500 Internal Server Error");
+      echo $e->getMessage();
     } catch(\Exception $e){
       header("HTTP/1.1 500 Internal Server Error");
       echo $e->getMessage();
@@ -190,12 +217,14 @@ class Eladmin
       }
 
       $isLogin = $_GET['elalogin']??false;
-      if($isLogin) $this->iauth->elaLogin();
+      if($isLogin){
+        $this->iauth->elaLogin();
+      }
 
       $isAuthorized = $this->iauth->elaAuth();
       if($isLogin){
         if(!$isAuthorized)
-          throw new Exception\UnauthorizedException("Neplatné přihlašovací údaje!");
+          throw new Exception\UnauthorizedException(__("Wrong credentials!"));
         else
           $this->refreshNoAjax();
         return;
@@ -204,9 +233,9 @@ class Eladmin
       $loginFields = $this->iauth->elaLoginFields();
       if(!$isAuthorized){
         if($this->isAjaxCall())
-          throw new Exception\UnauthorizedException("Neautorizovaný přístup!");
+          throw new Exception\UnauthorizedException();
         if($loginFields === null)
-          throw new Exception\UnauthorizedException("Neautorizovaný přístup!");
+          throw new Exception\UnauthorizedException();
         else{
           echo $this->view('login', ['loginFields'=>$loginFields]);
           return;
@@ -229,7 +258,7 @@ class Eladmin
 
     // Check if user is authorized to do the action
     if(!$this->auth($this->action()))
-      throw new Exception\UnauthorizedException("Not authorized!");
+      throw new Exception\UnauthorizedException();
 
     // do the action
     call_user_func([$this->module(), 'elaAction'.ucfirst($this->action())]);
