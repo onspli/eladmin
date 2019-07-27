@@ -22,7 +22,7 @@
         <div class="list-group list-group-flush">
             @foreach($eladmin->modules() as $key=>$module)
               <a href="?elamodule={{$key}}" class="list-group-item  menumodul list-group-item-action
-                  @if(isset($elaModule) && ''.$eladmin->moduleKey() === ''.$key)
+                  @if(isset($module) && $eladmin->moduleKey() === (string)$module)
                    selected
                   @endif
                   ">

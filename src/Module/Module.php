@@ -22,7 +22,7 @@ class Module implements \Onspli\Eladmin\Iface\Module
   }
 
   public function elakey(){
-    return $this->elakey;
+    return (string)$this->elakey;
   }
 
   public function __toString(){

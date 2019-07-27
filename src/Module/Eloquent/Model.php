@@ -26,7 +26,7 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
   ];
 
   public function elakey(){
-    return $this->elakey;
+    return (string)$this->elakey;
   }
 
   public function __toString(){
