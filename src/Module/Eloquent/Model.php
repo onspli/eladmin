@@ -46,6 +46,11 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
 
   public function __construct(){
     $this->defaultProperties();
+    if(!$this->tableExists()) $this->createTable();
+  }
+
+  protected function createTable(){
+    
   }
 
   /**

@@ -11,6 +11,8 @@ class Column extends \Onspli\Eladmin\Chainset\Chainset{
   public $nonlistable = false;
   public $noneditable = false;
   public $disabled = false;
+  public $input = 'text';
+  public $listformat = null;
 
   public function raw(){
     $this->rawoutput = true;
@@ -49,6 +51,39 @@ class Column extends \Onspli\Eladmin\Chainset\Chainset{
 
   public function enabled(){
     $this->disabled = false;
+    return $this;
+  }
+
+  public function input($type){
+    $this->input = $type;
+    return $this;
+  }
+
+  public function textarea(){
+    $this->input = 'textarea';
+    return $this;
+  }
+
+  public function select($options){
+    $this->input = 'select';
+    $this->selectOptions = $options;
+    return $this;
+  }
+
+  public function selectFromModel($model, $desc){
+    $this->input = 'selectFromModel';
+    $this->selectFromModel = $model;
+    $this->selectFromModelDesc = $desc;
+    $this->listformat(function($val) use ($model, $desc){
+      $entry = $model::find($val);
+      if(!$entry) return $val;
+      return $entry->$desc;
+    });
+    return $this;
+  }
+
+  public function listformat($func){
+    $this->listformat = $func;
     return $this;
   }
 

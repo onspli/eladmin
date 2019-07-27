@@ -2,10 +2,10 @@
   @foreach($module->elaColumns() as $column=>$config)
   <?php if($config->nonlistable??false) continue; ?>
   <td>
-    @if($config->rawoutput??false)
+    @if($config->rawoutput)
       {!! $row->$column !!}
     @else
-      {{$row->$column}}
+      {{ $config->listformat? ($config->listformat)($row->$column, $row, $column, $module, $eladmin):$row->$column }}
     @endif
   </td>
   @endforeach

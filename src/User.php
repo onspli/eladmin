@@ -19,7 +19,6 @@ class User extends Module\Eloquent\Model implements Iface\Authorization
 
   public function __construct(){
     parent::__construct();
-    if(!$this->tableExists()) $this->createTable();
     if(!session_id()) session_start();
   }
 
@@ -108,6 +107,10 @@ class User extends Module\Eloquent\Model implements Iface\Authorization
 
   public function elaUserName():string{
     return $this->get()->login??'';
+  }
+
+  public function elaUserId(){
+    return $this->get()->id??null;
   }
 
   public function elaAccountFields(): ?array{

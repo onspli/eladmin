@@ -13,13 +13,9 @@
     <input type="hidden" name="{{$module->getKeyName()}}" value="{{$row->getKey()}}">
     @foreach($module->elaColumns() as $column=>$config)
       <?php if($config->noneditable) continue; ?>
-      <div class="form-group">
-        <label>{{$config->label?$config->label:$column}}</label>
-        <input type="text" value="{{$row->$column}}" class="form-control" {!! ($config->disabled?' disabled="disabled" ':' name="'.$column.'" ') !!}>
-        @if($config->desc)
-        <small class="form-text text-muted">{!! $config->desc !!}</small>
-        @endif
-      </div>
+      @component('components.inputs.'.$config->input, ['column'=>$column, 'config'=>$config, 'module'=>$module, 'row'=>$row])
+      @endcomponent
+
     @endforeach
     @show
 

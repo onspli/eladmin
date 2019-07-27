@@ -11,14 +11,9 @@
       if($column == $module->getKeyName()) continue;
       if($config->noneditable??false) continue;
       ?>
+      @component('components.inputs.'.$config->input, ['column'=>$column, 'config'=>$config, 'module'=>$module, 'row'=>new \StdClass])
+      @endcomponent
 
-      <div class="form-group">
-        <label>{{$config->label??$column}}</label>
-        <input type="text" class="form-control" {!! (($config->disabled??false)?' disabled="disabled" ':' name="'.$column.'" ') !!}>
-        @if(isset($config->desc))
-        <small class="form-text text-muted">{!! $config->desc !!}</small>
-        @endif
-      </div>
     @endforeach
   </form>
 @endsection

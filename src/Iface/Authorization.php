@@ -42,5 +42,7 @@ interface Authorization
   /**
   * Get user's name to show it in admin.
   */
-  public function elaUserName():string;
+  public function elaUserName():?string;
+
+  public function elaUserId();
 }
