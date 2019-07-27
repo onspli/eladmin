@@ -1,4 +1,4 @@
-@extends('modal')
+@extends('components.modal')
 
 @section('modal-title')
   Záznam #{{ $row->getKey() }}

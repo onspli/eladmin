@@ -16,7 +16,7 @@ class Eladmin
   /**
   * Blade configuration
   */
-  protected $bladeViews = [];
+  protected $views = [];
   protected $cache = null;
   protected $blade = null;
 
@@ -32,7 +32,12 @@ class Eladmin
       throw new \Exception('Give '.static::class.'->cache property a path to some writeable directory.');
 
     if(!session_id()) session_start();
-    $this->blade = new \Philo\Blade\Blade( array_merge($this->bladeViews, [__DIR__ . '/../views']), $this->cache);
+    
+    if(is_array($this->views))
+      $views = array_merge($this->views, [__DIR__ . '/../views']);
+    else
+      $views = [$this->views, __DIR__ . '/../views'];
+    $this->blade = new \Philo\Blade\Blade($views, $this->cache);
 
     /**
     * TODO: Ověřit auth interface
@@ -48,7 +53,6 @@ class Eladmin
     */
     foreach($this->modules as $key=>$module){
       $imodule = new $module();
-      $imodule->bladeCache = $this->cache;
       if($this->auth && !$this->iauth->elaAuth($imodule->elaGetAuthorizedRoles())){
         unset($this->modules[$key]);
         continue;
@@ -118,8 +122,8 @@ class Eladmin
   /**
   * Render a view.
   */
-  protected function view($name, $args=[]){
-    return $this->blade->view()->make($name, $args+['eladmin'=>$this])->render();
+  public function view($name, $args=[]){
+    return $this->blade->view()->make($name, $args+['eladmin'=>$this, 'elaModule'=>$this->module()])->render();
   }
 
   public function CSRFToken(){

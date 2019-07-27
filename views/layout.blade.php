@@ -13,35 +13,23 @@
 
 </head>
 <body>
-  <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-  @include('layoutjs', ['eladmin'=>$eladmin, 'elaModule'=>$elaModule])
 
     <div class="d-flex" id="wrapper">
 
       <!-- Sidebar -->
-      <div class=" border-right" id="sidebar-wrapper">
+      <div class="border-right" id="sidebar-wrapper">
         <h1 class="sidebar-heading"><a href=".">{{$eladmin->title()}}</a></h1>
-        <div>
-
-
-        </div>
-
-          @section('sidebar')
-            <div class="list-group list-group-flush">
-              @foreach($eladmin->modules() as $key=>$module)
-                <a href="?elamodule={{$key}}" class="list-group-item  menumodul list-group-item-action
-                @if(isset($elaModule) && ''.$eladmin->moduleKey() === ''.$key)
-                 selected
-                @endif
-                 ">
+        <div class="list-group list-group-flush">
+            @foreach($eladmin->modules() as $key=>$module)
+              <a href="?elamodule={{$key}}" class="list-group-item  menumodul list-group-item-action
+                  @if(isset($elaModule) && ''.$eladmin->moduleKey() === ''.$key)
+                   selected
+                  @endif
+                  ">
                   {!! $module->elaGetIcon() !!} {{ $module->elaGetTitle() }}
-                </a>
-              @endforeach
-            </div>
-          @show
-
+              </a>
+            @endforeach
+        </div>
       </div>
       <!-- /#sidebar-wrapper -->
 
@@ -69,9 +57,9 @@
           <div class="container-fluid">
             <div id="content">
             @section('content')
-            <h1 class="mt-4">Simple Sidebar</h1>
-            <p>The starting state of the menu will appear collapsed on smaller screens, and will appear non-collapsed on larger screens. When toggled using the button below, the menu will change.</p>
-            <p>Make sure to keep all page content within the <code>#page-content-wrapper</code>. The top navbar is optional, and just for demonstration. Just create an element with the <code>#menu-toggle</code> ID which will toggle the menu when clicked.</p>
+              <h1 class="mt-4">Simple Sidebar</h1>
+              <p>The starting state of the menu will appear collapsed on smaller screens, and will appear non-collapsed on larger screens. When toggled using the button below, the menu will change.</p>
+              <p>Make sure to keep all page content within the <code>#page-content-wrapper</code>. The top navbar is optional, and just for demonstration. Just create an element with the <code>#menu-toggle</code> ID which will toggle the menu when clicked.</p>
             @show
             </div>
 
@@ -88,7 +76,11 @@
 <div id="dynamic">
 </div>
 
-@yield('scripts')
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+@include('layoutjs', ['eladmin'=>$eladmin, 'elaModule'=>$elaModule])
+@stack('scripts')
 
 </body>
 </html>

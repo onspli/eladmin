@@ -8,16 +8,10 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
   protected $elaTitle = null;
   protected $elaIcon = '<i class="fas fa-puzzle-piece"></i>';
 
-  /**
-  * Blade configuration
-  */
-  public $bladeViews = [];
-  public $bladeCache = null;
-  public $bladeViewRender = 'render';
-  public $bladeViewPutForm = 'putForm';
-  public $bladeViewPostForm = 'postForm';
-  public $bladeViewTable = 'table';
-  public $bladeViewRow = 'row';
+  public $bladeViewRender = 'modules.model.render';
+  public $bladeViewPutForm = 'modules.model.putForm';
+  public $bladeViewPostForm = 'modules.model.postForm';
+  public $bladeViewRow = 'modules.model.row';
   protected $blade = null;
 
   public $eladmin = null;
@@ -28,15 +22,6 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
     'putrow' => [],
     'delrow' => []
   ];
-
-  /**
-  * Render a view.
-  */
-  protected function view($name, $args=[]){
-    if(!$this->blade)
-      $this->blade = new \Philo\Blade\Blade(array_merge($this->bladeViews, [__DIR__ . '/../../views/modules/Model']), $this->bladeCache);
-    return $this->blade->view()->make($name, $args+['eladmin'=>$this->eladmin, 'elaModule'=>$this]);
-  }
 
   /**
   * Check if table for the model exists in the database;
@@ -81,13 +66,6 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
     return $this->elaAuthorizedRolesForLowercaseActions;
   }
 
-  /**
-  * Render page in administration.
-  */
-  public function elaRender(){
-    echo $this->view($this->bladeViewRender,['elaModule' => $this]);
-  }
-
   public function elaColumns(){
     $visibleColumns = $this->elaVisibleColumns();
     $disabledColumns = $this->elaDisabledColumns();
@@ -98,6 +76,23 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
         $columns->$column->disabled();
     }
     return $columns;
+  }
+
+  public function elaActions(){
+    return new \Onspli\Eladmin\Chainset\Chainset();
+  }
+
+  public function elaActionPostForm(){
+    echo $this->eladmin->view($this->bladeViewPostForm);
+  }
+
+  public function elaActionPutForm(){
+    $id = $_POST[$this->primaryKey]??null;
+    $row = static::find($id);
+    if(!$row)
+      throw new \Exception('Entry not found!');
+
+    echo $this->eladmin->view($this->bladeViewPutForm, ['row'=>$row]);
   }
 
 
@@ -123,10 +118,6 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
     return $visibleColumns;
   }
 
-  public function elaActions(){
-    return new \Onspli\Eladmin\Chainset\Chainset();
-  }
-
   /**
   * List database entries.
   */
@@ -136,11 +127,7 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
 
     $rows = static::orderBy($sort, $direction)->get();
     foreach($rows as $row)
-      $this->elaRenderRow($row);
-  }
-
-  protected function elaRenderRow($row){
-    echo $this->view($this->bladeViewRow, ['row'=>$row]);
+      echo $this->eladmin->view($this->bladeViewRow, ['row'=>$row]);
   }
 
   /**
@@ -150,15 +137,9 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
 
     $id = $_POST[$this->primaryKey]??null;
     $row = static::find($id);
-
-    if(!$row)
-      throw new \Exception('Entry not found!');
+    if(!$row) throw new \Exception('Entry not found!');
 
     $this->elaModifyPost();
-
-    /**
-    * TODO: some protection?
-    */
     $columns = $this->getTableColumns();
     $columns = array_diff($columns, $this->elaDisabledColumns());
 
@@ -171,28 +152,13 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
     $row->save();
   }
 
-  public function elaActionPostForm(){
-    echo $this->view($this->bladeViewPostForm);
-  }
-
-  public function elaActionPutForm(){
-    $id = $_POST[$this->primaryKey]??null;
-    $row = static::find($id);
-    if(!$row)
-      throw new \Exception('Entry not found!');
-
-    echo $this->view($this->bladeViewPutForm, ['row'=>$row]);
-  }
-
   /**
   * Create database entry.
   */
   public function elaActionPostRow(){
     $row = new static();
     $this->elaModifyPost();
-    /**
-    * TODO: some protection?
-    */
+
     $columns = $this->getTableColumns();
     $columns = array_diff($columns, $this->elaDisabledColumns());
     foreach($columns as $column){
@@ -211,7 +177,6 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
     $row = static::find($id);
     $row->delete();
   }
-
 
   /**
   * Here you can modify or validate $_POST variable before the data is stored to the database.
