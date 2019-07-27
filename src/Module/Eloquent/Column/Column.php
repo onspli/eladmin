@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Onspli\Eladmin\Eloquent\Column;
+namespace Onspli\Eladmin\Module\Eloquent\Column;
 
 class Column extends \Onspli\Eladmin\Chainset\Chainset{
 

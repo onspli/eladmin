@@ -1,4 +1,4 @@
-@extends('components.modal')
+@extends('layouts.modal')
 
 @section('modal-title')
  {{ __('Account')}} <strong>{{$eladmin->username()}}</strong>

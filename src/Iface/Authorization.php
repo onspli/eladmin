@@ -37,12 +37,7 @@ interface Authorization
   /**
   * Authorize logged user againts authorizedRoles.
   */
-  public function elaAuth(?array $authorizedRoles=null):bool;
-
-  /**
-  * Return user's roles.
-  */
-  public function elaRoles():array;
+  public function elaAuthorize(?array $authorizedRoles=null):bool;
 
   /**
   * Get user's name to show it in admin.

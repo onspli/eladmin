@@ -19,7 +19,7 @@ class Eladmin
   */
   protected $views = [];
   protected $cache = null;
-  protected $blade = null;
+  public $blade = null;
 
   /**
   * Authorization manager.
@@ -69,7 +69,6 @@ class Eladmin
     if($this->auth){
       $this->modules[] = $this->auth;
       $this->iauth = new $this->auth;
-      $this->iauth->bladeCache = $this->cache;
     }
 
     /**
@@ -77,11 +76,12 @@ class Eladmin
     */
     foreach($this->modules as $key=>$module){
       $imodule = new $module();
-      if($this->auth && !$this->iauth->elaAuth($imodule->elaGetAuthorizedRoles())){
+      if($this->auth && !$this->iauth->elaAuthorize($imodule->elaGetAuthorizedRoles())){
         unset($this->modules[$key]);
         continue;
       }
       $imodule->eladmin = $this;
+      $imodule->elakey = $key;
       $this->imodules[$key] = $imodule;
     }
   }
@@ -93,18 +93,22 @@ class Eladmin
   /**
   * Returns true if user is authorized.
   */
-  public function auth($action=null, $module=null): bool{
+  public function auth($action, $module): bool{
     if(!$this->iauth) return true; // authorization off
 
     if(!$action){
-      if(!$this->iauth->elaAuth($this->module($module)->elaGetAuthorizedRoles())) return false;
+      if(!$this->iauth->elaAuthorize($module->elaGetAuthorizedRoles())) return false;
       else return true;
     }
 
     // Check if user is authorized to do the action
-    $authroles = $this->module($module)->elaGetAuthorizedRolesActions()[strtolower($action)]??[];
-    if(!$this->iauth->elaAuth($authroles)) return false;
+    $authroles = $module->elaGetAuthorizedRolesActions()[strtolower($action)]??[];
+    if(!$this->iauth->elaAuthorize($authroles)) return false;
     return true;
+  }
+
+  public function elaAuth($action){
+    return $this->auth($action, $this);
   }
 
   /**
@@ -127,7 +131,7 @@ class Eladmin
     return $_GET['elaaction']??null;
   }
 
-  public function moduleKey(){
+  public function modulekey(){
     return $_GET['elamodule']??null;
   }
 
@@ -135,10 +139,10 @@ class Eladmin
     return $this->imodules[$key??$this->moduleKey()]??$this;
   }
 
-  public function request($action, $moduleKey=null, $args=[]){
+  public function request($action, $module, $args=[]){
     $data = $args;
     if($action) $data['elaaction'] = $action;
-    $data['elamodule'] = $moduleKey??$this->moduleKey();
+    $data['elamodule'] = (string)$module;
     $data['elatoken'] = $this->CSRFToken();
     return '?'.http_build_query($data);
   }
@@ -147,7 +151,7 @@ class Eladmin
   * Render a view.
   */
   public function view($name, $args=[]){
-    return $this->blade->view()->make($name, $args+['eladmin'=>$this, 'elaModule'=>$this->module()])->render();
+    return $this->blade->view()->make($name, array_merge($args, ['eladmin'=>$this]) )->render();
   }
 
   public function CSRFToken(){
@@ -221,7 +225,7 @@ class Eladmin
         $this->iauth->elaLogin();
       }
 
-      $isAuthorized = $this->iauth->elaAuth();
+      $isAuthorized = $this->iauth->elaAuthorize();
       if($isLogin){
         if(!$isAuthorized)
           throw new Exception\UnauthorizedException(__("Wrong credentials!"));
@@ -247,9 +251,9 @@ class Eladmin
     // no action, render module view
     if(!$this->action()){
       if($this->module() == $this)
-        echo $this->view('hello', ['elaModule'=>$this->module()]);
+        echo $this->view('hello');
       else
-        echo $this->view('module', ['elaModule'=>$this->module()]);
+        echo $this->view('module', ['module'=>$this->module()]);
       return;
     }
 
@@ -257,10 +261,14 @@ class Eladmin
     $this->CSRFAuth();
 
     // Check if user is authorized to do the action
-    if(!$this->auth($this->action()))
+    if(!$this->module()->elaAuth($this->action()))
       throw new Exception\UnauthorizedException();
 
     // do the action
+    if($this->module() == $this) $classname = static::class;
+    else $classname = $this->modules[$this->moduleKey()];
+    if(!is_callable([$this->module(), 'elaAction'.ucfirst($this->action())]))
+      throw new Exception\BadRequestException('Class '.$classname.' does not have method '.'elaAction'.ucfirst($this->action()).'!');
     call_user_func([$this->module(), 'elaAction'.ucfirst($this->action())]);
   }
 

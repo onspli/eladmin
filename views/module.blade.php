@@ -1,6 +1,6 @@
 @extends('layout')
-@section('title', $elaModule->elaGetTitle())
+@section('title', $module->elaGetTitle())
 
 @section('content')
-@include($elaModule->bladeViewRender)
+@include($module->bladeViewRender)
 @endsection

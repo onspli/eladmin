@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Onspli\Eladmin\Eloquent\Action;
+namespace Onspli\Eladmin\Module\Eloquent\Action;
 
 class Action extends \Onspli\Eladmin\Chainset\Chainset{
 

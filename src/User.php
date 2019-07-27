@@ -3,7 +3,7 @@
 namespace Onspli\Eladmin;
 
 
-class User extends Eloquent\Model implements Iface\Authorization
+class User extends Module\Eloquent\Model implements Iface\Authorization
 {
 
   protected $table = 'elausers';
@@ -90,7 +90,7 @@ class User extends Eloquent\Model implements Iface\Authorization
     $_SESSION['elauser'] = null;
   }
 
-  public function elaAuth(?array $authorizedRoles=null):bool{
+  public function elaAuthorize(?array $authorizedRoles=null):bool{
     $user = static::get();
     if(!$user){
       $this->elaLogout();
@@ -99,12 +99,6 @@ class User extends Eloquent\Model implements Iface\Authorization
     if(!$authorizedRoles) return true;
     if($authorizedRoles && in_array($user->role, $authorizedRoles)) return true;
     return false;
-  }
-
-  public function elaRoles():array{
-    $user = static::get();
-    if($user) return [$user->role];
-    return [];
   }
 
   public static function get(){

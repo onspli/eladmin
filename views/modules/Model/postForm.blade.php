@@ -1,14 +1,14 @@
-@extends('components.modal')
+@extends('layouts.modal')
 
 @section('modal-title')
   {{ __('Create new entry')}}
 @endsection
 
 @section('modal-body')
-  <form id="modal-form" data-eladone="redrawCrudTable();" action="{{ $eladmin->request('postRow') }}">
-    @foreach($elaModule->elaColumns() as $column=>$config)
+  <form id="modal-form" data-eladone="redrawCrudTable();" action="{{ $module->elaRequest('postRow') }}">
+    @foreach($module->elaColumns() as $column=>$config)
       <?php
-      if($column == $elaModule->getKeyName()) continue;
+      if($column == $module->getKeyName()) continue;
       if($config->noneditable??false) continue;
       ?>
 

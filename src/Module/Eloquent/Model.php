@@ -1,5 +1,5 @@
 <?php
-namespace Onspli\Eladmin\Eloquent;
+namespace Onspli\Eladmin\Module\Eloquent;
 use \Onspli\Eladmin\Exception;
 
 
@@ -16,6 +16,7 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
   protected $blade = null;
 
   public $eladmin = null;
+  public $elakey = null;
 
   protected $elaAuthorizedRoles = [];
   protected $elaAuthorizedRolesForLowercaseActions = [
@@ -23,6 +24,22 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
     'putrow' => [],
     'delrow' => []
   ];
+
+  public function elakey(){
+    return $this->elakey;
+  }
+
+  public function __toString(){
+    return $this->elakey();
+  }
+
+  public function elaRequest($action, $args=[]){
+    return $this->eladmin->request($action, $this, $args);
+  }
+
+  public function elaAuth($action): bool{
+    return $this->eladmin->auth($action, $this);
+  }
 
   protected function defaultProperties(){
   }
@@ -77,7 +94,7 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
   public function elaColumns(){
     $visibleColumns = $this->elaVisibleColumns();
     $disabledColumns = $this->elaDisabledColumns();
-    $columns = new \Onspli\Eladmin\Eloquent\Column\Column(true);
+    $columns = new \Onspli\Eladmin\Module\Eloquent\Column\Column(true);
     foreach($visibleColumns as $column){
       $columns->$column;
       if(in_array($column, $disabledColumns))
@@ -87,11 +104,11 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
   }
 
   public function elaActions(){
-    return new \Onspli\Eladmin\Eloquent\Action\Action(true);
+    return new \Onspli\Eladmin\Module\Eloquent\Action\Action(true);
   }
 
   public function elaActionPostForm(){
-    echo $this->eladmin->view($this->bladeViewPostForm);
+    echo $this->eladmin->view($this->bladeViewPostForm, ['module'=>$this]);
   }
 
   public function elaActionPutForm(){
@@ -100,7 +117,7 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
     if(!$row)
       throw new Exception\BadRequestException(__('Entry not found!'));
 
-    echo $this->eladmin->view($this->bladeViewPutForm, ['row'=>$row]);
+    echo $this->eladmin->view($this->bladeViewPutForm, ['row'=>$row,'module'=>$this]);
   }
 
 
@@ -135,7 +152,7 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
 
     $rows = static::orderBy($sort, $direction)->get();
     foreach($rows as $row)
-      echo $this->eladmin->view($this->bladeViewRow, ['row'=>$row]);
+      echo $this->eladmin->view($this->bladeViewRow, ['row'=>$row,'module'=>$this]);
   }
 
   /**

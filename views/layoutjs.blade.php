@@ -5,7 +5,11 @@
   });
 
   function elaRequest(action, module, args){
-    if(module === null) module = '{{$eladmin->moduleKey()}}';
+    if(module === null || module ===undefined){
+      console.error('You have to specify module!');
+      return;
+      // module = '{{$eladmin->moduleKey()}}';
+    }
     return $.ajax({
         method: 'POST',
         url: '?elamodule='+module+'&elaaction='+action+'&elatoken={{$eladmin->CSRFToken()}}',
