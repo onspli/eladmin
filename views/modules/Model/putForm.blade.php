@@ -34,7 +34,7 @@
       if($config->noneditable) continue;
       ?>
       <div class="form-group">
-        <button data-elaaction="{{$action}}" data-eladon="redrawCrudTable();" data-elaarg{{$elaModule->getKeyName()}}="{{$row->getKey()}}" class="btn btn-{{ $config->style }}">{!! $config->icon !!} {{ $config->label??$action }}</button>
+        <button data-elaaction="{{$action}}" data-eladone="$('#dynamic .modal').modal('hide'); redrawCrudTable();" data-elaarg{{$elaModule->getKeyName()}}="{{$row->getKey()}}" class="btn btn-{{ $config->style }}">{!! $config->icon !!} {{ $config->label??$action }}</button>
       </div>
     @endforeach
   @show
