@@ -83,6 +83,9 @@ class Chat extends \Onspli\Eladmin\Eloquent\Model
     protected $primaryKey = 'id';
     public $timestamps = false;
 
+    public $bladeViews = [__DIR__.'/views'];
+    public $bladeViewPutForm = 'putFormEx';
+
 }
 
 
@@ -111,6 +114,7 @@ class Eladmin extends \Onspli\Eladmin\Eladmin
   protected $modules = ['prihlasky'=>Prihlasky::class, Behy::class, Chat::class];
 
   protected $title = 'Retro tábor';
+  protected $cache = __DIR__.'/../cache';
 }
 
 $admin = new Eladmin();

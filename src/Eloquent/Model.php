@@ -11,9 +11,12 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
   /**
   * Blade configuration
   */
-  protected $bladeViews = __DIR__ . '/../../views/modules/Model';
-  protected $bladeCache = __DIR__ . '/../../cache';
-  protected $bladeViewRender = 'render';
+  public $bladeViews = [];
+  public $bladeCache = null;
+  public $bladeViewRender = 'render';
+  public $bladeViewPutForm = 'putForm';
+  public $bladeViewPostForm = 'postForm';
+  public $bladeViewTable = 'table';
   protected $blade = null;
 
   public $eladmin = null;
@@ -25,15 +28,12 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
     'delrow' => []
   ];
 
-  public function __construct(){
-    parent::__construct();
-    $this->blade = new \Philo\Blade\Blade($this->bladeViews, $this->bladeCache);
-  }
-
   /**
   * Render a view.
   */
   protected function view($name, $args=[]){
+    if(!$this->blade)
+      $this->blade = new \Philo\Blade\Blade(array_merge($this->bladeViews, [__DIR__ . '/../../views/modules/Model']), $this->bladeCache);
     return $this->blade->view()->make($name, $args+['eladmin'=>$this->eladmin, 'elaModule'=>$this]);
   }
 
@@ -190,7 +190,7 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
   }
 
   public function elaActionPostForm(){
-    echo $this->view('postForm');
+    echo $this->view($this->bladeViewPostForm);
   }
 
   public function elaActionPutForm(){
@@ -199,7 +199,7 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
     if(!$row)
       throw new \Exception('Entry not found!');
 
-    echo $this->view('putForm', ['row'=>$row]);
+    echo $this->view($this->bladeViewPutForm, ['row'=>$row]);
   }
 
   /**

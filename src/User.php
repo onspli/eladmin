@@ -46,10 +46,12 @@ class User extends Eloquent\Model implements Iface\Authorization
     ];
   }
 
-  public function elaExtraInputs(): array{
-    return [
-      'password' => ['label'=>'Nové heslo', 'type'=>'text']
-    ];
+  public function elaColumns(){
+    $columns = parent::elaColumns();
+    $columns['newpassword'] = new \StdClass;
+    $columns['newpassword']->label = "Nové heslo";
+    $columns['newpassword']->nonlistable = true;
+    return $columns;
   }
 
   protected function elaModifyPost(): void{
@@ -62,7 +64,7 @@ class User extends Eloquent\Model implements Iface\Authorization
     if($oldlogin && $oldlogin->id != $oldid)
       throw new \Exception('Login už existuje!');
 
-    $newpassword = $_POST['password']??null;
+    $newpassword = $_POST['newpassword']??null;
     if($newpassword)
       $_POST['passwordhash'] = $newpassword;
   }

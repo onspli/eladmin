@@ -16,8 +16,8 @@ class Eladmin
   /**
   * Blade configuration
   */
-  protected $bladeViews = __DIR__ . '/../views';
-  protected $bladeCache = __DIR__ . '/../cache';
+  protected $bladeViews = [];
+  protected $cache = null;
   protected $blade = null;
 
   /**
@@ -28,8 +28,11 @@ class Eladmin
   public $disableNoAuthorizationMessage = false;
 
   public function __construct(){
+    if(!$this->cache)
+      throw new \Exception('Give '.static::class.'->cache property a path to some writeable directory.');
+
     if(!session_id()) session_start();
-    $this->blade = new \Philo\Blade\Blade($this->bladeViews, $this->bladeCache);
+    $this->blade = new \Philo\Blade\Blade( array_merge($this->bladeViews, [__DIR__ . '/../views']), $this->cache);
 
     /**
     * TODO: Ověřit auth interface
@@ -37,6 +40,7 @@ class Eladmin
     if($this->auth){
       $this->modules[] = $this->auth;
       $this->iauth = new $this->auth;
+      $this->iauth->bladeCache = $this->cache;
     }
 
     /**
@@ -44,6 +48,7 @@ class Eladmin
     */
     foreach($this->modules as $key=>$module){
       $imodule = new $module();
+      $imodule->bladeCache = $this->cache;
       if($this->auth && !$this->iauth->elaAuth($imodule->elaGetAuthorizedRoles())){
         unset($this->modules[$key]);
         continue;

@@ -8,7 +8,7 @@
       <i class="fas fa-plus-circle"></i> Přidat
     </button>
     @endif
-    @include('table', ['eladmin'=>$eladmin, 'elaModule'=>$elaModule])
+    @include($elaModule->bladeViewTable, ['eladmin'=>$eladmin, 'elaModule'=>$elaModule])
   </div>
 </div>
 
