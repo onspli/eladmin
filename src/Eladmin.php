@@ -86,6 +86,10 @@ class Eladmin
     return $this->iauth? $this->iauth->elaUserName():null;
   }
 
+  public function accountFields(){
+    return $this->iauth? $this->iauth->elaAccountFields() :null;
+  }
+
 
   public function modules(){
     return $this->imodules;
@@ -190,10 +194,13 @@ class Eladmin
           throw new Exception\UnauthorizedException("Neplatné přihlašovací údaje!");
         else
           $this->refreshNoAjax();
+        return;
       }
 
       $loginFields = $this->iauth->elaLoginFields();
       if(!$isAuthorized){
+        if($this->isAjaxCall())
+          throw new Exception\UnauthorizedException("Neautorizovaný přístup!");
         if($loginFields === null)
           throw new Exception\UnauthorizedException("Neautorizovaný přístup!");
         else{
@@ -234,6 +241,10 @@ class Eladmin
 
   public function elaActionAccount(){
     $this->iauth->elaAccount();
+  }
+
+  public function elaActionAccountForm(){
+    echo $this->view('accountForm');
   }
 
 

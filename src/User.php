@@ -10,7 +10,7 @@ class User extends Eloquent\Model implements Iface\Authorization
   protected $hidden = ['passwordhash'];
 
   protected $elaTitle = 'Uživatelé';
-  protected $elaFasIcon = 'fas fa-users';
+  protected $elaIcon = '<i class="fas fa-users"></i>';
 
   public function __construct(){
     parent::__construct();
@@ -42,7 +42,7 @@ class User extends Eloquent\Model implements Iface\Authorization
   public function elaLoginFields(): ?array{
     return [
       'login' => ['label'=>'Login', 'type'=>'text'],
-      'password' => ['label'=>'Password', 'type'=>'password']
+      'password' => ['label'=>'Heslo', 'type'=>'password']
     ];
   }
 
@@ -65,6 +65,8 @@ class User extends Eloquent\Model implements Iface\Authorization
       throw new \Exception('Login už existuje!');
 
     $newpassword = $_POST['newpassword']??null;
+    if(!$oldid && !$newpassword)
+    throw new \Exception('Heslo nemůže být prázdné!');
     if($newpassword)
       $_POST['passwordhash'] = $newpassword;
   }
@@ -107,17 +109,16 @@ class User extends Eloquent\Model implements Iface\Authorization
     return $user;
   }
 
+  public function elaUserName():string{
+    return $this->get()->login??'';
+  }
+
   public function elaAccountFields(): ?array{
     return [
       'oldpassword' => ['label'=>'Současné heslo', 'type'=>'password'],
       'newpassword' => ['label'=>'Nové heslo', 'type'=>'password'],
       'newpasswordconfirm' => ['label'=>'Potvrď nové heslo', 'type'=>'password']
     ];
-  }
-
-
-  public function elaUserName():string{
-    return $this->get()->login??'';
   }
 
 
@@ -130,13 +131,13 @@ class User extends Eloquent\Model implements Iface\Authorization
     $newpasswordconfirm = $_POST['newpasswordconfirm']??'';
     $user = static::get();
     if(!$user)
-      throw new \Exception('Unathorized!');
+      throw new Exception\UnauthorizedException('Unathorized!');
     if(!password_verify($oldpassword , $user->passwordhash))
-      throw new \Exception('Současné heslo není správně!');
+      throw new Exception\BadRequestException('Současné heslo není správně!');
     if(!$newpassword)
-      throw new \Exception('Nové heslo nesmí být prázdné!');
+      throw new Exception\BadRequestException('Nové heslo nesmí být prázdné!');
     if($newpassword != $newpasswordconfirm)
-      throw new \Exception('Hesla se neshodují!');
+      throw new Exception\BadRequestException('Hesla se neshodují!');
     $user->passwordhash = $newpassword;
     $user->save();
   }

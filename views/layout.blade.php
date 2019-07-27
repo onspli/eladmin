@@ -141,7 +141,7 @@ h1.sidebar-heading a{
       if(!key.startsWith('elaarg')) return;
       args[key.substr(6)] = val;
     });
-    elaRequest($(this).data('elaaction'), $(this).data('elamodule')?$(this).data('elamodule'):null, args).fail(function(data){
+    elaRequest($(this).data('elaaction'), ($(this).data('elamodule')!==undefined)?$(this).data('elamodule'):null, args).fail(function(data){
       toastr.error(data.responseText);
     }).done(function(data, status, xhr){
       eval('with(data){'+$(el).data('eladone')+'}');
@@ -172,6 +172,21 @@ h1.sidebar-heading a{
         toastr.success(data?data:'OK');
       }
     });
+  });
+
+  $(document).on('submit', 'form#accountform', function(e){
+    e.preventDefault();
+    $.ajax({
+      url: $(this).attr('action'),
+      method: 'POST',
+      data: $(this).serialize()
+    }).fail(function(response){
+      toastr.error(response.responseText);
+    }).done(function(data){
+      toastr.success('Uloženo!');
+      $('#dynamic .modal').modal('hide');
+    });
+
   });
 
   </script>
@@ -212,8 +227,8 @@ h1.sidebar-heading a{
           @if($eladmin->username() !== null)
             <span class="float-right">
               <span>Přihlášen <strong>{{$eladmin->username()}}</strong> </span>&nbsp;
-              @if(0==1)
-              <button class="btn btn-primary" id="elaeditaccount"><i class="fas fa-key"></i> <span class="d-none d-sm-inline">Účet</span> </button>
+              @if($eladmin->accountFields())
+              <button class="btn btn-primary" id="elaeditaccount" data-elaaction="accountForm" data-elamodule=""><i class="fas fa-key"></i> <span class="d-none d-sm-inline">Účet</span> </button>
               @endif
               &nbsp;
               <a href="?elalogout=true" class="btn btn-primary"><i class="fas fa-sign-out-alt"></i> <span class="d-none d-sm-inline">Odhlásit</span> </a>

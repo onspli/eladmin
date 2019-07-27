@@ -19,6 +19,8 @@ function redrawCrudTable(){
   elaRequest('getRows', null).done(function(data){
     var tbody = $('#crud-table tbody');
     tbody.html(data);
+  }).fail(function(res){
+    toastr.error(res.responseText);
   });
 }
 
