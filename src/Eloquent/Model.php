@@ -91,34 +91,15 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
   public function elaColumns(){
     $visibleColumns = $this->elaVisibleColumns();
     $disabledColumns = $this->elaDisabledColumns();
-    $columns = [];
+    $columns = new \Onspli\Eladmin\Eloquent\Column\Column(true);
     foreach($visibleColumns as $column){
-      $columns[$column] = new \StdClass;
+      $columns->$column;
       if(in_array($column, $disabledColumns))
-        $columns[$column]->disabled = true;
+        $columns->$column->disabled();
     }
     return $columns;
   }
 
-  protected function elaPutColumnAfter($columns, $move, $target=null){
-    $moved = [];
-    if($target === null || !isset($columns[$target])) $moved[$move] = $columns[$move];
-    foreach($columns as $key=>$column){
-      if($key != $move) $moved[$key] = $columns[$key];
-      if($key == $target) $moved[$move] = $columns[$move];
-    }
-    return $moved;
-  }
-
-  protected function elaPutColumnBefore($columns, $move, $target=null){
-    $moved = [];
-    foreach($columns as $key=>$column){
-      if($key == $target) $moved[$move] = $columns[$move];
-      if($key != $move) $moved[$key] = $columns[$key];
-    }
-    if($target === null || !isset($columns[$target])) $moved[$move] = $columns[$move];
-    return $moved;
-  }
 
   /**
   * Returns an array of columns that cannot be edited from crud. (i.e. primary key, automanaged timestamps)
@@ -143,7 +124,7 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
   }
 
   public function elaActions(){
-    return [];
+    return new \Onspli\Eladmin\Chainset\Chainset();
   }
 
   /**
@@ -237,28 +218,6 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
   */
   protected function elaModifyPost():void {
 
-  }
-
-  /**
-  * Transfer configuration to client-side.
-  */
-  public function elaActionGetConfig(){
-    $columns = $this->getTableColumns();
-    if($this->visible) $visibleColumns = $this->visible;
-    else $visibleColumns = array_diff($columns, $this->hidden??[]);
-
-    Header('Content-type: application/json');
-    echo json_encode([
-      'title'=>$this->elagetTitle(),
-      'fasicon' =>$this->elaGetFasIcon(),
-      'columns'=>$columns,
-      'primaryKey'=>$this->primaryKey,
-      'disabledColumns'=>$this->elaDisabledColumns(),
-      'visibleColumns'=>$visibleColumns,
-      'extraInputs'=>$this->elaExtraInputs(),
-      'extraActions'=>$this->elaExtraActions(),
-      'authorizedRoles'=>$this->elaGetAuthorizedRolesActions()
-    ], JSON_UNESCAPED_UNICODE);
   }
 
 }

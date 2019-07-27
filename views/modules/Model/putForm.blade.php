@@ -6,17 +6,17 @@
 
 @section('modal-body')
   @if($eladmin->auth('putRow'))
-  <form id="modal-form" action="{{ $eladmin->request('putRow') }}">
+  <form id="modal-form" data-eladone="redrawCrudTable();" action="{{ $eladmin->request('putRow') }}">
   @endif
 
     @section('form-body')
     <input type="hidden" name="{{$elaModule->getKeyName()}}" value="{{$row->getKey()}}">
     @foreach($elaModule->elaColumns() as $column=>$config)
-      <?php if($config->noneditable??false) continue; ?>
+      <?php if($config->noneditable) continue; ?>
       <div class="form-group">
-        <label>{{$config->label??$column}}</label>
-        <input type="text" value="{{$row->$column}}" class="form-control" {!! (($config->disabled??false)?' disabled="disabled" ':' name="'.$column.'" ') !!}>
-        @if(isset($config->desc))
+        <label>{{$config->label?$config->label:$column}}</label>
+        <input type="text" value="{{$row->$column}}" class="form-control" {!! ($config->disabled?' disabled="disabled" ':' name="'.$column.'" ') !!}>
+        @if($config->desc)
         <small class="form-text text-muted">{!! $config->desc !!}</small>
         @endif
       </div>
@@ -31,7 +31,7 @@
     @foreach($elaModule->elaActions() as $action=>$config)
       <?php if(!$eladmin->auth($action)) continue; ?>
       <div class="form-group">
-        <button data-elaaction="{{$action}}" data-elaarg{{$elaModule->getKeyName()}}="{{$row->getKey()}}" class="btn btn-{{ $config->style??'primary' }}">{!! $config->icon??'' !!} {{ $config->label?? $action }}</button>
+        <button data-elaaction="{{$action}}" data-elaarg{{$elaModule->getKeyName()}}="{{$row->getKey()}}" class="btn btn-{{ $config->style??'primary' }}">{!! $config->icon??'' !!} {{ $config->label??$action }}</button>
       </div>
     @endforeach
   @show

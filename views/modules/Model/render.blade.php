@@ -26,20 +26,4 @@ function redrawCrudTable(){
 
 redrawCrudTable();
 
-$(document).on('submit', 'form#modal-form', function(e){
-  e.preventDefault();
-  $.ajax({
-    url: $(this).attr('action'),
-    method: 'POST',
-    data: $(this).serialize()
-  }).fail(function(response){
-    toastr.error(response.responseText);
-  }).done(function(data){
-    toastr.success('Uloženo!');
-    $('#dynamic .modal').modal('hide');
-    redrawCrudTable();
-  });
-
-});
-
 </script>

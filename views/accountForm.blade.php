@@ -12,7 +12,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <form id="accountform" action="{{ $eladmin->request('account','') }}">
+        <form id="modal-form" action="{{ $eladmin->request('account','') }}">
           @foreach($eladmin->accountFields() as $column=>$config)
             <div class="form-group">
               <label>{{$config['label']??$column}}</label>
@@ -24,7 +24,7 @@
       <div class="modal-footer">
         @section('modal-footer')
         <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="far fa-times-circle"></i> Zrušit</button>
-        <button type="submit" form="accountform" class="btn btn-primary"><i class="fas fa-save"></i> Uložit</button>
+        <button type="submit" form="modal-form" class="btn btn-primary"><i class="fas fa-save"></i> Uložit</button>
         @show
       </div>
     </div>

@@ -47,11 +47,9 @@ class User extends Eloquent\Model implements Iface\Authorization
   }
 
   public function elaColumns(){
-    $columns = parent::elaColumns();
-    $columns['newpassword'] = new \StdClass;
-    $columns['newpassword']->label = "Nové heslo";
-    $columns['newpassword']->nonlistable = true;
-    return $columns;
+    $cols = parent::elaColumns();
+    $cols->newpassword->label('Nové heslo')->nonlistable()->editable();
+    return $cols;
   }
 
   protected function elaModifyPost(): void{
