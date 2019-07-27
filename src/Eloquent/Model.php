@@ -17,6 +17,7 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
   public $bladeViewPutForm = 'putForm';
   public $bladeViewPostForm = 'postForm';
   public $bladeViewTable = 'table';
+  public $bladeViewRow = 'row';
   protected $blade = null;
 
   public $eladmin = null;
@@ -158,7 +159,7 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
   }
 
   protected function elaRenderRow($row){
-    echo $this->view('row', ['row'=>$row]);
+    echo $this->view($this->bladeViewRow, ['row'=>$row]);
   }
 
   /**
