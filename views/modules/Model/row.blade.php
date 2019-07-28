@@ -1,16 +1,21 @@
 <tr>
   @foreach($module->elaColumns() as $column=>$config)
   <?php if($config->nonlistable??false) continue; ?>
-  <td>
+
     <?php
-    $value = $config->listformat? ($config->listformat)($row->$column, $row, $column, $module, $eladmin):$row->$column;
+      $value = $config->listformat? ($config->listformat)($row->$column, $row, $column, $module, $eladmin):$row->$column;
     ?>
+
     @if($config->rawoutput)
-      {!! $value !!}
+      <td>
+        {!! $value !!}
+      </td>
     @else
-      {{ $value }}
+      <td title="{{$value}}">
+      {{ str_limit($value, $config->listlimit, '...') }}
+      </td>
     @endif
-  </td>
+
   @endforeach
   <td class="text-right">
     @section('actions')

@@ -13,6 +13,8 @@ class Column extends \Onspli\Eladmin\Chainset\Chainset{
   public $disabled = false;
   public $input = 'text';
   public $listformat = null;
+  public $realcolumn = false;
+  public $listlimit = 10;
 
   public function raw(){
     $this->rawoutput = true;
@@ -82,8 +84,13 @@ class Column extends \Onspli\Eladmin\Chainset\Chainset{
     return $this;
   }
 
-  public function listformat($func){
+  public function format($func){
     $this->listformat = $func;
+    return $this;
+  }
+
+  public function limit($len){
+    $this->listlimit = $len;
     return $this;
   }
 

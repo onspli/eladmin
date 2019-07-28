@@ -39,11 +39,11 @@
       if($(el).data('eladonotprocess')) return;
 
       var ct = xhr.getResponseHeader("content-type") || "";
-      console.debug(ct);
+      //console.debug(ct);
 
       // HTML response
       if (ct.indexOf('html') > -1) {
-        console.debug('html');
+      //  console.debug('html');
         var html = $(data);
         if(html.hasClass('modal')){
           $('#dynamic').html(html);
@@ -54,12 +54,12 @@
       }
       // JSON response
       if (ct.indexOf('json') > -1) {
-        console.debug('json');
+      //  console.debug('json');
       }
 
       // Text response
       if (ct.indexOf('plain') > -1) {
-        console.debug('plain');
+        //console.debug('plain');
         toastr.success(data?data:'OK');
       }
     });

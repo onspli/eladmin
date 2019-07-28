@@ -50,7 +50,7 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
   }
 
   protected function createTable(){
-    
+
   }
 
   /**
@@ -99,11 +99,14 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
   public function elaColumns(){
     $visibleColumns = $this->elaVisibleColumns();
     $disabledColumns = $this->elaDisabledColumns();
+    $realColumns = $this->getTableColumns();
     $columns = new \Onspli\Eladmin\Module\Eloquent\Column\Column(true);
     foreach($visibleColumns as $column){
       $columns->$column;
       if(in_array($column, $disabledColumns))
         $columns->$column->disabled();
+      if(in_array($column, $realColumns))
+        $columns->$column->realcolumn = true;
     }
     return $columns;
   }
@@ -153,11 +156,18 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
   */
   public function elaActionGetRows(){
     $sort = $_POST['sort']??$this->primaryKey;
-    $direction = $_POST['direction']??'asc';
+    $direction = $_POST['direction']??'desc';
+    $page = $_POST['page']??1;
+    $resultsperpage = $_POST['resultsperpage']??10;
 
-    $rows = static::orderBy($sort, $direction)->get();
+    $total = $this::all()->count();
+    $rows = $this::orderBy($sort, $direction)->offset(($page-1)*$resultsperpage)->limit($resultsperpage)->get();
+    $result['totalresults'] = $total;
+    $result['html'] = '';
     foreach($rows as $row)
-      echo $this->eladmin->view($this->bladeViewRow, ['row'=>$row,'module'=>$this]);
+      $result['html'] .= $this->eladmin->view($this->bladeViewRow, ['row'=>$row,'module'=>$this]);
+    Header('Content-type:application/json');
+    echo json_encode($result, JSON_UNESCAPED_UNICODE);
   }
 
   /**
