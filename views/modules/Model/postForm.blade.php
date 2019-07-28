@@ -11,7 +11,7 @@
       if($column == $module->getKeyName()) continue;
       if($config->noneditable??false) continue;
       ?>
-      @component('components.inputs.'.$config->input, ['column'=>$column, 'config'=>$config, 'module'=>$module, 'row'=>new \StdClass])
+      @component('components.inputs.'.$config->input, ['column'=>$column, 'config'=>$config, 'module'=>$module, 'row'=>new \StdClass, 'eladmin'=>$eladmin])
       @endcomponent
 
     @endforeach

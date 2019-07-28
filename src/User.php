@@ -12,6 +12,8 @@ class User extends Module\Eloquent\Model implements Iface\Authorization
   protected $elaTitle = 'Users';
   protected $elaIcon = '<i class="fas fa-users"></i>';
 
+  public $elaRepresentativeColumn = 'login';
+
   protected function defaultProperties(){
     parent::defaultProperties();
     $this->elaTitle = __('Users');

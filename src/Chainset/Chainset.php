@@ -20,16 +20,20 @@ namespace Onspli\Eladmin\Chainset;
 
 class Chainset{
 
-  protected $_key;
-  protected $_parent;
+  protected $_key = null;
+  protected $_parent = null;
 
   function __construct($empty=false){
     if($empty) $this->_empty();
   }
 
   public function __call ( string $name , array $arguments ){
-    $this->$name = $arguments[0]??null;
-    return $this;
+    if($this->_parent){
+      $this->$name = $arguments[0]??null;
+      return $this;
+    } else{
+      throw new \Exception('Method '.static::class.'::'.$name.' does not exist.');
+    }
   }
 
   public function __isset($key){
@@ -37,9 +41,11 @@ class Chainset{
   }
 
   public function __get($key){
-    $this->$key = new static;
-    $this->$key->_parent($this);
-    $this->$key->_key($key);
+    if(!$this->_parent){
+      $this->$key = new static;
+      $this->$key->_parent($this);
+      $this->$key->_key($key);
+    }
     return $this->$key;
   }
 

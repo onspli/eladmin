@@ -6,6 +6,16 @@
       $value = $config->listformat? ($config->listformat)($row->$column, $row, $column, $module, $eladmin):$row->$column;
     ?>
 
+    <?php
+    if($config->listformat == false && $value instanceof \Onspli\Eladmin\Module\Eloquent\Model){
+      if($value->elaRepresentativeColumn){
+        $value = $value->{$value->elaRepresentativeColumn};
+      } else{
+        $value = $value->getKey();
+      }
+    }
+    ?>
+
     @if($config->rawoutput)
       <td>
         {!! $value !!}

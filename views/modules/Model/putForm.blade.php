@@ -13,7 +13,7 @@
     <input type="hidden" name="{{$module->getKeyName()}}" value="{{$row->getKey()}}">
     @foreach($module->elaColumns() as $column=>$config)
       <?php if($config->noneditable) continue; ?>
-      @component('components.inputs.'.$config->input, ['column'=>$column, 'config'=>$config, 'module'=>$module, 'row'=>$row])
+      @component('components.inputs.'.$config->input, ['column'=>$column, 'config'=>$config, 'module'=>$module, 'row'=>$row, 'eladmin'=>$eladmin])
       @endcomponent
 
     @endforeach

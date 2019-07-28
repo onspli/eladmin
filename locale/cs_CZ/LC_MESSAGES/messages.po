@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2019-07-27 17:11+0200\n"
-"PO-Revision-Date: 2019-07-27 17:15+0200\n"
+"POT-Creation-Date: 2019-07-28 19:26+0200\n"
+"PO-Revision-Date: 2019-07-28 19:26+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: cs_CZ\n"
@@ -21,12 +21,12 @@ msgstr ""
 msgid "Account"
 msgstr "Účet"
 
-#: views/accountForm.blade.php:19 views/modules/model/postForm.blade.php:27
-#: views/modules/model/putForm.blade.php:45
+#: views/accountForm.blade.php:19 views/modules/model/postForm.blade.php:22
+#: views/modules/model/putForm.blade.php:44
 msgid "Cancel"
 msgstr "Zrušit"
 
-#: views/accountForm.blade.php:20 views/modules/model/putForm.blade.php:47
+#: views/accountForm.blade.php:20 views/modules/model/putForm.blade.php:46
 msgid "Save"
 msgstr "Uložit"
 
@@ -50,7 +50,7 @@ msgstr "Přihlásit"
 msgid "Create new entry"
 msgstr "Vložit nový záznam"
 
-#: views/modules/model/postForm.blade.php:28
+#: views/modules/model/postForm.blade.php:23
 msgid "Create"
 msgstr "Vytvořit"
 
@@ -59,41 +59,37 @@ msgstr "Vytvořit"
 msgid "Edit entry %s"
 msgstr "Upravit záznam %s"
 
-#: views/modules/model/putForm.blade.php:43
+#: views/modules/model/putForm.blade.php:42
 msgid "Delete"
 msgstr "Smazat"
 
-#: views/modules/model/render.blade.php:11
+#: views/modules/model/render.blade.php:7
+msgid "Loading data"
+msgstr "Načítám data"
+
+#: views/modules/model/render.blade.php:8
+msgid "Nothing found!"
+msgstr "Nic nenalezeno!"
+
+#: views/modules/model/render.blade.php:9
+msgid "Search"
+msgstr "Vyhledat"
+
+#: views/modules/model/render.blade.php:65
 msgid "Add"
 msgstr "Přidat"
 
-#: views/modules/model/row.blade.php:16
+#: views/modules/model/row.blade.php:45
 msgid "Edit"
 msgstr "Upravit"
 
-#: src/Eladmin.php:167
+#: src/Eladmin.php:171
 msgid "CSRF token not valid! Try reloading page."
 msgstr "Neplatný CSRF token! Zkus znovu načíst stránku."
 
-#: src/Eladmin.php:227
+#: src/Eladmin.php:231
 msgid "Wrong credentials!"
 msgstr "Chybné přihlašovací údaje!"
-
-#: src/Eloquent/Model.php:101 src/Eloquent/Model.php:148
-msgid "Entry not found!"
-msgstr "Záznam nenalezen!"
-
-#: src/Eloquent/Model.php:162
-msgid "Entry modified."
-msgstr "Záznam byl změněn."
-
-#: src/Eloquent/Model.php:181
-msgid "Entry added."
-msgstr "Záznam byl přidán."
-
-#: src/Eloquent/Model.php:192
-msgid "Entry deleted."
-msgstr "Záznam byl vymazán."
 
 #: src/Exception/BadRequestException.php:7
 msgid "Invalid arguments!"
@@ -107,47 +103,63 @@ msgstr "Něco se pokazilo!"
 msgid "Unauthorized access!"
 msgstr "Neautorizovaný přístup!"
 
+#: src/Module/Eloquent/Model.php:126 src/Module/Eloquent/Model.php:194
+msgid "Entry not found!"
+msgstr "Záznam nenalezen!"
+
+#: src/Module/Eloquent/Model.php:208
+msgid "Entry modified."
+msgstr "Záznam byl změněn."
+
+#: src/Module/Eloquent/Model.php:227
+msgid "Entry added."
+msgstr "Záznam byl přidán."
+
+#: src/Module/Eloquent/Model.php:238
+msgid "Entry deleted."
+msgstr "Záznam byl vymazán."
+
 #: src/User.php:17
 msgid "Users"
 msgstr "Uživatelé"
 
-#: src/User.php:49
+#: src/User.php:48
 msgid "Login"
 msgstr "Login"
 
-#: src/User.php:50
+#: src/User.php:49
 msgid "Password"
 msgstr "Heslo"
 
-#: src/User.php:56 src/User.php:122
+#: src/User.php:55 src/User.php:119
 msgid "New password"
 msgstr "Nové heslo"
 
-#: src/User.php:63
+#: src/User.php:62
 msgid "Login must not be empty!"
 msgstr "Login nesmí být prázdný!"
 
-#: src/User.php:68
+#: src/User.php:67
 msgid "Login already exists!"
 msgstr "Login už existuje!"
 
-#: src/User.php:72 src/User.php:140
+#: src/User.php:71 src/User.php:137
 msgid "New password must not be empty!"
 msgstr "Nové heslo nesmí být prázdné!"
 
-#: src/User.php:121
+#: src/User.php:118
 msgid "Current password"
 msgstr "Současné heslo"
 
-#: src/User.php:123
+#: src/User.php:120
 msgid "Confirm new password"
 msgstr "Potvrď nové heslo"
 
-#: src/User.php:138
+#: src/User.php:135
 msgid "Current password is not correct!"
 msgstr "Současné heslo není správně!"
 
-#: src/User.php:142
+#: src/User.php:139
 msgid "Passwords do not match!"
 msgstr "Hesla se neshodují!"
 

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Onspli\Eladmin\Module\Eloquent\Column;
+namespace Onspli\Eladmin\Module\Eloquent\Chainset;
 
 class Column extends \Onspli\Eladmin\Chainset\Chainset{
 
@@ -15,6 +15,7 @@ class Column extends \Onspli\Eladmin\Chainset\Chainset{
   public $listformat = null;
   public $realcolumn = false;
   public $listlimit = 10;
+  public $belongsTo = null;
 
   public function raw(){
     $this->rawoutput = true;
@@ -66,20 +67,36 @@ class Column extends \Onspli\Eladmin\Chainset\Chainset{
     return $this;
   }
 
-  public function select($options){
+  public function select($options=[]){
     $this->input = 'select';
     $this->selectOptions = $options;
+    // args: $value, $row, $column, $module, $eladmin
+    if(!sizeof($options) && $this->belongsTo){
+      $model = $this->belongsTo;
+      $this->selectOptions = function() use ($model) {
+        $rows = $model::all();
+        $arr = [];
+        foreach($rows as $row){
+          if($row->elaRepresentativeColumn)
+            $arr[$row->getKey()] = $row->{$row->elaRepresentativeColumn};
+          else
+            $arr[$row->getKey()] = $row->getKey();
+        }
+        return $arr;
+      };
+    }
     return $this;
   }
 
-  public function selectFromModel($model, $desc){
-    $this->input = 'selectFromModel';
-    $this->selectFromModel = $model;
-    $this->selectFromModelDesc = $desc;
-    $this->listformat(function($val) use ($model, $desc){
+  public function belongsTo($model){
+    if(!is_subclass_of($model, \Onspli\Eladmin\Module\Eloquent\Model::class))
+      throw new \Exception('Column can only be a subclass of \Onspli\Eladmin\Module\Eloquent\Model');
+    $this->belongsTo = $model;
+
+    $this->listformat(function($val) use ($model){
       $entry = $model::find($val);
-      if(!$entry) return $val;
-      return $entry->$desc;
+      if(!$entry || !$entry->elaRepresentativeColumn) return $val;
+      return $entry->{$entry->elaRepresentativeColumn};
     });
     return $this;
   }

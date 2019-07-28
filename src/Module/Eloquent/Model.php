@@ -8,6 +8,7 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
 
   protected $elaTitle = null;
   protected $elaIcon = '<i class="fas fa-puzzle-piece"></i>';
+  public $elaRepresentativeColumn = null;
 
   public $bladeViewRender = 'modules.model.render';
   public $bladeViewPutForm = 'modules.model.putForm';
@@ -30,7 +31,9 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
   }
 
   public function __toString(){
-    return $this->elakey();
+    $elakey = $this->elakey();
+    if($elakey) return $elakey;
+    return parent::__toString();
   }
 
   public function elaRequest($action, $args=[]){
@@ -100,7 +103,7 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
     $visibleColumns = $this->elaVisibleColumns();
     $disabledColumns = $this->elaDisabledColumns();
     $realColumns = $this->getTableColumns();
-    $columns = new \Onspli\Eladmin\Module\Eloquent\Column\Column(true);
+    $columns = new Chainset\Column(true);
     foreach($visibleColumns as $column){
       $columns->$column;
       if(in_array($column, $disabledColumns))
@@ -112,7 +115,11 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
   }
 
   public function elaActions(){
-    return new \Onspli\Eladmin\Module\Eloquent\Action\Action(true);
+    return new Chainset\Action(true);
+  }
+
+  public function elaFilters(){
+    return new Chainset\Filter(true);
   }
 
   public function elaActionPostForm(){
@@ -159,9 +166,28 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
     $direction = $_POST['direction']??'desc';
     $page = $_POST['page']??1;
     $resultsperpage = $_POST['resultsperpage']??10;
+    $search = $_POST['search']??'';
+    $columns = $_POST['columns']??[];
 
-    $total = $this::all()->count();
-    $rows = $this::orderBy($sort, $direction)->offset(($page-1)*$resultsperpage)->limit($resultsperpage)->get();
+    $realColumns = $this->getTableColumns();
+
+    $q = $this;
+    if($search){
+      $q = $q->where(function($q) use($realColumns, $search){
+        foreach($realColumns as $key=>$col){
+          if($key==0) $q=$q->where($col, 'LIKE', '%'.$search.'%');
+          else $q=$q->orWhere($col, 'LIKE', '%'.$search.'%');
+        }
+      });
+    }
+
+    foreach($columns as $col=>$data){
+      $q = $q->where($col,$data['op'],$data['val']);
+    }
+
+    $total = $q->count();
+    $rows = $q->orderBy($sort, $direction)->offset(($page-1)*$resultsperpage)->limit($resultsperpage)->get();
+
     $result['totalresults'] = $total;
     $result['html'] = '';
     foreach($rows as $row)
