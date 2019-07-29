@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2019-07-28 19:26+0200\n"
-"PO-Revision-Date: 2019-07-28 19:26+0200\n"
+"POT-Creation-Date: 2019-07-29 03:32+0200\n"
+"PO-Revision-Date: 2019-07-29 03:32+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: cs_CZ\n"
@@ -17,7 +17,7 @@ msgstr ""
 "X-Poedit-SearchPath-0: views\n"
 "X-Poedit-SearchPath-1: src\n"
 
-#: views/accountForm.blade.php:4 views/layout.blade.php:46
+#: views/accountForm.blade.php:4 views/layout.blade.php:47
 msgid "Account"
 msgstr "Účet"
 
@@ -30,15 +30,15 @@ msgstr "Zrušit"
 msgid "Save"
 msgstr "Uložit"
 
-#: views/layout.blade.php:44
+#: views/layout.blade.php:45
 msgid "Logged in as"
 msgstr "Přihlášen jako"
 
-#: views/layout.blade.php:49
+#: views/layout.blade.php:50
 msgid "Log out"
 msgstr "Odhlásit"
 
-#: views/layout.blade.php:52
+#: views/layout.blade.php:53
 msgid "Authorization is disabled!!!"
 msgstr "Autorizace je vypnutá!!!"
 
@@ -75,11 +75,15 @@ msgstr "Nic nenalezeno!"
 msgid "Search"
 msgstr "Vyhledat"
 
-#: views/modules/model/render.blade.php:65
+#: views/modules/model/render.blade.php:70
 msgid "Add"
 msgstr "Přidat"
 
-#: views/modules/model/row.blade.php:45
+#: views/modules/model/render.blade.php:73
+msgid "Filters"
+msgstr "Filtry"
+
+#: views/modules/model/row.blade.php:55
 msgid "Edit"
 msgstr "Upravit"
 
@@ -103,63 +107,63 @@ msgstr "Něco se pokazilo!"
 msgid "Unauthorized access!"
 msgstr "Neautorizovaný přístup!"
 
-#: src/Module/Eloquent/Model.php:126 src/Module/Eloquent/Model.php:194
+#: src/Module/Eloquent/Model.php:133 src/Module/Eloquent/Model.php:206
 msgid "Entry not found!"
 msgstr "Záznam nenalezen!"
 
-#: src/Module/Eloquent/Model.php:208
+#: src/Module/Eloquent/Model.php:220
 msgid "Entry modified."
 msgstr "Záznam byl změněn."
 
-#: src/Module/Eloquent/Model.php:227
+#: src/Module/Eloquent/Model.php:239
 msgid "Entry added."
 msgstr "Záznam byl přidán."
 
-#: src/Module/Eloquent/Model.php:238
+#: src/Module/Eloquent/Model.php:250
 msgid "Entry deleted."
 msgstr "Záznam byl vymazán."
 
-#: src/User.php:17
+#: src/User.php:19
 msgid "Users"
 msgstr "Uživatelé"
 
-#: src/User.php:48
+#: src/User.php:50
 msgid "Login"
 msgstr "Login"
 
-#: src/User.php:49
+#: src/User.php:51
 msgid "Password"
 msgstr "Heslo"
 
-#: src/User.php:55 src/User.php:119
+#: src/User.php:57 src/User.php:121
 msgid "New password"
 msgstr "Nové heslo"
 
-#: src/User.php:62
+#: src/User.php:64
 msgid "Login must not be empty!"
 msgstr "Login nesmí být prázdný!"
 
-#: src/User.php:67
+#: src/User.php:69
 msgid "Login already exists!"
 msgstr "Login už existuje!"
 
-#: src/User.php:71 src/User.php:137
+#: src/User.php:73 src/User.php:139
 msgid "New password must not be empty!"
 msgstr "Nové heslo nesmí být prázdné!"
 
-#: src/User.php:118
+#: src/User.php:120
 msgid "Current password"
 msgstr "Současné heslo"
 
-#: src/User.php:120
+#: src/User.php:122
 msgid "Confirm new password"
 msgstr "Potvrď nové heslo"
 
-#: src/User.php:135
+#: src/User.php:137
 msgid "Current password is not correct!"
 msgstr "Současné heslo není správně!"
 
-#: src/User.php:139
+#: src/User.php:141
 msgid "Passwords do not match!"
 msgstr "Hesla se neshodují!"
 

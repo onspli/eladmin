@@ -4,6 +4,7 @@
     $("#wrapper").toggleClass("toggled");
   });
 
+
   function elaRequest(action, module, args){
     if(module === null || module ===undefined){
       console.error('You have to specify module!');
@@ -32,7 +33,7 @@
       if(!key.startsWith('elaarg')) return;
       args[key.substr(6)] = val;
     });
-    elaRequest($(this).data('elaaction'), ($(this).data('elamodule')!==undefined)?$(this).data('elamodule'):null, args).fail(function(data){
+    elaRequest($(this).data('elaaction'), $(this).data('elamodule'), args).fail(function(data){
       toastr.error(data.responseText);
     }).done(function(data, status, xhr){
       eval('with(data){'+$(el).data('eladone')+'}');

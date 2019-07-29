@@ -9,6 +9,7 @@ class Filter extends \Onspli\Eladmin\Chainset\Chainset{
   public $column = null;
   public $input = 'text';
   public $selectOptions = [];
+  public $icon = '<i class="fas fa-filter"></i>';
 
   public function select($options){
     $this->input = 'select';

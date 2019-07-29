@@ -54,4 +54,8 @@ class Module implements \Onspli\Eladmin\Iface\Module
     return $this->elaAuthorizedRolesForLowercaseActions;
   }
 
+  public function elaRequest($action, $args=[]){
+    return $this->eladmin->request($action, $this, $args);
+  }
+
 }

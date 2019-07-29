@@ -62,19 +62,25 @@ $searchMessage = __('Search');
 
   </style>
 
-    <div class="actions mb-3 d-inline-block form-inline">
+    <div class="actions mb-3 ">
     @if($module->elaAuth('postRow'))
-    <button id="crudadd" type="button" class="btn btn-primary" data-elaaction="postForm" data-elamodule="{{$module}}">
+    <button id="crudadd" type="button" class="btn btn-success"
+      data-elaaction="postForm"
+      data-elamodule="{{$module}}">
       <i class="fas fa-plus-circle"></i> {{ __('Add') }}
     </button>
     @endif
+    <button href="#crud-filters"  class="btn btn-primary" data-toggle="collapse"><i class="fas fa-filter"></i> {{ __('Filters') }}</button>
     </div>
 
-    <div id="crud-filters" class="form-inline">
+    <div id="crud-filters" class="form-inline collapse">
       @foreach($module->elaFilters() as $name=>$filter)
-      <div class="form-group">
-        <label>{{$filter->label??$name}} </label>
-
+      <div class="input-group mr-2 mb-3">
+        <div class="input-group-prepend">
+          <label class="input-group-text">
+            {!! $filter->icon !!}&nbsp;
+            {{$filter->label??$name}} </label>
+        </div>
         @if($filter->input == 'select')
           <select class="form-control" data-crudfiltercolumn="{{$filter->column??$name}}">
             <?php
@@ -96,18 +102,17 @@ $searchMessage = __('Search');
     </div>
 
     @push('crud-paging')
-    <div class="crud-paging form-inline text-right mt-3">
-      <div class="f-group mb-3">
-        <div class="input-group mr-2">
+    <div class="crud-paging form-inline">
+      <div class="form-group mb-3 mr-2">
+        <div class="input-group">
             <input type="text" class="form-control search" data-crudfilter="search" placeholder="{{$searchMessage}}">
             <div class="input-group-append">
-              <button class="btn btn-outline-secondary searchicon" type="button" ><i class="fas fa-search"></i></button>
-              <button class="btn btn-outline-secondary erase" type="button" ><i class="fas fa-eraser"></i></button>
+              <button class="btn btn-primary searchicon" type="button" ><i class="fas fa-search"></i></button>
+              <button class="btn btn-secondary erase" type="button" ><i class="fas fa-eraser"></i></button>
             </div>
         </div>
       </div>
-      <div class="f-group mb-3">
-      <div class="input-group mr-2 form-sm-inline">
+      <div class="input-group mr-2 mb-3 form-sm-inline">
         <div class="input-group-prepend">
           <label class="input-group-text"><i class="fas fa-list"></i></label>
         </div>
@@ -118,19 +123,18 @@ $searchMessage = __('Search');
           <option value="50">50</option>
         </select>
       </div>
-      <div class="input-group mr-2 form-sm-inline">
-        <button class="btn btn-secondary prev-page"><i class="fas fa-step-backward"></i></button>
-      </div>
-      <div class="input-group form-sm-inline mr-2">
-        <input type="text" class="form-control form-sm-inline page" data-crudfilter="page" value="1" style="width:3em!important;text-align:center">
-        <div class="input-group-append">
-          <span class="input-group-text maxpage">/ 1</span>
+      <div class="input-group mb-3 form-sm-inline">
+        <div class="input-group form-sm-inline">
+          <div class="input-group-prepend">
+            <button class="btn btn-warning prev-page"><i class="fas fa-step-backward"></i></button>
+          </div>
+          <input type="text" class="form-control form-sm-inline page" data-crudfilter="page" value="1" style="width:3em!important;text-align:center">
+          <div class="input-group-append">
+            <span class="input-group-text maxpage">/ 1</span>
+            <button class="btn btn-warning next-page"><i class="fas fa-step-forward"></i></button>
+          </div>
         </div>
       </div>
-      <div class="input-group form-sm-inline">
-        <button class="btn btn-secondary next-page"><i class="fas fa-step-forward"></i></button>
-      </div>
-    </div>
     </div>
     @endpush
 
@@ -174,6 +178,7 @@ $searchMessage = __('Search');
 @push('scripts')
 <script>
 
+
 var crudFilters = {
   sort: '{{$module->getKeyName()}}',
   direction: 'desc',
@@ -186,21 +191,21 @@ var crudFilters = {
 };
 
 
-function redrawCrudTable(){
+  function redrawCrudTable(){
   var maxpage = crudFilters.maxpage;
   //var loading = '<tr><td colspan="1000" class="crud-loading"><i class="fas fa-sync-alt fa-spin"></i> {{$loadingMessage}} </td></tr>';
   //$('#crud-table tbody').html($(loading));
 
-  var searchiconHtml = $('.crud-paging .searchicon').html();
-  $('.crud-paging .searchicon').html('<i class="fas fa-sync-alt fa-spin"></i>');
+  var searchiconHtml = $(' .crud-paging .searchicon').html();
+  $(' .crud-paging .searchicon').html('<i class="fas fa-sync-alt fa-spin"></i>');
 
   //if(crudFilters.totalresults>0) $('#crud-table tbody').append($(loading));
   elaRequest('getRows', '{{$module}}', crudFilters).done(function(data){
-    var tbody = $('#crud-table tbody');
+    var tbody = $(' #crud-table tbody');
     crudFilters.totalresults = data.totalresults;
     crudFilters.maxpage = Math.ceil(crudFilters.totalresults/crudFilters.resultsperpage);
     tbody.html(data.html);
-    $('.crud-paging .searchicon').html(searchiconHtml);
+    $(' .crud-paging .searchicon').html(searchiconHtml);
     if(crudFilters.maxpage != maxpage) redrawFilters(crudFilters.totalresults==0);
     if(crudFilters.totalresults == 0){
       tbody.html('<tr><td colspan="1000" class="crud-loading"><i class="fas fa-dove"></i> {{ $nothingFoundMessage}} </td></tr>');
@@ -212,7 +217,7 @@ function redrawCrudTable(){
 }
 
 
-$('#crud-table th[data-column]').css('cursor','pointer').css('white-space','nowrap');
+$(' #crud-table th[data-column]').css('cursor','pointer').css('white-space','nowrap');
 
 function redrawFilters(doNotRedraw){
   crudFilters.maxpage = Math.ceil(crudFilters.totalresults/crudFilters.resultsperpage);
@@ -222,16 +227,16 @@ function redrawFilters(doNotRedraw){
   if(crudFilters.page < 1) crudFilters.page = 1;
 
   console.debug(crudFilters);
-  $('#crud-table th[data-column] .arr.active').removeClass('active');
-  $('#crud-table th[data-column='+crudFilters.sort+'] .arr.'+(crudFilters.direction == 'desc'?'desc':'asc')).addClass('active');
+  $(' #crud-table th[data-column] .arr.active').removeClass('active');
+  $(' #crud-table th[data-column='+crudFilters.sort+'] .arr.'+(crudFilters.direction == 'desc'?'desc':'asc')).addClass('active');
 
   if(crudFilters.page == 1) $('.crud-paging .prev-page').attr('disabled', 'disabled');
-  else $('.crud-paging .prev-page').removeAttr('disabled');
+  else $(' .crud-paging .prev-page').removeAttr('disabled');
   if(crudFilters.page == crudFilters.maxpage) $('.crud-paging .next-page').attr('disabled', 'disabled');
-  else $('.crud-paging .next-page').removeAttr('disabled');
-  $('.crud-paging .maxpage').text('/ '+crudFilters.maxpage);
+  else $(' .crud-paging .next-page').removeAttr('disabled');
+  $(' .crud-paging .maxpage').text('/ '+crudFilters.maxpage);
 
-  $('.crud-paging *[data-crudfilter]').each(function(){
+  $(' .crud-paging *[data-crudfilter]').each(function(){
     $(this).val( crudFilters[$(this).data('crudfilter')] );
   });
 
@@ -243,7 +248,7 @@ function redrawFilters(doNotRedraw){
 redrawFilters();
 
 
-$('#crud-table').on('click', 'th[data-column]',function(e){
+$(' #crud-table').on('click', 'th[data-column]',function(e){
   e.preventDefault();
   var el = $(this);
   var col = el.data('column');
@@ -258,12 +263,12 @@ $('#crud-table').on('click', 'th[data-column]',function(e){
   redrawFilters();
 });
 
-$('.crud-paging *[data-crudfilter]').change(function(){
+$(' .crud-paging *[data-crudfilter]').change(function(){
   crudFilters[$(this).data('crudfilter')] = $(this).val();
   redrawFilters();
 })
 
-$('#crud-filters *[data-crudfiltercolumn]').change(function(){
+$(' #crud-filters *[data-crudfiltercolumn]').change(function(){
   if($(this).val())
     crudFilters.columns[$(this).data('crudfiltercolumn')] = { 'op':'=', 'val': $(this).val()};
   else
@@ -272,17 +277,17 @@ $('#crud-filters *[data-crudfiltercolumn]').change(function(){
 })
 
 
-$('.crud-paging .prev-page').click(function(){
+$(' .crud-paging .prev-page').click(function(){
   crudFilters.page--;
   redrawFilters();
 });
 
-$('.crud-paging .next-page').click(function(){
+$(' .crud-paging .next-page').click(function(){
   crudFilters.page++;
   redrawFilters();
 });
 
-$('.crud-paging .erase').click(function(){
+$(' .crud-paging .erase').click(function(){
   crudFilters.search= '';
   redrawFilters();
 })

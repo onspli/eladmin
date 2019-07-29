@@ -6,7 +6,7 @@
 
 @section('modal-body')
   @if($module->elaAuth('putRow'))
-  <form id="modal-form" data-eladone="redrawCrudTable();" action="{{ $module->elaRequest('putRow') }}">
+  <form id="modal-form"data-eladone="redrawCrudTable();" action="{{ $module->elaRequest('putRow') }}">
   @endif
 
     @section('form-body')
@@ -39,7 +39,7 @@
 
 @section('modal-footer')
   @if($module->elaAuth('delRow'))
-  <button type="button" class="btn btn-danger mr-3" data-elaaction="delRow" data-elamodule="{{$module}}" data-elaarg{{$module->getKeyName()}}="{{$row->getKey()}}" data-eladone="$('#dynamic .modal').modal('hide');redrawCrudTable();" data-confirm="Opravdu smazat?"><i class="fas fa-trash-alt"></i> <span class="d-none d-sm-inline">{{ __('Delete')}}</span></button>
+  <button type="button" class="btn btn-danger mr-3" data-elaaction="delRow" data-elamodule="{{$module}}" data-elaarg{{$module->getKeyName()}}="{{$row->getKey()}}" data-eladone="$('#dynamic .modal').modal('hide');redrawCrudTable();" data-confirm="{{__('Are you sure?')}}"><i class="fas fa-trash-alt"></i> <span class="d-none d-sm-inline">{{ __('Delete')}}</span></button>
   @endif
   <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="far fa-times-circle"></i> <span class="">{{__('Cancel')}}</span></button>
   @if($module->elaAuth('putRow'))
