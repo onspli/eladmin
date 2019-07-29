@@ -70,7 +70,10 @@ $searchMessage = __('Search');
       <i class="fas fa-plus-circle"></i> {{ __('Add') }}
     </button>
     @endif
+    @foreach($module->elaFilters() as $filter)
     <button href="#crud-filters"  class="btn btn-primary" data-toggle="collapse"><i class="fas fa-filter"></i> {{ __('Filters') }}</button>
+    @break;
+    @endforeach
     </div>
 
     <div id="crud-filters" class="form-inline collapse">

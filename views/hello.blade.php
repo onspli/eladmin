@@ -3,7 +3,7 @@
 @section('content')
     <div class="card">
       <div class="card-body">
-        <p>Vítej v Eladminu.</p>
+        <p>Welcome to Eladmin. Lets add modules!</p>
       </div>
     </div>
 @endsection

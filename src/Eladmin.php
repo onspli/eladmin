@@ -250,6 +250,12 @@ class Eladmin
 
     // no action, render module view
     if(!$this->action()){
+      if($this->module() == $this){
+        foreach($this->modules as $key=>$mod){
+          $_GET['elamodule'] = $key;
+          break;
+        }
+      }
       if($this->module() == $this)
         echo $this->view('hello');
       else
