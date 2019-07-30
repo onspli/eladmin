@@ -5,21 +5,15 @@ use \Onspli\Eladmin;
 use \Onspli\Eladmin\Exception;
 
 
-class Module implements Eladmin\Iface\Module
+trait Module
 {
 
-  protected $elaTitle = null;
-  protected $elaIcon = '<i class="fas fa-puzzle-piece"></i>';
+  protected $eladmin = null;
+  protected $elakey = null;
 
-  public $bladeViewRender = 'modules.module.render';
-
-  protected $elaAuthorizedRoles = [];
-  protected $elaAuthorizedRolesForLowercaseActions = [];
-
-  public $eladmin = null;
-  public $elakey = null;
-
-  protected function defaultProperties(){
+  public function elaInit($eladmin, $elakey){
+    $this->eladmin = $eladmin;
+    $this->elakey = $elakey;
   }
 
   public function elakey(){
@@ -34,29 +28,39 @@ class Module implements Eladmin\Iface\Module
     return $this->eladmin->auth($action, $this);
   }
 
-  public function __construct(){
-    $this->defaultProperties();
-  }
-
   public function elaGetTitle(): string {
-    if($this->elaTitle) return $this->elaTitle;
-    else return class_basename(static::class);
+    return $this->elaTitle??class_basename(static::class);
   }
 
   public function elaGetIcon(): string {
-    return $this->elaIcon;
+    return $this->elaIcon??'<i class="fas fa-puzzle-piece"></i>';
   }
 
   public function elaGetAuthorizedRoles(): array{
-    return $this->elaAuthorizedRoles;
+    return $this->elaAuthorizedRoles??[];
   }
 
   public function elaGetAuthorizedRolesActions(): array{
-    return $this->elaAuthorizedRolesForLowercaseActions;
+    $authRoles = $this->elaAuthorizedRolesActions??[];
+    $arr = [];
+    foreach($authRoles as $action=>$data)
+    $arr[mb_strtolower($action)] = $data;
+    return $arr;
+
   }
 
   public function elaRequest($action, $args=[]){
     return $this->eladmin->request($action, $this, $args);
+  }
+
+  protected function elaViewsDef(): array{
+    return [
+      'render'=>'modules.module.render'
+    ];
+  }
+
+  public function elaGetView($key): string{
+    return ($this->elaViews??$this->elaViewsDef())[$key];
   }
 
 }

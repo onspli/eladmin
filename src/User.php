@@ -3,8 +3,9 @@
 namespace Onspli\Eladmin;
 
 
-class User extends Module\Eloquent\Model implements Iface\Authorization
+class User extends \Illuminate\Database\Eloquent\Model implements Iface\Authorization
 {
+  use Module\Eloquent\Crud;
   use \Illuminate\Database\Eloquent\SoftDeletes;
 
   protected $table = 'elausers';
@@ -57,7 +58,7 @@ class User extends Module\Eloquent\Model implements Iface\Authorization
   }
 
   public function elaColumns(){
-    $cols = parent::elaColumns();
+    $cols = $this->elaColumnsDef();
     $cols->newpassword->label(__('New password'))->nonlistable()->editable();
     return $cols;
   }
@@ -78,6 +79,7 @@ class User extends Module\Eloquent\Model implements Iface\Authorization
     if($newpassword)
       $_POST['passwordhash'] = $newpassword;
   }
+
 
   public function elaLogin():void {
     $login = $_POST['login']??'';

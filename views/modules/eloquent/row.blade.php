@@ -7,7 +7,7 @@
     ?>
 
     <?php
-    if($config->listformat == false && $value instanceof \Onspli\Eladmin\Module\Eloquent\Model){
+    if($config->listformat == false && $value instanceof \Illuminate\Database\Eloquent\Model){
       if($value->elaRepresentativeColumn){
         $value = $value->{$value->elaRepresentativeColumn};
       } else{

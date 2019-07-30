@@ -4,28 +4,22 @@ use \Onspli\Eladmin;
 use \Onspli\Eladmin\Exception;
 
 
-class Model extends \Illuminate\Database\Eloquent\Model implements Eladmin\Iface\Module
+trait Crud
 {
-
-  protected $elaTitle = null;
-  protected $elaIcon = '<i class="fas fa-puzzle-piece"></i>';
-  public $elaRepresentativeColumn = null;
-
-  public $bladeViewRender = 'modules.model.render';
-  public $bladeViewPutForm = 'modules.model.putForm';
-  public $bladeViewPostForm = 'modules.model.postForm';
-  public $bladeViewRow = 'modules.model.row';
-  protected $blade = null;
-
-  public $eladmin = null;
-  public $elakey = null;
-
-  protected $elaAuthorizedRoles = [];
-  protected $elaAuthorizedRolesActions = [];
-
-  public function elakey(){
-    return (string)$this->elakey;
+  use Eladmin\Module\Module {
+    Eladmin\Module\Module::elaInit as elaInitParent;
   }
+
+  protected function elaViewsDef(): array{
+    return [
+      'render'=>'modules.eloquent.render',
+      'putForm'=>'modules.eloquent.putForm',
+      'postForm'=>'modules.eloquent.postForm',
+      'row'=>'modules.eloquent.row'
+    ];
+  }
+
+
 
   public function __toString(){
     $elakey = $this->elakey();
@@ -33,20 +27,8 @@ class Model extends \Illuminate\Database\Eloquent\Model implements Eladmin\Iface
     return parent::__toString();
   }
 
-  public function elaRequest($action, $args=[]){
-    return $this->eladmin->request($action, $this, $args);
-  }
-
-  public function elaAuth($action): bool{
-    return $this->eladmin->auth($action, $this);
-  }
-
-  protected function defaultProperties(){
-  }
-
-  public function __construct(){
-    parent::__construct();
-    $this->defaultProperties();
+  public function elaInit($eladmin, $elakey){
+    $this->elaInitParent($eladmin, $elakey);
     if(!$this->tableExists()) $this->createTable();
   }
 
@@ -77,31 +59,8 @@ class Model extends \Illuminate\Database\Eloquent\Model implements Eladmin\Iface
     return $this->getConnection()->getSchemaBuilder();
   }
 
-  /**
-  * Getters
-  */
-  public function elaGetTitle(): string {
-    if($this->elaTitle) return $this->elaTitle;
-    else return $this->getTable();
-  }
 
-  public function elaGetIcon(): string {
-    return $this->elaIcon;
-  }
-
-  public function elaGetAuthorizedRoles(): array{
-    return $this->elaAuthorizedRoles;
-  }
-
-  public function elaGetAuthorizedRolesActions(): array{
-    $arr = [];
-    foreach($this->elaAuthorizedRolesActions as $action=>$data)
-    $arr[mb_strtolower($action)] = $data;
-    return $arr;
-
-  }
-
-  public function elaColumns(){
+  public function elaColumnsDef(){
     $visibleColumns = $this->elaVisibleColumns();
     $disabledColumns = $this->elaDisabledColumns();
     $realColumns = $this->getTableColumns();
@@ -118,16 +77,28 @@ class Model extends \Illuminate\Database\Eloquent\Model implements Eladmin\Iface
     return $columns;
   }
 
-  public function elaActions(){
+  public function elaActionsDef(){
     return new Chainset\Action(true);
   }
 
-  public function elaFilters(){
+  public function elaFiltersDef(){
     return new Chainset\Filter(true);
   }
 
+  public function elaColumns(){
+    return $this->elaColumnsDef();
+  }
+
+  public function elaActions(){
+    return $this->elaActionsDef();
+  }
+
+  public function elaFilters(){
+    return $this->elaFiltersDef();
+  }
+
   public function elaActionPostForm(){
-    echo $this->eladmin->view($this->bladeViewPostForm, ['module'=>$this]);
+    echo $this->eladmin->view($this->elaGetView('postForm'), ['module'=>$this]);
   }
 
   public function elaActionPutForm(){
@@ -136,7 +107,7 @@ class Model extends \Illuminate\Database\Eloquent\Model implements Eladmin\Iface
     if(!$row)
       throw new Exception\BadRequestException(__('Entry not found!'));
 
-    echo $this->eladmin->view($this->bladeViewPutForm, ['row'=>$row,'module'=>$this]);
+    echo $this->eladmin->view($this->elaGetView('putForm'), ['row'=>$row,'module'=>$this]);
   }
 
   public function elaUsesSoftDeletes(){
@@ -208,7 +179,7 @@ class Model extends \Illuminate\Database\Eloquent\Model implements Eladmin\Iface
     $result['totalresults'] = $total;
     $result['html'] = '';
     foreach($rows as $row)
-      $result['html'] .= $this->eladmin->view($this->bladeViewRow, ['row'=>$row,'module'=>$this, 'trash'=>$trash]);
+      $result['html'] .= $this->eladmin->view($this->elaGetView('row'), ['row'=>$row,'module'=>$this, 'trash'=>$trash]);
     Header('Content-type:application/json');
     echo json_encode($result, JSON_UNESCAPED_UNICODE);
   }

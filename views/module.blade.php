@@ -2,5 +2,5 @@
 @section('title', $module->elaGetTitle())
 
 @section('content')
-@include($module->bladeViewRender)
+@include($module->elaGetView('render'))
 @endsection

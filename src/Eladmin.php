@@ -80,8 +80,7 @@ class Eladmin
         unset($this->modules[$key]);
         continue;
       }
-      $imodule->eladmin = $this;
-      $imodule->elakey = $key;
+      $imodule->elaInit($this, $key);
       $this->imodules[$key] = $imodule;
     }
   }

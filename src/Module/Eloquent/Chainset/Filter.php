@@ -13,7 +13,7 @@ class Filter extends \Onspli\Eladmin\Chainset\Chainset{
 
   public function select($options){
     $this->input = 'select';
-    if(is_subclass_of($options, \Onspli\Eladmin\Module\Eloquent\Model::class)){
+    if(is_subclass_of($options, \Illuminate\Database\Eloquent\Model::class)){
       $this->selectOptions = function() use($options){
         $rows = $options::all();
         $ret = [''=>''];
