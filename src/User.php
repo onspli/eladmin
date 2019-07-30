@@ -6,7 +6,7 @@ namespace Onspli\Eladmin;
 class User extends \Illuminate\Database\Eloquent\Model implements Iface\Authorization
 {
   use Module\Eloquent\Crud {
-    Module\Eloquent\Crud::elaActionDelRow as elaActionDelRow_Parent_Crud;
+    Module\Eloquent\Crud::elaActionDelRow as ela_Parent_Crud_ActionDelRow;
   }
   use \Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -136,7 +136,7 @@ class User extends \Illuminate\Database\Eloquent\Model implements Iface\Authoriz
   //  echo($this->elaUserId().'-'.$_POST[$this->getKeyName()]);return;
     if(($_POST[$this->getKeyName()]??null) == $this->elaUserId())
       throw new Exception\UnauthorizedException( __('You cannot delete yourself!'));
-    $this->elaActionDelRow_Parent_Crud();
+    $this->ela_Parent_Crud_ActionDelRow();
   }
 
   /**
