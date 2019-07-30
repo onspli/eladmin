@@ -27,14 +27,6 @@ trait Crud
     return parent::__toString();
   }
 
-  public function elaInit($eladmin, $elakey){
-    $this->elaInit_Parent_Module($eladmin, $elakey);
-    if(!$this->tableExists()) $this->createTable();
-  }
-
-  protected function createTable(){
-
-  }
 
   /**
   * Check if table for the model exists in the database;
