@@ -5,7 +5,9 @@ namespace Onspli\Eladmin;
 
 class User extends \Illuminate\Database\Eloquent\Model implements Iface\Authorization
 {
-  use Module\Eloquent\Crud;
+  use Module\Eloquent\Crud {
+    Module\Eloquent\Crud::elaActionDelRow as elaActionDelRowParent;
+  }
   use \Illuminate\Database\Eloquent\SoftDeletes;
 
   protected $table = 'elausers';
@@ -127,6 +129,13 @@ class User extends \Illuminate\Database\Eloquent\Model implements Iface\Authoriz
       'newpassword' => ['label'=>__('New password'), 'type'=>'password'],
       'newpasswordconfirm' => ['label'=>__('Confirm new password'), 'type'=>'password']
     ];
+  }
+
+  public function elaActionDelRow(){
+  //  echo($this->elaUserId().'-'.$_POST[$this->getKeyName()]);return;
+    if(($_POST[$this->getKeyName()]??null) == $this->elaUserId())
+      throw new Exception\UnauthorizedException( __('You cannot delete yourself!'));
+    $this->elaActionDelRowParent();
   }
 
   /**

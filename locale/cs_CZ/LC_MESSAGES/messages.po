@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2019-07-30 05:08+0200\n"
-"PO-Revision-Date: 2019-07-30 05:09+0200\n"
+"POT-Creation-Date: 2019-07-30 06:53+0200\n"
+"PO-Revision-Date: 2019-07-30 06:53+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: cs_CZ\n"
@@ -21,12 +21,12 @@ msgstr ""
 msgid "Account"
 msgstr "Účet"
 
-#: views/accountForm.blade.php:19 views/modules/model/postForm.blade.php:22
-#: views/modules/model/putForm.blade.php:44
+#: views/accountForm.blade.php:19 views/modules/eloquent/postForm.blade.php:22
+#: views/modules/eloquent/putForm.blade.php:44
 msgid "Cancel"
 msgstr "Zrušit"
 
-#: views/accountForm.blade.php:20 views/modules/model/putForm.blade.php:46
+#: views/accountForm.blade.php:20 views/modules/eloquent/putForm.blade.php:46
 msgid "Save"
 msgstr "Uložit"
 
@@ -46,61 +46,52 @@ msgstr "Autorizace je vypnutá!!!"
 msgid "Log in"
 msgstr "Přihlásit"
 
-#: views/modules/model/postForm.blade.php:4
+#: views/modules/eloquent/postForm.blade.php:4
 msgid "Create new entry"
 msgstr "Vložit nový záznam"
 
-#: views/modules/model/postForm.blade.php:23
+#: views/modules/eloquent/postForm.blade.php:23
 msgid "Create"
 msgstr "Vytvořit"
 
-#: views/modules/model/putForm.blade.php:4
+#: views/modules/eloquent/putForm.blade.php:4
 #, python-format
 msgid "Edit entry %s"
 msgstr "Upravit záznam %s"
 
-#: views/modules/model/putForm.blade.php:42
-#: views/modules/model/row.blade.php:50 views/modules/model/row.blade.php:90
+#: views/modules/eloquent/putForm.blade.php:42
 msgid "Delete"
 msgstr "Smazat"
 
-#: views/modules/model/render.blade.php:7
+#: views/modules/eloquent/render.blade.php:7
 msgid "Loading data"
 msgstr "Načítám data"
 
-#: views/modules/model/render.blade.php:8
+#: views/modules/eloquent/render.blade.php:8
 msgid "Nothing found!"
 msgstr "Nic nenalezeno!"
 
-#: views/modules/model/render.blade.php:9
+#: views/modules/eloquent/render.blade.php:9
 msgid "Search"
 msgstr "Vyhledat"
 
-#: views/modules/model/render.blade.php:70
+#: views/modules/eloquent/render.blade.php:70
 msgid "Add"
 msgstr "Přidat"
 
-#: views/modules/model/render.blade.php:74
+#: views/modules/eloquent/render.blade.php:74
 msgid "Filters"
 msgstr "Filtry"
 
-#: views/modules/model/render.blade.php:78
+#: views/modules/eloquent/render.blade.php:78
 msgid "Trash"
 msgstr "Koš"
 
-#: views/modules/model/row.blade.php:39
-msgid "Restore"
-msgstr "Obnovit"
-
-#: views/modules/model/row.blade.php:80
-msgid "Edit"
-msgstr "Upravit"
-
-#: src/Eladmin.php:171
+#: src/Eladmin.php:170
 msgid "CSRF token not valid! Try reloading page."
 msgstr "Neplatný CSRF token! Zkus znovu načíst stránku."
 
-#: src/Eladmin.php:231
+#: src/Eladmin.php:230
 msgid "Wrong credentials!"
 msgstr "Chybné přihlašovací údaje!"
 
@@ -116,77 +107,87 @@ msgstr "Něco se pokazilo!"
 msgid "Unauthorized access!"
 msgstr "Neautorizovaný přístup!"
 
-#: src/Module/Eloquent/Model.php:137 src/Module/Eloquent/Model.php:223
+#: src/Module/Eloquent/Crud.php:108 src/Module/Eloquent/Crud.php:194
 msgid "Entry not found!"
 msgstr "Záznam nenalezen!"
 
-#: src/Module/Eloquent/Model.php:237
+#: src/Module/Eloquent/Crud.php:208
 msgid "Entry modified."
 msgstr "Záznam byl změněn."
 
-#: src/Module/Eloquent/Model.php:256
+#: src/Module/Eloquent/Crud.php:227
 msgid "Entry added."
 msgstr "Záznam byl přidán."
 
-#: src/Module/Eloquent/Model.php:268
+#: src/Module/Eloquent/Crud.php:239
 msgid "Entry deleted. It can be restored from Trash later."
 msgstr "Záznam byl vymazán. Lze ho později obnovit z Koše."
 
-#: src/Module/Eloquent/Model.php:270
+#: src/Module/Eloquent/Crud.php:241
 msgid "Entry deleted."
 msgstr "Záznam byl vymazán."
 
-#: src/Module/Eloquent/Model.php:278
+#: src/Module/Eloquent/Crud.php:249
 msgid "Deleted forever!"
 msgstr "Smazáno navždy!"
 
-#: src/Module/Eloquent/Model.php:286
+#: src/Module/Eloquent/Crud.php:257
 msgid "Entry restored."
 msgstr "Záznam byl obnoven."
 
-#: src/User.php:22
+#: src/User.php:25
 msgid "Users"
 msgstr "Uživatelé"
 
-#: src/User.php:54
+#: src/User.php:57
 msgid "Login"
 msgstr "Login"
 
-#: src/User.php:55
+#: src/User.php:58
 msgid "Password"
 msgstr "Heslo"
 
-#: src/User.php:61 src/User.php:125
+#: src/User.php:64 src/User.php:129
 msgid "New password"
 msgstr "Nové heslo"
 
-#: src/User.php:68
+#: src/User.php:71
 msgid "Login must not be empty!"
 msgstr "Login nesmí být prázdný!"
 
-#: src/User.php:73
+#: src/User.php:76
 msgid "Login already exists!"
 msgstr "Login už existuje!"
 
-#: src/User.php:77 src/User.php:143
+#: src/User.php:80 src/User.php:154
 msgid "New password must not be empty!"
 msgstr "Nové heslo nesmí být prázdné!"
 
-#: src/User.php:124
+#: src/User.php:128
 msgid "Current password"
 msgstr "Současné heslo"
 
-#: src/User.php:126
+#: src/User.php:130
 msgid "Confirm new password"
 msgstr "Potvrď nové heslo"
 
-#: src/User.php:141
+#: src/User.php:137
+msgid "You cannot delete yourself!"
+msgstr "Nemůžeš smazat sám sebe!"
+
+#: src/User.php:152
 msgid "Current password is not correct!"
 msgstr "Současné heslo není správně!"
 
-#: src/User.php:145
+#: src/User.php:156
 msgid "Passwords do not match!"
 msgstr "Hesla se neshodují!"
+
+#~ msgid "Restore"
+#~ msgstr "Obnovit"
+
+#~ msgid "Edit"
+#~ msgstr "Upravit"
 
 #~ msgid "Apple"
 #~ msgstr "Jablko"

@@ -102,7 +102,7 @@ trait Crud
   }
 
   public function elaActionPutForm(){
-    $id = $_POST[$this->primaryKey]??null;
+    $id = $_POST[$this->getKeyName()]??null;
     $row = static::find($id);
     if(!$row)
       throw new Exception\BadRequestException(__('Entry not found!'));
@@ -143,7 +143,7 @@ trait Crud
   * List database entries.
   */
   public function elaActionGetRows(){
-    $sort = $_POST['sort']??$this->primaryKey;
+    $sort = $_POST['sort']??$this->getKeyName();
     $direction = $_POST['direction']??'desc';
     $page = $_POST['page']??1;
     $resultsperpage = $_POST['resultsperpage']??10;
@@ -189,7 +189,7 @@ trait Crud
   */
   public function elaActionPutRow(){
 
-    $id = $_POST[$this->primaryKey]??null;
+    $id = $_POST[$this->getKeyName()]??null;
     $row = static::find($id);
     if(!$row) throw new Exception\BadRequestException( __('Entry not found!') );
 
@@ -231,7 +231,7 @@ trait Crud
   * Delete database entry.
   */
   public function elaActionDelRow(){
-    $id = $_POST[$this->primaryKey];
+    $id = $_POST[$this->getKeyName()];
     $row = static::find($id);
     $row->delete();
     Header('Content-type: text/plain');
@@ -242,7 +242,7 @@ trait Crud
   }
 
   public function elaActionForceDelRow(){
-    $id = $_POST[$this->primaryKey];
+    $id = $_POST[$this->getKeyName()];
     $row = static::withTrashed()->find($id);
     $row->forceDelete();
     Header('Content-type: text/plain');
@@ -250,7 +250,7 @@ trait Crud
   }
 
   public function elaActionRestoreRow(){
-    $id = $_POST[$this->primaryKey];
+    $id = $_POST[$this->getKeyName()];
     $row = static::withTrashed()->find($id);
     $row->restore();
     Header('Content-type: text/plain');

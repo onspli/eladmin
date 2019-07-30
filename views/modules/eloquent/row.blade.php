@@ -35,8 +35,9 @@
             data-elaaction="restoreRow"
             data-elamodule="{{$eladmin->moduleKey()}}"
             data-eladone="redrawCrudTable();"
-            data-elaarg{{$module->getKeyName()}}="{{$row->getKey()}}">
-      <i class="fas fa-recycle"></i> <span class="d-none d-lg-inline">{{ __('Restore') }}</span>
+            data-elaarg{{$module->getKeyName()}}="{{$row->getKey()}}"
+             title="{{ __('Restore') }}">
+      <i class="fas fa-recycle"></i>
     </button>
     @endif
 
@@ -46,8 +47,9 @@
             data-elamodule="{{$eladmin->moduleKey()}}"
             data-eladone="redrawCrudTable();"
             data-confirm="{{__('Are you sure?')}}"
-            data-elaarg{{$module->getKeyName()}}="{{$row->getKey()}}">
-      <i class="fas fa-trash-alt"></i> <span class="d-none d-lg-inline" >{{ __('Delete') }}</span>
+            data-elaarg{{$module->getKeyName()}}="{{$row->getKey()}}"
+            title="{{ __('Delete') }}">
+      <i class="fas fa-trash-alt"></i>
     </button>
     @endif
 
@@ -76,8 +78,9 @@
       <button class="btn m-1 btn-primary"
               data-elaaction="putForm"
               data-elamodule="{{$eladmin->moduleKey()}}"
-              data-elaarg{{$module->getKeyName()}}="{{$row->getKey()}}">
-        <i class="fas fa-edit"></i> <span class="d-none d-lg-inline">{{ __('Edit') }}</span>
+              data-elaarg{{$module->getKeyName()}}="{{$row->getKey()}}"
+               title="{{ __('Edit') }}" >
+        <i class="fas fa-edit"></i>
       </button>
 
 
@@ -86,8 +89,9 @@
               data-elaaction="delRow"
               data-elamodule="{{$eladmin->moduleKey()}}"
               data-eladone="redrawCrudTable();"
-              data-elaarg{{$module->getKeyName()}}="{{$row->getKey()}}">
-        <i class="fas fa-trash-alt"></i> <span class="d-none d-lg-inline">{{ __('Delete') }}</span>
+              data-elaarg{{$module->getKeyName()}}="{{$row->getKey()}}"
+               title="{{ __('Delete') }}" >
+        <i class="fas fa-trash-alt"></i>
       </button>
       @endif
 
