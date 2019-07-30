@@ -1,10 +1,11 @@
 <?php
 
 namespace Onspli\Eladmin\Module;
+use \Onspli\Eladmin;
 use \Onspli\Eladmin\Exception;
 
 
-class Module implements \Onspli\Eladmin\Iface\Module
+class Module implements Eladmin\Iface\Module
 {
 
   protected $elaTitle = null;
@@ -39,7 +40,7 @@ class Module implements \Onspli\Eladmin\Iface\Module
 
   public function elaGetTitle(): string {
     if($this->elaTitle) return $this->elaTitle;
-    else return static::class;
+    else return class_basename(static::class);
   }
 
   public function elaGetIcon(): string {

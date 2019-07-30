@@ -28,6 +28,30 @@
 
   @endforeach
   <td class="text-right">
+    @if($trash)
+
+    @if($module->elaAuth('restoreRow'))
+    <button class="btn m-1 btn-success"
+            data-elaaction="restoreRow"
+            data-elamodule="{{$eladmin->moduleKey()}}"
+            data-eladone="redrawCrudTable();"
+            data-elaarg{{$module->getKeyName()}}="{{$row->getKey()}}">
+      <i class="fas fa-recycle"></i> <span class="d-none d-lg-inline">{{ __('Restore') }}</span>
+    </button>
+    @endif
+
+    @if($module->elaAuth('forceDelRow'))
+    <button class="btn m-1 btn-danger"
+            data-elaaction="forceDelRow"
+            data-elamodule="{{$eladmin->moduleKey()}}"
+            data-eladone="redrawCrudTable();"
+            data-confirm="{{__('Are you sure?')}}"
+            data-elaarg{{$module->getKeyName()}}="{{$row->getKey()}}">
+      <i class="fas fa-trash-alt"></i> <span class="d-none d-lg-inline" >{{ __('Delete') }}</span>
+    </button>
+    @endif
+
+    @else
     @section('actions')
       @foreach($module->elaActions() as $action=>$config)
         <?php
@@ -48,12 +72,26 @@
       @endforeach
     @show
 
+
       <button class="btn m-1 btn-primary"
               data-elaaction="putForm"
               data-elamodule="{{$eladmin->moduleKey()}}"
               data-elaarg{{$module->getKeyName()}}="{{$row->getKey()}}">
         <i class="fas fa-edit"></i> <span class="d-none d-lg-inline">{{ __('Edit') }}</span>
       </button>
+
+
+      @if($module->elaUsesSoftDeletes() && $module->elaAuth('delRow'))
+      <button class="btn m-1 btn-danger"
+              data-elaaction="delRow"
+              data-elamodule="{{$eladmin->moduleKey()}}"
+              data-eladone="redrawCrudTable();"
+              data-elaarg{{$module->getKeyName()}}="{{$row->getKey()}}">
+        <i class="fas fa-trash-alt"></i> <span class="d-none d-lg-inline">{{ __('Delete') }}</span>
+      </button>
+      @endif
+
+    @endif
 
   </td>
 </tr>

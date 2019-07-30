@@ -71,10 +71,15 @@ $searchMessage = __('Search');
     </button>
     @endif
     @foreach($module->elaFilters() as $filter)
-    <button href="#crud-filters"  class="btn btn-primary" data-toggle="collapse"><i class="fas fa-filter"></i> {{ __('Filters') }}</button>
-    @break;
+      <button href="#crud-filters"  class="btn btn-primary" data-toggle="collapse"><i class="fas fa-filter"></i> {{ __('Filters') }}</button>
+      @break
     @endforeach
+    @if($module->elaUsesSoftDeletes())
+      <button class="btn btn-secondary crud-trash" data-toggle="collapse"><i class="fas fa-trash-restore"></i> {{ __('Trash') }}</button>
+    @endif
     </div>
+
+    @if($module->elaAuth('getRows'))
 
     <div id="crud-filters" class="form-inline collapse">
       @foreach($module->elaFilters() as $name=>$filter)
@@ -143,6 +148,8 @@ $searchMessage = __('Search');
 
     @stack('crud-paging')
 
+
+
     <div class="table-responsive mb-3">
     <table id="crud-table" class="table table-striped table-bordered">
       <thead>
@@ -172,7 +179,11 @@ $searchMessage = __('Search');
     </table>
     </div>
 
+
+
     @stack('crud-paging')
+
+    @endif
 
 @endsection
 
@@ -190,11 +201,16 @@ var crudFilters = {
   totalresults: 0,
   maxpage : 1,
   search:'',
-  columns:{}
+  columns:{},
+  trash: 0
 };
 
 
   function redrawCrudTable(){
+
+  @if(!$module->elaAuth('getRows'))
+    return;
+  @endif
   var maxpage = crudFilters.maxpage;
   //var loading = '<tr><td colspan="1000" class="crud-loading"><i class="fas fa-sync-alt fa-spin"></i> {{$loadingMessage}} </td></tr>';
   //$('#crud-table tbody').html($(loading));
@@ -242,6 +258,9 @@ function redrawFilters(doNotRedraw){
   $(' .crud-paging *[data-crudfilter]').each(function(){
     $(this).val( crudFilters[$(this).data('crudfilter')] );
   });
+
+  if(crudFilters.trash) $(' .crud-trash').addClass('btn-warning').removeClass('btn-secondary');
+  else $(' .crud-trash').addClass('btn-secondary').removeClass('btn-warning');
 
 
   if(!doNotRedraw)
@@ -293,7 +312,12 @@ $(' .crud-paging .next-page').click(function(){
 $(' .crud-paging .erase').click(function(){
   crudFilters.search= '';
   redrawFilters();
-})
+});
+
+$(' .crud-trash').click(function(){
+  crudFilters.trash= crudFilters.trash?0:1;
+  redrawFilters();
+});
 
 
 

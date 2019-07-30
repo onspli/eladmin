@@ -5,14 +5,17 @@ namespace Onspli\Eladmin;
 
 class User extends Module\Eloquent\Model implements Iface\Authorization
 {
+  use \Illuminate\Database\Eloquent\SoftDeletes;
 
   protected $table = 'elausers';
-  protected $hidden = ['passwordhash'];
 
   protected $elaTitle = 'Users';
   protected $elaIcon = '<i class="fas fa-users"></i>';
-
   public $elaRepresentativeColumn = 'login';
+
+  protected $hidden = ['passwordhash'];
+
+  protected $elaAuthorizedRoles = ['admin'];
 
   protected function defaultProperties(){
     parent::defaultProperties();
@@ -26,11 +29,12 @@ class User extends Module\Eloquent\Model implements Iface\Authorization
 
   protected function createTable(){
     $this->getSchema()->create($this->getTable(), function ($table) {
-            $table->bigIncrements('id');
-            $table->string('login')->unique();;
+            $table->increments('id');
+            $table->string('login')->unique();
             $table->string('role');
             $table->timestamps();
             $table->string('passwordhash');
+            $table->softDeletes();
         });
 
     $firstUser = new static();

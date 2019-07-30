@@ -1,9 +1,10 @@
 <?php
 namespace Onspli\Eladmin\Module\Eloquent;
+use \Onspli\Eladmin;
 use \Onspli\Eladmin\Exception;
 
 
-class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladmin\Iface\Module
+class Model extends \Illuminate\Database\Eloquent\Model implements Eladmin\Iface\Module
 {
 
   protected $elaTitle = null;
@@ -20,11 +21,7 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
   public $elakey = null;
 
   protected $elaAuthorizedRoles = [];
-  protected $elaAuthorizedRolesForLowercaseActions = [
-    'postrow' => [],
-    'putrow' => [],
-    'delrow' => []
-  ];
+  protected $elaAuthorizedRolesActions = [];
 
   public function elakey(){
     return (string)$this->elakey;
@@ -48,6 +45,7 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
   }
 
   public function __construct(){
+    parent::__construct();
     $this->defaultProperties();
     if(!$this->tableExists()) $this->createTable();
   }
@@ -96,7 +94,11 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
   }
 
   public function elaGetAuthorizedRolesActions(): array{
-    return $this->elaAuthorizedRolesForLowercaseActions;
+    $arr = [];
+    foreach($this->elaAuthorizedRolesActions as $action=>$data)
+    $arr[mb_strtolower($action)] = $data;
+    return $arr;
+
   }
 
   public function elaColumns(){
@@ -111,6 +113,8 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
       if(in_array($column, $realColumns))
         $columns->$column->realcolumn = true;
     }
+    if($this->elaUsesSoftDeletes())
+      unset($columns->deleted_at);
     return $columns;
   }
 
@@ -135,12 +139,18 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
     echo $this->eladmin->view($this->bladeViewPutForm, ['row'=>$row,'module'=>$this]);
   }
 
+  public function elaUsesSoftDeletes(){
+    return in_array('deleted_at', $this->getTableColumns());
+  }
+
 
   /**
   * Returns an array of columns that cannot be edited from crud. (i.e. primary key, automanaged timestamps)
   */
   public function elaDisabledColumns(){
     $columns = [$this->getKeyName()];
+    if($this->elaUsesSoftDeletes())
+      $columns[] = 'deleted_at';
     if($this->timestamps){
       $columns[] = static::CREATED_AT;
       $columns[] = static::UPDATED_AT;
@@ -168,10 +178,17 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
     $resultsperpage = $_POST['resultsperpage']??10;
     $search = $_POST['search']??'';
     $columns = $_POST['columns']??[];
+    $trash = $_POST['trash']??0;
 
     $realColumns = $this->getTableColumns();
 
+
     $q = $this;
+
+    if($trash){
+      $q = $this->onlyTrashed();
+    }
+
     if($search){
       $q = $q->where(function($q) use($realColumns, $search){
         foreach($realColumns as $key=>$col){
@@ -191,7 +208,7 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
     $result['totalresults'] = $total;
     $result['html'] = '';
     foreach($rows as $row)
-      $result['html'] .= $this->eladmin->view($this->bladeViewRow, ['row'=>$row,'module'=>$this]);
+      $result['html'] .= $this->eladmin->view($this->bladeViewRow, ['row'=>$row,'module'=>$this, 'trash'=>$trash]);
     Header('Content-type:application/json');
     echo json_encode($result, JSON_UNESCAPED_UNICODE);
   }
@@ -247,7 +264,26 @@ class Model extends \Illuminate\Database\Eloquent\Model implements \Onspli\Eladm
     $row = static::find($id);
     $row->delete();
     Header('Content-type: text/plain');
-    echo __('Entry deleted.');
+    if($this->elaUsesSoftDeletes())
+      echo __('Entry deleted. It can be restored from Trash later.');
+    else
+      echo __('Entry deleted.');
+  }
+
+  public function elaActionForceDelRow(){
+    $id = $_POST[$this->primaryKey];
+    $row = static::withTrashed()->find($id);
+    $row->forceDelete();
+    Header('Content-type: text/plain');
+    echo __('Deleted forever!');
+  }
+
+  public function elaActionRestoreRow(){
+    $id = $_POST[$this->primaryKey];
+    $row = static::withTrashed()->find($id);
+    $row->restore();
+    Header('Content-type: text/plain');
+    echo __('Entry restored.');
   }
 
   /**

@@ -2,8 +2,9 @@
 
 
 namespace Onspli\Eladmin\Module\Eloquent\Chainset;
+use \Onspli\Eladmin;
 
-class Column extends \Onspli\Eladmin\Chainset\Chainset{
+class Column extends Eladmin\Chainset\Chainset{
 
   public $label = null;
   public $desc = null;
@@ -14,7 +15,7 @@ class Column extends \Onspli\Eladmin\Chainset\Chainset{
   public $input = 'text';
   public $listformat = null;
   public $realcolumn = false;
-  public $listlimit = 10;
+  public $listlimit = 24;
   public $belongsTo = null;
 
   public function raw(){
@@ -89,7 +90,7 @@ class Column extends \Onspli\Eladmin\Chainset\Chainset{
   }
 
   public function belongsTo($model){
-    if(!is_subclass_of($model, \Onspli\Eladmin\Module\Eloquent\Model::class))
+    if(!is_subclass_of($model, Eladmin\Module\Eloquent\Model::class))
       throw new \Exception('Column can only be a subclass of \Onspli\Eladmin\Module\Eloquent\Model');
     $this->belongsTo = $model;
 
