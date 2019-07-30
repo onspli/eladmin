@@ -7,7 +7,7 @@ use \Onspli\Eladmin\Exception;
 trait Crud
 {
   use Eladmin\Module\Module {
-    Eladmin\Module\Module::elaInit as elaInitParent;
+    Eladmin\Module\Module::elaInit as elaInit_Parent_Module;
   }
 
   protected function elaViewsDef(): array{
@@ -28,7 +28,7 @@ trait Crud
   }
 
   public function elaInit($eladmin, $elakey){
-    $this->elaInitParent($eladmin, $elakey);
+    $this->elaInit_Parent_Module($eladmin, $elakey);
     if(!$this->tableExists()) $this->createTable();
   }
 
