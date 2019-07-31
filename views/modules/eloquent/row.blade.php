@@ -59,13 +59,16 @@
         <?php
         if(!$module->elaAuth($action)) continue;
         if($config->nonlistable) continue;
+        if(is_callable($config->label))
+          $value = ($config->label)($row->$column, $row, $column, $module, $eladmin);
+        else $value = $config->label??$action;
         ?>
 
           <button data-elaaction="{{$action}}" data-eladone="redrawCrudTable();" data-elamodule="{{$module->elakey()}}" data-elaarg{{$module->getKeyName()}}="{{$row->getKey()}}" class="btn m-1 btn-{{ $config->style }}">{!! $config->icon !!}
             @if(isset($config->icon))
             <span class="d-none d-lg-inline">
             @endif
-            {{ $config->label??$action }}
+            {{ $value }}
             @if(isset($config->icon))
           </span>
             @endif

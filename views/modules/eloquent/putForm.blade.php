@@ -34,9 +34,12 @@
       <?php
       if(!$module->elaAuth($action)) continue;
       if($config->noneditable) continue;
+      if(is_callable($config->label))
+        $value = ($config->label)($row->$column, $row, $column, $module, $eladmin);
+      else $value = $config->label??$action;
       ?>
       <div class="form-group">
-        <button data-elaaction="{{$action}}" data-elamodule="{{$module->elakey()}}" data-eladone="$('#dynamic .modal').modal('hide'); redrawCrudTable();" data-elaarg{{$module->getKeyName()}}="{{$row->getKey()}}" class="btn btn-{{ $config->style }}">{!! $config->icon !!} {{ $config->label??$action }}</button>
+        <button data-elaaction="{{$action}}" data-elamodule="{{$module->elakey()}}" data-eladone="$('#dynamic .modal').modal('hide'); redrawCrudTable();" data-elaarg{{$module->getKeyName()}}="{{$row->getKey()}}" class="btn btn-{{ $config->style }}">{!! $config->icon !!} {{ $value }}</button>
       </div>
     @endforeach
   @show
