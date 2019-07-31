@@ -94,7 +94,7 @@ Here is the interface got with the minimal configuration example above.
 
 ![Add User](/docs/screenshot/adduser.png)
 
-## Advanced Configuration 
+## Advanced Configuration
 
 An example and screenshots:
 
@@ -285,7 +285,7 @@ class MyEladmin extends Eladmin
 * Run Eladmin
 */
 $myEladmin = new MyEladmin();
-$myEladmin->runNoCatch();
+$myEladmin->run();
 ```
 
 ![Advanced Configuration](/docs/screenshot/columns1.png)

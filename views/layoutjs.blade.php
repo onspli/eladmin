@@ -45,11 +45,15 @@
       // HTML response
       if (ct.indexOf('html') > -1) {
       //  console.debug('html');
-        var html = $(data);
-        if(html.hasClass('modal')){
-          $('#dynamic').html(html);
-          html.modal();
-        } else{
+        try{
+          var html = $(data);
+          if(html.hasClass('modal')){
+            $('#dynamic').html(html);
+            html.modal();
+          } else{
+            toastr.success(data?data:'OK');
+          }
+        } catch(v){
           toastr.success(data?data:'OK');
         }
       }
