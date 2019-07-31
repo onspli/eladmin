@@ -3,22 +3,21 @@ Eladmin generates CRUD/admin interface for Eloquent.
 
 ## Table of Contents
 
-1. [ Installation ](#installation)
-2. [ Getting Started ](#gettingstarted)
-3. [ Advanced Configuration](#advanced)
-4. [ Actions ](#actions)
-5. [ Authorization ](#authorization)
-6. [ Data Validation and Modification ](#validation)
-7. [ Filtering Results ](#filters)
+- [Table of Contents](#table-of-contents)
+- [Installation](#installation)
+- [Getting Started](#getting-started)
+- [Advanced Configuration](#advanced-configuration)
+- [Actions](#actions)
+- [Authorization](#authorization)
+- [Data Validation and Modification](#data-validation-and-modification)
+- [Filtering Results](#filtering-results)
 
-<a name="installation"></a>
 ## Installation
 You can install Eladmin using composer:
 ```
 composer require onspli/eladmin
 ```
 
-<a name="gettingstarted"></a>
 ## Getting Started
 Let us have a simple website where users can register for events. We have two Eloquent models *Event* and *Registration* and we want to generate the admin interface for them. The steps we have to take are:
 1. use *Module\Eloquent\Crud* trait in the models
@@ -112,7 +111,6 @@ Here is the interface got with the minimal configuration example above.
 
 ![Add User](/docs/screenshot/adduser.png)
 
-<a name="advanced"></a>
 ## Advanced Configuration
 
 An example and screenshots:
@@ -315,7 +313,6 @@ $myEladmin->run();
 
 ![Advanced Configuration](/docs/screenshot/columns4.png)
 
-<a name="actions"></a>
 ## Actions
 
 There are 6 default actions we can do with the records: *create*, *read*, *update*, *delete*, *restore* and *forceDelete*. Sometimes it's not enough and we want to define our own actions. Eladmin can do that.
@@ -356,8 +353,7 @@ Result:
 
 ![Action Cancel](/docs/screenshot/actions.png)
 
-<a name="authorization"></a>
-# Authorization
+## Authorization
 Eladmin provides a way to authorize users to do actions. The following code in *Event* module does the authorization:
 
 ```php
@@ -383,7 +379,6 @@ It results in the following (user *onspli* has role *user*).
 
 By default only 'admin' role is granted to work with eladmin *Users* crud.
 
-<a name="validation"></a>
 ## Data Validation and Modification
 
 Method *elaModifyPost* is invoked by actions *create* and *update*. By overriding the method you can do the validation or modification of the data. Example code in *Event* model:
@@ -407,7 +402,6 @@ Method *elaModifyPost* is invoked by actions *create* and *update*. By overridin
   }
 ```
 
-<a name="filters"></a>
 ## Filtering Results
 You can add your own filters to crud. Code in *Registration* model:
 
