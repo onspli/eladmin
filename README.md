@@ -307,7 +307,7 @@ We want do add action 'cancel' which cancels a registration. Add folowing code t
   */
   public function elaActionCancel(){
     $id = $_POST['id']??0;
-    $row = static::find($id);
+    $row = $this->find($id);
     if(!$row)
       throw new Exception\BadRequestException('Registration does not exist!');
     if($row->status == 'cancelled')
