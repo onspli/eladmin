@@ -64,7 +64,9 @@
         else $value = $config->label??$action;
         ?>
 
-          <button data-elaaction="{{$action}}" data-eladone="redrawCrudTable();" data-elamodule="{{$module->elakey()}}" data-elaarg{{$module->getKeyName()}}="{{$row->getKey()}}" class="btn m-1 btn-{{ $config->style }}">{!! $config->icon !!}
+          <button data-elaaction="{{$action}}" data-eladone="redrawCrudTable();"
+            data-confirm="{{$config->confirm}}"
+           data-elamodule="{{$module->elakey()}}" data-elaarg{{$module->getKeyName()}}="{{$row->getKey()}}" class="btn m-1 btn-{{ $config->style }}">{!! $config->icon !!}
             @if(isset($config->icon))
             <span class="d-none d-lg-inline">
             @endif

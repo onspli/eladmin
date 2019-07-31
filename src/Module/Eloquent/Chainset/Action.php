@@ -10,6 +10,7 @@ class Action extends \Onspli\Eladmin\Chainset\Chainset{
   public $noneditable = false;
   public $style = 'secondary';
   public $icon = '';
+  public $confirm = null;
 
   public function nonlistable(){
     $this->nonlistable = true;

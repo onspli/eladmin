@@ -39,7 +39,7 @@
       else $value = $config->label??$action;
       ?>
       <div class="form-group">
-        <button data-elaaction="{{$action}}" data-elamodule="{{$module->elakey()}}" data-eladone="$('#dynamic .modal').modal('hide'); redrawCrudTable();" data-elaarg{{$module->getKeyName()}}="{{$row->getKey()}}" class="btn btn-{{ $config->style }}">{!! $config->icon !!} {{ $value }}</button>
+        <button data-elaaction="{{$action}}" data-confirm="{{$config->confirm}}" data-elamodule="{{$module->elakey()}}" data-eladone="$('#dynamic .modal').modal('hide'); redrawCrudTable();" data-elaarg{{$module->getKeyName()}}="{{$row->getKey()}}" class="btn btn-{{ $config->style }}">{!! $config->icon !!} {{ $value }}</button>
       </div>
     @endforeach
   @show
