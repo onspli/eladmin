@@ -304,7 +304,7 @@ $myEladmin->run();
 
 ## Actions 
 
-There are four default actions we can do with the records: *create*, *read*, *update*, *delete*. If we use soft deletes in our model there are two additional actions *restore* and *forceDelete*. Sometimes it's not enough and we want to define our own actions. Eladmin can do that.
+There are 6 default actions we can do with the records: *create*, *read*, *update*, *delete*, *restore* and *forceDelete*. Sometimes it's not enough and we want to define our own actions. Eladmin can do that.
 
 We want do add action *cancel* which cancels a registration. Add folowing code to the *Registration* model:
 ```php 
