@@ -295,3 +295,44 @@ $myEladmin->run();
 ![Advanced Configuration](/docs/screenshot/columns3.png)
 
 ![Advanced Configuration](/docs/screenshot/columns4.png)
+
+## Actions 
+
+There are four default actions we can do with the records: create, read, update, delete. If we use soft deletes in our model there are two additional actions restore and forceDelete. Sometimes it's not enough and we want to define our own actions. Eladmin can do that.
+
+We want do add action 'cancel' which cancels a registration. Add folowing code to the Registration model:
+```php 
+  /**
+  * Define new action 'cancel' which cancels registration.
+  */
+  public function elaActionCancel(){
+    $id = $_POST['id']??0;
+    $row = static::find($id);
+    if(!$row)
+      throw new Exception\BadRequestException('Registration does not exist!');
+    if($row->status == 'cancelled')
+      throw new Exception\BadRequestException('Already cancelled!');
+    $row->status = 'cancelled';
+    $row->save();
+    echo 'Registration #'.$id.' was cancelled.';
+  }
+
+  /**
+  * Configure actions.
+  */
+  public function elaActions(){
+    $actions = $this->elaActionsDef();
+    $actions->cancel          // method elaActionCancel
+      ->label('Cancel')
+      ->icon('<i class="far fa-times-circle"></i>')
+      ->style('warning')      // boostrap button styles
+      ->listable()            // show the action in the table of registrations
+      ->editable();           // show the action in the update form
+    return $actions;
+  }
+```
+
+Result:
+
+![Action Cancel](/docs/screenshot/actions1.png)
+
