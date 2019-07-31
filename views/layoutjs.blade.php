@@ -19,9 +19,12 @@
   }
 
   $(document).on('click', '*[data-confirm]', function(e){
-    e.preventDefault();
+
     var confirm = window.confirm($(this).data('confirm'));
-    if(!confirm) e.stopImmediatePropagation();
+    if(!confirm){
+      e.preventDefault();
+      e.stopImmediatePropagation();
+    }
   });
 
   $(document).on('click', '*[data-elaaction]', function(e){

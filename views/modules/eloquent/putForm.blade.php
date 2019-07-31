@@ -39,11 +39,31 @@
       else $value = $config->label??$action;
       ?>
       <div class="form-group">
+        @if($config->ajax)
         <button data-elaaction="{{$action}}"
-        @if($config->confirm !== null)
-          data-confirm="{{$config->confirm?$config->confirm:$value}}"
-        @endif
-         data-elamodule="{{$module->elakey()}}" data-eladone="$('#dynamic .modal').modal('hide'); redrawCrudTable();" data-elaarg{{$module->getKeyName()}}="{{$row->getKey()}}" class="btn btn-{{ $config->style }}">{!! $config->icon !!} {{ $value }}</button>
+          @if($config->confirm !== null)
+            data-confirm="{{$config->confirm?$config->confirm:$value}}"
+          @endif
+          data-elamodule="{{$module->elakey()}}"
+          data-eladone="$('#dynamic .modal').modal('hide'); redrawCrudTable();"
+          data-elaarg{{$module->getKeyName()}}="{{$row->getKey()}}"
+          class="btn btn-{{ $config->style }}">
+         {!! $config->icon !!} {{ $value }}
+       </button>
+         @else
+
+         <a href="{{$module->elaRequest($action, [$module->getKeyName()=>$row->getKey()])}}"
+         @if($config->confirm !== null)
+           data-confirm="{{$config->confirm?$config->confirm:$value}}"
+         @endif
+          class="btn m-1 btn-{{ $config->style }}">{!! $config->icon !!}
+
+           {{ $value }}
+
+         </a>
+
+         @endif
+
       </div>
     @endforeach
   @show

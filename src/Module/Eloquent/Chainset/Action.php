@@ -11,9 +11,15 @@ class Action extends \Onspli\Eladmin\Chainset\Chainset{
   public $style = 'secondary';
   public $icon = '';
   public $confirm = null;
+  public $ajax = true;
 
   public function confirm($str=''){
     $this->confirm = $str;
+    return $this;
+  }
+
+  public function noajax(){
+    $this->ajax = false;
     return $this;
   }
 
