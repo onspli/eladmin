@@ -4,10 +4,10 @@ Eladmin generates CRUD/admin interface for Eloquent.
 ## Getting started
 Let us have simple website where users can register for event. We have two Eloquent models Event and Registration and we want to generate admin interface for them. The steps we have to do are:
 1. use Module\Eloquent\Crud trait in the models
-2. extends Eladmin class with basic configuration properties $cache and $modules
+2. extend Eladmin class with basic configuration properties $cache and $modules
 3. call Eladmin::run() method to run Eladmin
 
-Here is an example with the minimal configuration:
+Here is an example with a minimal configuration:
 ```php
 <?php
 
