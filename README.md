@@ -356,7 +356,7 @@ Eladmin provides a way to authorize users to do actions. The following code in *
   ];
 ```
 
-Result:
+It results in the following (user *onspli* has role *user*).
 
 ![Authorization](/docs/screenshot/authorization.png)
 
