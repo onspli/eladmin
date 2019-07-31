@@ -3,7 +3,6 @@ Eladmin generates CRUD/admin interface for Eloquent.
 
 ## Table of Contents
 
-- [Table of Contents](#table-of-contents)
 - [Installation](#installation)
 - [Getting Started](#getting-started)
 - [Advanced Configuration](#advanced-configuration)
@@ -11,6 +10,7 @@ Eladmin generates CRUD/admin interface for Eloquent.
 - [Authorization](#authorization)
 - [Data Validation and Modification](#data-validation-and-modification)
 - [Filtering Results](#filtering-results)
+- [Contacts](#contacts)
 
 ## Installation
 You can install Eladmin using composer:
@@ -422,3 +422,6 @@ public function elaFilters(){
 ```
 
 ![Filters](/docs/screenshot/filters.png)
+
+## Contacts
+Feel free to ask me any questions on ondrej.splichal@gmail.com.
