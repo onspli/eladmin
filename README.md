@@ -75,10 +75,10 @@ $myEladmin->run();
 Eladmin comes with simple authorization and user management out-of-the-box. Don't worry, the authorization can be easily overriden with your own solutin. Default credentials are eladmin/nimdale.
 ![Login Page](/docs/screenshot/login.png)
 
-Don't forget to change your password after your first login.
+Don't forget to change your password after your first login by clicking the Account button in the upper right corner.
 ![User's Account](/docs/screenshot/account.png)
 
-Here are the interface got with the minimal configuration example above.
+Here is the interface got with the minimal configuration example above.
 ![Minimal Configuration](/docs/screenshot/helloworld2.png)
 ![Edit Entry](/docs/screenshot/editentry2.png)
 ![Add User](/docs/screenshot/adduser.png)
