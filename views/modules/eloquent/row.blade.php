@@ -64,8 +64,8 @@
         else $value = $config->label??$action;
         ?>
 
-        @if($config->ajax)
-          <button data-elaaction="{{$action}}" data-eladone="redrawCrudTable();"
+
+          <button data-elaaction="{{$action}}" data-eladone="{!! htmlspecialchars($config->done) !!};redrawCrudTable();"
           @if($config->confirm !== null)
             data-confirm="{{$config->confirm?$config->confirm:$value}}"
           @endif
@@ -78,23 +78,6 @@
           </span>
             @endif
           </button>
-        @else
-
-        <a target="_blank" href="{{$module->elaRequest($action, [$module->getKeyName()=>$row->getKey()])}}"
-        @if($config->confirm !== null)
-          data-confirm="{{$config->confirm?$config->confirm:$value}}"
-        @endif
-         class="btn m-1 btn-{{ $config->style }}">{!! $config->icon !!}
-          @if(isset($config->icon))
-          <span class="d-none d-lg-inline">
-          @endif
-          {{ $value }}
-          @if(isset($config->icon))
-        </span>
-          @endif
-        </a>
-
-        @endif
 
 
       @endforeach
