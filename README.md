@@ -124,6 +124,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 use Onspli\Eladmin\Eladmin;
+use Onspli\Eladmin\User;
 use Onspli\Eladmin\Module\Eloquent\Crud;
 
 /**
@@ -296,6 +297,11 @@ class MyEladmin extends Eladmin
   * add new components. Eladmin uses Blade template engine.
   */
   protected $views = __DIR__.'/../views';
+
+  /**
+  * Authorization class implementing Iface\Authorization interface
+  */
+  protected $auth = User::class;
 }
 
 /**
