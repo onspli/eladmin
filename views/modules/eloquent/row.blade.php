@@ -65,7 +65,9 @@
         ?>
 
           <button data-elaaction="{{$action}}" data-eladone="redrawCrudTable();"
-            data-confirm="{{$config->confirm}}"
+          @if($config->confirm !== null)
+            data-confirm="{{$config->confirm?$config->confirm:$value}}"
+          @endif
            data-elamodule="{{$module->elakey()}}" data-elaarg{{$module->getKeyName()}}="{{$row->getKey()}}" class="btn m-1 btn-{{ $config->style }}">{!! $config->icon !!}
             @if(isset($config->icon))
             <span class="d-none d-lg-inline">

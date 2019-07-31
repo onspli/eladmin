@@ -12,6 +12,11 @@ class Action extends \Onspli\Eladmin\Chainset\Chainset{
   public $icon = '';
   public $confirm = null;
 
+  public function confirm($str=''){
+    $this->confirm = $str;
+    return $this;
+  }
+
   public function nonlistable(){
     $this->nonlistable = true;
     return $this;
