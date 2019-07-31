@@ -30,9 +30,9 @@
   <td class="text-right">
     @if($trash)
 
-    @if($module->elaAuth('restoreRow'))
+    @if($module->elaAuth('restore'))
     <button class="btn m-1 btn-success"
-            data-elaaction="restoreRow"
+            data-elaaction="restore"
             data-elamodule="{{$module->elakey()}}"
             data-eladone="redrawCrudTable();"
             data-elaarg{{$module->getKeyName()}}="{{$row->getKey()}}"
@@ -41,9 +41,9 @@
     </button>
     @endif
 
-    @if($module->elaAuth('forceDelRow'))
+    @if($module->elaAuth('forceDelete'))
     <button class="btn m-1 btn-danger"
-            data-elaaction="forceDelRow"
+            data-elaaction="forceDelete"
             data-elamodule="{{$module->elakey()}}"
             data-eladone="redrawCrudTable();"
             data-confirm="{{__('Are you sure?')}}"
@@ -74,7 +74,7 @@
       @endforeach
     @show
 
-
+      @if($module->elaAuth('update'))
       <button class="btn m-1 btn-primary"
               data-elaaction="putForm"
               data-elamodule="{{$module->elakey()}}"
@@ -82,11 +82,20 @@
                title="{{ __('Edit') }}" >
         <i class="fas fa-edit"></i>
       </button>
+      @elseif($module->elaAuth('read'))
+      <button class="btn m-1 btn-primary"
+              data-elaaction="putForm"
+              data-elamodule="{{$module->elakey()}}"
+              data-elaarg{{$module->getKeyName()}}="{{$row->getKey()}}"
+               title="{{ __('Edit') }}" >
+        <i class="fas fa-eye"></i>
+      </button>
+      @endif
 
 
-      @if($module->elaUsesSoftDeletes() && $module->elaAuth('delRow'))
+      @if($module->elaUsesSoftDeletes() && $module->elaAuth('delete'))
       <button class="btn m-1 btn-danger"
-              data-elaaction="delRow"
+              data-elaaction="delete"
               data-elamodule="{{$module->elakey()}}"
               data-eladone="redrawCrudTable();"
               data-elaarg{{$module->getKeyName()}}="{{$row->getKey()}}"

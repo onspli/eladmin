@@ -126,7 +126,7 @@ trait Crud
   /**
   * List database entries.
   */
-  public function elaActionGetRows(){
+  public function elaActionRead(){
     $sort = $_POST['sort']??$this->getKeyName();
     $direction = $_POST['direction']??'desc';
     $page = $_POST['page']??1;
@@ -171,7 +171,7 @@ trait Crud
   /**
   * Edit database entry.
   */
-  public function elaActionPutRow(){
+  public function elaActionUpdate(){
 
     $id = $_POST[$this->getKeyName()]??null;
     $row = static::find($id);
@@ -195,7 +195,7 @@ trait Crud
   /**
   * Create database entry.
   */
-  public function elaActionPostRow(){
+  public function elaActionCreate(){
     $row = new static();
     $this->elaModifyPost();
 
@@ -214,7 +214,7 @@ trait Crud
   /**
   * Delete database entry.
   */
-  public function elaActionDelRow(){
+  public function elaActionDelete(){
     $id = $_POST[$this->getKeyName()];
     $row = static::find($id);
     $row->delete();
@@ -225,7 +225,7 @@ trait Crud
       echo __('Entry deleted.');
   }
 
-  public function elaActionForceDelRow(){
+  public function elaActionForceDelete(){
     $id = $_POST[$this->getKeyName()];
     $row = static::withTrashed()->find($id);
     $row->forceDelete();
@@ -233,7 +233,7 @@ trait Crud
     echo __('Deleted forever!');
   }
 
-  public function elaActionRestoreRow(){
+  public function elaActionRestore(){
     $id = $_POST[$this->getKeyName()];
     $row = static::withTrashed()->find($id);
     $row->restore();

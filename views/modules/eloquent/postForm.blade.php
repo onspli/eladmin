@@ -5,7 +5,7 @@
 @endsection
 
 @section('modal-body')
-  <form id="modal-form" data-eladone="redrawCrudTable();" action="{{ $module->elaRequest('postRow') }}">
+  <form id="modal-form" data-eladone="redrawCrudTable();" action="{{ $module->elaRequest('create') }}">
     @foreach($module->elaColumns() as $column=>$config)
       <?php
       if($column == $module->getKeyName()) continue;

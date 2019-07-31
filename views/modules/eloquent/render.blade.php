@@ -63,7 +63,7 @@ $searchMessage = __('Search');
   </style>
 
     <div class="actions mb-3 ">
-    @if($module->elaAuth('postRow'))
+    @if($module->elaAuth('create'))
     <button id="crudadd" type="button" class="btn btn-success"
       data-elaaction="postForm"
       data-elamodule="{{$module->elakey()}}">
@@ -79,7 +79,7 @@ $searchMessage = __('Search');
     @endif
     </div>
 
-    @if($module->elaAuth('getRows'))
+    @if($module->elaAuth('read'))
 
     <div id="crud-filters" class="form-inline collapse">
       @foreach($module->elaFilters() as $name=>$filter)
@@ -164,7 +164,6 @@ $searchMessage = __('Search');
         <th></th>
       </thead>
       <tbody>
-        <?php //$module->elaActionGetRows(); ?>
       </tbody>
       <tfoot>
         @foreach($module->elaColumns() as $column=>$config)
@@ -208,7 +207,7 @@ var crudFilters = {
 
   function redrawCrudTable(){
 
-  @if(!$module->elaAuth('getRows'))
+  @if(!$module->elaAuth('read'))
     return;
   @endif
   var maxpage = crudFilters.maxpage;
@@ -219,7 +218,7 @@ var crudFilters = {
   $(' .crud-paging .searchicon').html('<i class="fas fa-sync-alt fa-spin"></i>');
 
   //if(crudFilters.totalresults>0) $('#crud-table tbody').append($(loading));
-  elaRequest('getRows', '{{$module->elakey()}}', crudFilters).done(function(data){
+  elaRequest('read', '{{$module->elakey()}}', crudFilters).done(function(data){
     var tbody = $(' #crud-table tbody');
     crudFilters.totalresults = data.totalresults;
     crudFilters.maxpage = Math.ceil(crudFilters.totalresults/crudFilters.resultsperpage);
