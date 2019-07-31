@@ -1,6 +1,13 @@
 # eladmin
 Eladmin generates CRUD/admin interface for Eloquent.
 
+## Getting started
+Let us have simple website where users can register for event. We have two Eloquent models Event and Registration and we want to generate admin interface for them. The steps we have to do are:
+1. use Module\Eloquent\Crud trait in the models
+2. extends Eladmin class with basic configuration properties $cache and $modules
+3. call Eladmin::run() method to run Eladmin
+
+Here is an example with the minimal configuration:
 ```php
 <?php
 
@@ -65,8 +72,13 @@ $myEladmin = new MyEladmin();
 $myEladmin->run();
 ```
 
+Eladmin comes with simple authorization and user management out-of-the-box. Don't worry, the authorization can be easily overriden with your own solutin. Default credentials are eladmin/nimdale.
 ![Login Page](/docs/screenshot/login.png)
-![Minimal Configuration](/docs/screenshot/helloworld2.png)
+
+Don't forget to change your password after your first login.
 ![User's Account](/docs/screenshot/account.png)
-![Add User](/docs/screenshot/adduser.png)
+
+Here are the interface got with the minimal configuration example above.
+![Minimal Configuration](/docs/screenshot/helloworld2.png)
 ![Edit Entry](/docs/screenshot/editentry2.png)
+![Add User](/docs/screenshot/adduser.png)
