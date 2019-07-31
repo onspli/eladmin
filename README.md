@@ -77,7 +77,7 @@ $myEladmin->run();
 
 ```
 
-Eladmin comes with simple authorization and user management out-of-the-box. Don't worry, the authorization can be easily overriden with your own solutin. Default credentials are eladmin/nimdale.
+Eladmin comes with a simple authorization and user management out-of-the-box. Don't worry, the authorization can be easily overriden with your own solution. Default credentials are eladmin/nimdale.
 ![Login Page](/docs/screenshot/login.png)
 
 Don't forget to change your password after your first login by clicking the Account button in the upper right corner.
