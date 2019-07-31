@@ -20,10 +20,6 @@ trait Module
     return (string)$this->elakey;
   }
 
-  public function __toString(){
-    return $this->elakey();
-  }
-
   public function elaAuth($action): bool{
     return $this->eladmin->auth($action, $this);
   }
@@ -50,7 +46,7 @@ trait Module
   }
 
   public function elaRequest($action, $args=[]){
-    return $this->eladmin->request($action, $this, $args);
+    return $this->eladmin->request($action, $this->elakey(), $args);
   }
 
   protected function elaViewsDef(): array{

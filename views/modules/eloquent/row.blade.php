@@ -33,7 +33,7 @@
     @if($module->elaAuth('restoreRow'))
     <button class="btn m-1 btn-success"
             data-elaaction="restoreRow"
-            data-elamodule="{{$eladmin->moduleKey()}}"
+            data-elamodule="{{$module->elakey()}}"
             data-eladone="redrawCrudTable();"
             data-elaarg{{$module->getKeyName()}}="{{$row->getKey()}}"
              title="{{ __('Restore') }}">
@@ -44,7 +44,7 @@
     @if($module->elaAuth('forceDelRow'))
     <button class="btn m-1 btn-danger"
             data-elaaction="forceDelRow"
-            data-elamodule="{{$eladmin->moduleKey()}}"
+            data-elamodule="{{$module->elakey()}}"
             data-eladone="redrawCrudTable();"
             data-confirm="{{__('Are you sure?')}}"
             data-elaarg{{$module->getKeyName()}}="{{$row->getKey()}}"
@@ -61,7 +61,7 @@
         if($config->nonlistable) continue;
         ?>
 
-          <button data-elaaction="{{$action}}" data-eladone="redrawCrudTable();" data-elamodule="{{$module}}" data-elaarg{{$module->getKeyName()}}="{{$row->getKey()}}" class="btn m-1 btn-{{ $config->style }}">{!! $config->icon !!}
+          <button data-elaaction="{{$action}}" data-eladone="redrawCrudTable();" data-elamodule="{{$module->elakey()}}" data-elaarg{{$module->getKeyName()}}="{{$row->getKey()}}" class="btn m-1 btn-{{ $config->style }}">{!! $config->icon !!}
             @if(isset($config->icon))
             <span class="d-none d-lg-inline">
             @endif
@@ -77,7 +77,7 @@
 
       <button class="btn m-1 btn-primary"
               data-elaaction="putForm"
-              data-elamodule="{{$eladmin->moduleKey()}}"
+              data-elamodule="{{$module->elakey()}}"
               data-elaarg{{$module->getKeyName()}}="{{$row->getKey()}}"
                title="{{ __('Edit') }}" >
         <i class="fas fa-edit"></i>
@@ -87,7 +87,7 @@
       @if($module->elaUsesSoftDeletes() && $module->elaAuth('delRow'))
       <button class="btn m-1 btn-danger"
               data-elaaction="delRow"
-              data-elamodule="{{$eladmin->moduleKey()}}"
+              data-elamodule="{{$module->elakey()}}"
               data-eladone="redrawCrudTable();"
               data-elaarg{{$module->getKeyName()}}="{{$row->getKey()}}"
                title="{{ __('Delete') }}" >

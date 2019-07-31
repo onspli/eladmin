@@ -66,7 +66,7 @@ $searchMessage = __('Search');
     @if($module->elaAuth('postRow'))
     <button id="crudadd" type="button" class="btn btn-success"
       data-elaaction="postForm"
-      data-elamodule="{{$module}}">
+      data-elamodule="{{$module->elakey()}}">
       <i class="fas fa-plus-circle"></i> {{ __('Add') }}
     </button>
     @endif
@@ -219,7 +219,7 @@ var crudFilters = {
   $(' .crud-paging .searchicon').html('<i class="fas fa-sync-alt fa-spin"></i>');
 
   //if(crudFilters.totalresults>0) $('#crud-table tbody').append($(loading));
-  elaRequest('getRows', '{{$module}}', crudFilters).done(function(data){
+  elaRequest('getRows', '{{$module->elakey()}}', crudFilters).done(function(data){
     var tbody = $(' #crud-table tbody');
     crudFilters.totalresults = data.totalresults;
     crudFilters.maxpage = Math.ceil(crudFilters.totalresults/crudFilters.resultsperpage);
@@ -231,6 +231,7 @@ var crudFilters = {
     }
 
   }).fail(function(res){
+    $(' .crud-paging .searchicon').html(searchiconHtml);
     toastr.error(res.responseText);
   });
 }

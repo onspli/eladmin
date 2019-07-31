@@ -20,14 +20,6 @@ trait Crud
   }
 
 
-
-  public function __toString(){
-    $elakey = $this->elakey();
-    if($elakey) return $elakey;
-    return parent::__toString();
-  }
-
-
   /**
   * Check if table for the model exists in the database;
   * @return bool

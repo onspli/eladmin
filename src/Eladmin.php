@@ -35,6 +35,11 @@ class Eladmin
 
   }
 
+  public function __toString(){
+    return '';
+  }
+
+
   public function __construct(){
     $this->defaultProperties();
     try{
@@ -44,6 +49,7 @@ class Eladmin
     } catch(\Exception $e){
       throw new \Exception('Locale "'.$this->lang.'" is not supported.');
     }
+
 
   /*
     $this->t = new \Gettext\GettextTranslator();
@@ -110,6 +116,10 @@ class Eladmin
     return $this->auth($action, $this);
   }
 
+  public function elakey(){
+    return (string)'';
+  }
+
   /**
   * Returns username or null if authorization is off.
   */
@@ -126,16 +136,23 @@ class Eladmin
     return $this->imodules;
   }
 
-  public function action(){
+  public function action(): ?string{
     return $_GET['elaaction']??null;
   }
 
-  public function modulekey(){
-    return $_GET['elamodule']??null;
+  public function modulekey(): ?string{
+    $key = $_GET['elamodule']??null;
+    if($key === null)
+      foreach($this->modules as $key=>$mod)
+        return $key;
+    return $key;
   }
 
   public function module($key=null){
-    return $this->imodules[$key??$this->moduleKey()]??$this;
+    if($key === "" || ($key === null && $this->moduleKey() === "")) return $this;
+    if(!isset($this->imodules[$key??$this->moduleKey()]))
+      throw new Exception\BadRequestException(__('Unknown module "%s"!', $key??$this->moduleKey()));
+    return $this->imodules[$key??$this->moduleKey()];
   }
 
   public function request($action, $module, $args=[]){
@@ -249,12 +266,6 @@ class Eladmin
 
     // no action, render module view
     if(!$this->action()){
-      if($this->module() == $this){
-        foreach($this->modules as $key=>$mod){
-          $_GET['elamodule'] = $key;
-          break;
-        }
-      }
       if($this->module() == $this)
         echo $this->view('hello');
       else
