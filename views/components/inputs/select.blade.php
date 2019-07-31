@@ -3,13 +3,13 @@
   <select class="form-control" {!! ($config->disabled?' disabled="disabled" ':' name="'.$column.'" ') !!}>
     <?php
     if(is_callable($config->selectOptions)){
-      $selectOptions = ($config->selectOptions)($row->$column, $row, $column, $module, $eladmin);
+      $selectOptions = ($config->selectOptions)($value, $row, $column, $module, $eladmin);
     } else{
       $selectOptions = $config->selectOptions;
     }
     ?>
-    @foreach($selectOptions as $value=>$label)
-      <option value="{{$value}}" {!! ($row->$column??null)===$value?' selected="selected" ':''  !!}>{{ $label }}</option>
+    @foreach($selectOptions as $val=>$label)
+      <option value="{{$val}}" {!! $val===$value?' selected="selected" ':''  !!}>{{ $label }}</option>
     @endforeach
   </select>
   @if($config->desc)
