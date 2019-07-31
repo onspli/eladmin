@@ -1,6 +1,12 @@
 # eladmin
 Eladmin generates CRUD/admin interface for Eloquent.
 
+## Instalation
+You can install Eladmin using composer:
+```
+composer require onspli/eladmin
+```
+
 ## Getting started
 Let us have a simple website where users can register for events. We have two Eloquent models *Event* and *Registration* and we want to generate the admin interface for them. The steps we have to take are:
 1. use *Module\Eloquent\Crud* trait in the models
