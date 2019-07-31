@@ -80,7 +80,7 @@
           </button>
         @else
 
-        <a href="{{$module->elaRequest($action, [$module->getKeyName()=>$row->getKey()])}}"
+        <a target="_blank" href="{{$module->elaRequest($action, [$module->getKeyName()=>$row->getKey()])}}"
         @if($config->confirm !== null)
           data-confirm="{{$config->confirm?$config->confirm:$value}}"
         @endif
