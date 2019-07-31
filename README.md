@@ -336,3 +336,30 @@ Result:
 
 ![Action Cancel](/docs/screenshot/actions.png)
 
+# Authorization 
+Eladmin provides a way to authorize users to do actions. The following code in *Event* module does the authorization:
+
+```php 
+  /**
+  * Roles authorized to work with the Event crud.
+  */
+  protected $elaAuthorizedRoles = ['admin', 'user'];
+
+  /**
+  * Authorized roles for specific actions.
+  */
+  protected $elaAuthorizedRolesActions = [
+    'update' => ['admin'],          // only 'admin' role can update records
+    'delete' => ['admin'],
+    'read' => [],                   // all users can do that
+    'create' => ['admin', 'user']   // only users with roles 'admin' or 'user' are allowed
+  ];
+```
+
+Result:
+
+![Authorization](/docs/screenshot/authorization.png)
+
+By default only 'admin' role is granted to work with eladmin *Users* crud.
+
+
