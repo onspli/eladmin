@@ -1,13 +1,24 @@
 # eladmin
 Eladmin generates CRUD/admin interface for Eloquent.
 
-## Instalation
+## Table of Contents
+
+1. [ Installation ](#installation)
+2. [ Getting Started ](#gettingstarted)
+3. [ Advanced Configuration](#advanced)
+4. [ Actions ](#actions)
+5. [ Authorization ](#authorization)
+6. [ Filtering Results ](#filters)
+
+<a name="installation"></a>
+## Installation
 You can install Eladmin using composer:
 ```
 composer require onspli/eladmin
 ```
 
-## Getting started
+<a name="gettingstarted"></a>
+## Getting Started
 Let us have a simple website where users can register for events. We have two Eloquent models *Event* and *Registration* and we want to generate the admin interface for them. The steps we have to take are:
 1. use *Module\Eloquent\Crud* trait in the models
 2. extend Eladmin class with basic configuration properties *$cache* and *$modules*
@@ -100,6 +111,7 @@ Here is the interface got with the minimal configuration example above.
 
 ![Add User](/docs/screenshot/adduser.png)
 
+<a name="advanced"></a>
 ## Advanced Configuration
 
 An example and screenshots:
@@ -302,6 +314,7 @@ $myEladmin->run();
 
 ![Advanced Configuration](/docs/screenshot/columns4.png)
 
+<a name="actions"></a>
 ## Actions
 
 There are 6 default actions we can do with the records: *create*, *read*, *update*, *delete*, *restore* and *forceDelete*. Sometimes it's not enough and we want to define our own actions. Eladmin can do that.
@@ -342,6 +355,7 @@ Result:
 
 ![Action Cancel](/docs/screenshot/actions.png)
 
+<a name="authorization"></a>
 # Authorization
 Eladmin provides a way to authorize users to do actions. The following code in *Event* module does the authorization:
 
@@ -391,6 +405,7 @@ Method *elaModifyPost* is invoked by actions *create* and *update*. By overridin
   }
 ```
 
+<a name="filters"></a>
 ## Filtering Results
 You can add your own filters to crud. Code in *Registration* model:
 
