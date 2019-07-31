@@ -334,5 +334,5 @@ We want do add action 'cancel' which cancels a registration. Add folowing code t
 
 Result:
 
-![Action Cancel](/docs/screenshot/actions1.png)
+![Action Cancel](/docs/screenshot/actions.png)
 
