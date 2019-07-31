@@ -94,7 +94,7 @@ Here is the interface got with the minimal configuration example above.
 
 ![Add User](/docs/screenshot/adduser.png)
 
-## Advenced Configuration 
+## Advanced Configuration 
 
 An example and screenshots:
 
