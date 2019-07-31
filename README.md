@@ -302,12 +302,12 @@ $myEladmin->run();
 
 ![Advanced Configuration](/docs/screenshot/columns4.png)
 
-## Actions 
+## Actions
 
 There are 6 default actions we can do with the records: *create*, *read*, *update*, *delete*, *restore* and *forceDelete*. Sometimes it's not enough and we want to define our own actions. Eladmin can do that.
 
 We want do add action *cancel* which cancels a registration. Add folowing code to the *Registration* model:
-```php 
+```php
   /**
   * Define new action 'cancel' which cancels registration.
   */
@@ -342,10 +342,10 @@ Result:
 
 ![Action Cancel](/docs/screenshot/actions.png)
 
-# Authorization 
+# Authorization
 Eladmin provides a way to authorize users to do actions. The following code in *Event* module does the authorization:
 
-```php 
+```php
   /**
   * Roles authorized to work with the Event crud.
   */
@@ -372,7 +372,7 @@ By default only 'admin' role is granted to work with eladmin *Users* crud.
 
 Method *elaModifyPost* is invoked by actions *create* and *update*. By overriding the method you can do the validation or modification of the data. Example code in *Event* model:
 
-```php 
+```php
   /**
   * Validate or modify data.
   */
@@ -391,3 +391,17 @@ Method *elaModifyPost* is invoked by actions *create* and *update*. By overridin
   }
 ```
 
+## Filtering Results
+You can add your own filters to crud. Code in *Registration* model:
+
+```php
+public function elaFilters(){
+  $filters = $this->elaFiltersDef();
+  $filters->name->label('Name')->icon('<i class="fas fa-user"></i>');
+  $filters->event_id->label('Event')->icon('<i class="fas fa-calendar-alt"></i>')->select(Event::class);
+  $filters->status->select([''=>'All', 'new'=>'New', 'confirmed'=>'Confirmed', 'cancelled'=>'Canceled']);
+  return $filters;
+}
+```
+
+![Filters](/docs/screenshot/filters.png)
