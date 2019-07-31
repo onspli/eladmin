@@ -8,7 +8,8 @@ Eladmin generates CRUD/admin interface for Eloquent.
 3. [ Advanced Configuration](#advanced)
 4. [ Actions ](#actions)
 5. [ Authorization ](#authorization)
-6. [ Filtering Results ](#filters)
+6. [ Data Validation and Modification ](#validation)
+7. [ Filtering Results ](#filters)
 
 <a name="installation"></a>
 ## Installation
@@ -382,6 +383,7 @@ It results in the following (user *onspli* has role *user*).
 
 By default only 'admin' role is granted to work with eladmin *Users* crud.
 
+<a name="validation"></a>
 ## Data Validation and Modification
 
 Method *elaModifyPost* is invoked by actions *create* and *update*. By overriding the method you can do the validation or modification of the data. Example code in *Event* model:
