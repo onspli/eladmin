@@ -14,6 +14,8 @@ Here is an example with the minimal configuration:
 require __DIR__.'/../vendor/autoload.php';
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 use Onspli\Eladmin\Eladmin;
 use Onspli\Eladmin\Module\Eloquent\Crud;
 
@@ -31,6 +33,7 @@ use Onspli\Eladmin\Module\Eloquent\Crud;
 class Event extends Model
 {
   use Crud;
+  use SoftDeletes;
 }
 
 
@@ -47,6 +50,7 @@ class Event extends Model
 class Registration extends Model
 {
   use Crud;
+  use SoftDeletes;
 }
 
 /**
@@ -70,6 +74,7 @@ class MyEladmin extends Eladmin
 */
 $myEladmin = new MyEladmin();
 $myEladmin->run();
+
 ```
 
 Eladmin comes with simple authorization and user management out-of-the-box. Don't worry, the authorization can be easily overriden with your own solutin. Default credentials are eladmin/nimdale.
