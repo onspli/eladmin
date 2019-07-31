@@ -362,4 +362,26 @@ It results in the following (user *onspli* has role *user*).
 
 By default only 'admin' role is granted to work with eladmin *Users* crud.
 
+## Data Validation and Modification
+
+Method *elaModifyPost* is invoked by actions *create* and *update*. By overriding the method you can do the validation or modification of the data. Example code in *Event* model:
+
+```php 
+  /**
+  * Validate or modify data.
+  */
+  protected function elaModifyPost(){
+    $name = $_POST['name']??'';
+    /**
+    * Validate data.
+    */
+    if(!$name)
+      throw new Exception\BadRequestException('You have to fill the name!');
+
+    /**
+    * Modify data.
+    */
+    $_POST['name'] = 'Event: '.$name;
+  }
+```
 
