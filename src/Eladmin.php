@@ -137,7 +137,8 @@ class Eladmin
   }
 
   public function action(): ?string{
-    return $_GET['elaaction']??null;
+    if(!isset($_GET['elaaction'])) return null;
+    return $this->normalizeActionName($_GET['elaaction']);
   }
 
   public function modulekey(): ?string{

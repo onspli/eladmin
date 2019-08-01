@@ -260,10 +260,13 @@ trait Crud
 
   public function elaGetActionInstance(){
     if(!isset($_POST[$this->getKeyName()])) return $this;
-    $entry = $this->find($_POST[$this->getKeyName()]);
+    $entry = new static();
+    $action = $this->eladmin->action();
+    if(in_array($action, ['forcedelete', 'restore']))
+      $entry = $entry->withTrashed();
+    $entry = $entry->find($_POST[$this->getKeyName()]);
     if(!$entry) throw new Exception\BadRequestException( __('Entry not found!') );
     $entry->elaInit($this->eladmin, $this->elakey);
-    $action = $this->eladmin->action();
     if(!in_array($action, ['update']) && $this->elaAuth('update') && ($_GET['elaupdate']??false)){
       $entry->elaUpdate();
     }
