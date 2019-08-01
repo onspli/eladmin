@@ -333,14 +333,13 @@ $(document).on('click', 'form *[data-elaupdateaction]', function(e){
     if (ct.indexOf('json') > -1) {
     }else{
       toastr.success(data?data:'OK');
-    }
+    });
+  }).always(function(){
     elaRequest('putForm', '{{$module->elakey()}}', {
       {{$module->getKeyName()}} : el.data('elaarg{{$module->getKeyName()}}')
     }).done(function(html){
       $('#dynamic .modal-dialog').html($(html).find('.modal-dialog'));
     });
-
-
   });
 
 
