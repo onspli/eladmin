@@ -43,8 +43,8 @@
     elaRequest($(this).data('elaaction'), $(this).data('elamodule'), args).fail(function(data){
       toastr.error(data.responseText);
     }).done(function(data, status, xhr){
-      eval('with(data){'+$(el).data('eladone')+'}');
-      if($(el).data('eladonotprocess')) return;
+      var eladone = new Function('data', $(el).data('eladone')+'; if(data) toastr.success(data);');
+      eladone(data);
 
       var ct = xhr.getResponseHeader("content-type") || "";
       //console.debug(ct);
@@ -57,11 +57,9 @@
           if(html.hasClass('modal')){
             $('#dynamic').html(html);
             html.modal();
-          } else{
-            toastr.success(data?data:'OK');
           }
         } catch(v){
-          toastr.success(data?data:'OK');
+
         }
       }
       // JSON response
@@ -71,8 +69,7 @@
 
       // Text response
       if (ct.indexOf('plain') > -1) {
-        //console.debug('plain');
-        toastr.success(data?data:'OK');
+
       }
     });
   });
@@ -84,9 +81,10 @@
     .fail(function(response){
       toastr.error(response.responseText);
     }).done(function(data){
-      toastr.success(data?data:'OK');
+      var eladone = new Function('data', form.data('eladone')+';  if(data) toastr.success(data);');
+      eladone(data);
       $('#dynamic .modal').modal('hide');
-      eval(form.data('eladone'));
+
     });
 
   });

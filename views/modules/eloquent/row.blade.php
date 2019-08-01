@@ -92,6 +92,7 @@
       @if($row->elaAuth('update'))
       <button class="btn m-1 btn-primary"
               data-elaaction="putForm"
+              data-eladone="return;"
               data-elamodule="{{$row->elakey()}}"
               data-elaarg{{$row->getKeyName()}}="{{$row->getKey()}}"
                title="{{ __('Edit') }}" >
@@ -101,6 +102,7 @@
       <button class="btn m-1 btn-primary"
               data-elaaction="putForm"
               data-elamodule="{{$row->elakey()}}"
+              data-eladone="return;"
               data-elaarg{{$row->getKeyName()}}="{{$row->getKey()}}"
                title="{{ __('Edit') }}" >
         <i class="fas fa-eye"></i>

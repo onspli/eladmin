@@ -327,8 +327,9 @@ $(document).on('click', 'form *[data-elaupdateaction]', function(e){
   elaRequest($(this).data('elaupdateaction'), form.data('elamodule'), form.serialize(), {elaupdate: 1})
   .fail(function(response){
     toastr.error(response.responseText);
-  }).done(function(data){
-    eval('with(data){'+el.data('eladone')+'; toastr.success(data?data:"OK");}');
+  }).done(function(response){
+    var eladone = new Function('data', el.data('eladone')+';  if(data) toastr.success(data);');
+    eladone(response);
   }).always(function(){
     elaRequest('putForm', '{{$module->elakey()}}', {
       {{$module->getKeyName()}} : el.data('elaarg{{$module->getKeyName()}}')
