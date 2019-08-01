@@ -93,7 +93,7 @@ $searchMessage = __('Search');
           <select class="form-control" data-crudfiltercolumn="{{$filter->column??$name}}">
             <?php
             if(is_callable($filter->selectOptions)){
-              $selectOptions = ($filter->selectOptions)($filter, $name, $module, $eladmin);
+              $selectOptions = ($filter->selectOptions)($filter, $name);
             } else{
               $selectOptions = $filter->selectOptions;
             }

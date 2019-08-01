@@ -48,13 +48,15 @@ trait Crud
     $visibleColumns = $this->elaVisibleColumns();
     $disabledColumns = $this->elaDisabledColumns();
     $realColumns = $this->getTableColumns();
-    $columns = new Chainset\Column(true);
+    $columns = new Chainset\Column($this, true);
     foreach($visibleColumns as $column){
       $columns->$column;
       if(in_array($column, $disabledColumns))
         $columns->$column->disabled();
       if(in_array($column, $realColumns))
         $columns->$column->realcolumn = true;
+      if(!$this->elaAuth('update'))
+        $columns->$column->disabled();
     }
     if($this->elaUsesSoftDeletes())
       unset($columns->deleted_at);
@@ -62,11 +64,11 @@ trait Crud
   }
 
   public function elaActionsDef(){
-    return new Chainset\Action(true);
+    return new Chainset\Action($this, true);
   }
 
   public function elaFiltersDef(){
-    return new Chainset\Filter(true);
+    return new Chainset\Filter($this, true);
   }
 
   public function elaColumns(){
@@ -82,16 +84,15 @@ trait Crud
   }
 
   public function elaActionPostForm(){
+    if(!$this->elaAuth('create'))
+      throw new Exception\UnauthorizedException();
     echo $this->eladmin->view($this->elaGetView('postForm'), ['module'=>$this]);
   }
 
   public function elaActionPutForm(){
-    $id = $_POST[$this->getKeyName()]??null;
-    $row = static::find($id);
-    if(!$row)
-      throw new Exception\BadRequestException(__('Entry not found!'));
-
-    echo $this->eladmin->view($this->elaGetView('putForm'), ['row'=>$row,'module'=>$this]);
+    if(!$this->elaAuth('read'))
+      throw new Exception\UnauthorizedException();
+    echo $this->eladmin->view($this->elaGetView('putForm'), ['row'=>$this,'module'=>$this]);
   }
 
   public function elaUsesSoftDeletes(){
@@ -162,90 +163,93 @@ trait Crud
 
     $result['totalresults'] = $total;
     $result['html'] = '';
-    foreach($rows as $row)
+    foreach($rows as $row){
+      $row->elaInit($this->eladmin, $this->elakey);
       $result['html'] .= $this->eladmin->view($this->elaGetView('row'), ['row'=>$row,'module'=>$this, 'trash'=>$trash]);
-    Header('Content-type:application/json');
-    echo json_encode($result, JSON_UNESCAPED_UNICODE);
+    }
+    $this->elaOutJson($result);
   }
 
   /**
   * Edit database entry.
   */
   public function elaActionUpdate(){
+    $columns = $this->elaColumns();
+    foreach ($columns as $column => $config) {
+      if($config->setformat && isset($_POST[$column])){
+        $_POST[$column] = ($config->setformat)($_POST[$column]);
+      }
+    }
 
-    $id = $_POST[$this->getKeyName()]??null;
-    $row = static::find($id);
-    if(!$row) throw new Exception\BadRequestException( __('Entry not found!') );
-
-    $this->elaModifyPost();
     $columns = $this->getTableColumns();
     $columns = array_diff($columns, $this->elaDisabledColumns());
 
     foreach($columns as $column){
       $value = $_POST[$column]??null;
-      if($value === null || $column == $this->primaryKey) continue;
-      $row->{$column} = $value;
+      if($value === null || $column == $this->getKeyName()) continue;
+      $this->{$column} = $value;
     }
 
-    $row->save();
-    Header('Content-type: text/plain');
-    echo __('Entry modified.');
+    $this->save();
+    $this->elaOutText(__('Entry modified.'));
   }
 
   /**
   * Create database entry.
   */
   public function elaActionCreate(){
-    $row = new static();
-    $this->elaModifyPost();
-
+    $columns = $this->elaColumns();
+    foreach ($columns as $column => $config) {
+      if($config->validate){
+        ($config->validate)($_POST[$column]??null);
+      }
+      if($config->setformat && isset($_POST[$column])){
+        $_POST[$column] = ($config->setformat)($_POST[$column]);
+      }
+    }
     $columns = $this->getTableColumns();
     $columns = array_diff($columns, $this->elaDisabledColumns());
     foreach($columns as $column){
       $value = $_POST[$column]??null;
-      if($value === null || $column == $this->primaryKey) continue;
-      $row->{$column} = $value;
+      if($value === null || $column == $this->getKeyName()) continue;
+      $this->{$column} = $value;
     }
-    $row->save();
-    Header('Content-type: text/plain');
-    echo __('Entry added.');
+    $this->save();
+    $this->elaOutText(__('Entry added.'));
   }
 
   /**
   * Delete database entry.
   */
   public function elaActionDelete(){
-    $id = $_POST[$this->getKeyName()];
-    $row = static::find($id);
-    $row->delete();
+    $this->delete();
     Header('Content-type: text/plain');
     if($this->elaUsesSoftDeletes())
-      echo __('Entry deleted. It can be restored from Trash later.');
+      $this->elaOutText(__('Entry deleted. It can be restored from Trash later.'));
     else
-      echo __('Entry deleted.');
+      $this->elaOutText(__('Entry deleted.'));
   }
 
   public function elaActionForceDelete(){
-    $id = $_POST[$this->getKeyName()];
-    $row = static::withTrashed()->find($id);
-    $row->forceDelete();
-    Header('Content-type: text/plain');
-    echo __('Deleted forever!');
+    if(!$this->elaAuth('delete'))
+      throw new Exception\UnauthorizedException();
+    $this->forceDelete();
+    $this->elaOutText(__('Deleted forever!'));
   }
 
   public function elaActionRestore(){
-    $id = $_POST[$this->getKeyName()];
-    $row = static::withTrashed()->find($id);
-    $row->restore();
-    Header('Content-type: text/plain');
-    echo __('Entry restored.');
+    if(!$this->elaAuth('delete'))
+      throw new Exception\UnauthorizedException();
+    $this->restore();
+    $this->elaOutText(__('Entry restored.'));
   }
 
-  /**
-  * Here you can modify or validate $_POST variable before the data is stored to the database.
-  */
-  protected function elaModifyPost():void {
-
+  public function elaGetActionInstance(){
+    if(!isset($_POST[$this->getKeyName()])) return $this;
+    $entry = $this->find($_POST[$this->getKeyName()]);
+    if(!$entry) throw new Exception\BadRequestException( __('Entry not found!') );
+    $entry->elaInit($this->eladmin, $this->elakey);
+    return $entry;
   }
 
 }

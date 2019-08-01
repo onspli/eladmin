@@ -20,10 +20,13 @@ namespace Onspli\Eladmin\Chainset;
 
 class Chainset{
 
+  protected $_ignore = ['_ignore', '_key', '_parent', '_module'];
   protected $_key = null;
   protected $_parent = null;
+  protected $_module = null;
 
-  function __construct($empty=false){
+  function __construct($module=null, $empty=false){
+    $this->_module = $module;
     if($empty) $this->_empty();
   }
 
@@ -42,7 +45,7 @@ class Chainset{
 
   public function __get($key){
     if(!$this->_parent){
-      $this->$key = new static;
+      $this->$key = new static($this->_module);
       $this->$key->_parent($this);
       $this->$key->_key($key);
     }
@@ -54,6 +57,7 @@ class Chainset{
     if($val instanceof self){
       $this->$key->_parent($this);
       $this->$key->_key($key);
+      $this->$key->_module($this->_module);
     }
   }
 
@@ -63,6 +67,10 @@ class Chainset{
 
   public function _parent($obj){
     $this->_parent = $obj;
+  }
+
+  public function _module($obj){
+    $this->_module = $obj;
   }
 
   public function before($target=null){
@@ -79,7 +87,7 @@ class Chainset{
 
   public function _empty(){
     foreach($this as $key=>$val){
-      if($key == '_key' || $key == '_parent') continue;
+      if(in_array($key, $this->_ignore)) continue;
       unset($this->$key);
     }
   }
@@ -89,13 +97,13 @@ class Chainset{
     $move = $this->_key;
 
     foreach($copy as $key=>$val){
-      if($key == '_key' || $key == '_parent') continue;
+      if(in_array($key, $this->_ignore)) continue;
       unset($this->$key);
     }
 
     if($target == null || !isset($copy->$target)) $this->$move = $copy->$move;
     foreach($copy as $key=>$val){
-      if($key == '_key' || $key == '_parent') continue;
+      if(in_array($key, $this->_ignore)) continue;
       if($key != $move) $this->$key = $val;
       if($key == $target) $this->$move = $copy->$move;
     }
@@ -106,12 +114,12 @@ class Chainset{
     $move = $this->_key;
 
     foreach($copy as $key=>$val){
-      if($key == '_key' || $key == '_parent') continue;
+      if(in_array($key, $this->_ignore)) continue;
       unset($this->$key);
     }
 
     foreach($copy as $key=>$val){
-      if($key == '_key' || $key == '_parent') continue;
+      if(in_array($key, $this->_ignore)) continue;
       if($key == $target) $this->$move = $copy->$move;
       if($key != $move) $this->$key = $val;
     }

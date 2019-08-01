@@ -161,9 +161,9 @@ class Event extends Model
     $columns = $this->elaColumnsDef();
 
     /**
-    * Set label.
+    * Set label and datetime format.
     */
-    $columns->when->label('When');
+    $columns->when->label('When')->datetime('j.n.Y');
 
     /**
     * Set description to help people fill the input.
@@ -329,15 +329,11 @@ We want do add action *cancel* which cancels a registration. Add folowing code t
   * Define new action 'cancel' which cancels registration.
   */
   public function elaActionCancel(){
-    $id = $_POST['id']??0;
-    $row = $this->find($id);
-    if(!$row)
-      throw new Exception\BadRequestException('Registration does not exist!');
-    if($row->status == 'cancelled')
+    if($this->status == 'cancelled')
       throw new Exception\BadRequestException('Already cancelled!');
-    $row->status = 'cancelled';
-    $row->save();
-    echo 'Registration #'.$id.' was cancelled.';
+    $this->status = 'cancelled';
+    $this->save();
+    echo 'Registration #'.$this->id.' was cancelled.';
   }
 
   /**
@@ -346,9 +342,11 @@ We want do add action *cancel* which cancels a registration. Add folowing code t
   public function elaActions(){
     $actions = $this->elaActionsDef();
     $actions->cancel          // method elaActionCancel
-      ->label('Cancel')
+      ->label(function($val, $row){return 'Cancel #'.$row->id;}) // label can be string or function
       ->icon('<i class="far fa-times-circle"></i>')
       ->style('warning')      // boostrap button styles
+      ->confirm('Do you really want to cancel?')    // confirm the action
+      ->done('console.log("Action \'cancel\' done.")')  // run script after the action is done
       ->listable()            // show the action in the table of registrations
       ->editable();           // show the action in the update form
     return $actions;

@@ -20,15 +20,11 @@ class User extends \Illuminate\Database\Eloquent\Model implements Iface\Authoriz
 
   protected $elaAuthorizedRoles = ['admin'];
 
-  protected function defaultProperties(){
-    parent::defaultProperties();
-    $this->elaTitle = __('Users');
-  }
-
   public function __construct(){
     parent::__construct();
     if(!$this->tableExists()) $this->createTable();
     if(!session_id()) session_start();
+    $this->elaTitle = __('Users');
   }
 
   protected function createTable(){
@@ -63,24 +59,24 @@ class User extends \Illuminate\Database\Eloquent\Model implements Iface\Authoriz
   public function elaColumns(){
     $cols = $this->elaColumnsDef();
     $cols->newpassword->label(__('New password'))->nonlistable()->editable();
+    $cols->login->validate(function($login){
+      if(!$login)
+        throw new Exception\BadRequestException(__('Login must not be empty!'));
+      $oldlogin = static::where('login',$login)->first();
+      $oldid = $_POST['id']??0;
+      if($oldlogin && $oldlogin->id != $oldid)
+        throw new Exception\BadRequestException(__('Login already exists!'));
+    });
+    $cols->newpassword->validate(function($newpassword){
+      $oldid = $_POST['id']??0;
+      $newpassword = $_POST['newpassword']??null;
+      if(!$oldid && !$newpassword)
+        throw new Exception\BadRequestException(__('New password must not be empty!'));
+      if($newpassword)
+        $_POST['passwordhash'] = $newpassword;
+    });
+
     return $cols;
-  }
-
-  protected function elaModifyPost(): void{
-    $login = $_POST['login']??null;
-    if($login === '')
-      throw new Exception\BadRequestException(__('Login must not be empty!'));
-
-    $oldlogin = static::where('login',$login)->first();
-    $oldid = $_POST['id']??0;
-    if($oldlogin && $oldlogin->id != $oldid)
-      throw new Exception\BadRequestException(__('Login already exists!'));
-
-    $newpassword = $_POST['newpassword']??null;
-    if(!$oldid && !$newpassword)
-      throw new Exception\BadRequestException(__('New password must not be empty!'));
-    if($newpassword)
-      $_POST['passwordhash'] = $newpassword;
   }
 
 

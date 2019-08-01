@@ -17,6 +17,9 @@ class Column extends Eladmin\Chainset\Chainset{
   public $realcolumn = false;
   public $listlimit = 24;
   public $belongsTo = null;
+  public $getformat = null;
+  public $setformat = null;
+  public $validate = null;
 
   public function raw(){
     $this->rawoutput = true;
@@ -108,6 +111,38 @@ class Column extends Eladmin\Chainset\Chainset{
 
   public function limit($len){
     $this->listlimit = $len;
+    return $this;
+  }
+
+  public function get($func){
+    $this->getformat = $func;
+    return $this;
+  }
+
+  public function set($func){
+    $this->setformat = $func;
+    return $this;
+  }
+
+  public function datetime($format){
+    $this->get(function($val, $row) use($format){
+      $carbon = \Carbon\Carbon::parse($val);
+      if($carbon->year < 1) return '';
+      return $carbon->format($format);
+    });
+    $this->set(function($val) use($format){
+      if(!$val) return 0;
+      try{
+        return \Carbon\Carbon::createFromFormat($format, $val);
+      } catch(\Exception $e){
+        throw new Eladmin\Exception\BadRequestException(__('Date or time format is not valid.'));
+      }
+    });
+    return $this;
+  }
+
+  public function validate($func){
+    $this->validate = $func;
     return $this;
   }
 

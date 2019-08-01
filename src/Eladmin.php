@@ -107,7 +107,7 @@ class Eladmin
     }
 
     // Check if user is authorized to do the action
-    $authroles = $module->elaGetAuthorizedRolesActions()[strtolower($action)]??[];
+    $authroles = $module->elaGetAuthorizedRolesActions()[static::normalizeActionName($action)]??[];
     if(!$this->iauth->elaAuthorize($authroles)) return false;
     return true;
   }
@@ -285,7 +285,8 @@ class Eladmin
     else $classname = $this->modules[$this->moduleKey()];
     if(!is_callable([$this->module(), 'elaAction'.ucfirst($this->action())]))
       throw new Exception\BadRequestException('Class '.$classname.' does not have method '.'elaAction'.ucfirst($this->action()).'!');
-    call_user_func([$this->module(), 'elaAction'.ucfirst($this->action())]);
+    $actionInstance = $this->module()->elaGetActionInstance();
+    call_user_func([$actionInstance, 'elaAction'.ucfirst($this->action())]);
   }
 
   public function elaGetAuthorizedRolesActions(){
@@ -302,6 +303,18 @@ class Eladmin
 
   public function elaActionAccountForm(){
     echo $this->view('accountForm');
+  }
+
+  public function elaGetActionInstance(){
+    return $this;
+  }
+
+  static public function compareActionNames($act1, $act2){
+    return (static::normalizeActionName($act1) == static::normalizeActionName($act2));
+  }
+
+  static public function normalizeActionName($action){
+    return strtolower($action);
   }
 
 
