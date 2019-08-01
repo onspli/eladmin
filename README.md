@@ -321,7 +321,7 @@ $myEladmin->run();
 
 ## Actions
 
-There are 6 default actions we can do with the records: *create*, *read*, *update*, *delete*, *restore* and *forceDelete*. Sometimes it's not enough and we want to define our own actions. Eladmin can do that.
+There are 4 default actions we can do with the records: *create*, *read*, *update*, *delete*. Sometimes it's not enough and we want to define our own actions. Eladmin can do that.
 
 We want do add action *cancel* which cancels a registration. Add folowing code to the *Registration* model:
 ```php
@@ -385,24 +385,25 @@ By default only 'admin' role is granted to work with eladmin *Users* crud.
 
 ## Data Validation and Modification
 
-Method *elaModifyPost* is invoked by actions *create* and *update*. By overriding the method you can do the validation or modification of the data. Example code in *Event* model:
+Example code in *Event* model:
 
 ```php
-  /**
-  * Validate or modify data.
-  */
-  protected function elaModifyPost(){
-    $name = $_POST['name']??'';
-    /**
-    * Validate data.
-    */
-    if(!$name)
-      throw new Exception\BadRequestException('You have to fill the name!');
+   public function elaColumns(){
+    $columns = $this->elaColumnsDef();
 
-    /**
-    * Modify data.
-    */
-    $_POST['name'] = 'Event: '.$name;
+    $columns->name
+        // validate column name
+        ->validate(function($val, $row){
+          if(!$val)
+            throw new Exception\BadRequestException('You have to fill the name!');
+        })
+        // modify column name
+        ->set(function($val, $row){
+          if($val == 'change') return 'changed';
+          return $val;
+        });
+
+    return $columns;
   }
 ```
 
