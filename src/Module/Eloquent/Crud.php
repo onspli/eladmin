@@ -176,8 +176,11 @@ trait Crud
   public function elaActionUpdate(){
     $columns = $this->elaColumns();
     foreach ($columns as $column => $config) {
+      if($config->validate){
+        ($config->validate)($_POST[$column]??null, $this);
+      }
       if($config->setformat && isset($_POST[$column])){
-        $_POST[$column] = ($config->setformat)($_POST[$column]);
+        $_POST[$column] = ($config->setformat)($_POST[$column], $this);
       }
     }
 
@@ -201,10 +204,10 @@ trait Crud
     $columns = $this->elaColumns();
     foreach ($columns as $column => $config) {
       if($config->validate){
-        ($config->validate)($_POST[$column]??null);
+        ($config->validate)($_POST[$column]??null, $this);
       }
       if($config->setformat && isset($_POST[$column])){
-        $_POST[$column] = ($config->setformat)($_POST[$column]);
+        $_POST[$column] = ($config->setformat)($_POST[$column], $this);
       }
     }
     $columns = $this->getTableColumns();
