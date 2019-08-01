@@ -328,7 +328,7 @@ $(document).on('click', 'form *[data-elaupdateaction]', function(e){
   .fail(function(response){
     toastr.error(response.responseText);
   }).done(function(data){
-    eval(form.data('eladone'));
+    eval(el.data('eladone'));
     toastr.success(data?data:'OK');
     elaRequest('putForm', '{{$module->elakey()}}', {
       {{$module->getKeyName()}} : el.data('elaarg{{$module->getKeyName()}}')
