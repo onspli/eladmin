@@ -25,7 +25,7 @@ class Chainset{
   protected $_parent = null;
   protected $_module = null;
 
-  function __construct($module=null, $empty=false){
+  function __construct(&$module=null, $empty=false){
     $this->_module = $module;
     if($empty) $this->_empty();
   }

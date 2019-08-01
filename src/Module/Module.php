@@ -11,9 +11,21 @@ trait Module
   public $eladmin = null;
   public $elakey = null;
 
+  /**
+  * I am getting 'Indirect modification has no efect' if the property is not explicitly declared from some reason.
+  * But it cannot be, because this is a trait and it shall be overriden.
+  * So I declared this property and elaAuthorizedRolesActions is copied to it during init.
+  */
+  protected $_elahack_elaAuthorizedRolesActions = [];
+
   public function elaInit($eladmin, $elakey){
     $this->eladmin = $eladmin;
     $this->elakey = $elakey;
+    // normalize action names
+    $authRoles = $this->elaAuthorizedRolesActions??[];
+    $this->_elahack_elaAuthorizedRolesActions = [];
+    foreach($authRoles as $action=>$data)
+      $this->_elahack_elaAuthorizedRolesActions[$this->eladmin::normalizeActionName($action)] = $data;
   }
 
   public function elakey(){
@@ -37,12 +49,13 @@ trait Module
   }
 
   public function elaGetAuthorizedRolesActions(): array{
-    $authRoles = $this->elaAuthorizedRolesActions??[];
-    $arr = [];
-    foreach($authRoles as $action=>$data)
-    $arr[$this->eladmin::normalizeActionName($action)] = $data;
-    return $arr;
+    return $this->_elahack_elaAuthorizedRolesActions??[];
+  }
 
+  public function elaSetAuthorizedRolesAction($action, $roles){
+    if(!is_array($roles)) $roles = [$roles];
+    $action = $this->eladmin->normalizeActionName($action);
+    $this->_elahack_elaAuthorizedRolesActions[$action] = $roles;
   }
 
   public function elaRequest($action, $args=[]){

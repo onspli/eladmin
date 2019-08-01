@@ -18,6 +18,10 @@ class Action extends \Onspli\Eladmin\Chainset\Chainset{
     return $this;
   }
 
+  public function auth($role){
+    $this->_module->elaSetAuthorizedRolesAction($this->_key, $role);
+  }
+
   public function done($js=''){
     $this->done = $js;
     return $this;

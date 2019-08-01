@@ -319,6 +319,33 @@ $(' .crud-trash').click(function(){
   redrawFilters();
 });
 
+$(document).on('click', 'form *[data-elaupdateaction]', function(e){
+  e.preventDefault();
+  var form = $(this).closest('form');
+  var el = $(this);
+
+  elaRequest($(this).data('elaupdateaction'), form.data('elamodule'), form.serialize(), {elaupdate: 1})
+  .fail(function(response){
+    toastr.error(response.responseText);
+  }).done(function(data){
+    eval(form.data('eladone'));
+    toastr.success(data?data:'OK');
+    elaRequest('putForm', '{{$module->elakey()}}', {
+      {{$module->getKeyName()}} : el.data('elaarg{{$module->getKeyName()}}')
+    }).done(function(html){
+      $('#dynamic .modal-dialog').html($(html).find('.modal-dialog'));
+    });
+
+
+  });
+
+
+});
+
+$(document).on('click', '*[data-dismiss="modal"]', function(){
+  redrawCrudTable();
+})
+
 
 
 </script>

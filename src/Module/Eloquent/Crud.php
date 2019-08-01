@@ -19,6 +19,11 @@ trait Crud
     ];
   }
 
+  public function elaInit($eladmin, $elakey){
+    $this->elaInit_Parent_Module($eladmin, $elakey);
+    $this->elaActions(); // set authorized roles
+  }
+
 
   /**
   * Check if table for the model exists in the database;
@@ -82,6 +87,7 @@ trait Crud
   public function elaFilters(){
     return $this->elaFiltersDef();
   }
+
 
   public function elaActionPostForm(){
     if(!$this->elaAuth('create'))
@@ -174,6 +180,11 @@ trait Crud
   * Edit database entry.
   */
   public function elaActionUpdate(){
+    $this->elaUpdate();
+    $this->elaOutText(__('Entry modified.'));
+  }
+
+  protected function elaUpdate(){
     $columns = $this->elaColumns();
     foreach ($columns as $column => $config) {
       if($config->validate){
@@ -194,7 +205,7 @@ trait Crud
     }
 
     $this->save();
-    $this->elaOutText(__('Entry modified.'));
+    $this->refresh();
   }
 
   /**
@@ -252,6 +263,10 @@ trait Crud
     $entry = $this->find($_POST[$this->getKeyName()]);
     if(!$entry) throw new Exception\BadRequestException( __('Entry not found!') );
     $entry->elaInit($this->eladmin, $this->elakey);
+    $action = $this->eladmin->action();
+    if(!in_array($action, ['update']) && $this->elaAuth('update') && ($_GET['elaupdate']??false)){
+      $entry->elaUpdate();
+    }
     return $entry;
   }
 

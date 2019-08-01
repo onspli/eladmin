@@ -5,7 +5,7 @@
   });
 
 
-  function elaRequest(action, module, args){
+  function elaRequest(action, module, args, getargs){
     if(module === null || module ===undefined){
       console.error('You have to specify module!');
       return;
@@ -13,7 +13,11 @@
     }
     return $.ajax({
         method: 'POST',
-        url: '?elamodule='+module+'&elaaction='+action+'&elatoken={{$eladmin->CSRFToken()}}',
+        url: '?'+$.param($.extend({},{
+          elamodule: module,
+          elaaction: action,
+          elatoken: '{{$eladmin->CSRFToken()}}'
+        }, getargs)),
         data: args
     });
   }
@@ -27,7 +31,7 @@
     }
   });
 
-  $(document).on('click', '*[data-elaaction]', function(e){
+  $(document).on('click', '*:not(form)[data-elaaction]', function(e){
     e.preventDefault();
     var el = this;
     var data = $(this).data();
@@ -76,11 +80,8 @@
   $(document).on('submit', 'form#modal-form', function(e){
     e.preventDefault();
     var form = $(this);
-    $.ajax({
-      url: $(this).attr('action'),
-      method: 'POST',
-      data: $(this).serialize()
-    }).fail(function(response){
+    elaRequest(form.data('elaaction'), form.data('elamodule'), form.serialize())
+    .fail(function(response){
       toastr.error(response.responseText);
     }).done(function(data){
       toastr.success(data?data:'OK');

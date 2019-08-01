@@ -5,9 +5,8 @@
 @endsection
 
 @section('modal-body')
-  @if($row->elaAuth('putRow'))
-  <form id="modal-form"data-eladone="redrawCrudTable();" action="{{ $row->elaRequest('update') }}">
-  @endif
+  <form id="modal-form" data-eladone="redrawCrudTable();" data-elaaction="update" data-elamodule="{{$row->elakey()}}">
+
 
     @section('form-body')
     <input type="hidden" name="{{$row->getKeyName()}}" value="{{$row->getKey()}}">
@@ -29,9 +28,7 @@
     @endforeach
     @show
 
-  @if($row->elaAuth('putRow'))
-  </form>
-  @endif
+
 
   @section('actions')
     @foreach($row->elaActions() as $action=>$config)
@@ -44,12 +41,12 @@
       ?>
       <div class="form-group">
 
-        <button data-elaaction="{{$action}}"
+        <button type="button" data-elaupdateaction="{{$action}}"
           @if($config->confirm !== null)
             data-confirm="{{$config->confirm?$config->confirm:$value}}"
           @endif
           data-elamodule="{{$row->elakey()}}"
-          data-eladone="{!! htmlspecialchars($config->done) !!};$('#dynamic .modal').modal('hide'); redrawCrudTable();"
+          data-eladone="{!! htmlspecialchars($config->done) !!}"
           data-elaarg{{$row->getKeyName()}}="{{$row->getKey()}}"
           class="btn btn-{{ $config->style }}">
          {!! $config->icon !!} {{ $value }}
@@ -58,6 +55,8 @@
       </div>
     @endforeach
   @show
+
+  </form>
 
 @endsection
 
