@@ -102,4 +102,9 @@ h1.sidebar-heading a{
 .nowrap{
   white-space: nowrap;
 }
+
+.card h3{
+font-size: 1rem;
+text-transform: uppercase;
+}
 </style>

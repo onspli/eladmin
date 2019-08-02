@@ -1,3 +1,4 @@
+@foreach($rows as $row)
 <tr>
   @foreach($row->elaColumns() as $column=>$config)
   <?php if($config->nonlistable??false) continue; ?>
@@ -125,3 +126,4 @@
 
   </td>
 </tr>
+@endforeach

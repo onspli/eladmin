@@ -15,7 +15,7 @@ trait Crud
       'render'=>'modules.eloquent.render',
       'putForm'=>'modules.eloquent.putForm',
       'postForm'=>'modules.eloquent.postForm',
-      'row'=>'modules.eloquent.row'
+      'rows'=>'modules.eloquent.rows'
     ];
   }
 
@@ -134,6 +134,7 @@ trait Crud
   * List database entries.
   */
   public function elaActionRead(){
+    $t0 = microtime(true);
     $sort = $_POST['sort']??$this->getKeyName();
     $direction = $_POST['direction']??'desc';
     $page = $_POST['page']??1;
@@ -166,13 +167,20 @@ trait Crud
 
     $total = $q->count();
     $rows = $q->orderBy($sort, $direction)->offset(($page-1)*$resultsperpage)->limit($resultsperpage)->get();
+    $t1 = microtime(true);
 
     $result['totalresults'] = $total;
-    $result['html'] = '';
-    foreach($rows as $row){
+    foreach($rows as $row)
       $row->elaInit($this->eladmin, $this->elakey);
-      $result['html'] .= $this->eladmin->view($this->elaGetView('row'), ['row'=>$row,'module'=>$this, 'trash'=>$trash]);
-    }
+
+    $t2 = microtime(true);
+
+    $result['html'] = $this->eladmin->view($this->elaGetView('rows'), ['rows'=>$rows,'module'=>$this, 'trash'=>$trash]);
+    $t3 = microtime(true);
+    $result['time0'] = $t0-$this->eladmin->microtime0;
+    $result['time1'] = $t1-$this->eladmin->microtime0;
+    $result['time2'] = $t2-$this->eladmin->microtime0;
+    $result['time3'] = $t3-$this->eladmin->microtime0;
     $this->elaOutJson($result);
   }
 

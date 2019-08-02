@@ -14,6 +14,8 @@ class Eladmin
   protected $modules = [];  // class names
   protected $imodules = []; // instances
 
+  public $microtime0;
+
   /**
   * Blade configuration
   */
@@ -227,6 +229,7 @@ class Eladmin
   */
   public function runNoCatch(): void
   {
+    $this->microtime0 = microtime(true);
     /**
     * Authentication and authorization.
     */
