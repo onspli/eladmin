@@ -28,7 +28,7 @@ asdf; cc
         {!! $value !!}
       </td>
     @else
-      <td title="{{$value}}">
+      <td data-toggle="tooltip" title="{{$value}}">
       {{ str_limit($value, $config->listlimit, '...') }}
       </td>
     @endif

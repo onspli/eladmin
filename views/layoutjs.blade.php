@@ -102,6 +102,8 @@ $(function(){
     $('#dynamic .modal').modal('hide');
   };
 
+$('body').tooltip({selector: '[data-toggle="tooltip"]'});
+
 /**
 * on modal close
 */
