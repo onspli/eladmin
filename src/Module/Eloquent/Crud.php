@@ -135,8 +135,8 @@ trait Crud
   */
   public function elaActionRead(){
     $t0 = microtime(true);
-    $sort = $_POST['sort']??$this->getKeyName();
-    $direction = $_POST['direction']??'desc';
+    $sort = $_POST['sort']??$this->elaOrderBy??$this->getKeyName();
+    $direction = $_POST['direction']??$this->orderDirection??'desc';
     $page = $_POST['page']??1;
     $resultsperpage = $_POST['resultsperpage']??10;
     $search = $_POST['search']??'';

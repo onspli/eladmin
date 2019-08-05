@@ -194,8 +194,8 @@ $searchMessage = __('Search');
 
 
 var crudFilters = {
-  sort: '{{$module->getKeyName()}}',
-  direction: 'desc',
+  sort: '{{$module->elaOrderBy??$module->getKeyName()}}',
+  direction: '{{$module->elaOrderDirection??"desc"}}',
   resultsperpage: 10,
   page: 1,
   totalresults: 0,
