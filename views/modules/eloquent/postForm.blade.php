@@ -5,10 +5,10 @@
 @endsection
 
 @section('modal-body')
-  <form id="modal-form" data-eladone="redrawCrudTable();" data-elaaction="create" data-elamodule="{{$module->elakey()}}">
+  <form id="modal-form" data-elaaction="create" data-elamodule="{{$module->elakey()}}">
     @foreach($module->elaColumns() as $column=>$config)
       <?php
-      if($column == $module->getKeyName()) continue;
+      //if($column == $module->getKeyName()) continue;
       if($config->noneditable??false) continue;
       ?>
       @component('components.inputs.'.$config->input, ['value'=>'', 'column'=>$column, 'config'=>$config, 'module'=>$module, 'row'=>new \StdClass, 'eladmin'=>$eladmin])

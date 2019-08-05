@@ -325,16 +325,14 @@ $(document).on('click', 'form *[data-elaupdateaction]', function(e){
   var form = $(this).closest('form');
   var el = $(this);
 
-  elaRequest($(this).data('elaupdateaction'), form.data('elamodule'), form.serialize(), {elaupdate: 1})
+  elaRequest($(this).data('elaupdateaction'), form.data('elamodule'), form.serialize(), {elaid: $(this).data('elaid'), elaupdate: 1})
   .fail(function(response){
     toastr.error(response.responseText);
   }).done(function(response){
     var eladone = new Function('data', el.data('eladone')+';  if(data) toastr.success(data);');
     eladone(response);
   }).always(function(){
-    elaRequest('putForm', '{{$module->elakey()}}', {
-      {{$module->getKeyName()}} : el.data('elaarg{{$module->getKeyName()}}')
-    }).done(function(html){
+    elaRequest('putForm', '{{$module->elakey()}}', {}, {elaid : form.data('elaid') }).done(function(html){
       $('#dynamic .modal-dialog').html($(html).find('.modal-dialog'));
     });
   });
@@ -342,9 +340,9 @@ $(document).on('click', 'form *[data-elaupdateaction]', function(e){
 
 });
 
-$(document).on('click', '*[data-dismiss="modal"]', function(){
+$("#dynamic").on("hidden.bs.modal", function () {
   redrawCrudTable();
-})
+});
 
 
 

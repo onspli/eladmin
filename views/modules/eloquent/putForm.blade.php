@@ -5,11 +5,10 @@
 @endsection
 
 @section('modal-body')
-  <form id="modal-form" data-eladone="redrawCrudTable();" data-elaaction="update" data-elamodule="{{$row->elakey()}}">
+  <form id="modal-form" data-elaaction="update" data-elaid="{{$row->getKey()}}" data-elamodule="{{$row->elakey()}}">
 
 
     @section('form-body')
-    <input type="hidden" name="{{$row->getKeyName()}}" value="{{$row->getKey()}}">
     @foreach($row->elaColumns() as $column=>$config)
       <?php if($config->noneditable) continue; ?>
       <?php
@@ -47,7 +46,7 @@
           @endif
           data-elamodule="{{$row->elakey()}}"
           data-eladone="{!! htmlspecialchars($config->done) !!}"
-          data-elaarg{{$row->getKeyName()}}="{{$row->getKey()}}"
+          data-elaid="{{$row->getKey()}}"
           class="btn btn-{{ $config->style }}">
          {!! $config->icon !!} {{ $value }}
        </button>
@@ -62,7 +61,7 @@
 
 @section('modal-footer')
   @if($row->elaAuth('delete'))
-  <button type="button" class="btn btn-danger mr-3" data-elaaction="delete" data-elamodule="{{$row->elakey()}}" data-elaarg{{$row->getKeyName()}}="{{$row->getKey()}}" data-eladone="$('#dynamic .modal').modal('hide');redrawCrudTable();" <?php if(!$row->elaUsesSoftDeletes()): ?> data-confirm="{{__('Are you sure?')}}" <?php endif; ?>><i class="fas fa-trash-alt"></i> <span class="d-none d-sm-inline">{{ __('Delete')}}</span></button>
+  <button type="button" class="btn btn-danger mr-3" data-elaaction="delete" data-elamodule="{{$row->elakey()}}" data-elaid="{{$row->getKey()}}" data-eladone="$('#dynamic .modal').modal('hide');" <?php if(!$row->elaUsesSoftDeletes()): ?> data-confirm="{{__('Are you sure?')}}" <?php endif; ?>><i class="fas fa-trash-alt"></i> <span class="d-none d-sm-inline">{{ __('Delete')}}</span></button>
   @endif
   <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="far fa-times-circle"></i> <span class="">{{__('Cancel')}}</span></button>
   @if($row->elaAuth('update'))

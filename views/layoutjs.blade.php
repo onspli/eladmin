@@ -47,7 +47,7 @@ $(function(){
       if(!key.startsWith('elaarg')) return;
       args[key.substr(6)] = val;
     });
-    elaRequest($(this).data('elaaction'), $(this).data('elamodule'), args).fail(function(data){
+    elaRequest($(this).data('elaaction'), $(this).data('elamodule'), args, {elaid:$(this).data('elaid')}).fail(function(data){
       toastr.error(data.responseText);
     }).done(function(data, status, xhr){
       var eladone = new Function('data', $(el).data('eladone')+'; if(data) toastr.success(data);');
@@ -85,7 +85,7 @@ $(function(){
   $(document).on('submit', 'form#modal-form', function(e){
     e.preventDefault();
     var form = $(this);
-    elaRequest(form.data('elaaction'), form.data('elamodule'), form.serialize())
+    elaRequest(form.data('elaaction'), form.data('elamodule'), form.serialize(), {elaid: form.data('elaid')})
     .fail(function(response){
       toastr.error(response.responseText);
     }).done(function(data){

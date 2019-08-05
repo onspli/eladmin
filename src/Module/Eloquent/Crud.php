@@ -208,12 +208,12 @@ trait Crud
       }
     }
 
-    $columns = $this->getTableColumns();
-    $columns = array_diff($columns, $this->elaDisabledColumns());
+    $tcolumns = $this->getTableColumns();
+    //$tcolumns = array_diff($tcolumns, $this->elaDisabledColumns());
 
-    foreach($columns as $column){
+    foreach($tcolumns as $column){
       $value = $_POST[$column]??null;
-      if($value === null || $column == $this->getKeyName()) continue;
+      if($value === null || !isset($columns->{$column}) || $columns->{$column}->disabled) continue;
       $this->{$column} = $value;
     }
 
@@ -234,11 +234,11 @@ trait Crud
         $_POST[$column] = ($config->setformat)($_POST[$column], $this);
       }
     }
-    $columns = $this->getTableColumns();
-    $columns = array_diff($columns, $this->elaDisabledColumns());
-    foreach($columns as $column){
+    $tcolumns = $this->getTableColumns();
+    // $columns = array_diff($tcolumns, $this->elaDisabledColumns());
+    foreach($tcolumns as $column){
       $value = $_POST[$column]??null;
-      if($value === null || $column == $this->getKeyName()) continue;
+      if($value === null || !isset($columns->{$column}) || $columns->{$column}->disabled) continue;
       $this->{$column} = $value;
     }
     $this->save();
@@ -272,12 +272,12 @@ trait Crud
   }
 
   public function elaGetActionInstance(){
-    if(!isset($_POST[$this->getKeyName()])) return $this;
+    if(!isset($_GET['elaid'])) return $this;
     $entry = new static();
     $action = $this->eladmin->action();
     if(in_array($action, ['forcedelete', 'restore']))
       $entry = $entry->withTrashed();
-    $entry = $entry->find($_POST[$this->getKeyName()]);
+    $entry = $entry->find($_GET['elaid']);
     if(!$entry) throw new Exception\BadRequestException( __('Entry not found!') );
     $entry->elaInit($this->eladmin, $this->elakey);
     if(!in_array($action, ['update']) && $this->elaAuth('update') && ($_GET['elaupdate']??false)){

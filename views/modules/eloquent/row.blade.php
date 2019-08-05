@@ -42,7 +42,7 @@ asdf; cc
             data-elaaction="restore"
             data-elamodule="{{$row->elakey()}}"
             data-eladone="redrawCrudTable();"
-            data-elaarg{{$row->getKeyName()}}="{{$row->getKey()}}"
+            data-elaid="{{$row->getKey()}}"
              title="{{ __('Restore') }}">
       <i class="fas fa-recycle"></i>
     </button>
@@ -54,7 +54,7 @@ asdf; cc
             data-elamodule="{{$row->elakey()}}"
             data-eladone="redrawCrudTable();"
             data-confirm="{{__('Are you sure?')}}"
-            data-elaarg{{$row->getKeyName()}}="{{$row->getKey()}}"
+            data-elaid="{{$row->getKey()}}"
             title="{{ __('Delete') }}">
       <i class="fas fa-trash-alt"></i>
     </button>
@@ -76,7 +76,7 @@ asdf; cc
           @if($config->confirm !== null)
             data-confirm="{{$config->confirm?$config->confirm:$value}}"
           @endif
-           data-elamodule="{{$row->elakey()}}" data-elaarg{{$row->getKeyName()}}="{{$row->getKey()}}" class="btn m-1 btn-{{ $config->style }}">{!! $config->icon !!}
+           data-elamodule="{{$row->elakey()}}" data-elaid="{{$row->getKey()}}" class="btn m-1 btn-{{ $config->style }}">{!! $config->icon !!}
             @if(isset($config->icon))
             <span class="d-none d-lg-inline">
             @endif
@@ -95,7 +95,7 @@ asdf; cc
               data-elaaction="putForm"
               data-eladone="return;"
               data-elamodule="{{$row->elakey()}}"
-              data-elaarg{{$row->getKeyName()}}="{{$row->getKey()}}"
+              data-elaid="{{$row->getKey()}}"
                title="{{ __('Edit') }}" >
         <i class="fas fa-edit"></i>
       </button>
@@ -104,7 +104,7 @@ asdf; cc
               data-elaaction="putForm"
               data-elamodule="{{$row->elakey()}}"
               data-eladone="return;"
-              data-elaarg{{$row->getKeyName()}}="{{$row->getKey()}}"
+              data-elaid="{{$row->getKey()}}"
                title="{{ __('Edit') }}" >
         <i class="fas fa-eye"></i>
       </button>
@@ -116,7 +116,7 @@ asdf; cc
               data-elaaction="delete"
               data-elamodule="{{$row->elakey()}}"
               data-eladone="redrawCrudTable();"
-              data-elaarg{{$row->getKeyName()}}="{{$row->getKey()}}"
+              data-elaid="{{$row->getKey()}}"
                title="{{ __('Delete') }}" >
         <i class="fas fa-trash-alt"></i>
       </button>
