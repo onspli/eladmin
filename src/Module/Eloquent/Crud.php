@@ -165,8 +165,11 @@ trait Crud
       $q = $q->where($col,$data['op'],$data['val']);
     }
 
+    $q = $q->orderBy($sort, $direction);
+    $q = $this->elaModifyQuery($q);
+
     $total = $q->count();
-    $rows = $q->orderBy($sort, $direction)->offset(($page-1)*$resultsperpage)->limit($resultsperpage)->get();
+    $rows = $q->offset(($page-1)*$resultsperpage)->limit($resultsperpage)->get();
     $t1 = microtime(true);
 
     $result['totalresults'] = $total;
@@ -187,6 +190,10 @@ trait Crud
     $result['time2'] = $t2-$this->eladmin->microtime0;
     $result['time3'] = $t3-$this->eladmin->microtime0;
     $this->elaOutJson($result);
+  }
+
+  protected function elaModifyQuery($q){
+    return $q;
   }
 
   /**
