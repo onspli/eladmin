@@ -9,7 +9,7 @@
     }
     ?>
     @foreach($selectOptions as $val=>$label)
-      <option value="{{$val}}" {!! $val===$value?' selected="selected" ':''  !!}>{{ $label }}</option>
+      <option value="{{$val}}" {!! $val==$value?' selected="selected" ':''  !!}>{{ $label }}</option>
     @endforeach
   </select>
   @if($config->desc)
