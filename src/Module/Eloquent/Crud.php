@@ -15,7 +15,7 @@ trait Crud
       'render'=>'modules.eloquent.render',
       'putForm'=>'modules.eloquent.putForm',
       'postForm'=>'modules.eloquent.postForm',
-      'rows'=>'modules.eloquent.rows'
+      'row'=>'modules.eloquent.row'
     ];
   }
 
@@ -170,12 +170,17 @@ trait Crud
     $t1 = microtime(true);
 
     $result['totalresults'] = $total;
-    foreach($rows as $row)
+    $result['html'] = '';
+    $elaColumns = $this->elaColumns();
+    $elaActions = $this->elaActions();
+    foreach($rows as $row){
       $row->elaInit($this->eladmin, $this->elakey);
+      $result['html'] .= $this->eladmin->view($this->elaGetView('row'), ['row'=>$row,'module'=>$this, 'trash'=>$trash, 'columns'=>$elaColumns, 'actions'=>$elaActions]);
+    }
 
     $t2 = microtime(true);
 
-    $result['html'] = $this->eladmin->view($this->elaGetView('rows'), ['rows'=>$rows,'module'=>$this, 'trash'=>$trash]);
+    //$result['html'] = $this->eladmin->view($this->elaGetView('rows'), ['rows'=>$rows,'module'=>$this, 'trash'=>$trash, 'columns'=>$this->elaColumns(), 'actions'=>$this->elaActions()]);
     $t3 = microtime(true);
     $result['time0'] = $t0-$this->eladmin->microtime0;
     $result['time1'] = $t1-$this->eladmin->microtime0;

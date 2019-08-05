@@ -1,6 +1,6 @@
-@foreach($rows as $row)
+
 <tr>
-  @foreach($row->elaColumns() as $column=>$config)
+  @foreach($columns as $column=>$config)
   <?php if($config->nonlistable??false) continue; ?>
 
     <?php
@@ -10,7 +10,7 @@
         $value = $row->$column;
       }
       $value = $config->listformat? ($config->listformat)($value, $row, $column):$value;
-
+asdf; cc
     ?>
 
     <?php
@@ -62,7 +62,7 @@
 
     @else
     @section('actions')
-      @foreach($row->elaActions() as $action=>$config)
+      @foreach($actions as $action=>$config)
         <?php
         if(!$row->elaAuth($action)) continue;
         if($config->nonlistable) continue;
@@ -126,4 +126,3 @@
 
   </td>
 </tr>
-@endforeach

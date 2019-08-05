@@ -66,7 +66,8 @@ $searchMessage = __('Search');
     @if($module->elaAuth('create'))
     <button id="crudadd" type="button" class="btn btn-success"
       data-elaaction="postForm"
-      data-elamodule="{{$module->elakey()}}">
+      data-elamodule="{{$module->elakey()}}"
+      data-eladone="return;">
       <i class="fas fa-plus-circle"></i> {{ __('Add') }}
     </button>
     @endif
@@ -344,6 +345,7 @@ $(document).on('click', 'form *[data-elaupdateaction]', function(e){
 $(document).on('click', '*[data-dismiss="modal"]', function(){
   redrawCrudTable();
 })
+
 
 
 

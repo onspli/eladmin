@@ -1,26 +1,33 @@
 <script>
+
+function elaRequest(action, module, args, getargs){
+  if(module === null || module ===undefined){
+    console.error('You have to specify module!');
+    return;
+    // module = '{{$eladmin->moduleKey()}}';
+  }
+  return $.ajax({
+      method: 'POST',
+      url: '?'+$.param($.extend({},{
+        elamodule: module,
+        elaaction: action,
+        elatoken: '{{$eladmin->CSRFToken()}}'
+      }, getargs)),
+      data: args
+  });
+}
+
+
+$(function(){
+
+
+
   $(document).on('click', "#menu-toggle", function(e) {
     e.preventDefault();
     $("#wrapper").toggleClass("toggled");
   });
 
 
-  function elaRequest(action, module, args, getargs){
-    if(module === null || module ===undefined){
-      console.error('You have to specify module!');
-      return;
-      // module = '{{$eladmin->moduleKey()}}';
-    }
-    return $.ajax({
-        method: 'POST',
-        url: '?'+$.param($.extend({},{
-          elamodule: module,
-          elaaction: action,
-          elatoken: '{{$eladmin->CSRFToken()}}'
-        }, getargs)),
-        data: args
-    });
-  }
 
   $(document).on('click', '*[data-confirm]', function(e){
 
@@ -57,6 +64,7 @@
           if(html.hasClass('modal')){
             $('#dynamic').html(html);
             html.modal();
+            history.pushState({data:'modal'}, '', '#modal');
           }
         } catch(v){
 
@@ -88,4 +96,20 @@
     });
 
   });
+
+  window.onpopstate = function(e){
+    console.debug(e);
+    $('#dynamic .modal').modal('hide');
+  };
+
+/**
+* on modal close
+*/
+$("#dynamic").on("hidden.bs.modal", function () {
+  var type = window.location.hash.substr(1);
+  if(type == 'modal') history.back();
+  console.debug('modal close');
+});
+
+});
 </script>
