@@ -150,6 +150,12 @@ class Event extends Model
   protected $elaIcon = '<i class="fas fa-calendar-alt"></i>';
 
   /**
+  * Default order
+  */
+  public $elaOrderBy = 'name';
+  public $elaOrderDirection = 'asc';
+
+  /**
   * Column used to represent event in relations with other models.
   */
   public $elaRepresentativeColumn = 'name';
