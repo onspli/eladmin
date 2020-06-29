@@ -166,6 +166,12 @@ class Eladmin
     return '?'.http_build_query($data);
   }
 
+  public function asset($file, $version=null){
+    $data['elaasset'] = $file;
+    $data['ver'] = $version ?? time();
+    return '?'.http_build_query($data);
+  }
+
   /**
   * Render a view.
   */
@@ -230,6 +236,34 @@ class Eladmin
   public function runNoCatch(): void
   {
     $this->microtime0 = microtime(true);
+
+    /**
+    * Validate and output asset.
+    */
+    $asset = $_GET['elaasset']??null;
+    if($asset){
+      if(strpos($asset, '..') !== false){
+        throw new Exception\UnauthorizedException("Asset filename cannot contain '..' due security issues.");
+      }
+      $path_parts = pathinfo($asset);
+      $extension = $path_parts['extension'];
+      $assetContentTypes = [
+        'css' => 'text/css',
+        'js' => 'text/javascript'
+      ];
+      $contentType = $assetContentTypes[$extension]??null;
+      if(!$contentType){
+        throw new Exception\UnauthorizedException("Asset extension not allowed.");
+      }
+      @$contents = file_get_contents(__DIR__.'/../assets/'.$asset);
+      if($contents === false){
+        throw new Exception\BadRequestException("Asset not found.");
+      }
+      header('Content-type:'.$contentType);
+      echo $contents;
+      return;
+    }
+
     /**
     * Authentication and authorization.
     */
@@ -309,14 +343,9 @@ class Eladmin
     echo $this->view('accountForm');
   }
 
-  public function elaActionLayoutjs(){
+  public function elaActionScript(){
     header('Content-type:text/javascript');
-    echo $this->view('layoutjs');
-  }
-
-  public function elaActionLayoutstyle(){
-    header('Content-type:text/css');
-    echo $this->view('layoutstyle');
+    echo $this->view('script');
   }
 
   public function elaGetActionInstance(){
