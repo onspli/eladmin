@@ -309,6 +309,16 @@ class Eladmin
     echo $this->view('accountForm');
   }
 
+  public function elaActionLayoutjs(){
+    header('Content-type:text/javascript');
+    echo $this->view('layoutjs');
+  }
+
+  public function elaActionLayoutstyle(){
+    header('Content-type:text/css');
+    echo $this->view('layoutstyle');
+  }
+
   public function elaGetActionInstance(){
     return $this;
   }

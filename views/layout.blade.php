@@ -9,7 +9,8 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css" integrity="sha256-UzFD2WYH2U1dQpKDjjZK72VtPeWP50NoJjd26rnAdUI=" crossorigin="anonymous" />
   <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
-  @include('layoutstyle')
+  <link href="{!! $eladmin->request('layoutstyle', '') !!}" rel="stylesheet">
+  @stack('styles')
 
 </head>
 <body>
@@ -82,7 +83,7 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
 <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-@include('layoutjs', ['eladmin'=>$eladmin, 'module'=>$module])
+<script src="{!! $eladmin->request('layoutjs', '') !!}"></script>
 @stack('scripts')
 
 </body>

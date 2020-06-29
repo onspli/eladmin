@@ -15,7 +15,9 @@ trait Crud
       'render'=>'modules.eloquent.render',
       'putForm'=>'modules.eloquent.putForm',
       'postForm'=>'modules.eloquent.postForm',
-      'row'=>'modules.eloquent.row'
+      'row'=>'modules.eloquent.row',
+      'style'=>'modules.eloquent.style',
+      'script'=>'modules.eloquent.script'
     ];
   }
 

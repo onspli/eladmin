@@ -1,4 +1,3 @@
-<script>
 
 function elaRequest(action, module, args, getargs){
   if(module === null || module ===undefined){
@@ -114,4 +113,3 @@ $("#dynamic").on("hidden.bs.modal", function () {
 });
 
 });
-</script>

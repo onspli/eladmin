@@ -11,21 +11,12 @@
   <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
 <style>
 
-body {
-  background-color: #f5f5f5;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 14px;
-}
-
+body{background-color: #f5f5f5;font-family: 'Montserrat', sans-serif;font-size: 14px;}
 h4{text-transform: uppercase;}
-
 .card{border-top: 2px solid #ffc107;margin-bottom: 1em}
-
 .btn-primary{background-color:#3ba79f;border-color:#3ba79f}
 .btn-primary:focus, .btn-primary:focus:active, .btn-primary:active, .btn-primary:hover {background-color: #2c968f !important;border-color: #2c968f!important;}
 .btn-primary.focus, .btn-primary:focus {box-shadow: 0 0 0 0.2rem rgba(58, 183, 175, 0.28)!important;}
-
-
 </style>
 
 </head>
@@ -54,19 +45,14 @@ h4{text-transform: uppercase;}
       <small class="text-center d-block"><a href="https://github.com/onspli/eladmin">Eladmin</a> | CRUD and admin for Eloquent</small>
 
     </article>
-</div>
-</div>
-</div>
+    </div>
+    </div>
+  </div>
 </div>
 
-<script
-  src="https://code.jquery.com/jquery-3.4.1.min.js"
-  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-  crossorigin="anonymous"></script>
-
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-
 
 <script>
 $(function(){
