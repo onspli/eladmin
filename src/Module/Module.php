@@ -64,7 +64,9 @@ trait Module
 
   protected function elaViewsDef(): array{
     return [
-      'render'=>'modules.module.render'
+      'render'=>'modules.module.render',
+      'style'=>'modules.module.style',
+      'script'=>'modules.module.script'
     ];
   }
 
@@ -74,6 +76,16 @@ trait Module
 
   public function elaGetActionInstance(){
     return $this;
+  }
+
+  public function elaAction_script(){
+    header('Content-type:text/javascript');
+    echo $this->eladmin->view($this->elaGetView('script'), ['module'=>$this]);
+  }
+
+  public function elaAction_style(){
+    header('Content-type:text/css');
+    echo $this->eladmin->view($this->elaGetView('style'), ['module'=>$this]);
   }
 
   public function elaOutText($str=null){

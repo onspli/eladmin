@@ -1,3 +1,4 @@
 /vendor/
 /cache/
 /examples/vendor/create_schema.php
+/composer.lock

@@ -1,4 +1,3 @@
-<style>
 
 body {
   overflow-x: hidden;
@@ -107,4 +106,3 @@ h1.sidebar-heading a{
 font-size: 1rem;
 text-transform: uppercase;
 }
-</style>
