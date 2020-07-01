@@ -13,6 +13,8 @@
 <link href="{!! $eladmin->asset('layout.css') !!}" rel="stylesheet">
 @stack('styles')
 
+<script src="{!! $eladmin->asset('consecutive.js') !!}"></script>
+
 </head>
 <body>
 
@@ -40,6 +42,8 @@
 <script src="{!! $eladmin->asset('toastr-2.1.3/toastr.min.js', '2.1.3') !!}"></script>
 <script src="{!! $eladmin->request('script', '') !!}"></script>
 @stack('scripts')
+
+<script src="{!! $eladmin->asset('e2e.js') !!}"></script>
 
 </body>
 </html>
