@@ -173,12 +173,131 @@ trait Crud
     $rows = $q->offset(($page-1)*$resultsperpage)->limit($resultsperpage)->get();
 
     $result['totalresults'] = $total;
-    $result['html'] = '';
+    $result['results'] = sizeof($rows);
+    $result['rows'] = array();
+    $result['actions'] = array();
     $elaColumns = $this->elaColumns();
     $elaActions = $this->elaActions();
     foreach($rows as $row){
+
       $row->elaInit($this->eladmin, $this->elakey);
-      $result['html'] .= $this->eladmin->view($this->elaGetView('row'), ['row'=>$row,'module'=>$this, 'trash'=>$trash, 'columns'=>$elaColumns, 'actions'=>$elaActions]);
+
+      $values = array();
+      foreach($elaColumns as $column=>$config){
+        if($config->nonlistable??false) continue;
+
+        if($config->getformat){
+          $value = ($config->getformat)($row->$column, $row, $column);
+        } else{
+          $value = $row->$column;
+        }
+        $value = $config->listformat? ($config->listformat)($value, $row, $column):$value;
+
+        if($config->listformat == false && $value instanceof \Illuminate\Database\Eloquent\Model){
+          if($value->elaRepresentativeColumn){
+            $value = $value->{$value->elaRepresentativeColumn};
+          } else{
+            $value = $value->getKey();
+          }
+        }
+        if(!$config->rawoutput){
+          $value = htmlspecialchars($value);
+        }
+        $values[] = $value;
+      }
+
+      $actions = array();
+
+      if($trash){
+
+
+        if($row->elaAuth('restore')){
+          $actions[] = [
+            'action' => 'restore',
+            'done' => 'redrawCrudTable();',
+            'id' => $row->getKey(),
+            'style' => 'success',
+            'icon' => '<i class="fas fa-recycle"></i>',
+            'module' => $row->elakey(),
+            'title' => __('Restore')
+          ];
+        }
+
+        if($row->elaAuth('forceDelete')){
+          $actions[] = [
+            'action' => 'forceDelete',
+            'done' => 'redrawCrudTable();',
+            'id' => $row->getKey(),
+            'style' => 'danger',
+            'icon' => '<i class="fas fa-trash-alt"></i>',
+            'module' => $row->elakey(),
+            'title' => __('Delete'),
+            'confirm' => __('Are you sure?')
+          ];
+        }
+
+      } else{
+
+        foreach($elaActions as $action=>$config){
+          if(!$row->elaAuth($action)) continue;
+          if($config->nonlistable) continue;
+          if(is_callable($config->label))
+            $value = ($config->label)($row->$column, $row, $column);
+          else $value = $config->label??$action;
+
+          $action_json = [
+            'action' => $action,
+            'done' => $config->done . 'redrawCrudTable();',
+            'id' => $row->getKey(),
+            'style' => $config->style,
+            'icon' => $config->icon,
+            'module' => $row->elakey(),
+            'label' => $value
+          ];
+
+          if($config->confirm !== null){
+            $action_json['confirm'] = $config->confirm ? $config->confirm : $value;
+          }
+
+          $actions[] = $action_json;
+        }
+
+        if($row->elaAuth('update')){
+          $actions[] = [
+            'action' => 'putForm',
+            'done' => 'return;',
+            'id' => $row->getKey(),
+            'style' => 'primary',
+            'icon' => '<i class="fas fa-edit"></i>',
+            'module' => $row->elakey()
+          ];
+        }
+        elseif($row->elaAuth('read')){
+          $actions[] = [
+            'action' => 'putForm',
+            'done' => 'return;',
+            'id' => $row->getKey(),
+            'style' => 'primary',
+            'icon' => '<i class="fas fa-eye"></i>',
+            'module' => $row->elakey()
+          ];
+        }
+
+        if($row->elaUsesSoftDeletes() && $row->elaAuth('delete')){
+          $actions[] = [
+            'action' => 'delete',
+            'done' => 'redrawCrudTable();',
+            'id' => $row->getKey(),
+            'style' => 'danger',
+            'icon' => '<i class="fas fa-trash-alt"></i>',
+            'module' => $row->elakey()
+          ];
+        }
+
+      }
+
+      $result['actions'][] = $actions;
+      $result['rows'][] = $values;
     }
 
     $this->elaOutJson($result);

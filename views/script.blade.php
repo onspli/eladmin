@@ -24,8 +24,8 @@ $(document).on('click', "#menu-toggle", function(e) {
   $("#wrapper").toggleClass("toggled");
 });
 
-$(document).on('click', '*[data-confirm]', function(e){
-  var confirm = window.confirm($(this).data('confirm'));
+$(document).on('click', '*[data-elaconfirm]', function(e){
+  var confirm = window.confirm($(this).data('elaconfirm'));
   if(!confirm){
     e.preventDefault();
     e.stopImmediatePropagation();
