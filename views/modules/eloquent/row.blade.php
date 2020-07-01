@@ -10,7 +10,6 @@
         $value = $row->$column;
       }
       $value = $config->listformat? ($config->listformat)($value, $row, $column):$value;
-asdf; cc
     ?>
 
     <?php

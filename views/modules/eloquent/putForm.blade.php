@@ -1,7 +1,7 @@
 @extends('layouts.modal')
 
 @section('modal-title')
-  {{__('Edit entry %s', '#'.$row->getKey()) }}
+  {{ __('Edit entry %s', '#'.$row->getKey()) }}
 @endsection
 
 @section('modal-body')

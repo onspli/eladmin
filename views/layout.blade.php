@@ -1,79 +1,35 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>{{$eladmin->title()}} | @yield('title')</title>
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css" integrity="sha256-UzFD2WYH2U1dQpKDjjZK72VtPeWP50NoJjd26rnAdUI=" crossorigin="anonymous" />
-  <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-  <link href="{!! $eladmin->asset('toastr-2.1.3/toastr.min.css', '2.1.3') !!}" rel="stylesheet">
-  <link href="{!! $eladmin->asset('layout.css') !!}" rel="stylesheet">
-  @stack('styles')
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{{$eladmin->title()}} | @yield('title')</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css" integrity="sha256-UzFD2WYH2U1dQpKDjjZK72VtPeWP50NoJjd26rnAdUI=" crossorigin="anonymous" />
+<link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+<link href="{!! $eladmin->asset('toastr-2.1.3/toastr.min.css', '2.1.3') !!}" rel="stylesheet">
+<link href="{!! $eladmin->asset('layout.css') !!}" rel="stylesheet">
+@stack('styles')
 
 </head>
 <body>
 
+<div class="d-flex" id="wrapper">
 
-    <div class="d-flex" id="wrapper">
+<div class="border-right" id="sidebar-wrapper">
+@include('sidebar')
+</div>
+<!-- /#sidebar-wrapper -->
 
-      <!-- Sidebar -->
-      <div class="border-right" id="sidebar-wrapper">
-        <h1 class="sidebar-heading"><a href=".">{{$eladmin->title()}}</a></h1>
-        <div class="list-group list-group-flush">
-            @foreach($eladmin->modules() as $key=>$module)
-              <a href="?elamodule={{$key}}" class="list-group-item  menumodul list-group-item-action
-                  @if(isset($module) && (string)$eladmin->moduleKey() === (string)$module->elakey())
-                   selected
-                  @endif
-                  ">
-                  {!! $module->elaGetIcon() !!} {{ $module->elaGetTitle() }}
-                </a>
-            @endforeach
-        </div>
-      </div>
-      <!-- /#sidebar-wrapper -->
+<div id="page-content-wrapper">
+@include('content')
+</div>
+<!-- /#page-content-wrapper -->
 
-      <!-- Page Content -->
-      <div id="page-content-wrapper">
-
-        <div id="mainbar">
-          <button class="btn btn-primary" id="menu-toggle"><i class="fas fa-bars"></i></button>
-
-          @if($eladmin->username() !== null)
-            <span class="float-right">
-              <span>{{ __('Logged in as') }} <strong>{{$eladmin->username()}}</strong> </span>&nbsp;
-              @if($eladmin->accountFields())
-              <button class="btn btn-primary" id="elaeditaccount" data-elaaction="accountForm" data-eladone="return;" data-elamodule=""><i class="fas fa-key"></i> <span class="d-none d-sm-inline"> {{__('Account')}}</span> </button>
-              @endif
-              &nbsp;
-              <a href="?elalogout=true" class="btn btn-primary"><i class="fas fa-sign-out-alt"></i> <span class="d-none d-sm-inline"> {{__('Log out')}}</span> </a>
-            </span>
-          @else
-            <span class="float-right"><strong>{{ __('Authorization is disabled!!!') }}</strong></span>
-          @endif
-        </div>
-
-        <div id="page">
-          <div class="container-fluid">
-            <div id="content">
-            @section('content')
-              <h1 class="mt-4">Simple Sidebar</h1>
-              <p>The starting state of the menu will appear collapsed on smaller screens, and will appear non-collapsed on larger screens. When toggled using the button below, the menu will change.</p>
-              <p>Make sure to keep all page content within the <code>#page-content-wrapper</code>. The top navbar is optional, and just for demonstration. Just create an element with the <code>#menu-toggle</code> ID which will toggle the menu when clicked.</p>
-            @show
-            </div>
-
-          </div>
-        </div>
-
-      </div>
-      <!-- /#page-content-wrapper -->
-
-    </div>
-    <!-- /#wrapper -->
-
+</div>
+<!-- /#wrapper -->
 
 <div id="dynamic">
 </div>

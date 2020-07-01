@@ -147,7 +147,6 @@ trait Crud
 
     $realColumns = $this->getTableColumns();
 
-
     $q = $this;
 
     if($trash){
@@ -164,7 +163,7 @@ trait Crud
     }
 
     foreach($columns as $col=>$data){
-      $q = $q->where($col,$data['op'],$data['val']);
+      $q = $q->where($col, $data['op'], $data['val']);
     }
 
     $q = $q->orderBy($sort, $direction);
@@ -172,7 +171,6 @@ trait Crud
 
     $total = $q->count();
     $rows = $q->offset(($page-1)*$resultsperpage)->limit($resultsperpage)->get();
-    $t1 = microtime(true);
 
     $result['totalresults'] = $total;
     $result['html'] = '';
@@ -183,14 +181,6 @@ trait Crud
       $result['html'] .= $this->eladmin->view($this->elaGetView('row'), ['row'=>$row,'module'=>$this, 'trash'=>$trash, 'columns'=>$elaColumns, 'actions'=>$elaActions]);
     }
 
-    $t2 = microtime(true);
-
-    //$result['html'] = $this->eladmin->view($this->elaGetView('rows'), ['rows'=>$rows,'module'=>$this, 'trash'=>$trash, 'columns'=>$this->elaColumns(), 'actions'=>$this->elaActions()]);
-    $t3 = microtime(true);
-    $result['time0'] = $t0-$this->eladmin->microtime0;
-    $result['time1'] = $t1-$this->eladmin->microtime0;
-    $result['time2'] = $t2-$this->eladmin->microtime0;
-    $result['time3'] = $t3-$this->eladmin->microtime0;
     $this->elaOutJson($result);
   }
 

@@ -25,13 +25,10 @@ function redrawCrudTable(){
     return;
   @endif
   var maxpage = crudFilters.maxpage;
-  //var loading = '<tr><td colspan="1000" class="crud-loading"><i class="fas fa-sync-alt fa-spin"></i> {{$loadingMessage}} </td></tr>';
-  //$('#crud-table tbody').html($(loading));
 
   var searchiconHtml = $(' .crud-paging .searchicon').html();
   $(' .crud-paging .searchicon').html('<i class="fas fa-sync-alt fa-spin"></i>');
 
-  //if(crudFilters.totalresults>0) $('#crud-table tbody').append($(loading));
   elaRequest('read', '{{$module->elakey()}}', crudFilters).done(function(data){
     var tbody = $(' #crud-table tbody');
     crudFilters.totalresults = data.totalresults;
