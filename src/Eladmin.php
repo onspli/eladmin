@@ -15,6 +15,7 @@ class Eladmin
   protected $imodules = []; // instances
 
   public $microtime0;
+  public $consecutive = false;
 
   /**
   * Blade configuration
@@ -264,6 +265,12 @@ class Eladmin
       return;
     }
 
+    $testinit = $_GET['elatestinit']??null;
+    if ($testinit){
+      $this->testinit();
+      return;
+    }
+
     /**
     * Authentication and authorization.
     */
@@ -360,6 +367,13 @@ class Eladmin
     return strtolower($action);
   }
 
+  public function consecutiveScript(){
+    echo file_get_contents($this->consecutive);
+  }
+
+  protected function testinit(){
+
+  }
 
 
 }

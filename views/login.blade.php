@@ -20,8 +20,6 @@ h4{text-transform: uppercase;}
 .btn-primary.focus, .btn-primary:focus {box-shadow: 0 0 0 0.2rem rgba(58, 183, 175, 0.28)!important;}
 </style>
 
-<script src="{!! $eladmin->asset('consecutive.js') !!}"></script>
-
 </head>
 <body>
 
@@ -76,7 +74,7 @@ $(function(){
 });
 </script>
 
-<script src="{!! $eladmin->asset('e2e.js') !!}"></script>
+@include('consecutive')
 
 </body>
 </html>

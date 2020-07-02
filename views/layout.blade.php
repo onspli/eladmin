@@ -13,8 +13,6 @@
 <link href="{!! $eladmin->asset('layout.css') !!}" rel="stylesheet">
 @stack('styles')
 
-<script src="{!! $eladmin->asset('consecutive.js') !!}"></script>
-
 </head>
 <body>
 
@@ -43,10 +41,7 @@
 <script src="{!! $eladmin->request('script', '') !!}"></script>
 @stack('scripts')
 
-<script src="{!! $eladmin->asset('e2e.js') !!}"></script>
-<script>
-consecutive.point('layout');
-</script>
+@include('consecutive')
 
 </body>
 </html>
