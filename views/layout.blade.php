@@ -44,6 +44,9 @@
 @stack('scripts')
 
 <script src="{!! $eladmin->asset('e2e.js') !!}"></script>
+<script>
+consecutive.point('layout');
+</script>
 
 </body>
 </html>

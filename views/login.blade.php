@@ -66,8 +66,10 @@ $(function(){
       method: $(this).attr('method'),
       data: $(this).serialize()
     }).done(function(){
+      consecutive.point('loginok');
       location.reload();
     }).fail(function(data){
+      consecutive.point('loginfail', data.responseText);
       toastr.error(data.responseText);
     });
   });

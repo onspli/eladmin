@@ -9,6 +9,7 @@ var consecutive = {
 state : -2,
 queue : [],
 hasfailed : false,
+timeout : null,
 
 get_state : function(){
   if (this.state != -2){
@@ -18,7 +19,7 @@ get_state : function(){
   if (!cookie){
     return this.state;
   }
-  this.state = cookie.split('=')[1];
+  this.state = parseInt(cookie.split('=')[1]);
   return this.state;
 },
 
@@ -48,7 +49,10 @@ point : function(name, data){
   if (next.name !== name){
     return;
   }
-  next.callback(data);
+  clearTimeout(this.timeout);
+  if (next.callback !== undefined){
+    next.callback(data);
+  }
   this.set_state(this.get_state() + 1);
   this.continue();
 },
@@ -63,6 +67,7 @@ start : function(){
 },
 
 stop : function(){
+  if (this.timeout) clearTimeout(this.timeout);
   this.set_state(-2);
 },
 
@@ -76,6 +81,7 @@ continue : function(){
     var next = this.queue[next_state];
     if (next.name !== null){
       // wait for point
+      this.timeout = setTimeout(this.fail.bind(this), 10000);
       return;
     }
     next.callback();
@@ -119,7 +125,7 @@ log : function(){
     const next_runner = this.queue[max_state];
     console.log(next_runner.label + '... Failed');
     console.log(msg);
-  } else if (max_state == this.queue.length){
+  } else if (max_state >= this.queue.length){
     console.log(msg);
   } else {
     const next_runner = this.queue[max_state];
