@@ -64,13 +64,17 @@ $(function(){
       method: $(this).attr('method'),
       data: $(this).serialize()
     }).done(function(){
+      consecutive.point('login_ok');
       location.reload();
     }).fail(function(data){
+      consecutive.point('login_fail', data.responseText);
       toastr.error(data.responseText);
     });
   });
 });
 </script>
+
+@include('consecutive')
 
 </body>
 </html>

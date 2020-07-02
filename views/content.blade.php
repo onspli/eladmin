@@ -12,7 +12,7 @@
     </button>
 @endif
     &nbsp;
-    <a href="?elalogout=true" class="btn btn-primary">
+    <a id="logout_button" href="?elalogout=true" class="btn btn-primary">
       <i class="fas fa-sign-out-alt"></i>
       <span class="d-none d-sm-inline">{{__('Log out')}}</span>
     </a>

@@ -41,5 +41,7 @@
 <script src="{!! $eladmin->request('script', '') !!}"></script>
 @stack('scripts')
 
+@include('consecutive')
+
 </body>
 </html>
