@@ -1,5 +1,5 @@
 <?php
-require __DIR__.'/../../vendor/autoload.php';
+require __DIR__.'/../../../vendor/autoload.php';
 
 
 use Illuminate\Database\Eloquent\Model;
@@ -63,7 +63,7 @@ class MyEladmin extends Eladmin
   /**
   * Cache directory used by template engine
   */
-  protected $cache = __DIR__.'/../../cache';
+  protected $cache = __DIR__.'/../../../cache';
 
   /**
   * Add modules to the administration.
