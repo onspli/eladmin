@@ -51,7 +51,13 @@ point : function(name, data){
   }
   clearTimeout(this.timeout);
   if (next.callback !== undefined){
-    next.callback(data);
+    var f = next.callback.bind(this);
+    try{
+      f(data);
+    } catch(err){
+      this.fail();
+      throw err;
+    }
   }
   this.set_state(this.get_state() + 1);
   this.continue();
@@ -84,16 +90,21 @@ continue : function(){
       this.timeout = setTimeout(this.fail.bind(this), 10000);
       return;
     }
-    next.callback();
+    var f = next.callback.bind(this);
+    try{
+      f();
+    } catch(err){
+      this.fail();
+      throw err;
+    }
     this.set_state(this.get_state() + 1);
   }
 },
 
 assert : function(value, message){
-  if (value) return true;
-  if (message) console.error(message);
-  this.fail();
-  return false;
+  if (!value){
+    throw message ? message : "assertion failed";
+  }
 },
 
 fail : function(){

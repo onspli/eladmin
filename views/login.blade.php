@@ -64,10 +64,10 @@ $(function(){
       method: $(this).attr('method'),
       data: $(this).serialize()
     }).done(function(){
-      consecutive.point('loginok');
+      consecutive.point('login_ok');
       location.reload();
     }).fail(function(data){
-      consecutive.point('loginfail', data.responseText);
+      consecutive.point('login_fail', data.responseText);
       toastr.error(data.responseText);
     });
   });

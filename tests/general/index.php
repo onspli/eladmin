@@ -98,6 +98,7 @@ class MyEladmin extends Eladmin
       $table->timestamps();
       $table->softDeletes();
     });
+    echo "reset";
   }
 }
 
