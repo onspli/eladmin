@@ -23,7 +23,6 @@ class User extends \Illuminate\Database\Eloquent\Model implements Iface\Authoriz
   public function __construct(){
     parent::__construct();
     if(!$this->tableExists()) $this->createTable();
-    if(!session_id()) session_start();
     $this->elaTitle = __('Users');
   }
 
