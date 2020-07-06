@@ -1,21 +1,3 @@
-
-function elaRequest(action, module, args, getargs){
-  if(module === null || module === undefined){
-    console.error('You have to specify module!');
-    return;
-  }
-  return $.ajax({
-      method: 'POST',
-      url: '?'+$.param($.extend({},{
-        elamodule: module,
-        elaaction: action,
-        elatoken: '{{$eladmin->CSRFToken()}}'
-      }, getargs)),
-      data: args
-  });
-}
-
-
 $(function(){
 
 

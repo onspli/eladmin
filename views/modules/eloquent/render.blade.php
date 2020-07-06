@@ -1,3 +1,7 @@
+@push('styles')
+<link href="{!! $eladmin->asset('modules/eloquent/style.css') !!}" rel="stylesheet">
+@endpush
+
 @extends('layouts.card')
 
 <?php

@@ -379,11 +379,6 @@ final public function elaActionAccountForm(){
   echo $this->view('accountForm');
 }
 
-final public function elaActionScript(){
-  header('Content-type:text/javascript');
-  echo $this->view('script');
-}
-
 // Get module instance to call elaActionMethod.
 final public function elaGetActionInstance(){
   return $this;

@@ -8,8 +8,8 @@ use \Onspli\Eladmin\Exception;
 trait Module
 {
 
-public $eladmin = null;
-public $elakey = null;
+private $eladmin = null;
+private $elakey = null;
 
 /**
 * I am getting 'Indirect modification has no efect' if the property is not explicitly declared from some reason.
@@ -75,7 +75,6 @@ final public function elaRequest($action, $args=[]) : string{
 protected function elaViewsDef(): array{
   return [
     'render'=>'modules.module.render',
-    'style'=>'modules.module.style',
     'script'=>'modules.module.script'
   ];
 }
@@ -91,11 +90,6 @@ public function elaGetActionInstance(){
 final public function elaAction_script(){
   header('Content-type:text/javascript');
   echo $this->eladmin->view($this->elaGetView('script'), ['module'=>$this]);
-}
-
-final public function elaAction_style(){
-  header('Content-type:text/css');
-  echo $this->eladmin->view($this->elaGetView('style'), ['module'=>$this]);
 }
 
 final public function elaOutText(?string $str=null){
