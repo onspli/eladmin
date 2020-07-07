@@ -96,25 +96,26 @@ final public function assetpath() : ?string
   return $_GET['elaasset'] ?? null;
 }
 
-// Return requested module key
+// Return requested module key, null if no module requested
 private $requested_modulekey = null; // caching
-final public function modulekey() : string
+final public function modulekey() : ?string
 {
   if ($this->requested_modulekey !== null)
   {
     return $this->requested_modulekey;
   }
   $this->requested_modulekey = $_GET['elamodule'] ?? null;
-  if($this->requested_modulekey === null)
-  {
-    foreach($this->modules as $key=>$mod)
-    {
-      $this->requested_modulekey = $key;
-      return $key;
-    }
-    throw new Exception\UnauthorizedException(__("You are not authorized to access any module!"));
-  }
   return $this->requested_modulekey;
+}
+
+// return first authorized module key
+private function firstAuthorizedModuleKey() : string
+{
+  foreach($this->modules as $key=>$mod)
+  {
+    return $key;
+  }
+  throw new Exception\UnauthorizedException(__("You are not authorized to access any module!"));
 }
 
 // Generate CSRF token
@@ -138,10 +139,13 @@ final public function CSRFToken() : string
 final public function request(?string $action, $module, array $args=[]) : string
 {
   $data = $args;
-  if($action !== null) $data['elaaction'] = $action;
+  if($action !== null)
+  {
+    $data['elaaction'] = $action;
+    $data['elatoken'] = $this->CSRFToken();
+  }
   if (is_string($module)) $data['elamodule'] = $module;
   else $data['elamodule'] = $module->elakey();
-  $data['elatoken'] = $this->CSRFToken();
   return '?'.http_build_query($data);
 }
 
@@ -246,6 +250,12 @@ final public function runNoCatch(): void
   // no action, render module view
   if(!$this->actionkey()){
     $this->initAllModules();
+    if($this->modulekey() === null)
+    {
+      $url = $this->request(null, $this->firstAuthorizedModuleKey());
+      $this->redirect($url);
+      return;
+    }
     if($this->module() == $this)
       echo $this->view('hello');
     else
@@ -296,6 +306,8 @@ final public function modules()
 final public function module(?string $key=null)
 {
   $key = $key ?? $this->modulekey();
+  if ($key === null)
+    throw new Exception\BadRequestException(__('No module requested!'));
   if($key === "") return $this;
   // has the module been initialized?
   if(!isset($this->imodules[$key]))
@@ -336,6 +348,13 @@ static private function refreshNoAjax() : void
 {
   if(static::isAjaxCall()) return;
   Header('Location: .');
+  exit;
+}
+
+static private function redirect($url) : void
+{
+  if(static::isAjaxCall()) exit;
+  Header('Location: '.$url);
   exit;
 }
 
