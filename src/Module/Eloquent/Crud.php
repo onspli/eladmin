@@ -55,7 +55,7 @@ trait Crud
     $visibleColumns = $this->elaVisibleColumns();
     $disabledColumns = $this->elaDisabledColumns();
     $realColumns = $this->getTableColumns();
-    $columns = new Chainset\Column($this, true);
+    $columns = new Chainset\Column;
     foreach($visibleColumns as $column){
       $columns->$column;
       if(in_array($column, $disabledColumns))
@@ -71,11 +71,13 @@ trait Crud
   }
 
   public function elaActionsDef(){
-    return new Chainset\Action($this, true);
+    $actions = new Chainset\Action;
+    $actions->_set_module($this);
+    return $actions;
   }
 
   public function elaFiltersDef(){
-    return new Chainset\Filter($this, true);
+    return new Chainset\Filter;
   }
 
   public function elaColumns(){
