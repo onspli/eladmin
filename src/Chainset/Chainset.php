@@ -36,6 +36,14 @@ class Chainset implements \Iterator {
   {
     $prev = $this->children[$key]->_get_prev();
     $next = $this->children[$key]->_get_next();
+    if ($key == $this->last)
+    {
+      $this->last = $prev;
+    }
+    if ($key == $this->first)
+    {
+      $this->first = $next;
+    }
     if ($prev !== null)
     {
       $this->children[$prev]->_set_next($next);
