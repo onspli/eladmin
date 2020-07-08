@@ -73,7 +73,7 @@ trait Crud
   public function elaActionsDef(){
     $actions = new Chainset\Action;
     $actions->_set_module($this);
-    return $actions;
+    return $actions; 
   }
 
   public function elaFiltersDef(){
