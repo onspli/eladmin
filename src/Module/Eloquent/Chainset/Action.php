@@ -13,13 +13,27 @@ class Action extends \Onspli\Eladmin\Chainset\Chainset{
   public $confirm = null;
   public $done = '';
 
+  private $module = null;
+  final public function _set_module($module)
+  {
+    $this->module = $module;
+  }
+
+  final public function _get_module()
+  {
+    $parent = $this->_get_parent();
+    if ($parent === null) return $this->module;
+    else return $parent->_get_module();
+  }
+
+
   public function confirm($str=''){
     $this->confirm = $str;
     return $this;
   }
 
   public function auth($role){
-    $this->_module->elaSetAuthorizedRolesAction($this->_key, $role);
+    $this->_get_module()->elaSetAuthorizedRolesAction($this->_get_key(), $role);
   }
 
   public function done($js=''){

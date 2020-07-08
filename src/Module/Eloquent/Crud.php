@@ -55,7 +55,7 @@ trait Crud
     $visibleColumns = $this->elaVisibleColumns();
     $disabledColumns = $this->elaDisabledColumns();
     $realColumns = $this->getTableColumns();
-    $columns = new Chainset\Column($this, true);
+    $columns = new Chainset\Column;
     foreach($visibleColumns as $column){
       $columns->$column;
       if(in_array($column, $disabledColumns))
@@ -71,11 +71,13 @@ trait Crud
   }
 
   public function elaActionsDef(){
-    return new Chainset\Action($this, true);
+    $actions = new Chainset\Action;
+    $actions->_set_module($this);
+    return $actions;
   }
 
   public function elaFiltersDef(){
-    return new Chainset\Filter($this, true);
+    return new Chainset\Filter;
   }
 
   public function elaColumns(){
@@ -180,7 +182,7 @@ trait Crud
     $elaActions = $this->elaActions();
     foreach($rows as $row){
 
-      $row->elaInit($this->eladmin, $this->elakey);
+      //$row->elaInit($this->eladmin, $this->elakey);
 
       $values = array();
       foreach($elaColumns as $column=>$config){
@@ -211,26 +213,26 @@ trait Crud
       if($trash){
 
 
-        if($row->elaAuth('restore')){
+        if($this->elaAuth('restore')){
           $actions[] = [
             'action' => 'restore',
             'done' => 'redrawCrudTable();',
             'id' => $row->getKey(),
             'style' => 'success',
             'icon' => '<i class="fas fa-recycle"></i>',
-            'module' => $row->elakey(),
+            'module' => $this->elakey(),
             'title' => __('Restore')
           ];
         }
 
-        if($row->elaAuth('forceDelete')){
+        if($this->elaAuth('forceDelete')){
           $actions[] = [
             'action' => 'forceDelete',
             'done' => 'redrawCrudTable();',
             'id' => $row->getKey(),
             'style' => 'danger',
             'icon' => '<i class="fas fa-trash-alt"></i>',
-            'module' => $row->elakey(),
+            'module' => $this->elakey(),
             'title' => __('Delete'),
             'confirm' => __('Are you sure?')
           ];
@@ -239,7 +241,7 @@ trait Crud
       } else{
 
         foreach($elaActions as $action=>$config){
-          if(!$row->elaAuth($action)) continue;
+          if(!$this->elaAuth($action)) continue;
           if($config->nonlistable) continue;
           if(is_callable($config->label))
             $value = ($config->label)($row->$column, $row, $column);
@@ -251,7 +253,7 @@ trait Crud
             'id' => $row->getKey(),
             'style' => $config->style,
             'icon' => $config->icon,
-            'module' => $row->elakey(),
+            'module' => $this->elakey(),
             'label' => $value
           ];
 
@@ -262,35 +264,35 @@ trait Crud
           $actions[] = $action_json;
         }
 
-        if($row->elaAuth('update')){
+        if($this->elaAuth('update')){
           $actions[] = [
             'action' => 'putForm',
             'done' => 'return;',
             'id' => $row->getKey(),
             'style' => 'primary',
             'icon' => '<i class="fas fa-edit"></i>',
-            'module' => $row->elakey()
+            'module' => $this->elakey()
           ];
         }
-        elseif($row->elaAuth('read')){
+        elseif($this->elaAuth('read')){
           $actions[] = [
             'action' => 'putForm',
             'done' => 'return;',
             'id' => $row->getKey(),
             'style' => 'primary',
             'icon' => '<i class="fas fa-eye"></i>',
-            'module' => $row->elakey()
+            'module' => $this->elakey()
           ];
         }
 
-        if($row->elaUsesSoftDeletes() && $row->elaAuth('delete')){
+        if($this->elaUsesSoftDeletes() && $this->elaAuth('delete')){
           $actions[] = [
             'action' => 'delete',
             'done' => 'redrawCrudTable();',
             'id' => $row->getKey(),
             'style' => 'danger',
             'icon' => '<i class="fas fa-trash-alt"></i>',
-            'module' => $row->elakey()
+            'module' => $this->elakey()
           ];
         }
 
@@ -392,7 +394,7 @@ trait Crud
   public function elaGetActionInstance(){
     if(!isset($_GET['elaid'])) return $this;
     $entry = new static();
-    $action = $this->eladmin->action();
+    $action = $this->eladmin->actionkey();
     if(in_array($action, ['forcedelete', 'restore']))
       $entry = $entry->withTrashed();
     $entry = $entry->find($_GET['elaid']);
