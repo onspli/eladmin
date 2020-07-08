@@ -52,6 +52,7 @@ consecutive
 .wait("reset db check", 'db_reset', function(data){
   consecutive.assert(data == "reset");
 })
+.panel()
 .continue();
 
 consecutive.point('reload');
