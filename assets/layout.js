@@ -14,6 +14,30 @@ $(document).on('click', '*[data-elaconfirm]', function(e){
   }
 });
 
+function isModalOpen()
+{
+  return $('#dynamic .modal').length != 0;
+}
+
+function modalClose()
+{
+  if (!isModalOpen()){
+    throw 'Cannot close modal. Modal is closed already.';
+  }
+  $('#dynamic .modal').modal('hide');
+  $('#dynamic').html('');
+}
+
+function modalOpen(html)
+{
+  if (isModalOpen()){
+    throw 'Cannot open modal. Modal is open already.';
+  }
+  $('#dynamic').html(html);
+  html.modal();
+  history.pushState({data:'modal'}, '', '#modal');
+}
+
 $(document).on('click', '*:not(form)[data-elaaction]', function(e){
   e.preventDefault();
   var el = this;
@@ -41,9 +65,7 @@ $(document).on('click', '*:not(form)[data-elaaction]', function(e){
       try{
         var html = $(data);
         if(html.hasClass('modal')){
-          $('#dynamic').html(html);
-          html.modal();
-          history.pushState({data:'modal'}, '', '#modal');
+          modalOpen(html);
         }
       } catch(v){
 
@@ -72,13 +94,12 @@ $(document).on('submit', 'form#modal-form', function(e){
   .done(function(data){
     var eladone = new Function('data', form.data('eladone')+';  if(data) toastr.success(data);');
     eladone(data);
-    $('#dynamic .modal').modal('hide');
+    modalClose();
   });
 });
 
 window.onpopstate = function(e){
-  console.debug(e);
-  $('#dynamic .modal').modal('hide');
+  modalClose();
 };
 
 $('body').tooltip({selector: '[data-toggle="tooltip"]'});
@@ -89,7 +110,6 @@ $('body').tooltip({selector: '[data-toggle="tooltip"]'});
 $("#dynamic").on("hidden.bs.modal", function () {
   var type = window.location.hash.substr(1);
   if(type == 'modal') history.back();
-  console.debug('modal close');
 });
 
 });
