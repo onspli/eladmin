@@ -217,6 +217,7 @@ final public function runNoCatch(): void
     if($isLogout){
       $this->iauth->elaLogout();
       $this->refreshNoAjax();
+      throw new Exception\UnauthorizedException();
     }
 
     $isLogin = $_GET['elalogin']??false;

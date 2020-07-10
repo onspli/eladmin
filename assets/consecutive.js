@@ -113,12 +113,14 @@ continue : function(){
       this.timeout = setTimeout(this.fail.bind(this), 10000);
       return;
     }
-    var f = next.callback.bind(this);
-    try{
-      f();
-    } catch(err){
-      this.fail();
-      throw err;
+    if (next.callback){
+      var f = next.callback.bind(this);
+      try{
+        f();
+      } catch(err){
+        this.fail();
+        throw err;
+      }
     }
     this._mark_passed_test(next_state);
     this.set_state(this.get_state() + 1);
@@ -216,6 +218,11 @@ _mark_failed_test : function(state){
   tests[state].style.color = '#ff0000';
 },
 
+_hide_panel : function(){
+  if (!this.has_panel) return;
+  document.getElementById('consecutivejs_panel').style.display = 'none';
+},
+
 _reset_panel : function(){
   if (!this.has_panel) return;
 
@@ -228,6 +235,15 @@ _reset_panel : function(){
   control.id = 'consecutivejs_control';
   control.style.fontWeight = 'bold';
   header.appendChild(control);
+
+  var hide = document.createElement('a');
+  hide.style.fontWeight = 'bold';
+  hide.innerHTML = 'Hide';
+  hide.style.position = 'absolute';
+  hide.style.top = '10px';
+  hide.style.right = '10px';
+  hide.href = "javascript: consecutive._hide_panel();";
+  header.appendChild(hide);
 
   var title = document.createElement('span');
   title.style.color = '#888';
