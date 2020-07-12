@@ -22,19 +22,22 @@ class Column extends Eladmin\Chainset\Chainset{
   public $validate = null;
 
   final public function getName(){
+    if ($this->_get_parent() === null) throw new \Exception("Cannot get name of parent of columns.");
     return $this->_get_key();
   }
 
-  final public function toArray($row){
+  final public function getValue($row, $forEditing=false){
     $column = $this->getName();
     $value = null;
 
     if($this->getformat){
-      $value = $this->evalString('getformat', $row);
+      $value = $this->evalProperty('getformat', $row);
     } else{
       $value = $row->$column;
     }
-    $value = $this->listformat ? $this->evalString('listformat', $row) : $value;
+    if (!$forEditing || $this->disabled){
+      $value = $this->listformat ? $this->evalProperty('listformat', $row) : $value;
+    }
 
     if($this->listformat == false && $value instanceof \Illuminate\Database\Eloquent\Model){
       if($value->elaRepresentativeColumn){
@@ -43,13 +46,14 @@ class Column extends Eladmin\Chainset\Chainset{
         $value = $value->getKey();
       }
     }
-    if(!$this->rawoutput){
+    if(!$this->rawoutput && !$forEditing){
       $value = htmlspecialchars($value);
     }
     return $value;
   }
 
-  final public function evalString($prop, $row){
+  final public function evalProperty($prop, $row){
+    if ($this->_get_parent() === null) throw new \Exception("Cannot eval properties of parent of columns.");
     if (!isset($this->$prop)) return null;
     $column = $this->getName();
     if (is_callable($this->$prop))

@@ -1,7 +1,7 @@
 <div class="form-group">
-  <label>{{$config->label?$config->label:$column}}</label>
-  <input type="text" value="{{$value}}" class="form-control" {!! ($config->disabled?' disabled="disabled" ':' name="'.$column.'" ') !!}>
-  @if($config->desc)
-  <small class="form-text text-muted">{!! $config->desc !!}</small>
+  <label>{{$column->label?$column->label:$column->getName()}}</label>
+  <input type="text" value="{{ $column->getValue($row, true) }}" class="form-control" {!! ($column->disabled?' disabled="disabled" ':' name="'.$column->getName().'" ') !!}>
+  @if($column->desc)
+  <small class="form-text text-muted">{!! $column->desc !!}</small>
   @endif
 </div>

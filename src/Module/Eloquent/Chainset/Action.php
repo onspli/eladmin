@@ -27,10 +27,12 @@ class Action extends \Onspli\Eladmin\Chainset\Chainset{
   }
 
   final public function getName(){
+    if ($this->_get_parent() === null) throw new \Exception("Cannot get name of parent of actions.");
     return $this->_get_key();
   }
 
-  final public function evalString($prop, $row){
+  final public function evalProperty($prop, $row){
+    if ($this->_get_parent() === null) throw new \Exception("Cannot eval properties of parent of actions.");
     if (!isset($this->$prop)) return null;
     if (is_callable($this->$prop))
     {
@@ -43,7 +45,7 @@ class Action extends \Onspli\Eladmin\Chainset\Chainset{
     }
   }
 
-  final public function toArray($row){
+  final public function getAction($row){
     $action = [
       'action' => $this->getName(),
       'done' => $this->done,
@@ -54,16 +56,16 @@ class Action extends \Onspli\Eladmin\Chainset\Chainset{
     ];
 
     if(isset($this->label)){
-      $action['label'] = $this->evalString('label', $row);
+      $action['label'] = $this->evalProperty('label', $row);
     } else if(!$this->icon){
       $action['label'] = $this->getName();
     }
 
     if(isset($this->title)){
-      $action['title'] = $this->evalString('title', $row);
+      $action['title'] = $this->evalProperty('title', $row);
     }
     if(isset($this->confirm)){
-      $action['confirm'] = $this->evalString('confirm', $row);
+      $action['confirm'] = $this->evalProperty('confirm', $row);
     }
     return $action;
   }
@@ -75,6 +77,7 @@ class Action extends \Onspli\Eladmin\Chainset\Chainset{
   }
 
   public function confirm($str=''){
+    if ($str === '') $str = __('Are you sure?');
     $this->confirm = $str;
     return $this;
   }

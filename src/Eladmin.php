@@ -17,8 +17,6 @@ protected $cache = null;
 protected $views = null;
 // override to use advanced authorization null to disable authorization completely
 protected $auth = User::class;
-// override to disable warning when authorization is disabled
-public $disableNoAuthorizationMessage = false;
 
 // modules instances
 private $imodules = [];

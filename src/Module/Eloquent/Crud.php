@@ -10,48 +10,40 @@ trait Crud
     Eladmin\Module\Module::elaInit as elaInit_Parent_Module;
   }
 
-  protected function elaViewsDef(): array{
-    return [
-      'render'=>'modules.eloquent.render',
-      'putForm'=>'modules.eloquent.putForm',
-      'postForm'=>'modules.eloquent.postForm',
-      'row'=>'modules.eloquent.row',
-      'style'=>'modules.eloquent.style',
-      'script'=>'modules.eloquent.script'
-    ];
+  protected function elaViewsPrefix(): string{
+    return 'modules.eloquent.';
   }
 
   public function elaInit($eladmin, $elakey){
     $this->elaInit_Parent_Module($eladmin, $elakey);
-    $this->elaActions(); // set authorized roles
+    // authorization can be set in elaActions method too
+    $this->elaActions();
   }
 
 
   /**
   * Check if table for the model exists in the database;
-  * @return bool
   */
-  public function tableExists(){
+  final private function tableExists(){
     return $this->getSchema()->hasTable($this->getTable());
   }
 
   /**
   * Get an array of table columns.
-  * @return array
   */
-  public function getTableColumns() {
+  final private function getTableColumns() {
     return $this->getSchema()->getColumnListing($this->getTable());
   }
 
   /**
   * Get schema manager.
   */
-  public function getSchema(){
+  final private function getSchema(){
     return $this->getConnection()->getSchemaBuilder();
   }
 
 
-  public function elaColumnsDef(){
+  final private function elaColumnsDef(){
     $visibleColumns = $this->elaVisibleColumns();
     $disabledColumns = $this->elaDisabledColumns();
     $realColumns = $this->getTableColumns();
@@ -72,7 +64,7 @@ trait Crud
     return $columns;
   }
 
-  public function elaActionsDef(){
+  final private function elaActionsDef(){
     $actions = new Chainset\Action;
     $actions->_set_module($this);
 
@@ -81,7 +73,7 @@ trait Crud
     }
 
     if ($this->elaAuth('forceDelete')){
-      $actions->forceDelete->style('danger')->icon('<i class="fas fa-trash-alt"></i>')->title(__('Delete'))->confirm(__('Are you sure?'))->hidden();
+      $actions->forceDelete->style('danger')->icon('<i class="fas fa-trash-alt"></i>')->title(__('Delete'))->confirm()->hidden();
     }
 
 
@@ -99,7 +91,7 @@ trait Crud
     return $actions;
   }
 
-  public function elaFiltersDef(){
+  final private function elaFiltersDef(){
     return new Chainset\Filter;
   }
 
@@ -119,13 +111,13 @@ trait Crud
   public function elaActionPostForm(){
     if(!$this->elaAuth('create'))
       throw new Exception\UnauthorizedException();
-    echo $this->eladmin->view($this->elaGetView('postForm'), ['module'=>$this]);
+    echo $this->elaView('postForm', ['row'=>$this]);
   }
 
   public function elaActionPutForm(){
     if(!$this->elaAuth('read'))
       throw new Exception\UnauthorizedException();
-    echo $this->eladmin->view($this->elaGetView('putForm'), ['row'=>$this,'module'=>$this]);
+    echo $this->elaView('putForm', ['row'=>$this]);
   }
 
   public function elaUsesSoftDeletes(){
@@ -161,7 +153,7 @@ trait Crud
     $values = array();
     foreach($elaColumns as $column){
       if($column->nonlistable??false) continue;
-      $values[] = $column->toArray($row);
+      $values[] = $column->getValue($row);
     }
     return $values;
   }
@@ -174,11 +166,11 @@ trait Crud
     {
 
       if(isset($elaActions->restore) && $this->elaAuth('restore')){
-        $actions[] = $elaActions->restore->toArray($row);
+        $actions[] = $elaActions->restore->getAction($row);
       }
 
       if(isset($elaActions->forceDelete) && $this->elaAuth('forceDelete')){
-        $actions[] = $elaActions->forceDelete->toArray($row);
+        $actions[] = $elaActions->forceDelete->getAction($row);
       }
 
     }
@@ -189,15 +181,15 @@ trait Crud
       {
         if(!$this->elaAuth($action->getName())) continue;
         if($action->nonlistable) continue;
-        $actions[] = $action->toArray($row);
+        $actions[] = $action->getAction($row);
       }
 
       if(isset($elaActions->putForm) && ($this->elaAuth('update') || $this->elaAuth('read'))){
-        $actions[] = $elaActions->putForm->toArray($row);
+        $actions[] = $elaActions->putForm->getAction($row);
       }
 
       if(isset($elaActions->delete) && $this->elaUsesSoftDeletes() && $this->elaAuth('delete')){
-        $actions[] = $elaActions->delete->toArray($row);
+        $actions[] = $elaActions->delete->getAction($row);
       }
 
     }
@@ -228,7 +220,6 @@ trait Crud
     }
 
     $q = $q->orderBy($sort, $direction);
-    $q = $this->elaModifyQuery($q);
     return $q;
   }
 
@@ -263,10 +254,6 @@ trait Crud
     $this->elaOutJson($result);
   }
 
-  protected function elaModifyQuery($q){
-    return $q;
-  }
-
   /**
   * Edit database entry.
   */
@@ -297,9 +284,7 @@ trait Crud
     $tcolumns = $this->getTableColumns();
     foreach($tcolumns as $column){
       $value = $_POST[$column]??null;
-        $this->eladmin->log->debug("CRUD update column", [$column => isset($columns->{$column})]);
       if($value === null || !isset($columns->{$column}) || $columns->{$column}->disabled) continue;
-      $this->eladmin->log->debug("CRUD update column", [$column => $value]);
       $this->{$column} = $value;
     }
 

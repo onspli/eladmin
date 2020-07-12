@@ -72,15 +72,19 @@ final public function elaRequest($action, $args=[]) : string{
   return $this->eladmin->request($action, $this->elakey(), $args);
 }
 
-protected function elaViewsDef(): array{
-  return [
-    'render'=>'modules.module.render',
-    'script'=>'modules.module.script'
-  ];
+// override to set views prefix (directory)
+protected function elaViewsPrefix(): string{
+  return 'modules.module.';
 }
 
 final public function elaGetView(string $key): string{
-  return ($this->elaViews??$this->elaViewsDef())[$key];
+  return $this->elaViewsPrefix() . $key;
+}
+
+final public function elaView(string $name, array $args=[]) : string
+{
+  $name = $this->elaGetView($name);
+  return $this->eladmin->view($name, array_merge($args, ['module'=>$this]));
 }
 
 public function elaGetActionInstance(){
@@ -89,7 +93,7 @@ public function elaGetActionInstance(){
 
 final public function elaAction_script(){
   header('Content-type:text/javascript');
-  echo $this->eladmin->view($this->elaGetView('script'), ['module'=>$this]);
+  echo $this->elaView('script');
 }
 
 final public function elaOutText(?string $str=null){
