@@ -40,8 +40,8 @@
 <script src="{!! $eladmin->asset('toastr-2.1.3/toastr.min.js', '2.1.3') !!}"></script>
 
 <script>var _csrftoken = '{{$eladmin->CSRFToken()}}';</script>
-<script src="{!! $eladmin->asset('layout.js') !!}"></script>
 @stack('scripts')
+<script src="{!! $eladmin->asset('layout.js') !!}"></script>
 
 @include('consecutive')
 

@@ -121,7 +121,8 @@ function redrawFilters(doNotRedraw){
     redrawCrudTable();
 }
 
-redrawFilters();
+window.addEventListener("load", function(){ redrawFilters(); });
+
 
 
 $(' #crud-table').on('click', 'th[data-column]',function(e){
@@ -176,26 +177,6 @@ $(' .crud-paging .erase').click(function(){
 $(' .crud-trash').click(function(){
   crudFilters.trash= crudFilters.trash?0:1;
   redrawFilters();
-});
-
-$(document).on('click', 'form *[data-elaupdateaction]', function(e){
-  e.preventDefault();
-  var form = $(this).closest('form');
-  var el = $(this);
-
-  elaRequest($(this).data('elaupdateaction'), form.data('elamodule'), form.serialize(), {elaid: $(this).data('elaid'), elaupdate: 1})
-  .fail(function(response){
-    toastr.error(response.responseText);
-  }).done(function(response){
-    var eladone = new Function('data', el.data('eladone')+';  if(data) toastr.success(data);');
-    eladone(response);
-  }).always(function(){
-    elaRequest('putForm', '{{$module->elakey()}}', {}, {elaid : form.data('elaid') }).done(function(html){
-      $('#dynamic .modal-dialog').html($(html).find('.modal-dialog'));
-    });
-  });
-
-
 });
 
 $("#dynamic").on("hidden.bs.modal", function () {
