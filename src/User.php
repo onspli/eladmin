@@ -58,18 +58,16 @@ class User extends \Illuminate\Database\Eloquent\Model implements Iface\Authoriz
   public function elaColumns(){
     $cols = $this->elaColumnsDef();
     $cols->newpassword->label(__('New password'))->nonlistable()->editable();
-    $cols->login->validate(function($login){
+    $cols->login->validate(function($login, $row){
       if(!$login)
         throw new Exception\BadRequestException(__('Login must not be empty!'));
-      $oldlogin = static::where('login',$login)->first();
-      $oldid = $_POST['id']??0;
-      if($oldlogin && $oldlogin->id != $oldid)
+      $duplicatelogin = static::where('login',$login)->withTrashed()->first();
+      if($duplicatelogin && $duplicatelogin->id != $row->id)
         throw new Exception\BadRequestException(__('Login already exists!'));
     });
-    $cols->newpassword->validate(function($newpassword){
-      $oldid = $_POST['id']??0;
+    $cols->newpassword->validate(function($newpassword, $row){
       $newpassword = $_POST['newpassword']??null;
-      if(!$oldid && !$newpassword)
+      if(!$row->id && !$newpassword)
         throw new Exception\BadRequestException(__('New password must not be empty!'));
       if($newpassword)
         $_POST['passwordhash'] = $newpassword;
@@ -128,7 +126,6 @@ class User extends \Illuminate\Database\Eloquent\Model implements Iface\Authoriz
   }
 
   public function elaActionDelete(){
-  //  echo($this->elaUserId().'-'.$_POST[$this->getKeyName()]);return;
     if(($_POST[$this->getKeyName()]??null) == $this->elaUserId())
       throw new Exception\UnauthorizedException( __('You cannot delete yourself!'));
     $this->ela_Parent_Crud_ActionDelete();

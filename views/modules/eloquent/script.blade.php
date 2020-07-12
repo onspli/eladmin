@@ -65,6 +65,7 @@ function redrawCrudTable(){
     if(crudFilters.totalresults == 0){
       tbody.html('<tr><td colspan="1000" class="crud-loading"><i class="fas fa-dove"></i> {{ __('Nothing found!') }} </td></tr>');
     }
+    consecutive.point('crud_read');
   })
   .fail(function(res){
     $('.crud-paging .searchicon').html(searchiconHtml);

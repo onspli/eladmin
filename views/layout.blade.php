@@ -38,24 +38,9 @@
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 <script src="{!! $eladmin->asset('toastr-2.1.3/toastr.min.js', '2.1.3') !!}"></script>
+
+<script>var _csrftoken = '{{$eladmin->CSRFToken()}}';</script>
 <script src="{!! $eladmin->asset('layout.js') !!}"></script>
-<script>
-function elaRequest(action, module, args, getargs){
-  if(module === null || module === undefined){
-    console.error('You have to specify module!');
-    return;
-  }
-  return $.ajax({
-      method: 'POST',
-      url: '?'+$.param($.extend({},{
-        elamodule: module,
-        elaaction: action,
-        elatoken: '{{$eladmin->CSRFToken()}}'
-      }, getargs)),
-      data: args
-  });
-}
-</script>
 @stack('scripts')
 
 @include('consecutive')

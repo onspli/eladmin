@@ -1,9 +1,62 @@
+function elaRequest(action, module, args, getargs){
+  if(module === null || module === undefined){
+    throw 'You have to specify module!';
+  }
+  return $.ajax({
+      method: 'POST',
+      url: '?'+$.param($.extend({},{
+        elamodule: module,
+        elaaction: action,
+        elatoken: _csrftoken
+      }, getargs)),
+      data: args
+  });
+}
+
 $(function(){
 
-
+// toggle menu side bar
 $(document).on('click', "#menu-toggle", function(e) {
   e.preventDefault();
   $("#wrapper").toggleClass("toggled");
+});
+
+$('body').tooltip({selector: '[data-toggle="tooltip"]'});
+
+function isModalOpen()
+{
+  return $('#dynamic>.modal').length != 0;
+}
+
+function modalClose()
+{
+  if (!isModalOpen()){
+    return;
+  }
+  $('#dynamic>.modal').modal('hide');
+  $('#dynamic').html('');
+}
+
+function modalOpen(html)
+{
+  if (isModalOpen()){
+    throw 'Cannot open modal. Modal is open already.';
+  }
+  $('#dynamic').html(html);
+  html.modal();
+  history.pushState({data:'modal'}, '', '#modal');
+}
+
+// history.back event
+window.onpopstate = function(e){
+  modalClose();
+  consecutive.point('popstate');
+};
+
+// on modal close event
+$("#dynamic").on("hidden.bs.modal", function () {
+  var type = window.location.hash.substr(1);
+  if(type == 'modal') history.back();
 });
 
 $(document).on('click', '*[data-elaconfirm]', function(e){
@@ -13,6 +66,7 @@ $(document).on('click', '*[data-elaconfirm]', function(e){
     e.stopImmediatePropagation();
   }
 });
+
 
 $(document).on('click', '*:not(form)[data-elaaction]', function(e){
   e.preventDefault();
@@ -25,10 +79,13 @@ $(document).on('click', '*:not(form)[data-elaaction]', function(e){
   });
 
   elaRequest($(this).data('elaaction'), $(this).data('elamodule'), args, {elaid:$(this).data('elaid')})
-  .fail(function(data){
-      toastr.error(data.responseText);
+  .fail(function(response){
+    consecutive.point('action_fail', response);
+    if (response.status == 401) location.reload();
+    toastr.error(response.responseText);
   })
   .done(function(data, status, xhr){
+
     var eladone = new Function('data', $(el).data('eladone')+'; if(data) toastr.success(data);');
     eladone(data);
 
@@ -41,9 +98,7 @@ $(document).on('click', '*:not(form)[data-elaaction]', function(e){
       try{
         var html = $(data);
         if(html.hasClass('modal')){
-          $('#dynamic').html(html);
-          html.modal();
-          history.pushState({data:'modal'}, '', '#modal');
+          modalOpen(html);
         }
       } catch(v){
 
@@ -59,6 +114,8 @@ $(document).on('click', '*:not(form)[data-elaaction]', function(e){
     if (ct.indexOf('plain') > -1) {
 
     }
+
+    consecutive.point('action_ok', data);
   });
 });
 
@@ -67,29 +124,16 @@ $(document).on('submit', 'form#modal-form', function(e){
   var form = $(this);
   elaRequest(form.data('elaaction'), form.data('elamodule'), form.serialize(), {elaid: form.data('elaid')})
   .fail(function(response){
+    consecutive.point('form_fail', response);
+    if (response.status == 401) location.reload();
     toastr.error(response.responseText);
   })
   .done(function(data){
     var eladone = new Function('data', form.data('eladone')+';  if(data) toastr.success(data);');
     eladone(data);
-    $('#dynamic .modal').modal('hide');
+    modalClose();
+    consecutive.point('form_ok', data);
   });
-});
-
-window.onpopstate = function(e){
-  console.debug(e);
-  $('#dynamic .modal').modal('hide');
-};
-
-$('body').tooltip({selector: '[data-toggle="tooltip"]'});
-
-/**
-* on modal close
-*/
-$("#dynamic").on("hidden.bs.modal", function () {
-  var type = window.location.hash.substr(1);
-  if(type == 'modal') history.back();
-  console.debug('modal close');
 });
 
 });
