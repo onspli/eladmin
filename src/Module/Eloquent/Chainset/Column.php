@@ -20,6 +20,7 @@ class Column extends Eladmin\Chainset\Chainset{
   public $getformat = null;
   public $setformat = null;
   public $validate = null;
+  public $nonsearchable = false;
 
   final public function getName(){
     if ($this->_get_parent() === null) throw new \Exception("Cannot get name of parent of columns.");
@@ -89,6 +90,16 @@ class Column extends Eladmin\Chainset\Chainset{
 
   public function listable(){
     $this->nonlistable = false;
+    return $this;
+  }
+
+  public function nonsearchable(){
+    $this->nonsearchable = true;
+    return $this;
+  }
+
+  public function searchable(){
+    $this->nonsearchable = false;
     return $this;
   }
 
