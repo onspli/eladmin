@@ -75,6 +75,27 @@ trait Crud
   public function elaActionsDef(){
     $actions = new Chainset\Action;
     $actions->_set_module($this);
+
+    if ($this->elaAuth('restore')){
+      $actions->restore->style('success')->icon('<i class="fas fa-recycle"></i>')->title(__('Restore'))->hidden();
+    }
+
+    if ($this->elaAuth('forceDelete')){
+      $actions->forceDelete->style('danger')->icon('<i class="fas fa-trash-alt"></i>')->title(__('Delete'))->confirm(__('Are you sure?'))->hidden();
+    }
+
+
+    if ($this->elaAuth('update')){
+      $actions->putForm->style('primary')->icon('<i class="fas fa-edit"></i>')->done('return;')->hidden();
+    }
+    elseif ($this->elaAuth('read')){
+      $actions->putForm->style('primary')->icon('<i class="fas fa-eye"></i>')->done('return;')->hidden();
+    }
+
+    if ($this->elaUsesSoftDeletes() && $this->elaAuth('delete')){
+      $actions->delete->style('danger')->icon('<i class="fas fa-trash-alt"></i>')->hidden();
+    }
+
     return $actions;
   }
 
@@ -136,19 +157,55 @@ trait Crud
     return $visibleColumns;
   }
 
-  /**
-  * List database entries.
-  */
-  public function elaActionRead(){
-    $t0 = microtime(true);
-    $sort = $_POST['sort']??$this->elaOrderBy??$this->getKeyName();
-    $direction = $_POST['direction']??$this->orderDirection??'desc';
-    $page = $_POST['page']??1;
-    $resultsperpage = $_POST['resultsperpage']??10;
-    $search = $_POST['search']??'';
-    $columns = $_POST['columns']??[];
-    $trash = $_POST['trash']??0;
+  private function elaRowValuesArray($row, $elaColumns){
+    $values = array();
+    foreach($elaColumns as $column){
+      if($column->nonlistable??false) continue;
+      $values[] = $column->toArray($row);
+    }
+    return $values;
+  }
 
+  // generate array of actions for one row
+  private function elaRowActionsArray($row, $elaActions, $trash=false){
+    $actions = array();
+
+    if($trash)
+    {
+
+      if(isset($elaActions->restore) && $this->elaAuth('restore')){
+        $actions[] = $elaActions->restore->toArray($row);
+      }
+
+      if(isset($elaActions->forceDelete) && $this->elaAuth('forceDelete')){
+        $actions[] = $elaActions->forceDelete->toArray($row);
+      }
+
+    }
+    else
+    {
+
+      foreach($elaActions as $action)
+      {
+        if(!$this->elaAuth($action->getName())) continue;
+        if($action->nonlistable) continue;
+        $actions[] = $action->toArray($row);
+      }
+
+      if(isset($elaActions->putForm) && ($this->elaAuth('update') || $this->elaAuth('read'))){
+        $actions[] = $elaActions->putForm->toArray($row);
+      }
+
+      if(isset($elaActions->delete) && $this->elaUsesSoftDeletes() && $this->elaAuth('delete')){
+        $actions[] = $elaActions->delete->toArray($row);
+      }
+
+    }
+    return $actions;
+  }
+
+  private function elaReadQuery($sort=null, $direction='desc', $page=1, $resultsperpage=10, $search='', $columns=[], $trash=false){
+    $sort = $sort ?? $this->elaOrderBy ?? $this->getKeyName();
     $realColumns = $this->getTableColumns();
 
     $q = $this;
@@ -172,7 +229,23 @@ trait Crud
 
     $q = $q->orderBy($sort, $direction);
     $q = $this->elaModifyQuery($q);
+    return $q;
+  }
 
+  /**
+  * List database entries.
+  */
+  public function elaActionRead(){
+
+    $sort = $_POST['sort']??$this->elaOrderBy??$this->getKeyName();
+    $direction = $_POST['direction']??$this->orderDirection??'desc';
+    $page = $_POST['page']??1;
+    $resultsperpage = $_POST['resultsperpage']??10;
+    $search = $_POST['search']??'';
+    $columns = $_POST['columns']??[];
+    $trash = $_POST['trash']??false;
+
+    $q = $this->elaReadQuery($sort, $direction, $page, $resultsperpage, $search, $columns, $trash);
     $total = $q->count();
     $rows = $q->offset(($page-1)*$resultsperpage)->limit($resultsperpage)->get();
 
@@ -180,130 +253,13 @@ trait Crud
     $result['results'] = sizeof($rows);
     $result['rows'] = array();
     $result['actions'] = array();
+
     $elaColumns = $this->elaColumns();
     $elaActions = $this->elaActions();
     foreach($rows as $row){
-
-      //$row->elaInit($this->eladmin, $this->elakey);
-
-      $values = array();
-      foreach($elaColumns as $column=>$config){
-        if($config->nonlistable??false) continue;
-
-        if($config->getformat){
-          $value = ($config->getformat)($row->$column, $row, $column);
-        } else{
-          $value = $row->$column;
-        }
-        $value = $config->listformat? ($config->listformat)($value, $row, $column):$value;
-
-        if($config->listformat == false && $value instanceof \Illuminate\Database\Eloquent\Model){
-          if($value->elaRepresentativeColumn){
-            $value = $value->{$value->elaRepresentativeColumn};
-          } else{
-            $value = $value->getKey();
-          }
-        }
-        if(!$config->rawoutput){
-          $value = htmlspecialchars($value);
-        }
-        $values[] = $value;
-      }
-
-      $actions = array();
-
-      if($trash){
-
-
-        if($this->elaAuth('restore')){
-          $actions[] = [
-            'action' => 'restore',
-            'done' => 'redrawCrudTable();',
-            'id' => $row->getKey(),
-            'style' => 'success',
-            'icon' => '<i class="fas fa-recycle"></i>',
-            'module' => $this->elakey(),
-            'title' => __('Restore')
-          ];
-        }
-
-        if($this->elaAuth('forceDelete')){
-          $actions[] = [
-            'action' => 'forceDelete',
-            'done' => 'redrawCrudTable();',
-            'id' => $row->getKey(),
-            'style' => 'danger',
-            'icon' => '<i class="fas fa-trash-alt"></i>',
-            'module' => $this->elakey(),
-            'title' => __('Delete'),
-            'confirm' => __('Are you sure?')
-          ];
-        }
-
-      } else{
-
-        foreach($elaActions as $action=>$config){
-          if(!$this->elaAuth($action)) continue;
-          if($config->nonlistable) continue;
-          if(is_callable($config->label))
-            $value = ($config->label)($row->$column, $row, $column);
-          else $value = $config->label??$action;
-
-          $action_json = [
-            'action' => $action,
-            'done' => $config->done . 'redrawCrudTable();',
-            'id' => $row->getKey(),
-            'style' => $config->style,
-            'icon' => $config->icon,
-            'module' => $this->elakey(),
-            'label' => $value
-          ];
-
-          if($config->confirm !== null){
-            $action_json['confirm'] = $config->confirm ? $config->confirm : $value;
-          }
-
-          $actions[] = $action_json;
-        }
-
-        if($this->elaAuth('update')){
-          $actions[] = [
-            'action' => 'putForm',
-            'done' => 'return;',
-            'id' => $row->getKey(),
-            'style' => 'primary',
-            'icon' => '<i class="fas fa-edit"></i>',
-            'module' => $this->elakey()
-          ];
-        }
-        elseif($this->elaAuth('read')){
-          $actions[] = [
-            'action' => 'putForm',
-            'done' => 'return;',
-            'id' => $row->getKey(),
-            'style' => 'primary',
-            'icon' => '<i class="fas fa-eye"></i>',
-            'module' => $this->elakey()
-          ];
-        }
-
-        if($this->elaUsesSoftDeletes() && $this->elaAuth('delete')){
-          $actions[] = [
-            'action' => 'delete',
-            'done' => 'redrawCrudTable();',
-            'id' => $row->getKey(),
-            'style' => 'danger',
-            'icon' => '<i class="fas fa-trash-alt"></i>',
-            'module' => $this->elakey()
-          ];
-        }
-
-      }
-
-      $result['actions'][] = $actions;
-      $result['rows'][] = $values;
+      $result['actions'][] = $this->elaRowActionsArray($row, $elaActions, $trash);
+      $result['rows'][] = $this->elaRowValuesArray($row, $elaColumns);
     }
-
     $this->elaOutJson($result);
   }
 

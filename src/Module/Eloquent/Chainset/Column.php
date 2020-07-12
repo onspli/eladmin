@@ -21,6 +21,47 @@ class Column extends Eladmin\Chainset\Chainset{
   public $setformat = null;
   public $validate = null;
 
+  final public function getName(){
+    return $this->_get_key();
+  }
+
+  final public function toArray($row){
+    $column = $this->getName();
+    $value = null;
+
+    if($this->getformat){
+      $value = $this->evalString('getformat', $row);
+    } else{
+      $value = $row->$column;
+    }
+    $value = $this->listformat ? $this->evalString('listformat', $row) : $value;
+
+    if($this->listformat == false && $value instanceof \Illuminate\Database\Eloquent\Model){
+      if($value->elaRepresentativeColumn){
+        $value = $value->{$value->elaRepresentativeColumn};
+      } else{
+        $value = $value->getKey();
+      }
+    }
+    if(!$this->rawoutput){
+      $value = htmlspecialchars($value);
+    }
+    return $value;
+  }
+
+  final public function evalString($prop, $row){
+    if (!isset($this->$prop)) return null;
+    $column = $this->getName();
+    if (is_callable($this->$prop))
+    {
+      return ($this->$prop)($row->$column, $row, $column);
+    }
+    else
+    {
+      return $this->$prop;
+    }
+  }
+
   public function raw(){
     $this->rawoutput = true;
     return $this;

@@ -235,6 +235,10 @@ consecutive
 })
 .wait("wait for ajax login", 'login_ok')
 .wait("wait for login redirect", 'reload', _testLoggedIn)
+.run("check authorized modules", function(){
+  var menu = $("#modules-menu a");
+  consecutive.assert(menu.length == 2);
+})
 
 
 // logout
