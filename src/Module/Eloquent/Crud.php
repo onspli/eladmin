@@ -56,8 +56,10 @@ trait Crud
     $disabledColumns = $this->elaDisabledColumns();
     $realColumns = $this->getTableColumns();
     $columns = new Chainset\Column;
-    foreach($visibleColumns as $column){
+    foreach($realColumns as $column){
       $columns->$column;
+      if(!in_array($column, $visibleColumns))
+        $columns->$column->hidden();
       if(in_array($column, $disabledColumns))
         $columns->$column->disabled();
       if(in_array($column, $realColumns))
@@ -73,7 +75,7 @@ trait Crud
   public function elaActionsDef(){
     $actions = new Chainset\Action;
     $actions->_set_module($this);
-    return $actions; 
+    return $actions;
   }
 
   public function elaFiltersDef(){
@@ -317,6 +319,14 @@ trait Crud
     $this->elaOutText(__('Entry modified.'));
   }
 
+  /**
+  * Create database entry.
+  */
+  public function elaActionCreate(){
+    $this->elaUpdate();
+    $this->elaOutText(__('Entry added.'));
+  }
+
   protected function elaUpdate(){
     $columns = $this->elaColumns();
     foreach ($columns as $column => $config) {
@@ -329,40 +339,16 @@ trait Crud
     }
 
     $tcolumns = $this->getTableColumns();
-    //$tcolumns = array_diff($tcolumns, $this->elaDisabledColumns());
-
     foreach($tcolumns as $column){
       $value = $_POST[$column]??null;
+        $this->eladmin->log->debug("CRUD update column", [$column => isset($columns->{$column})]);
       if($value === null || !isset($columns->{$column}) || $columns->{$column}->disabled) continue;
+      $this->eladmin->log->debug("CRUD update column", [$column => $value]);
       $this->{$column} = $value;
     }
 
     $this->save();
     $this->refresh();
-  }
-
-  /**
-  * Create database entry.
-  */
-  public function elaActionCreate(){
-    $columns = $this->elaColumns();
-    foreach ($columns as $column => $config) {
-      if($config->validate){
-        ($config->validate)($_POST[$column]??null, $this);
-      }
-      if($config->setformat && isset($_POST[$column])){
-        $_POST[$column] = ($config->setformat)($_POST[$column], $this);
-      }
-    }
-    $tcolumns = $this->getTableColumns();
-    // $columns = array_diff($tcolumns, $this->elaDisabledColumns());
-    foreach($tcolumns as $column){
-      $value = $_POST[$column]??null;
-      if($value === null || !isset($columns->{$column}) || $columns->{$column}->disabled) continue;
-      $this->{$column} = $value;
-    }
-    $this->save();
-    $this->elaOutText(__('Entry added.'));
   }
 
   /**

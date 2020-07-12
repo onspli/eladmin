@@ -31,6 +31,12 @@ class Column extends Eladmin\Chainset\Chainset{
     return $this;
   }
 
+  public function hidden(){
+    $this->nonlistable();
+    $this->noneditable();
+    return $this;
+  }
+
   public function nonlistable(){
     $this->nonlistable = true;
     return $this;
