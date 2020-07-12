@@ -31,7 +31,7 @@ function isModalOpen()
 function modalClose()
 {
   if (!isModalOpen()){
-    throw 'Cannot close modal. Modal is closed already.';
+    return;
   }
   $('#dynamic>.modal').modal('hide');
   $('#dynamic').html('');
@@ -124,6 +124,7 @@ $(document).on('submit', 'form#modal-form', function(e){
   var form = $(this);
   elaRequest(form.data('elaaction'), form.data('elamodule'), form.serialize(), {elaid: form.data('elaid')})
   .fail(function(response){
+    consecutive.point('form_fail', response);
     if (response.status == 401) location.reload();
     toastr.error(response.responseText);
   })
@@ -131,6 +132,7 @@ $(document).on('submit', 'form#modal-form', function(e){
     var eladone = new Function('data', form.data('eladone')+';  if(data) toastr.success(data);');
     eladone(data);
     modalClose();
+    consecutive.point('form_ok', data);
   });
 });
 

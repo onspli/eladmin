@@ -36,6 +36,7 @@ class Event extends Model
 {
   use Crud;
   use SoftDeletes;
+  protected $elaAuthorizedRoles = ['admin', 'user'];
 }
 
 
@@ -53,6 +54,7 @@ class Registration extends Model
 {
   use Crud;
   use SoftDeletes;
+  protected $elaAuthorizedRoles = ['admin', 'user'];
 }
 
 /**
