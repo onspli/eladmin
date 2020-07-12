@@ -26,8 +26,58 @@ class Action extends \Onspli\Eladmin\Chainset\Chainset{
     else return $parent->_get_module();
   }
 
+  final public function getName(){
+    if ($this->_get_parent() === null) throw new \Exception("Cannot get name of parent of actions.");
+    return $this->_get_key();
+  }
+
+  final public function evalProperty($prop, $row){
+    if ($this->_get_parent() === null) throw new \Exception("Cannot eval properties of parent of actions.");
+    if (!isset($this->$prop)) return null;
+    if (is_callable($this->$prop))
+    {
+      // we pass second argument for backward compatibility
+      return ($this->$prop)($row, $row);
+    }
+    else
+    {
+      return $this->$prop;
+    }
+  }
+
+  final public function getAction($row){
+    $action = [
+      'action' => $this->getName(),
+      'done' => $this->done,
+      'id' => $row->getKey(),
+      'style' => $this->style,
+      'icon' => $this->icon,
+      'module' => $this->_get_module()->elakey()
+    ];
+
+    if(isset($this->label)){
+      $action['label'] = $this->evalProperty('label', $row);
+    } else if(!$this->icon){
+      $action['label'] = $this->getName();
+    }
+
+    if(isset($this->title)){
+      $action['title'] = $this->evalProperty('title', $row);
+    }
+    if(isset($this->confirm)){
+      $action['confirm'] = $this->evalProperty('confirm', $row);
+    }
+    return $action;
+  }
+
+  public function hidden(){
+    $this->nonlistable();
+    $this->noneditable();
+    return $this;
+  }
 
   public function confirm($str=''){
+    if ($str === '') $str = __('Are you sure?');
     $this->confirm = $str;
     return $this;
   }

@@ -6,14 +6,10 @@
 
 @section('modal-body')
   <form id="modal-form" data-elaaction="create" data-elamodule="{{$module->elakey()}}">
-    @foreach($module->elaColumns() as $column=>$config)
-      <?php
-      //if($column == $module->getKeyName()) continue;
-      if($config->noneditable??false) continue;
-      ?>
-      @component('components.inputs.'.$config->input, ['value'=>'', 'column'=>$column, 'config'=>$config, 'module'=>$module, 'row'=>new \StdClass, 'eladmin'=>$eladmin])
+    @foreach($module->elaColumns() as $column)
+      <?php if ($column->noneditable) continue; ?>
+      @component('components.inputs.'.$column->input, ['column'=>$column, 'row'=>$row])
       @endcomponent
-
     @endforeach
   </form>
 @endsection

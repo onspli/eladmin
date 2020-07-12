@@ -7,50 +7,32 @@
 @section('modal-body')
   <form id="modal-form" data-elaaction="update" data-elaid="{{$row->getKey()}}" data-elamodule="{{$row->elakey()}}">
 
-
-    @section('form-body')
-    @foreach($row->elaColumns() as $column=>$config)
-      <?php if($config->noneditable) continue; ?>
-      <?php
-        if($config->getformat){
-          $value = ($config->getformat)($row->$column, $row, $column);
-        } else{
-          $value = $row->$column;
-        }
-        if(!$config->realcolumn){
-          $value = $config->listformat? ($config->listformat)($value, $row, $column):$value;
-        }
-      ?>
-      @component('components.inputs.'.$config->input, ['value'=>$value, 'column'=>$column, 'config'=>$config, 'module'=>$row, 'row'=>$row, 'eladmin'=>$eladmin])
-      @endcomponent
-
-    @endforeach
-    @show
-
-
+  @section('form-body')
+  @foreach($row->elaColumns() as $column)
+    <?php if($column->noneditable) continue; ?>
+    @component('components.inputs.'.$column->input, ['column'=>$column, 'row'=>$row])
+    @endcomponent
+  @endforeach
+  @show
 
   @section('actions')
-    @foreach($row->elaActions() as $action=>$config)
+    @foreach($row->elaActions() as $action)
       <?php
-      if(!$row->elaAuth($action)) continue;
-      if($config->noneditable) continue;
-      if(is_callable($config->label))
-        $value = ($config->label)($row->$column, $row, $column, $row, $eladmin);
-      else $value = $config->label??$action;
+      if(!$row->elaAuth($action->getName())) continue;
+      if($action->noneditable) continue;
+      $actionArr = $action->getAction($row);
       ?>
       <div class="form-group">
-
-        <button type="button" data-elaupdateaction="{{$action}}"
-          @if($config->confirm !== null)
-            data-confirm="{{$config->confirm?$config->confirm:$value}}"
+        <button type="button" data-elaupdateaction="{{$action->getName()}}"
+          @if(isset($actionArr['confirm']))
+          data-elaconfirm="{{ $actionArr['confirm'] }}"
           @endif
-          data-elamodule="{{$row->elakey()}}"
-          data-eladone="{!! htmlspecialchars($config->done) !!}"
-          data-elaid="{{$row->getKey()}}"
-          class="btn btn-{{ $config->style }}">
-         {!! $config->icon !!} {{ $value }}
+          data-elamodule="{{ $actionArr['module'] }}"
+          data-eladone="{!! htmlspecialchars($actionArr['done']) !!}"
+          data-elaid="{{ $actionArr['id'] }}"
+          class="btn btn-{{ $actionArr['style'] }}">
+          {!! $actionArr['icon'] !!} {{ $actionArr['label'] }}
        </button>
-
       </div>
     @endforeach
   @show
@@ -61,7 +43,7 @@
 
 @section('modal-footer')
   @if($row->elaAuth('delete'))
-  <button type="button" class="btn btn-danger mr-3" data-elaaction="delete" data-elamodule="{{$row->elakey()}}" data-elaid="{{$row->getKey()}}" data-eladone="$('#dynamic .modal').modal('hide');" <?php if(!$row->elaUsesSoftDeletes()): ?> data-confirm="{{__('Are you sure?')}}" <?php endif; ?>><i class="fas fa-trash-alt"></i> <span class="d-none d-sm-inline">{{ __('Delete')}}</span></button>
+  <button type="button" class="btn btn-danger mr-3" data-elaaction="delete" data-elamodule="{{$row->elakey()}}" data-elaid="{{$row->getKey()}}" data-eladone="$('#dynamic .modal').modal('hide');" <?php if(!$row->elaUsesSoftDeletes()): ?> data-elaconfirm="{{__('Are you sure?')}}" <?php endif; ?>><i class="fas fa-trash-alt"></i> <span class="d-none d-sm-inline">{{ __('Delete')}}</span></button>
   @endif
   <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="far fa-times-circle"></i> <span class="">{{__('Cancel')}}</span></button>
   @if($row->elaAuth('update'))

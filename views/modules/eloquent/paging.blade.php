@@ -1,7 +1,7 @@
 <div class="crud-paging form-inline">
   <div class="form-group mb-3 mr-2">
     <div class="input-group">
-      <input type="text" class="form-control search" data-crudfilter="search" placeholder="{{$searchMessage}}">
+      <input type="text" class="form-control search" data-crudfilter="search" placeholder="{{ __('Search') }}">
       <div class="input-group-append">
         <button class="btn btn-primary searchicon" type="button" ><i class="fas fa-search"></i></button>
         <button class="btn btn-secondary erase" type="button" ><i class="fas fa-eraser"></i></button>

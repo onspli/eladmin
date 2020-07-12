@@ -70,6 +70,7 @@ $(document).on('click', '*[data-elaconfirm]', function(e){
 
 $(document).on('click', '*:not(form)[data-elaaction]', function(e){
   e.preventDefault();
+
   var el = this;
   var data = $(this).data();
   var args = {};
@@ -133,6 +134,24 @@ $(document).on('submit', 'form#modal-form', function(e){
     eladone(data);
     modalClose();
     consecutive.point('form_ok', data);
+  });
+});
+
+$(document).on('click', 'form *[data-elaupdateaction]', function(e){
+  e.preventDefault();
+  var form = $(this).closest('form');
+  var el = $(this);
+
+  elaRequest($(this).data('elaupdateaction'), form.data('elamodule'), form.serialize(), {elaid: $(this).data('elaid'), elaupdate: 1})
+  .fail(function(response){
+    toastr.error(response.responseText);
+  }).done(function(response){
+    var eladone = new Function('data', el.data('eladone')+';  if(data) toastr.success(data);');
+    eladone(response);
+  }).always(function(){
+    elaRequest('putForm', form.data('elamodule'), {}, {elaid : form.data('elaid') }).done(function(html){
+      $('#dynamic .modal-dialog').html($(html).find('.modal-dialog'));
+    });
   });
 });
 

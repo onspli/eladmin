@@ -197,7 +197,7 @@ class Registration extends Model
   public function elaActions(){
     $actions = $this->elaActionsDef();
     $actions->cancel          // method elaActionCancel
-      ->label(function($val, $row){return 'Cancel #'.$row->id;}) // label can be string or function
+      ->label(function($row){return 'Cancel #'.$row->id;}) // label can be string or function
       ->icon('<i class="far fa-times-circle"></i>')
       ->style('warning')      // boostrap button styles
       ->confirm('Do you really want to cancel?')    // confirm the action

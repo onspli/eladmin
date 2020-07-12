@@ -4,27 +4,18 @@
 
 @extends('layouts.card')
 
-<?php
-/**
-* TODO: Hack:  poedit cannot extract gettext from javascript or HTML ??!!
-*/
-$loadingMessage = __('Loading data');
-$nothingFoundMessage = __('Nothing found!');
-$searchMessage = __('Search');
-?>
-
 @section('card-header')
 <h2>{!! $module->elaGetIcon() !!} {{$module->elaGetTitle() }}</h2>
 @endsection
 
 @section('card-body')
 
-@include('modules.eloquent.actions')
+@include($module->elaGetView('actions'))
 @if($module->elaAuth('read'))
-@include('modules.eloquent.filters')
-@include('modules.eloquent.paging')
-@include('modules.eloquent.table')
-@include('modules.eloquent.paging')
+@include($module->elaGetView('filters'))
+@include($module->elaGetView('paging'))
+@include($module->elaGetView('table'))
+@include($module->elaGetView('paging'))
 @endif
 
 @endsection
