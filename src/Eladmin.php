@@ -115,7 +115,7 @@ private function firstAuthorizedModuleKey() : string
   {
     return $key;
   }
-  throw new Exception\UnauthorizedException(__("You are not authorized to access any module!"));
+  throw new Exception\UnauthorizedException(__("You are not authorized to access any module!") .' <a href="?elalogout=true">'. __("Logout") .'</a>');
 }
 
 // Generate CSRF token
