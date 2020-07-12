@@ -51,9 +51,9 @@ trait Crud
     foreach($realColumns as $column){
       $columns->$column;
       if(!in_array($column, $visibleColumns))
-        $columns->$column->hidden();
+        $columns->$column->hidden()->nonsearchable();
       if(in_array($column, $disabledColumns))
-        $columns->$column->disabled();
+        $columns->$column->disabled()->nonsearchable();
       if(in_array($column, $realColumns))
         $columns->$column->realcolumn = true;
       if(!$this->elaAuth('update'))
@@ -198,7 +198,7 @@ trait Crud
 
   private function elaReadQuery($sort=null, $direction='desc', $page=1, $resultsperpage=10, $search='', $columns=[], $trash=false){
     $sort = $sort ?? $this->elaOrderBy ?? $this->getKeyName();
-    $realColumns = $this->getTableColumns();
+    $elaColumns = $this->elaColumns();
 
     $q = $this;
 
@@ -207,10 +207,10 @@ trait Crud
     }
 
     if($search){
-      $q = $q->where(function($q) use($realColumns, $search){
-        foreach($realColumns as $key=>$col){
-          if($key==0) $q=$q->where($col, 'LIKE', '%'.$search.'%');
-          else $q=$q->orWhere($col, 'LIKE', '%'.$search.'%');
+      $q = $q->where(function($q) use($elaColumns, $search){
+        foreach($elaColumns as $col){
+          if (!$col->realcolumn || $col->nonsearchable) continue;
+          $q = $q->orWhere($col->getName(), 'LIKE', '%'.$search.'%');
         }
       });
     }
