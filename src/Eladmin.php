@@ -39,6 +39,10 @@ final public function __construct()
   $this->log->info('Construct eladmin.', $_GET);
 }
 
+final public function versionName() {
+  return "v0.2.2-alpha";
+}
+
 // Run Eladmin. It's just a wrapper of method runNoCatch catching exceptions.
 final public function run() : void
 {
