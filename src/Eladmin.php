@@ -17,6 +17,8 @@ protected $cache = null;
 protected $views = null;
 // override to use advanced authorization null to disable authorization completely
 protected $auth = User::class;
+// override to set monolog report level, null for no output
+protected $logLevel = null;
 
 // modules instances
 private $imodules = [];
@@ -499,7 +501,9 @@ private function initAllModules()
 private function initMonolog() : void
 {
   $this->log = new \Monolog\Logger('log');
-  $this->log->pushHandler(new \Monolog\Handler\StreamHandler(__DIR__.'/debug.log', \Monolog\Logger::DEBUG));
+  if ($this->logLevel !== null){
+    $this->log->pushHandler(new \Monolog\Handler\StreamHandler(__DIR__.'/debug.log', $this->logLevel));
+  }
 }
 
 }
