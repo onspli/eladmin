@@ -150,7 +150,7 @@ trait Crud
   }
 
   private function elaRowValuesArray($row, $elaColumns){
-    $values = array();
+    $values = [$row[$this->getKeyName()]];
     foreach($elaColumns as $column){
       if($column->nonlistable??false) continue;
       $values[] = $column->getValue($row);
@@ -159,7 +159,7 @@ trait Crud
   }
 
   private function elaColumnsConfigArray($elaColumns){
-    $config = array();
+    $config = ['elaid'];
     foreach($elaColumns as $column){
       if($column->nonlistable??false) continue;
       $configArr = [];
@@ -250,10 +250,20 @@ trait Crud
     $search = $_POST['search']??'';
     $columns = $_POST['columns']??[];
     $trash = $_POST['trash']??false;
+    $onlyids = $_POST['onlyids']??false;
 
     $q = $this->elaReadQuery($sort, $direction, $page, $resultsperpage, $search, $columns, $trash);
     $total = $q->count();
     $rows = $q->offset(($page-1)*$resultsperpage)->limit($resultsperpage)->get();
+
+    $result = [];
+    if($onlyids){
+      foreach($rows as $row){
+        $result[] = $row[$this->getKeyName()];
+      }
+      $this->elaOutJson($result);
+      return;
+    }
 
     $result['totalresults'] = $total;
     $result['results'] = sizeof($rows);

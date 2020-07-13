@@ -37,3 +37,7 @@
 .crud-loading{
   font-size: 2em;
 }
+
+.bulk-action, .bulk-action-trash{
+  display: none;
+}

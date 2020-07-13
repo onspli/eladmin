@@ -145,7 +145,6 @@ class Registration extends Model
 
   public function elaColumns(){
     $columns = $this->elaColumnsDef();
-    $columns->id->enabled();
 
     $columns->name->label('Name');
     $columns->email->label('E-mail');
@@ -204,7 +203,8 @@ class Registration extends Model
       ->done('console.log("Action \'cancel\' done.");')  // run script after the action is done
       ->listable()            // show the action in the table of registrations
       ->editable()           // show the action in the update form
-      ->auth('admin');//->auth('admin');
+      ->auth('admin')
+      ->bulk('Cancel');             // enable bulk action
     return $actions;
   }
 
