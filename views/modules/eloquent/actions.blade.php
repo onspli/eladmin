@@ -15,7 +15,7 @@
 @foreach($module->elaActions() as $action)
 <?php
 if(!$module->elaAuth($action->getName())) continue;
-if($action->noneditable || $action->bulk === null) continue;
+if($action->bulk === null) continue;
 ?>
 <button type="button" data-elabulkaction="{{$action->getName()}}"
   data-elamodule="{{ $module->elakey() }}"
