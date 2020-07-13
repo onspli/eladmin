@@ -21,7 +21,7 @@ $(document).on('click', "#menu-toggle", function(e) {
   $("#wrapper").toggleClass("toggled");
 });
 
-$('body').tooltip({selector: '[data-toggle="tooltip"]'});
+$('body').tooltip({selector: '[data-toggle="tooltip"]', trigger : 'hover'});
 
 function isModalOpen()
 {
