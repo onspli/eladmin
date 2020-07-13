@@ -158,6 +158,21 @@ trait Crud
     return $values;
   }
 
+  private function elaColumnsConfigArray($elaColumns){
+    $config = array();
+    foreach($elaColumns as $column){
+      if($column->nonlistable??false) continue;
+      $configArr = [];
+      if (!$column->rawoutput){
+        $configArr["limit"] = $column->listlimit;
+      } else{
+        $configArr["raw"] = 1;
+      }
+      $config[] = $configArr;
+    }
+    return $config;
+  }
+
   // generate array of actions for one row
   private function elaRowActionsArray($row, $elaActions, $trash=false){
     $actions = array();
@@ -251,6 +266,7 @@ trait Crud
       $result['actions'][] = $this->elaRowActionsArray($row, $elaActions, $trash);
       $result['rows'][] = $this->elaRowValuesArray($row, $elaColumns);
     }
+    $result['columns'] = $this->elaColumnsConfigArray($elaColumns);
     $this->elaOutJson($result);
   }
 
