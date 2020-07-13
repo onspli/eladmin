@@ -11,9 +11,30 @@ var crudFilters = {
   trash: 0
 };
 
-function rowFactory(columns, actions){
+function str_limit(str, length, substitute="..."){
+  return str.slice(0, length) + (str.length > length ? substitute : "");
+}
+
+function rowFactory(values, actions, columns){
   var tr = $('<tr></tr>');
-  for(value of columns) tr.append($('<td></td>').html(value));
+  for(var i=0; i<values.length; i++){
+    var value = values[i].toString();
+    var column = columns[i];
+    var td = $('<td></td>');
+    if (column.limit && value.length > column.limit){
+      var preview = str_limit(value, column.limit);
+      td.attr("data-toggle", "tooltip");
+      td.attr("title", value);
+      if (column.raw) td.html(preview);
+      else td.text(preview);
+    }
+    else {
+      if (column.raw) td.html(value);
+      else td.text(value);
+    }
+    tr.append(td);
+
+  }
   var action_td = $('<td class="text-right"></td>');
   for(action of actions) action_td.append(actionButtonFactory(action));
   tr.append(action_td);
@@ -65,9 +86,9 @@ function redrawCrudTable(){
       crudFilters.maxpage = Math.ceil(crudFilters.totalresults/crudFilters.resultsperpage);
       tbody.empty();
       for(var i=0; i<data.results; i++){
-        var columns = data.rows[i];
+        var values = data.rows[i];
         var actions = data.actions[i];
-        var tr = rowFactory(columns, actions);
+        var tr = rowFactory(values, actions, data.columns);
         tbody.append(tr);
       }
       $('.crud-paging .searchicon').html(searchiconHtml);

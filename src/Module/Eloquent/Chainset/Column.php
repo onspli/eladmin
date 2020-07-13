@@ -47,9 +47,6 @@ class Column extends Eladmin\Chainset\Chainset{
         $value = $value->getKey();
       }
     }
-    if(!$this->rawoutput && !$forEditing){
-      $value = htmlspecialchars($value);
-    }
     return $value;
   }
 

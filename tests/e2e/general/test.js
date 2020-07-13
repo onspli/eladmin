@@ -121,11 +121,11 @@ consecutive
   consecutive.assert(menu.length == 3);
   menu[2].click();
 })
-.wait("wait for redirecto to users crud", 'reload', function(){
+.wait("wait for redirect to users crud", 'reload', function(){
   var title = $(".card-header h2");
   consecutive.assert(title.html() == '<i class="fas fa-users"></i> Users');
 })
-.run("check crud table", function(){
+.wait("check crud table", 'crud_read', function(){
   var table = $("#crud-table");
   consecutive.assert(table.length != 0, "CRUD table doesn't exist.");
   var rowcells = table.find('tbody tr').first().find('td');
