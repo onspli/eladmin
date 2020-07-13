@@ -91,8 +91,6 @@ $(document).on('click', '*:not(form)[data-elaaction]', function(e){
     eladone(data);
 
     var ct = xhr.getResponseHeader("content-type") || "";
-    //console.debug(ct);
-
     // HTML response
     if (ct.indexOf('html') > -1) {
       //console.debug('html');
@@ -105,17 +103,6 @@ $(document).on('click', '*:not(form)[data-elaaction]', function(e){
 
       }
     }
-
-    // JSON response
-    if (ct.indexOf('json') > -1) {
-      //console.debug('json');
-    }
-
-    // Text response
-    if (ct.indexOf('plain') > -1) {
-
-    }
-
     consecutive.point('action_ok', data);
   });
 });

@@ -129,7 +129,7 @@ consecutive
   var table = $("#crud-table");
   consecutive.assert(table.length != 0, "CRUD table doesn't exist.");
   var rowcells = table.find('tbody tr').first().find('td');
-  consecutive.assert(rowcells.eq(0).html() == '1' && rowcells.eq(1).html() == 'eladmin' && rowcells.eq(2).html() == 'admin');
+  consecutive.assert(rowcells.eq(1).html() == '1' && rowcells.eq(2).html() == 'eladmin' && rowcells.eq(3).html() == 'admin');
 })
 .run("open add modal", function(){
   $("#crudadd").click();
@@ -182,7 +182,7 @@ consecutive
 .wait("wait for table reload", 'crud_read', function(data){
   var table = $("#crud-table");
   var rowcells = table.find('tbody tr').first().find('td');
-  consecutive.assert(rowcells.eq(0).html() == '2' && rowcells.eq(1).html() == 'user' && rowcells.eq(2).html() == 'group');
+  consecutive.assert(rowcells.eq(1).html() == '2' && rowcells.eq(2).html() == 'user' && rowcells.eq(3).html() == 'group');
 })
 
 .run("edit user", function(){
@@ -221,7 +221,7 @@ consecutive
 .wait("wait for table reload", 'crud_read', function(data){
   var table = $("#crud-table");
   var rowcells = table.find('tbody tr').first().find('td');
-  consecutive.assert(rowcells.eq(0).html() == '2' && rowcells.eq(1).html() == 'user' && rowcells.eq(2).html() == 'user');
+  consecutive.assert(rowcells.eq(1).html() == '2' && rowcells.eq(2).html() == 'user' && rowcells.eq(3).html() == 'user');
 })
 
 .run("### LOGIN AS USER ###")

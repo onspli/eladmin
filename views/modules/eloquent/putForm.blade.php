@@ -16,9 +16,9 @@
   @show
 
   @section('actions')
-    @foreach($row->elaActions() as $action)
+    @foreach($module->elaActions() as $action)
       <?php
-      if(!$row->elaAuth($action->getName())) continue;
+      if(!$module->elaAuth($action->getName())) continue;
       if($action->noneditable) continue;
       $actionArr = $action->getAction($row);
       ?>
@@ -42,11 +42,11 @@
 @endsection
 
 @section('modal-footer')
-  @if($row->elaAuth('delete'))
+  @if($module->elaAuth('delete'))
   <button type="button" class="btn btn-danger mr-3" data-elaaction="delete" data-elamodule="{{$row->elakey()}}" data-elaid="{{$row->getKey()}}" data-eladone="$('#dynamic .modal').modal('hide');" <?php if(!$row->elaUsesSoftDeletes()): ?> data-elaconfirm="{{__('Are you sure?')}}" <?php endif; ?>><i class="fas fa-trash-alt"></i> <span class="d-none d-sm-inline">{{ __('Delete')}}</span></button>
   @endif
   <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="far fa-times-circle"></i> <span class="">{{__('Cancel')}}</span></button>
-  @if($row->elaAuth('update'))
+  @if($module->elaAuth('update'))
     <button type="submit" form="modal-form" class="btn btn-primary"><i class="fas fa-save"></i> <span class="">{{__('Save')}}</span></button>
   @endif
 @endsection

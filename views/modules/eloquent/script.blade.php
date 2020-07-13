@@ -8,8 +8,128 @@ var crudFilters = {
   maxpage : 1,
   search:'',
   columns:{},
-  trash: 0
+  trash: 0,
+  onlyids: 0
 };
+
+var bulkConfig = {
+  all: false,
+  ids: []
+};
+
+function bulkCheckAll(){
+  bulkConfig.all = true;
+  bulkConfig.ids = [];
+}
+
+function bulkUncheckAll(){
+  bulkConfig.all = false;
+  bulkConfig.ids = [];
+}
+
+function bulkCheck(id){
+  if (bulkConfig.all)
+  {
+    bulkConfig.ids = bulkConfig.ids.filter(function(item) {
+      return item !== id;
+    });
+  }
+  else
+  {
+    if (bulkConfig.ids.includes(id) == false){
+      bulkConfig.ids.push(id);
+    }
+  }
+}
+
+function bulkUncheck(id){
+  if (bulkConfig.all == false)
+  {
+    bulkConfig.ids = bulkConfig.ids.filter(function(item) {
+      return item !== id;
+    });
+  }
+  else
+  {
+    if (bulkConfig.ids.includes(id) == false){
+      bulkConfig.ids.push(id);
+    }
+  }
+}
+
+function bulkSelectedItemsCount(){
+  var selected = 0;
+  if (bulkConfig.all) selected = crudFilters.totalresults - bulkConfig.ids.length;
+  else selected = bulkConfig.ids.length;
+  return selected;
+}
+
+function redrawItemsSelected(){
+  $('.items-selected').text(bulkSelectedItemsCount());
+}
+
+function bulkActionsRedraw(){
+  var selected = bulkSelectedItemsCount();
+  if (!crudFilters.trash)
+  {
+    $('.bulk-action').show();
+    $('.bulk-action-trash').hide();
+  }
+  else
+  {
+    $('.bulk-action').hide();
+    $('.bulk-action-trash').show();
+  }
+  if (selected == 0){
+    $('.bulk-action, .bulk-action-trash').prop('disabled', true);
+  } else{
+    $('.bulk-action, .bulk-action-trash').prop('disabled', false);
+  }
+}
+
+function bulkRedraw(){
+  if (bulkConfig.all){
+    $('.bulk').prop('checked', true);
+    $('.bulk-all').prop('checked', true);
+    for (id of bulkConfig.ids){
+      $('.bulk[data-elaid='+id+']').prop('checked', false);
+    }
+  } else{
+    $('.bulk').prop('checked', false);
+    $('.bulk-all').prop('checked', false);
+    for (id of bulkConfig.ids){
+      $('.bulk[data-elaid='+id+']').prop('checked', true);
+    }
+  }
+  redrawItemsSelected();
+  bulkActionsRedraw();
+}
+
+$(document).on('click', 'input.bulk-all', function(e){
+  var el = $(this);
+  var checked = el.prop('checked');
+  if (checked) {
+    bulkCheckAll();
+  }
+  else {
+    bulkUncheckAll();
+  }
+  bulkRedraw();
+  console.debug(bulkConfig);
+});
+
+$(document).on('click', 'input.bulk', function(){
+  var elaid = $(this).data('elaid');
+  var checked = $(this).prop('checked');
+  if (checked) {
+    bulkCheck(elaid);
+  } else{
+    bulkUncheck(elaid);
+  }
+  redrawItemsSelected();
+  bulkActionsRedraw();
+  console.debug(bulkConfig);
+});
 
 function str_limit(str, length, substitute="..."){
   return str.slice(0, length) + (str.length > length ? substitute : "");
@@ -17,7 +137,9 @@ function str_limit(str, length, substitute="..."){
 
 function rowFactory(values, actions, columns){
   var tr = $('<tr></tr>');
-  for(var i=0; i<values.length; i++){
+  var bulk_td = $('<td class="text-center"><input class="bulk" type="checkbox" data-elaid="' + values[0] + '"></td>');
+  tr.append(bulk_td);
+  for(var i=1; i<values.length; i++){
     var value = values[i].toString();
     var column = columns[i];
     var td = $('<td></td>');
@@ -59,19 +181,19 @@ function actionButtonFactory(action){
 }
 
 var readRequestCount = 0;
+var searchiconHtml = $('.crud-paging .searchicon').html();
 function redrawCrudTable(){
 
   @if(!$module->elaAuth('read'))
     return;
   @endif
   var maxpage = crudFilters.maxpage;
-
-  var searchiconHtml = $('.crud-paging .searchicon').html();
   $('.crud-paging .searchicon').html('<i class="fas fa-sync-alt fa-spin"></i>');
 
   // we want to update only last request
   readRequestCount++;
   var currentRequestCount = readRequestCount;
+  crudFilters.onlyids = 0;
   (function(currentRequestCount){
 
     elaRequest('read', '{{$module->elakey()}}', crudFilters)
@@ -96,6 +218,9 @@ function redrawCrudTable(){
       if(crudFilters.totalresults == 0){
         tbody.html('<tr><td colspan="1000" class="crud-loading"><i class="fas fa-dove"></i> {{ __('Nothing found!') }} </td></tr>');
       }
+      $('.results-shown').text(data.results);
+      $('.results-total').text(crudFilters.totalresults);
+      bulkRedraw();
       consecutive.point('crud_read');
     })
     .fail(function(res){
@@ -113,7 +238,7 @@ function redrawCrudTable(){
 
 $(' #crud-table th[data-column]').css('cursor','pointer').css('white-space','nowrap');
 
-function redrawFilters(doNotRedraw){
+function redrawFilters(doNotRedraw, doNotUncheckAll){
   crudFilters.maxpage = Math.ceil(crudFilters.totalresults/crudFilters.resultsperpage);
   if(crudFilters.maxpage < 1) crudFilters.maxpage = 1;
   if(parseInt(crudFilters.page) != crudFilters.page) crudFilters.page = 1;
@@ -137,14 +262,14 @@ function redrawFilters(doNotRedraw){
   if(crudFilters.trash) $(' .crud-trash').addClass('btn-warning').removeClass('btn-secondary');
   else $(' .crud-trash').addClass('btn-secondary').removeClass('btn-warning');
 
+  if(!doNotUncheckAll)
+    bulkUncheckAll();
 
   if(!doNotRedraw)
     redrawCrudTable();
 }
 
 window.addEventListener("load", function(){ redrawFilters(); });
-
-
 
 $(' #crud-table').on('click', 'th[data-column]',function(e){
   e.preventDefault();
@@ -158,17 +283,17 @@ $(' #crud-table').on('click', 'th[data-column]',function(e){
     crudFilters.sort = col;
     crudFilters.direction = 'asc';
   }
-  redrawFilters();
+  redrawFilters(false, true);
 });
 
 $(' .crud-paging *[data-crudfilter=search]').on('input', function(){
   crudFilters[$(this).data('crudfilter')] = $(this).val();
-  redrawFilters();
+  redrawFilters(false);
 });
 
 $(' .crud-paging *[data-crudfilter]').change(function(){
   crudFilters[$(this).data('crudfilter')] = $(this).val();
-  redrawFilters();
+  redrawFilters(false, $(this).data('donotuncheck'));
 });
 
 $(' #crud-filters *[data-crudfiltercolumn]').change(function(){
@@ -176,18 +301,18 @@ $(' #crud-filters *[data-crudfiltercolumn]').change(function(){
     crudFilters.columns[$(this).data('crudfiltercolumn')] = { 'op':'=', 'val': $(this).val()};
   else
     delete crudFilters.columns[$(this).data('crudfiltercolumn')];
-  redrawFilters();
+  redrawFilters(false);
 });
 
 
 $(' .crud-paging .prev-page').click(function(){
   crudFilters.page--;
-  redrawFilters();
+  redrawFilters(false, true);
 });
 
 $(' .crud-paging .next-page').click(function(){
   crudFilters.page++;
-  redrawFilters();
+  redrawFilters(false, true);
 });
 
 $(' .crud-paging .erase').click(function(){
@@ -202,4 +327,73 @@ $(' .crud-trash').click(function(){
 
 $("#dynamic").on("hidden.bs.modal", function () {
   redrawCrudTable();
+});
+
+function doBulkAction(el, ids){
+  var data = $(this).data();
+  var args = {};
+  $.each(data, function(key,val){
+    if(!key.startsWith('elaarg')) return;
+    args[key.substr(6)] = val;
+  });
+
+  var selected = bulkSelectedItemsCount();
+  var finished = 0;
+  var success = 0;
+  var failed = 0;
+
+  for(elaid of ids){
+
+    elaRequest($(el).data('elabulkaction'), $(el).data('elamodule'), args, {elaid:elaid})
+    .fail(function(response){
+      finished++;
+      failed++;
+      if (response.status == 401) location.reload();
+      toastr.error(response.responseText);
+      if (finished >= selected){
+        toastr.success('{!! __('Done. %s items was affected, %s failed.', "' + success +'", "' + failed +'") !!} ');
+        var eladone = new Function('data', $(el).data('eladone')+';');
+        eladone(data);
+      }
+    })
+    .done(function(data, status, xhr){
+      finished++;
+      success++;
+      if (finished >= selected){
+        toastr.success('{!! __('Done. %s items was affected, %s failed.', "' + success +'", "' + failed +'") !!} ');
+        var eladone = new Function('data', $(el).data('eladone')+';');
+        eladone(data);
+      }
+    });
+
+  }
+}
+
+$(document).on('click', '*[data-elabulkaction]', function(e){
+  e.preventDefault();
+
+  var confirm = window.confirm( $(this).data('bulkconfirm') + ' {!! __('This will affect %s items.', "' + bulkSelectedItemsCount() +'") !!} ');
+  if(!confirm){
+    return;
+  }
+
+  if (bulkConfig.all){
+    crudFilters.onlyids = 1;
+    var el = this;
+    elaRequest('read', $(this).data('elamodule'), crudFilters)
+    .done(function(data){
+      console.debug(data);
+      for(id of bulkConfig.ids){
+        data = data.filter(function(item) {
+          return item !== id;
+        });
+      }
+      doBulkAction(el, data);
+    })
+    .fail(function(response){
+      toastr.error(response.responseText);
+    });
+  } else{
+    doBulkAction(this, bulkConfig.ids);
+  }
 });

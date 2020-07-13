@@ -12,6 +12,7 @@ class Action extends \Onspli\Eladmin\Chainset\Chainset{
   public $icon = '';
   public $confirm = null;
   public $done = '';
+  public $bulk = null;
 
   private $module = null;
   final public function _set_module($module)
@@ -82,12 +83,19 @@ class Action extends \Onspli\Eladmin\Chainset\Chainset{
     return $this;
   }
 
-  public function auth($role){
-    $this->_get_module()->elaSetAuthorizedRolesAction($this->_get_key(), $role);
+  public function auth($roles){
+    $this->_get_module()->elaSetAuthorizedRolesAction($this->_get_key(), $roles);
+    return $this;
   }
 
   public function done($js=''){
     $this->done = $js;
+    return $this;
+  }
+
+  public function bulk($bulk=''){
+    if ($bulk === '') $bulk = $this->getName();
+    $this->bulk = $bulk;
     return $this;
   }
 
