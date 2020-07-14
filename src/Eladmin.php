@@ -5,18 +5,19 @@ namespace Onspli\Eladmin;
 class Eladmin
 {
 
+// override to register admin modules (i.e. eloquent models).
+protected $modules = [];
 // override to set administration title
 protected $title = "Eladmin";
 // override to set language
 protected $lang = "en_US";
-// override to register admin modules (i.e. eloquent models).
-protected $modules = [];
-// required: override to set cache directory
-protected $cache = null;
-// override to set blade views directory, either string or array
-protected $views = null;
 // override to use advanced authorization null to disable authorization completely
 protected $auth = User::class;
+
+// override to set Blade cache directory
+protected $cache = __DIR__ . '/../cache';
+// override to set blade views directory, either string or array
+protected $views = null;
 // override to set monolog report level, null for no output
 protected $logLevel = null;
 
@@ -217,14 +218,14 @@ final public function runNoCatch(): void
   * Authentication and authorization.
   */
   if($this->auth){
-    $isLogout = $_GET['elalogout']??false;
+    $isLogout = isset($_GET['elalogout']);
     if($isLogout){
       $this->iauth->elaLogout();
       $this->refreshNoAjax();
       throw new Exception\UnauthorizedException();
     }
 
-    $isLogin = $_GET['elalogin']??false;
+    $isLogin = isset($_GET['elalogin']);
     if($isLogin){
       $this->iauth->elaLogin();
     }
@@ -282,6 +283,7 @@ final public function runNoCatch(): void
     throw new Exception\BadRequestException('Class '.$classname.' does not have method '.'elaAction'.ucfirst($this->actionkey()).'!');
   $actionInstance = $this->module()->elaGetActionInstance();
   call_user_func([$actionInstance, 'elaAction'.$this->actionkey()]);
+  $this->refreshNoAjax();
 }
 
 // Render a view.
@@ -313,7 +315,7 @@ final public function module(?string $key=null)
   $key = $key ?? $this->modulekey();
   if ($key === null)
     throw new Exception\BadRequestException(__('No module requested!'));
-  if($key === "") return $this;
+  if ($key === "") return $this;
   // has the module been initialized?
   if(!isset($this->imodules[$key]))
   {
@@ -322,8 +324,14 @@ final public function module(?string $key=null)
     {
       throw new Exception\BadRequestException(__('Unknown module "%s"!', $key));
     }
+
+    if (!method_exists($moduleclass, 'elakey'))
+    {
+      throw new \Exception('Class '.$moduleclass.' is not Eladmin module.');
+    }
+
     $imodule = new $moduleclass();
-    if($this->auth && !$this->iauth->elaAuthorize($imodule->elaGetAuthorizedRoles()))
+    if ($this->auth && !$this->iauth->elaAuthorize($imodule->elaGetAuthorizedRoles()))
     {
       unset($this->modules[$key]);
       return null;
@@ -456,8 +464,21 @@ private function initBladeTemplates()
   $this->log->debug('init Blade');
   if(!$this->cache)
   {
-    throw new \Exception('Give '.static::class.'->cache property a path to some writeable directory.');
+    throw new \Exception('Set '.static::class.'::cache property to a path to some writeable directory.');
   }
+  if (!file_exists($this->cache))
+  {
+    $result = mkdir($this->cache);
+    if (!$result)
+    {
+      throw new \Exception('Cannot create Blade cache directory '.$this->cache.'.');
+    }
+  }
+  if (!is_writeable($this->cache))
+  {
+    throw new \Exception('Cannot write to Blade cache directory '.$this->cache.'.');
+  }
+
   if (is_array($this->views))
   {
     $views = array_merge($this->views, [__DIR__ . '/../views']);
@@ -489,9 +510,6 @@ private function initAuthorization()
 private function initAllModules()
 {
   $this->log->debug('init all modules');
-  /**
-  * TODO: check modules parents (Eloquent model or Eladmin module)
-  */
   foreach($this->modules as $key=>$module)
   {
     $this->module($key);

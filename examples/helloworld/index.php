@@ -47,11 +47,6 @@ class Registration extends Model
 class MyEladmin extends Eladmin
 {
   /**
-  * Cache directory used by template engine
-  */
-  protected $cache = __DIR__.'/../../cache';
-
-  /**
   * Add modules to the administration.
   */
   protected $modules = [Registration::class, Event::class];
