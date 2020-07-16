@@ -95,12 +95,12 @@ final public function elaAction_script(){
   echo $this->elaView('script');
 }
 
-final public function elaOutText(?string $str=null){
+final public function elaOutText(?string $str = null){
   Header('Content-type: text/plain');
   if($str !== null) echo $str;
 }
 
-final public function elaOutHtml(?string $str=null){
+final public function elaOutHtml(?string $str = null){
   Header('Content-type: text/html');
   if($str !== null) echo $str;
 }

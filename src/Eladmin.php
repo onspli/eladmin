@@ -14,7 +14,7 @@ protected $title = "Eladmin";
 protected $lang = "en_US";
 
 // override to use advanced authorization, set to null to disable authorization completely
-protected $auth = User::class;
+protected $auth = Auth\Password::class;
 
 // override to set Blade cache directory
 protected $cache = __DIR__ . '/../cache';
@@ -105,7 +105,7 @@ final public function runNoCatch() : void {
     if ($isLogout) {
       $this->iauth->elaLogout();
       if (!static::isAjaxRequest())
-        $this->refresh();
+        $this->redirect();
       throw new Exception\UnauthorizedException();
     }
 
@@ -116,10 +116,18 @@ final public function runNoCatch() : void {
 
     $isAuthorized = $this->iauth->elaAuthorize();
     if ($isLogin) {
-      if (!$isAuthorized)
+      if (!$isAuthorized) {
         throw new Exception\UnauthorizedException(__("Wrong credentials!"));
-      else
-        $this->refresh();
+      } else {
+        $this->initAllModules();
+        try {
+          $this->firstAuthorizedModuleKey();
+        } catch (\Exception $e) {
+          $this->iauth->elaLogout();
+          throw $e;
+        }
+        $this->redirect();
+      }
       return;
     }
 
@@ -128,8 +136,11 @@ final public function runNoCatch() : void {
       if ($this->isAjaxRequest())
         throw new Exception\UnauthorizedException();
       if ($loginFields === null) {
+        $this->iauth->elaUnauthorized();
         throw new Exception\UnauthorizedException();
       } else {
+        if ($this->modulekey() !== null)
+          $this->redirect();
         echo $this->view('login', ['loginFields' => $loginFields]);
         return;
       }
@@ -184,6 +195,11 @@ final public function version() : string {
 // Returns username to show it in templates. Returns null if authorization is off.
 final public function username() : ?string {
   return $this->iauth ? $this->iauth->elaUserName() : null;
+}
+
+// Return authorization instance.
+final public function user() : ?object {
+  return $this->iauth;
 }
 
 // Eladmins elakey - empty string
@@ -259,7 +275,7 @@ final public function module(?string $elakey = null) : ?object {
     if ($moduleclass === null)
       throw new Exception\BadRequestException(__('Unknown module "%s"!', $elakey));
     if (!static::isModule($moduleclass))
-      throw new \Exception('Class ' . $moduleclass . ' is not Eladmin module.');
+      throw new Exception\Exception('Class ' . $moduleclass . ' is not Eladmin module.');
 
     $imodule = new $moduleclass();
     if ($this->auth && !$this->iauth->elaAuthorize($imodule->elaGetAuthorizedRoles())) {
@@ -285,7 +301,7 @@ private static function moduleToElakey($module) : string {
   if (is_string($module))
     return $module;
   if (!static::isModule($module))
-    throw new \Exception(__('Cannot get elakey of object which is not an Eladmin module.'));
+    throw new Exception\Exception(__('Cannot get elakey of object which is not an Eladmin module.'));
   return $module->elakey();
 }
 
@@ -342,12 +358,7 @@ final static public function isAjaxRequest() : bool {
   return !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
 }
 
-// Refresh page (or exit if ajax request)
-final static public function refresh() : void {
-  static::redirect();
-}
-
-// Redirect (or exit if ajax request)
+// Redirect (or exit if ajax request). Default url = home
 final static public function redirect(string $url = '.') : void {
   if (!static::isAjaxRequest())
     header('Location: '.$url);
@@ -455,32 +466,20 @@ private function initBladeTemplates()
 {
   $this->log->debug('init Blade');
   if(!$this->cache)
-  {
-    throw new \Exception('Set '.static::class.'::$cache property to a path to some writeable directory.');
-  }
-  if (!file_exists($this->cache))
-  {
+    throw new Exception\Exception('Set '.static::class.'::$cache property to a path to some writeable directory.');
+  if (!file_exists($this->cache)) {
     $result = mkdir($this->cache);
     if (!$result)
-    {
-      throw new \Exception('Cannot create Blade cache directory '.$this->cache.'.');
-    }
+      throw new Exception\Exception('Cannot create Blade cache directory '.$this->cache.'.');
   }
   if (!is_writeable($this->cache))
-  {
-    throw new \Exception('Cannot write to Blade cache directory '.$this->cache.'.');
-  }
+    throw new Exception\Exception('Cannot write to Blade cache directory '.$this->cache.'.');
 
-  if (is_array($this->views))
-  {
+  if (is_array($this->views)) {
     $views = array_merge($this->views, [__DIR__ . '/../views']);
-  }
-  else if (is_string($this->views))
-  {
+  } else if (is_string($this->views)) {
     $views = [$this->views, __DIR__ . '/../views'];
-  }
-  else
-  {
+  } else {
     $views = [__DIR__ . '/../views'];
   }
   $this->blade = new \Philo\Blade\Blade($views, $this->cache);

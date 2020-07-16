@@ -3,7 +3,7 @@
 namespace Onspli\Eladmin;
 
 
-class User extends \Illuminate\Database\Eloquent\Model implements Iface\Authorization
+class User extends \Illuminate\Database\Eloquent\Model implements Auth\AuthInterface
 {
   use Module\Eloquent\Crud {
     Module\Eloquent\Crud::elaActionDelete as ela_Parent_Crud_ActionDelete;
