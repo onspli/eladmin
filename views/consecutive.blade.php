@@ -1,4 +1,4 @@
-<script src="{!! $eladmin->asset('consecutive.js', $eladmin->versionName()) !!}"></script>
+<script src="{!! $eladmin->asset('consecutive.js', $eladmin->version()) !!}"></script>
 @if($eladmin->consecutive)
 <script>
 {!! $eladmin->consecutiveScript() !!}

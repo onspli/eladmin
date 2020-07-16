@@ -2,209 +2,94 @@
 
 namespace Onspli\Eladmin;
 
-class Eladmin
-{
+class Eladmin {
 
-// override to register admin modules (i.e. eloquent models).
+// override to register admin modules
 protected $modules = [];
+
 // override to set administration title
 protected $title = "Eladmin";
+
 // override to set language
 protected $lang = "en_US";
-// override to use advanced authorization null to disable authorization completely
+
+// override to use advanced authorization, set to null to disable authorization completely
 protected $auth = User::class;
 
 // override to set Blade cache directory
 protected $cache = __DIR__ . '/../cache';
-// override to set blade views directory, either string or array
+
+// override to extend blade views directory
 protected $views = null;
-// override to set monolog report level, null for no output
-protected $logLevel = null;
+
+// override to set monolog report level, null disables logging
+protected $logLevel = \Monolog\Logger::ERROR;
 
 // modules instances
 private $imodules = [];
+
 // authorization instance
 private $iauth = null;
+
 // blade template engine instance
 private $blade = null;
+
 // gettext translator
 private $t;
+
 // monolog Logger
 public $log;
+
+// requested action
+private $actionkey = null;
+
+// requested module
+private $modulekey = null;
 
 // TODO: change concept of testing?
 public $consecutive = false;
 
 // Initialize Eladmin.
-final public function __construct()
-{
+final public function __construct() {
   $this->initMonolog();
   $this->log->info('Construct eladmin.', $_GET);
-}
 
-final public function versionName() {
-  return "v0.2.2-alpha";
+  // Cache action key and modulekey. We don't want them accidentaly changed.
+  $this->actionkey();
+  $this->modulekey();
 }
 
 // Run Eladmin. It's just a wrapper of method runNoCatch catching exceptions.
-final public function run() : void
-{
-  try{
+final public function run() : void {
+  try {
     $this->runNoCatch();
-  } catch(Exception\UnauthorizedException $e){
+  } catch(Exception\UnauthorizedException $e) {
     header("HTTP/1.1 401 Unauthorized");
     echo $e->getMessage();
-  } catch(Exception\BadRequestException $e){
+  } catch(Exception\BadRequestException $e) {
     header("HTTP/1.1 400 Bad Request");
     echo $e->getMessage();
-  } catch(Exception\Exception $e){
+  } catch(Exception\Exception $e) {
     header("HTTP/1.1 500 Internal Server Error");
     echo $e->getMessage();
-  } catch(\Exception $e){
+  } catch(\Exception $e) {
     header("HTTP/1.1 500 Internal Server Error");
     echo $e->getMessage();
   }
-}
-
-// Return administration title to show it in templates.
-final public function title() : string
-{
-  return $this->title;
-}
-
-// Returns username to show it in templates. Returns null if authorization is off.
-final public function username() : ?string{
-  return $this->iauth ? $this->iauth->elaUserName() : null;
-}
-
-// Each module has its elakey - index in modules array - used to address requests.
-// Empty for eladmin.
-final public function elakey() : string
-{
-  return '';
-}
-
-// Return requested action key, null if no action requested
-private $requested_actionkey = null; // caching
-final public function actionkey() : ?string
-{
-  if ($this->requested_actionkey === null && isset($_GET['elaaction']))
-  {
-    $this->requested_actionkey = static::normalizeActionName($_GET['elaaction']);
-  }
-  return $this->requested_actionkey;
-}
-
-// Return requested asset path, null if no asset requested
-final public function assetpath() : ?string
-{
-  return $_GET['elaasset'] ?? null;
-}
-
-// Return requested module key, null if no module requested
-private $requested_modulekey = null; // caching
-final public function modulekey() : ?string
-{
-  if ($this->requested_modulekey !== null)
-  {
-    return $this->requested_modulekey;
-  }
-  $this->requested_modulekey = $_GET['elamodule'] ?? null;
-  return $this->requested_modulekey;
-}
-
-// return first authorized module key
-private function firstAuthorizedModuleKey() : string
-{
-  foreach($this->modules as $key=>$mod)
-  {
-    return $key;
-  }
-  throw new Exception\UnauthorizedException(__("You are not authorized to access any module!") .' <a href="?elalogout=true">'. __("Logout") .'</a>');
-}
-
-// Generate CSRF token
-final public function CSRFToken() : string
-{
-  $token = $_SESSION['elacsrftoken'] ?? null;
-  if(!$token)
-  {
-    $token = '';
-    $chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    for($i=0; $i<16; $i++)
-    {
-      $token .= substr($chars, rand(0, strlen($chars)-1), 1);
-    }
-    $_SESSION['elacsrftoken'] = $token;
-  }
-  return $token;
-}
-
-// create request url
-final public function request(?string $action, $module, array $args=[]) : string
-{
-  $data = $args;
-  if($action !== null)
-  {
-    $data['elaaction'] = $action;
-    $data['elatoken'] = $this->CSRFToken();
-  }
-  if (is_string($module)) $data['elamodule'] = $module;
-  else $data['elamodule'] = $module->elakey();
-  return '?'.http_build_query($data);
-}
-
-// create asset url, file path relative to /assets directory
-final public function asset(string $file, ?string $version=null) : string
-{
-  $data['elaasset'] = $file;
-  $data['ver'] = $version ?? time();
-  return '?'.http_build_query($data);
-}
-
-// Returns true if user is authorized.
-final public function auth(?string $action, $module) : bool
-{
-  if(!$this->iauth) return true; // authorization off
-
-  if (is_string($module))
-  {
-    $module = $this->module($module);
-  }
-
-  if($action === null)
-  {
-    if(!$this->iauth->elaAuthorize($module->elaGetAuthorizedRoles())) return false;
-    else return true;
-  }
-
-  // Check if user is authorized to do the action
-  $authroles = $module->elaGetAuthorizedRolesActions()[static::normalizeActionName($action)]??[];
-  if(!$this->iauth->elaAuthorize($authroles)) return false;
-  return true;
-}
-
-// override to add actions before the start of request proccessing
-protected function prerun() : void
-{
-
 }
 
 // Run Eladmin. The main function which processes the requests.
-final public function runNoCatch(): void
-{
+final public function runNoCatch() : void {
   $this->prerun();
 
   $asset = $this->assetpath();
-  if ($asset !== null)
-  {
-    $this->printAsset($asset);
+  if ($asset !== null) {
+    $this->renderAsset($asset);
     return;
   }
 
-  $testinit = $_GET['elatestinit']??null;
-  if ($testinit)
-  {
+  $testinit = $_GET['elatestinit'] ?? null;
+  if ($testinit) {
     $this->testinit();
     return;
   }
@@ -214,51 +99,49 @@ final public function runNoCatch(): void
   $this->initBladeTemplates();
   $this->initAuthorization();
 
-  /**
-  * Authentication and authorization.
-  */
-  if($this->auth){
+  // Authentication and authorization.
+  if ($this->auth) {
     $isLogout = isset($_GET['elalogout']);
-    if($isLogout){
+    if ($isLogout) {
       $this->iauth->elaLogout();
-      $this->refreshNoAjax();
+      if (!static::isAjaxRequest())
+        $this->refresh();
       throw new Exception\UnauthorizedException();
     }
 
     $isLogin = isset($_GET['elalogin']);
-    if($isLogin){
+    if ($isLogin) {
       $this->iauth->elaLogin();
     }
 
     $isAuthorized = $this->iauth->elaAuthorize();
-    if($isLogin){
-      if(!$isAuthorized)
+    if ($isLogin) {
+      if (!$isAuthorized)
         throw new Exception\UnauthorizedException(__("Wrong credentials!"));
       else
-        $this->refreshNoAjax();
+        $this->refresh();
       return;
     }
 
     $loginFields = $this->iauth->elaLoginFields();
-    if(!$isAuthorized){
-      if($this->isAjaxCall())
+    if (!$isAuthorized) {
+      if ($this->isAjaxRequest())
         throw new Exception\UnauthorizedException();
-      if($loginFields === null)
+      if ($loginFields === null) {
         throw new Exception\UnauthorizedException();
-      else{
-        echo $this->view('login', ['loginFields'=>$loginFields]);
+      } else {
+        echo $this->view('login', ['loginFields' => $loginFields]);
         return;
       }
     }
     // it is not an attempt to login and user is authorized to continue execution
   }
 
-  // no action, render module view
-  if(!$this->actionkey()){
+  // No action, render module view.
+  if ($this->actionkey() === null) {
     $this->initAllModules();
-    if($this->modulekey() === null)
-    {
-      $url = $this->request(null, $this->firstAuthorizedModuleKey());
+    if ($this->modulekey() === null) {
+      $url = $this->request($this->firstAuthorizedModuleKey());
       $this->redirect($url);
       return;
     }
@@ -271,126 +154,229 @@ final public function runNoCatch(): void
 
   // CSRF token comparsion
   $this->CSRFAuth();
+  // Check if user is authorized to do the action.
+  if (!$this->module()->elaAuth($this->actionkey()))
+    throw new Exception\UnauthorizedException();
+  // Check if action exists.
+  if (!is_callable([$this->module(), 'elaAction' . $this->actionkey()])) {
+    $elakey == $this->module()->elakey();
+    if ($elakey == $this->elakey())
+      $classname = static::class;
+    else
+      $classname = $this->modules[$elakey];
+    throw new Exception\BadRequestException('Class ' . $classname . ' does not have method ' . 'elaAction' . ucfirst($this->actionkey()) . '!');
+  }
+
+  $actionInstance = $this->module()->elaGetActionInstance();
+  call_user_func([$actionInstance, 'elaAction' . $this->actionkey()]);
+}
+
+// Return administration title to show it in templates.
+final public function title() : string {
+  return $this->title;
+}
+
+// Get eladmin version.
+final public function version() : string {
+  return "v0.2.2-alpha";
+}
+
+// Returns username to show it in templates. Returns null if authorization is off.
+final public function username() : ?string {
+  return $this->iauth ? $this->iauth->elaUserName() : null;
+}
+
+// Eladmins elakey - empty string
+final public function elakey() : string {
+  return '';
+}
+
+// Return requested action key, null if no action requested
+final public function actionkey() : ?string {
+  if ($this->actionkey !== null)
+    return $this->actionkey;
+  if (isset($_GET['elaaction']))
+    $this->actionkey = static::normalizeActionName($_GET['elaaction']);
+  return $this->actionkey;
+}
+
+// Return requested module key, null if no module requested
+final public function modulekey() : ?string {
+  if ($this->modulekey !== null)
+    return $this->modulekey;
+  $this->modulekey = $_GET['elamodule'] ?? null;
+  return $this->modulekey;
+}
+
+// Generate CSRF token
+final public function CSRFToken() : string {
+  $token = $_SESSION['elacsrftoken'] ?? null;
+  if (!$token) {
+    $token = '';
+    $chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    for ($i = 0; $i < 16; $i++) {
+      $token .= substr($chars, rand(0, strlen($chars) - 1), 1);
+    }
+    $_SESSION['elacsrftoken'] = $token;
+  }
+  return $token;
+}
+
+// Create request url.
+final public function request($module, ?string $action = null, array $args = []) : string {
+  $data = $args;
+  $data['elamodule'] = static::moduleToElakey($module);
+  if ($action !== null) {
+    $data['elaaction'] = $action;
+    $data['elatoken'] = $this->CSRFToken();
+  }
+  return '?' . http_build_query($data);
+}
+
+// Create asset url, file path relative to /assets directory. Default $version = time()
+final public function asset(string $path, ?string $version = null) : string {
+  $data['elaasset'] = $path;
+  $data['ver'] = $version ?? time();
+  return '?' . http_build_query($data);
+}
+
+// Return requested asset path, null if no asset requested
+final private function assetpath() : ?string {
+  return $_GET['elaasset'] ?? null;
+}
+
+// Return module instance or null if not authorized. Default $key = modulekey()
+final public function module(?string $elakey = null) : ?object {
+  $elakey = $elakey ?? $this->modulekey();
+  if ($elakey === null)
+    throw new Exception\BadRequestException(__('No module requested!'));
+  if ($elakey === '')
+    return $this;
+  // has the module been initialized?
+  if (!isset($this->imodules[$elakey])) {
+    $moduleclass = $this->modules[$elakey] ?? null;
+
+    if ($moduleclass === null)
+      throw new Exception\BadRequestException(__('Unknown module "%s"!', $elakey));
+    if (!static::isModule($moduleclass))
+      throw new \Exception('Class ' . $moduleclass . ' is not Eladmin module.');
+
+    $imodule = new $moduleclass();
+    if ($this->auth && !$this->iauth->elaAuthorize($imodule->elaGetAuthorizedRoles())) {
+      unset($this->modules[$elakey]);
+      return null;
+    }
+    $imodule->elaInit($this, $elakey);
+    $this->imodules[$elakey] = $imodule;
+  }
+  return $this->imodules[$elakey];
+}
+
+// return first authorized module key
+private function firstAuthorizedModuleKey() : string {
+  foreach ($this->modules as $elakey => $mod)
+    return $elakey;
+  throw new Exception\UnauthorizedException(__("You are not authorized to access any module!") . ' <a href="?elalogout=true">' . __("Logout") . '</a>');
+}
+
+private static function moduleToElakey($module) : string {
+  if (is_string($module))
+    return $module;
+  if (!static::isModule($module))
+    throw new \Exception(__('Cannot get elakey of object which is not an Eladmin module.'));
+  return $module->elakey();
+}
+
+// Returns true if user is authorized.
+final public function auth($module, ?string $action) : bool {
+  if (!$this->iauth)
+    return true; // authorization off
+
+  if (is_string($module)) {
+    $module = $this->module($module);
+  }
+
+  if ($action === null) {
+    if (!$this->iauth->elaAuthorize($module->elaGetAuthorizedRoles()))
+      return false;
+    else
+      return true;
+  }
 
   // Check if user is authorized to do the action
-  if(!$this->module()->elaAuth($this->actionkey()))
-    throw new Exception\UnauthorizedException();
-
-  // do the action
-  if($this->module() == $this) $classname = static::class;
-  else $classname = $this->modules[$this->moduleKey()];
-  if(!is_callable([$this->module(), 'elaAction'.$this->actionkey()]))
-    throw new Exception\BadRequestException('Class '.$classname.' does not have method '.'elaAction'.ucfirst($this->actionkey()).'!');
-  $actionInstance = $this->module()->elaGetActionInstance();
-  call_user_func([$actionInstance, 'elaAction'.$this->actionkey()]);
-  $this->refreshNoAjax();
+  $authroles = $module->elaGetAuthorizedRolesActions()[static::normalizeActionName($action)] ?? [];
+  if (!$this->iauth->elaAuthorize($authroles))
+    return false;
+  return true;
 }
 
-// Render a view.
-final public function view(string $name, array $args=[]) : string
-{
-  return $this->blade->view()->make($name, array_merge($args, ['eladmin'=>$this]) )->render();
+// override to add actions before the start of request proccessing
+protected function prerun() : void {
+
 }
 
-// authorize eladmin action
-final public function elaAuth($action) : bool
-{
-  return $this->auth($action, $this);
+// Render a view. Passes $args and instance of eladmin as $eladmin to the template.
+final public function view(string $template, array $args = []) : string {
+  return $this->blade->view()->make($template, array_merge($args, ['eladmin'=>$this]) )->render();
 }
 
-final public function accountFields()
-{
+final public function accountFields() {
   return $this->iauth ? $this->iauth->elaAccountFields() : null;
 }
 
-// Return instances of all modules.
-final public function modules()
-{
+// Return instances of all authorized modules.
+final public function modules() : array {
+  $this->initAllModules();
   return $this->imodules;
 }
 
-// Return module instance or null if not authorized. Call without argument to get requested module instance.
-final public function module(?string $key=null)
-{
-  $key = $key ?? $this->modulekey();
-  if ($key === null)
-    throw new Exception\BadRequestException(__('No module requested!'));
-  if ($key === "") return $this;
-  // has the module been initialized?
-  if(!isset($this->imodules[$key]))
-  {
-    $moduleclass = $this->modules[$key] ?? null;
-    if (!$moduleclass)
-    {
-      throw new Exception\BadRequestException(__('Unknown module "%s"!', $key));
-    }
-
-    if (!method_exists($moduleclass, 'elakey'))
-    {
-      throw new \Exception('Class '.$moduleclass.' is not Eladmin module.');
-    }
-
-    $imodule = new $moduleclass();
-    if ($this->auth && !$this->iauth->elaAuthorize($imodule->elaGetAuthorizedRoles()))
-    {
-      unset($this->modules[$key]);
-      return null;
-    }
-    $imodule->elaInit($this, $key);
-    $this->imodules[$key] = $imodule;
-  }
-  return $this->imodules[$key];
+// Check if class is eladmin module.
+final static public function isModule($class) : bool {
+  return method_exists($class, 'elakey');
 }
 
-// Check CSRF token
-private function CSRFAuth() : void
-{
-  if(($_GET['elatoken']??null) !== $this->CSRFToken())
-  {
+// Check if eladmin was run with ajax request.
+final static public function isAjaxRequest() : bool {
+  return !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
+}
+
+// Refresh page (or exit if ajax request)
+final static public function refresh() : void {
+  static::redirect();
+}
+
+// Redirect (or exit if ajax request)
+final static public function redirect(string $url = '.') : void {
+  if (!static::isAjaxRequest())
+    header('Location: '.$url);
+  exit;
+}
+
+// Check if CSRF token is valid
+final private function CSRFAuth() : void {
+  if ( ($_GET['elatoken'] ?? null) !== $this->CSRFToken()) {
     throw new Exception\UnauthorizedException(__("CSRF token not valid! Try reloading page."));
   }
 }
 
-static private function isAjaxCall() : bool
-{
-  if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') return true;
-  return false;
-}
-
-static private function refreshNoAjax() : void
-{
-  if(static::isAjaxCall()) return;
-  Header('Location: .');
-  exit;
-}
-
-static private function redirect($url) : void
-{
-  if(static::isAjaxCall()) exit;
-  Header('Location: '.$url);
-  exit;
-}
-
 // Determinate asset content-type and print it.
-private function printAsset($assetpath) : void
-{
-  if(strpos($assetpath, '..') !== false){
-    throw new Exception\UnauthorizedException("Asset filename '.$assetpath.' cannot contain '..' due security issues.");
-  }
+private function renderAsset($assetpath) : void {
+  if (strpos($assetpath, '..') !== false)
+    throw new Exception\UnauthorizedException('Asset filename ' . $assetpath . ' cannot contain ".." due security issues.');
+
   $path_parts = pathinfo($assetpath);
   $extension = $path_parts['extension'];
   $assetContentTypes = [
     'css' => 'text/css',
     'js' => 'text/javascript'
   ];
-  $contentType = $assetContentTypes[$extension]??null;
-  if(!$contentType){
-    throw new Exception\UnauthorizedException("Asset extension not allowed.");
-  }
-  @$content = file_get_contents(__DIR__.'/../assets/'.$assetpath);
-  if($content === false){
-    throw new Exception\BadRequestException("Asset not found.");
-  }
+  $contentType = $assetContentTypes[$extension] ?? null;
+  if (!$contentType)
+    throw new Exception\UnauthorizedException('Asset extension not allowed.');
+
+  @$content = file_get_contents(__DIR__ . '/../assets/' . $assetpath);
+  if ($content === false)
+    throw new Exception\BadRequestException('Asset not found.');
   header('Content-type:'.$contentType);
   echo $content;
 }
@@ -401,6 +387,10 @@ final public function elaGetAuthorizedRolesActions(){
 
 final public function elaGetAuthorizedRoles(){
   return [];
+}
+// Eladmin actions authorization.
+final public function elaAuth(?string $action = null) : bool {
+  return $this->auth($this, $action);
 }
 
 final public function elaActionAccount(){
@@ -464,7 +454,7 @@ private function initBladeTemplates()
   $this->log->debug('init Blade');
   if(!$this->cache)
   {
-    throw new \Exception('Set '.static::class.'::cache property to a path to some writeable directory.');
+    throw new \Exception('Set '.static::class.'::$cache property to a path to some writeable directory.');
   }
   if (!file_exists($this->cache))
   {
@@ -494,33 +484,33 @@ private function initBladeTemplates()
   $this->blade = new \Philo\Blade\Blade($views, $this->cache);
 }
 
-private function initAuthorization()
-{
+private function initAuthorization() {
   /**
   * TODO: Check auth interface
   */
-  if($this->auth){
+  if ($this->auth) {
     $this->log->debug('init authorization');
-    // TODO: should we add auth to modules?
-    $this->modules[] = $this->auth;
+    if (static::isModule($this->auth))
+      $this->modules[] = $this->auth;
     $this->iauth = new $this->auth;
   }
 }
 
-private function initAllModules()
-{
+private $allModulesInitialized = false;
+private function initAllModules() {
+  if ($this->allModulesInitialized)
+    return;
   $this->log->debug('init all modules');
-  foreach($this->modules as $key=>$module)
-  {
+  foreach ($this->modules as $key => $module) {
     $this->module($key);
   }
+  $allModulesInitialized = true;
 }
 
-private function initMonolog() : void
-{
+private function initMonolog() : void {
   $this->log = new \Monolog\Logger('log');
-  if ($this->logLevel !== null){
-    $this->log->pushHandler(new \Monolog\Handler\StreamHandler(__DIR__.'/debug.log', $this->logLevel));
+  if ($this->logLevel !== null) {
+    $this->log->pushHandler(new \Monolog\Handler\StreamHandler(__DIR__ . '/debug.log', $this->logLevel));
   }
 }
 

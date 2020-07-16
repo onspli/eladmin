@@ -43,7 +43,7 @@ h4{text-transform: uppercase;}
       </form>
 
       <hr>
-      <small class="text-center d-block"><a href="https://github.com/onspli/eladmin">Eladmin</a> {{ $eladmin->versionName() }} | CRUD and admin for Eloquent</small>
+      <small class="text-center d-block"><a href="https://github.com/onspli/eladmin">Eladmin</a> {{ $eladmin->version() }} | CRUD and admin for Eloquent</small>
 
     </article>
     </div>

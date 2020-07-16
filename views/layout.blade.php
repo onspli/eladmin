@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 <link href="{!! $eladmin->asset('toastr-2.1.3/toastr.min.css', '2.1.3') !!}" rel="stylesheet">
-<link href="{!! $eladmin->asset('layout.css', $eladmin->versionName()) !!}" rel="stylesheet">
+<link href="{!! $eladmin->asset('layout.css', $eladmin->version()) !!}" rel="stylesheet">
 @stack('styles')
 
 </head>
@@ -41,7 +41,7 @@
 
 <script>var _csrftoken = '{{$eladmin->CSRFToken()}}';</script>
 @stack('scripts')
-<script src="{!! $eladmin->asset('layout.js', $eladmin->versionName()) !!}"></script>
+<script src="{!! $eladmin->asset('layout.js', $eladmin->version()) !!}"></script>
 
 @include('consecutive')
 

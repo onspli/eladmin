@@ -29,9 +29,8 @@ final public function elakey() : string{
   return $this->elakey;
 }
 
-// Authorize to do action
-final public function elaAuth($action): bool{
-  return $this->eladmin->auth($action, $this);
+final public function elaAuth(?string $action = null) : bool {
+  return $this->eladmin->auth($this, $action);
 }
 
 public function elaGetTitle(): string {
@@ -68,8 +67,8 @@ final public function elaSetAuthorizedRolesAction($action, $roles){
   $this->_elahack_elaAuthorizedRolesActions[$action] = $roles;
 }
 
-final public function elaRequest($action, $args=[]) : string{
-  return $this->eladmin->request($action, $this->elakey(), $args);
+final public function elaRequest($action = null, $args=[]) : string{
+  return $this->eladmin->request($this->elakey(), $action, $args);
 }
 
 // override to set views prefix (directory)
