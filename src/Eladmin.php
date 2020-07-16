@@ -486,14 +486,14 @@ private function initBladeTemplates()
 }
 
 private function initAuthorization() {
-  /**
-  * TODO: Check auth interface
-  */
   if ($this->auth) {
+    $this->iauth = new $this->auth;
+    if (!($this->iauth instanceof Auth\AuthInterface))
+      throw new Exception\Exception(__('Authorization class %s does not implement Auth\AuthInterface.', $this->auth));
+
     $this->log->debug('init authorization');
     if (static::isModule($this->auth))
       $this->modules[] = $this->auth;
-    $this->iauth = new $this->auth;
   }
 }
 
