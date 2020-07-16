@@ -100,7 +100,7 @@ final public function runNoCatch() : void {
   $this->initAuthorization();
 
   // Authentication and authorization.
-  if ($this->auth) {
+  if ($this->auth !== null) {
     $isLogout = isset($_GET['elalogout']);
     if ($isLogout) {
       $this->iauth->elaLogout();
@@ -276,7 +276,9 @@ final public function module(?string $elakey = null) : ?object {
 private function firstAuthorizedModuleKey() : string {
   foreach ($this->modules as $elakey => $mod)
     return $elakey;
-  throw new Exception\UnauthorizedException(__("You are not authorized to access any module!") . ' <a href="?elalogout=true">' . __("Logout") . '</a>');
+  if ($this->auth !== null)
+    $this->iauth->elaLogout();
+  throw new Exception\UnauthorizedException(__("You are not authorized to access any module!"));
 }
 
 private static function moduleToElakey($module) : string {
