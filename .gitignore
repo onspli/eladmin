@@ -2,6 +2,6 @@
 /cache/
 /examples/vendor/create_schema.php
 /composer.lock
-/src/debug.log
 /examples/work
 /password
+/mono.log

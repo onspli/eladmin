@@ -3,7 +3,7 @@
 
 namespace Onspli\Eladmin\Module\Eloquent\Chainset;
 
-class Action extends \Onspli\Eladmin\Chainset\Chainset{
+class Action extends \Onspli\Eladmin\Chainset{
 
   public $label = null;
   public $nonlistable = true;

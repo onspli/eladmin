@@ -3,7 +3,7 @@
 
 namespace Onspli\Eladmin\Module\Eloquent\Chainset;
 
-class Filter extends \Onspli\Eladmin\Chainset\Chainset{
+class Filter extends \Onspli\Eladmin\Chainset{
 
   public $label = null;
   public $column = null;

@@ -1,9 +1,9 @@
 <?php
 
-namespace Onspli\Eladmin;
+namespace Onspli\Eladmin\Auth;
 
 
-class User extends \Illuminate\Database\Eloquent\Model implements Auth\AuthInterface
+class User extends \Illuminate\Database\Eloquent\Model implements AuthInterface
 {
   use Module\Eloquent\Crud {
     Module\Eloquent\Crud::elaActionDelete as ela_Parent_Crud_ActionDelete;

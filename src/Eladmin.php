@@ -25,6 +25,9 @@ protected $views = null;
 // override to set monolog report level, null disables logging
 protected $logLevel = \Monolog\Logger::ERROR;
 
+// override to set monolog log file
+protected $logFile = __DIR__ . '/../mono.log';
+
 // modules instances
 private $imodules = [];
 
@@ -510,8 +513,8 @@ private function initAllModules() {
 
 private function initMonolog() : void {
   $this->log = new \Monolog\Logger('log');
-  if ($this->logLevel !== null) {
-    $this->log->pushHandler(new \Monolog\Handler\StreamHandler(__DIR__ . '/debug.log', $this->logLevel));
+  if ($this->logLevel !== null && is_writeable(dirname($this->logFile))) {
+    $this->log->pushHandler(new \Monolog\Handler\StreamHandler($this->logFile, $this->logLevel));
   }
 }
 

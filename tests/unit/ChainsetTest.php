@@ -1,6 +1,6 @@
 <?php
 use PHPUnit\Framework\TestCase;
-use Onspli\Eladmin\Chainset\Chainset;
+use Onspli\Eladmin\Chainset;
 
 final class ChainsetTest extends TestCase
 {

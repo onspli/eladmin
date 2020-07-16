@@ -4,7 +4,7 @@
 namespace Onspli\Eladmin\Module\Eloquent\Chainset;
 use \Onspli\Eladmin;
 
-class Column extends Eladmin\Chainset\Chainset{
+class Column extends Eladmin\Chainset{
 
   public $label = null;
   public $desc = null;
