@@ -39,8 +39,9 @@ interface AuthInterface
 
   /**
   * Check if user is logged in. Also check if user has one of the $authorizedRoles (if specified).
+  * Empty array means any role.
   */
-  public function elaAuthorize(?array $authorizedRoles = null) : bool;
+  public function elaAuthorize(array $authorizedRoles = []) : bool;
 
   /**
   * Get user's name to show it in admin.

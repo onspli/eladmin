@@ -26,7 +26,7 @@ protected $cache = __DIR__ . '/../cache';
 protected $views = null;
 
 // override to set monolog report level, null disables logging
-protected $logLevel = \Monolog\Logger::ERROR;
+protected $logLevel = \Monolog\Logger::DEBUG;
 
 // override to set monolog log file
 protected $logFile = __DIR__ . '/../mono.log';
@@ -72,6 +72,10 @@ final public function run() : void {
   try {
     $this->runNoCatch();
   } catch(Exception\UnauthorizedException $e) {
+    if ($this->auth !== null)
+      $this->iauth->elaLogout();
+    if (!static::isAjaxRequest())
+      $this->redirect();
     header("HTTP/1.1 401 Unauthorized");
     echo $e->getMessage();
   } catch(Exception\BadRequestException $e) {
@@ -111,9 +115,6 @@ final public function runNoCatch() : void {
   if ($this->auth !== null) {
     $isLogout = isset($_GET['elalogout']);
     if ($isLogout) {
-      $this->iauth->elaLogout();
-      if (!static::isAjaxRequest())
-        $this->redirect();
       throw new Exception\UnauthorizedException();
     }
 
@@ -128,19 +129,10 @@ final public function runNoCatch() : void {
         throw new Exception\UnauthorizedException(__("Wrong credentials!"));
       } else {
         // check if user is authorized to work with eladmin
-        if (!$this->elaAuth()) {
-          $this->iauth->elaLogout();
+        if (!$this->elaAuth())
           throw new Exception\UnauthorizedException(__('Not authorized to run Eladmin.'));
-        }
-
         // check if user is authorized to work with any module
-        $this->initAllModules();
-        try {
-          $this->firstAuthorizedModuleKey();
-        } catch (\Exception $e) {
-          $this->iauth->elaLogout();
-          throw $e;
-        }
+        $this->firstAuthorizedModuleKey();
         $this->redirect();
       }
       return;
@@ -163,10 +155,8 @@ final public function runNoCatch() : void {
     // it is not an attempt to login and user is authorized to continue execution
 
     // check if user is authorized to work with eladmin
-    if (!$this->elaAuth()) {
-      $this->iauth->elaLogout();
+    if (!$this->elaAuth())
       throw new Exception\UnauthorizedException(__('Not authorized to run Eladmin.'));
-    }
   }
 
   // No action, render module view.
@@ -190,7 +180,7 @@ final public function runNoCatch() : void {
   if (!$this->module()->elaAuth($this->actionkey()))
     throw new Exception\UnauthorizedException();
 
-  $elakey == $this->module()->elakey();
+  $elakey = $this->module()->elakey();
   if ($elakey == $this->elakey())
     $classname = static::class;
   else
@@ -298,14 +288,13 @@ final public function module(?string $elakey = null) : ?object {
   // has the module been initialized?
   if (!isset($this->imodules[$elakey])) {
     $moduleclass = $this->modules[$elakey] ?? null;
-
     if ($moduleclass === null)
       throw new Exception\BadRequestException(__('Unknown module "%s"!', $elakey));
     if (!static::isModule($moduleclass))
       throw new Exception\Exception('Class ' . $moduleclass . ' is not Eladmin module.');
 
     $imodule = new $moduleclass();
-    if ($this->auth && !$this->iauth->elaAuthorize($imodule->elaGetAuthorizedRoles())) {
+    if ($this->auth && !$this->iauth->elaAuthorize($imodule->elaGetRoles())) {
       unset($this->modules[$elakey]);
       return null;
     }
@@ -317,6 +306,7 @@ final public function module(?string $elakey = null) : ?object {
 
 // return first authorized module key
 private function firstAuthorizedModuleKey() : string {
+  $this->initAllModules();
   foreach ($this->modules as $elakey => $mod)
     return $elakey;
   if ($this->auth !== null)
@@ -340,10 +330,7 @@ final public function auth($module, ?string $action = null) : bool {
   $module = $this->module(static::moduleToElakey($module));
   if ($module === null)
     return false; // user not authorized to work with the module
-  $roles = $module->elaGetRoles($action);
-  if ($roles == [])
-    $roles = null;
-  return $this->iauth->elaAuthorize($roles);
+  return $this->iauth->elaAuthorize($module->elaGetRoles($action));
 }
 
 // override to add actions before the start of request proccessing

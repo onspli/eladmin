@@ -31,7 +31,7 @@ private $elaActionNamesNormalized = false;
 
 // Each module has to be initialized with eladmin instance and its own elakey.
 final public function elaInit($eladmin, $elakey) {
-  $eladmin->log->debug('init module', ['class' => static::class, 'elakey' => $elakey]);
+  $eladmin->log()->debug('init module', ['class' => static::class, 'elakey' => $elakey]);
   $this->eladmin = $eladmin;
   $this->elakey = $elakey;
 }

@@ -1,6 +1,7 @@
 <?php
 
 namespace Onspli\Eladmin\Auth;
+use Onspli\Eladmin\Exception;
 
 /**
 * Simple username/password authorization.
@@ -21,7 +22,7 @@ class Password implements AuthInterface
 
   public function __construct() {
     if (file_exists($this->passwordFile)) {
-      $this->passwordHash = file_get_contents($this->passwordFile);
+      $this->passwordHash = @file_get_contents($this->passwordFile);
       $this->isPasswordFileWriteable = is_writeable($this->passwordFile);
       return;
     }
@@ -52,7 +53,7 @@ class Password implements AuthInterface
     $_SESSION['elauser'] = null;
   }
 
-  public function elaAuthorize(?array $authorizedRoles = null) : bool {
+  public function elaAuthorize(array $authorizedRoles = []) : bool {
     return ($_SESSION['elauser'] ?? null) !== null;
   }
 
@@ -80,8 +81,8 @@ class Password implements AuthInterface
     $newpassword = $_POST['newpassword'] ?? '';
     $newpasswordconfirm = $_POST['newpasswordconfirm'] ?? '';
 
-    if (!password_verify($oldpassword , $user->passwordhash))
-      throw new Exception\UnauthorizedException(__('Current password is not correct!'));
+    if (!password_verify($oldpassword , $this->passwordHash))
+      throw new Exception\BadRequestException(__('Current password is not correct!'));
     if (!$newpassword)
       throw new Exception\BadRequestException(__('New password must not be empty!'));
     if ($newpassword != $newpasswordconfirm)
