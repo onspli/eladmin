@@ -181,8 +181,8 @@ final public function runNoCatch() : void {
     throw new Exception\BadRequestException('Class ' . $classname . ' does not have method ' . 'elaAction' . ucfirst($this->actionkey()) . '!');
   }
 
-  $actionInstance = $this->module()->elaGetActionInstance();
-  call_user_func([$actionInstance, 'elaAction' . $this->actionkey()]);
+  $instanceForAction = $this->module()->elaGetInstanceForAction();
+  call_user_func([$instanceForAction, 'elaAction' . $this->actionkey()]);
 }
 
 // Return administration title to show it in templates.
@@ -309,26 +309,14 @@ private static function moduleToElakey($module) : string {
 }
 
 // Returns true if user is authorized.
-final public function auth($module, ?string $action) : bool {
-  if (!$this->iauth)
+final public function auth($module, ?string $action = null) : bool {
+  if ($this->auth === null)
     return true; // authorization off
 
-  if (is_string($module)) {
-    $module = $this->module($module);
-  }
-
-  if ($action === null) {
-    if (!$this->iauth->elaAuthorize($module->elaGetAuthorizedRoles()))
-      return false;
-    else
-      return true;
-  }
-
-  // Check if user is authorized to do the action
-  $authroles = $module->elaGetAuthorizedRolesActions()[static::normalizeActionName($action)] ?? [];
-  if (!$this->iauth->elaAuthorize($authroles))
-    return false;
-  return true;
+  $module = $this->module(static::moduleToElakey($module));
+  if ($module === null)
+    return false; // user not authorized to work with the module
+  return $this->iauth->elaAuthorize($module->elaGetRoles($action));
 }
 
 // override to add actions before the start of request proccessing

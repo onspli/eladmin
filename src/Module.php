@@ -4,71 +4,121 @@ namespace Onspli\Eladmin\Module;
 use \Onspli\Eladmin;
 use \Onspli\Eladmin\Exception;
 
+trait Module {
 
-trait Module
-{
-
+// Eladmin core instance
 private $eladmin = null;
+
+// Module's elakey
 private $elakey = null;
 
-/**
-* I am getting 'Indirect modification has no efect' if the property is not explicitly declared from some reason.
-* But it cannot be, because this is a trait and it shall be overriden.
-* So I declared this property and elaAuthorizedRolesActions is copied to it during init.
-*/
-protected $_elahack_elaAuthorizedRolesActions = [];
+// override to set module's name
+// protected $elaTitle = class_basename(static::class);
 
-public function elaInit($eladmin, $elakey){
+// override to set module's icon
+// protected $elaIcon = '<i class="fas fa-puzzle-piece"></i>';
+
+// override to set authorized roles. empty array means any role
+// protected $elaRoles = [];
+
+// override to set authorized roles. empty array means any role.
+// It doesn't make sanse to have actions no one can perform.
+// format ['read' => [], 'write' => ['admin']]
+// protected $elaActionRoles = [];
+
+// action names for elaActionRoles is expensive, we want to do it only once
+private $elaActionNamesNormalized = false;
+
+// Each module has to be initialized with eladmin instance and its own elakey.
+final public function elaInit($eladmin, $elakey) {
   $eladmin->log->debug('init module', ['class' => static::class, 'elakey' => $elakey]);
   $this->eladmin = $eladmin;
   $this->elakey = $elakey;
 }
 
 // Each module has its elakey - index in modules array - used to address requests.
-final public function elakey() : string{
+final public function elakey() : string {
   return $this->elakey;
 }
 
+// Check if user is authorized to do action, or athorized to access module at all.
 final public function elaAuth(?string $action = null) : bool {
   return $this->eladmin->auth($this, $action);
 }
 
-public function elaGetTitle(): string {
-  return $this->elaTitle??class_basename(static::class);
+// Get name of the module.
+public function elaGetTitle() : string {
+  return $this->elaTitle ?? class_basename(static::class);
 }
 
-public function elaGetIcon(): string {
-  return $this->elaIcon??'<i class="fas fa-puzzle-piece"></i>';
+// Get icon of the module.
+public function elaGetIcon() : string {
+  return $this->elaIcon ?? '<i class="fas fa-puzzle-piece"></i>';
 }
 
-final public function elaGetAuthorizedRoles(): array{
-  return $this->elaAuthorizedRoles??[];
-}
-
-private $elaActionNamesNormalized = false;
-final public function elaGetAuthorizedRolesActions(): array{
-  if(!$this->elaActionNamesNormalized)
-  {
-    $this->elaActionNamesNormalized = true;
-    // normalize action names
-    $authRoles = $this->elaAuthorizedRolesActions??[];
-    $this->eladmin->log->debug('normalize action names', ['module'=>static::class, 'elakey'=>$this->elakey]);
-    foreach($authRoles as $action=>$roles)
-    {
-      $this->elaSetAuthorizedRolesAction($action, $roles);
-    }
-  }
-  return $this->_elahack_elaAuthorizedRolesActions??[];
-}
-
-final public function elaSetAuthorizedRolesAction($action, $roles){
-  if(!is_array($roles)) $roles = [$roles];
-  $action = $this->eladmin->normalizeActionName($action);
-  $this->_elahack_elaAuthorizedRolesActions[$action] = $roles;
-}
-
-final public function elaRequest($action = null, $args=[]) : string{
+// Return url for this module.
+final public function elaRequest($action = null, $args = []) : string {
   return $this->eladmin->request($this->elakey(), $action, $args);
+}
+
+// Get roles authorized to work with the module, or specific action. Empty array means any role is authorized.
+final public function elaGetRoles($action = null) : array {
+  if ($action === null)
+    return $this->elaRoles ?? [];
+
+  if (!isset($this->elaActionRoles)) {
+    $this->elaActionNamesNormalized = true;
+    return [];
+  }
+
+  if (!$this->elaActionNamesNormalized) {
+    $actionRolesCopy = (new ArrayObject($this->elaActionRoles))->getArrayCopy();
+    $this->elaActionRoles = [];
+    foreach ($actionRolesCopy as $action => $roles) {
+      $this->elaSetRoles($roles, $action);
+    }
+    $this->elaActionNamesNormalized = true;
+  }
+
+  $action = $this->eladmin->normalizeActionName($action);
+  return $this->elaActionRoles[$action] ?? [];
+}
+
+// Set roles authorized to work with the module, or specific action. Empty array means any role is authorized.
+final public function elaSetRoles(array $roles, $action = null) : void {
+  if ($action === null) {
+    $this->elaRoles = $roles;
+    return;
+  }
+
+  if (!isset($this->elaActionRoles) || !is_array($this->elaActionRoles))
+    $this->elaActionRoles = [];
+
+  $action = $this->eladmin->normalizeActionName($action);
+  $this->elaActionRoles[$action] = $roles;
+}
+
+// Actions will be called on instance of this module returned by this method. Default is $this.
+final public function elaGetInstanceForAction() : object {
+  return $this;
+}
+
+// Convinient method for plain text output. Sets HTTP header text/plain and echo $str.
+final public function elaOutText(?string $str = null) : void {
+  Header('Content-type: text/plain');
+  if($str !== null) echo $str;
+}
+
+// Convinient method for html output. Sets HTTP header text/html and echo $str.
+final public function elaOutHtml(?string $str = null) : void {
+  Header('Content-type: text/html');
+  if($str !== null) echo $str;
+}
+
+// Convinient method for json output. Sets HTTP header application/json and echo serialized $json.
+final public function elaOutJson(?array $json = null) : void {
+  Header('Content-type: application/json');
+  if($json !== null) echo json_encode($json, JSON_UNESCAPED_UNICODE);
 }
 
 // override to set views prefix (directory)
@@ -86,28 +136,9 @@ final public function elaView(string $name, array $args=[]) : string
   return $this->eladmin->view($name, array_merge($args, ['module'=>$this]));
 }
 
-public function elaGetActionInstance(){
-  return $this;
-}
-
 final public function elaAction_script(){
   header('Content-type:text/javascript');
   echo $this->elaView('script');
-}
-
-final public function elaOutText(?string $str = null){
-  Header('Content-type: text/plain');
-  if($str !== null) echo $str;
-}
-
-final public function elaOutHtml(?string $str = null){
-  Header('Content-type: text/html');
-  if($str !== null) echo $str;
-}
-
-final public function elaOutJson(?array $json = null){
-  Header('Content-type: application/json');
-  if($json !== null) echo json_encode($json, JSON_UNESCAPED_UNICODE);
 }
 
 }
