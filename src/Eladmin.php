@@ -189,18 +189,24 @@ final public function runNoCatch() : void {
   // Check if user is authorized to do the action.
   if (!$this->module()->elaAuth($this->actionkey()))
     throw new Exception\UnauthorizedException();
-  // Check if action exists.
-  if (!is_callable([$this->module(), 'elaAction' . $this->actionkey()])) {
-    $elakey == $this->module()->elakey();
-    if ($elakey == $this->elakey())
-      $classname = static::class;
-    else
-      $classname = $this->modules[$elakey];
-    throw new Exception\BadRequestException('Class ' . $classname . ' does not have method ' . 'elaAction' . ucfirst($this->actionkey()) . '!');
-  }
+
+  $elakey == $this->module()->elakey();
+  if ($elakey == $this->elakey())
+    $classname = static::class;
+  else
+    $classname = $this->modules[$elakey];
 
   $instanceForAction = $this->module()->elaGetInstanceForAction();
-  call_user_func([$instanceForAction, 'elaAction' . $this->actionkey()]);
+  $instanceForAction->elaInitCheck();
+  if (!($instanceForAction instanceof $classname))
+    throw new Exception\Exception('Instance for action is instance of class ' . $classname . '!');
+
+  $method = 'elaAction' . ucfirst($this->actionkey());
+
+  // Check if action exists.
+  if (!is_callable([$instanceForAction, $method]))
+    throw new Exception\BadRequestException('Class ' . $classname . ' does not have method ' . $method . '!');
+  call_user_func([$instanceForAction, $method]);
 }
 
 // Return administration title to show it in templates.
