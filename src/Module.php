@@ -1,7 +1,7 @@
 <?php
 
-namespace Onspli\Eladmin\Module;
-use \Onspli\Eladmin;
+namespace Onspli\Eladmin;
+use \Onspli\Eladmin\Eladmin;
 use \Onspli\Eladmin\Exception;
 
 trait Module {
@@ -26,7 +26,7 @@ private $elakey = null;
 // format ['read' => [], 'write' => ['admin']]
 // protected $elaActionRoles = [];
 
-// action names for elaActionRoles is expensive, we want to do it only once
+// normalizing action names for elaActionRoles is expensive, we want to do it only once
 private $elaActionNamesNormalized = false;
 
 // Each module has to be initialized with eladmin instance and its own elakey.
@@ -36,13 +36,21 @@ final public function elaInit($eladmin, $elakey) {
   $this->elakey = $elakey;
 }
 
+// Check if module was initialized.
+final public function elaInitCheck() : void {
+  if ($this->eladmin === null)
+    throw new Exception(__('Module ' . static::class . ' was not initialized.'));
+}
+
 // Each module has its elakey - index in modules array - used to address requests.
 final public function elakey() : string {
+  $this->elaInitCheck();
   return $this->elakey;
 }
 
 // Check if user is authorized to do action, or athorized to access module at all.
 final public function elaAuth(?string $action = null) : bool {
+  $this->elaInitCheck();
   return $this->eladmin->auth($this, $action);
 }
 
@@ -58,6 +66,7 @@ public function elaGetIcon() : string {
 
 // Return url for this module.
 final public function elaRequest($action = null, $args = []) : string {
+  $this->elaInitCheck();
   return $this->eladmin->request($this->elakey(), $action, $args);
 }
 
@@ -72,7 +81,7 @@ final public function elaGetRoles($action = null) : array {
   }
 
   if (!$this->elaActionNamesNormalized) {
-    $actionRolesCopy = (new ArrayObject($this->elaActionRoles))->getArrayCopy();
+    $actionRolesCopy = (new \ArrayObject($this->elaActionRoles))->getArrayCopy();
     $this->elaActionRoles = [];
     foreach ($actionRolesCopy as $action => $roles) {
       $this->elaSetRoles($roles, $action);
@@ -80,7 +89,7 @@ final public function elaGetRoles($action = null) : array {
     $this->elaActionNamesNormalized = true;
   }
 
-  $action = $this->eladmin->normalizeActionName($action);
+  $action = Eladmin::normalizeActionName($action);
   return $this->elaActionRoles[$action] ?? [];
 }
 
@@ -94,7 +103,7 @@ final public function elaSetRoles(array $roles, $action = null) : void {
   if (!isset($this->elaActionRoles) || !is_array($this->elaActionRoles))
     $this->elaActionRoles = [];
 
-  $action = $this->eladmin->normalizeActionName($action);
+  $action = Eladmin::normalizeActionName($action);
   $this->elaActionRoles[$action] = $roles;
 }
 
@@ -104,19 +113,19 @@ final public function elaGetInstanceForAction() : object {
 }
 
 // Convinient method for plain text output. Sets HTTP header text/plain and echo $str.
-final public function elaOutText(?string $str = null) : void {
+final static public function elaOutText(?string $str = null) : void {
   Header('Content-type: text/plain');
   if($str !== null) echo $str;
 }
 
 // Convinient method for html output. Sets HTTP header text/html and echo $str.
-final public function elaOutHtml(?string $str = null) : void {
+final static public function elaOutHtml(?string $str = null) : void {
   Header('Content-type: text/html');
   if($str !== null) echo $str;
 }
 
 // Convinient method for json output. Sets HTTP header application/json and echo serialized $json.
-final public function elaOutJson(?array $json = null) : void {
+final static public function elaOutJson(?array $json = null) : void {
   Header('Content-type: application/json');
   if($json !== null) echo json_encode($json, JSON_UNESCAPED_UNICODE);
 }

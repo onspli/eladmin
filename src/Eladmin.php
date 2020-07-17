@@ -4,6 +4,9 @@ namespace Onspli\Eladmin;
 
 class Eladmin {
 
+// Eladmin core is itself a module
+use Module;
+
 // override to register admin modules
 protected $modules = [];
 
@@ -41,7 +44,7 @@ private $blade = null;
 private $t;
 
 // monolog Logger
-public $log;
+private $log;
 
 // requested action
 private $actionkey = null;
@@ -60,6 +63,8 @@ final public function __construct() {
   // Cache action key and modulekey. We don't want them accidentaly changed.
   $this->actionkey();
   $this->modulekey();
+
+  $this->elaInit($this, $this->elakey());
 }
 
 // Run Eladmin. It's just a wrapper of method runNoCatch catching exceptions.
@@ -385,18 +390,6 @@ private function renderAsset($assetpath) : void {
   echo $content;
 }
 
-final public function elaGetAuthorizedRolesActions(){
-  return [];
-}
-
-final public function elaGetAuthorizedRoles(){
-  return [];
-}
-// Eladmin actions authorization.
-final public function elaAuth(?string $action = null) : bool {
-  return $this->auth($this, $action);
-}
-
 final public function elaActionAccount(){
   $this->iauth->elaAccount();
 }
@@ -405,15 +398,15 @@ final public function elaActionAccountForm(){
   echo $this->view('accountForm');
 }
 
-// Get module instance to call elaActionMethod.
-final public function elaGetActionInstance(){
-  return $this;
-}
-
 // We want action keys to be case insensitive.
 final static public function normalizeActionName(string $action) : string
 {
   return strtolower($action);
+}
+
+// monolog Logger
+final public function log() : object {
+  return $this->log;
 }
 
 // e2e testing with consecutive.js
@@ -504,6 +497,11 @@ private function initMonolog() : void {
   if ($this->logLevel !== null && is_writeable(dirname($this->logFile))) {
     $this->log->pushHandler(new \Monolog\Handler\StreamHandler($this->logFile, $this->logLevel));
   }
+}
+
+// override default module elaTitle method
+final public function elaTitle() : string {
+  return $this->title();
 }
 
 }
