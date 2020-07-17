@@ -127,6 +127,13 @@ final public function runNoCatch() : void {
       if (!$isAuthorized) {
         throw new Exception\UnauthorizedException(__("Wrong credentials!"));
       } else {
+        // check if user is authorized to work with eladmin
+        if (!$this->elaAuth()) {
+          $this->iauth->elaLogout();
+          throw new Exception\UnauthorizedException(__('Not authorized to run Eladmin.'));
+        }
+
+        // check if user is authorized to work with any module
         $this->initAllModules();
         try {
           $this->firstAuthorizedModuleKey();
@@ -154,6 +161,12 @@ final public function runNoCatch() : void {
       }
     }
     // it is not an attempt to login and user is authorized to continue execution
+
+    // check if user is authorized to work with eladmin
+    if (!$this->elaAuth()) {
+      $this->iauth->elaLogout();
+      throw new Exception\UnauthorizedException(__('Not authorized to run Eladmin.'));
+    }
   }
 
   // No action, render module view.
@@ -321,7 +334,10 @@ final public function auth($module, ?string $action = null) : bool {
   $module = $this->module(static::moduleToElakey($module));
   if ($module === null)
     return false; // user not authorized to work with the module
-  return $this->iauth->elaAuthorize($module->elaGetRoles($action));
+  $roles = $module->elaGetRoles($action);
+  if ($roles == [])
+    $roles = null;
+  return $this->iauth->elaAuthorize($roles);
 }
 
 // override to add actions before the start of request proccessing
