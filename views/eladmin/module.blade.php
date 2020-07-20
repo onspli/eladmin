@@ -1,9 +1,13 @@
 @push('scripts')
-<script src="{!! $eladmin->request($module->elakey(), '_script') !!}&ver={{ time() }}"></script>
+<script src="{!! $module->elaAsset('script.js') !!}"></script>
+@endpush
+
+@push('styles')
+<link href="{!! $module->elaAsset('style.css') !!}" rel="stylesheet">
 @endpush
 
 @extends('eladmin.layout')
-@section('title', $module->elaGetTitle())
+@section('title', $module->elaTitle())
 
 @section('content')
 @include('render')

@@ -51,9 +51,6 @@ private $actionkey = null;
 // requested module
 private $modulekey = null;
 
-// TODO: change concept of testing?
-public $consecutive = false;
-
 // Initialize Eladmin.
 final public function __construct() {
   $this->initMonolog();
@@ -91,17 +88,10 @@ final public function run() : void {
 
 // Run Eladmin. The main function which processes the requests.
 final public function runNoCatch() : void {
-  $this->prerun();
 
   $asset = $this->assetpath();
   if ($asset !== null) {
-    $this->renderAsset($asset);
-    return;
-  }
-
-  $testinit = $_GET['elatestinit'] ?? null;
-  if ($testinit) {
-    $this->testinit();
+    $this->module()->elaFile($asset);
     return;
   }
 
@@ -184,7 +174,7 @@ final public function runNoCatch() : void {
   else
     $classname = $this->modules[$elakey];
 
-  $instanceForAction = $this->module()->elaGetInstanceForAction();
+  $instanceForAction = $this->module()->elaInstanceForAction();
   $instanceForAction->elaInitCheck();
   if (!($instanceForAction instanceof $classname))
     throw new Exception\Exception('Instance for action is instance of class ' . $classname . '!');
@@ -255,44 +245,59 @@ final public function CSRFToken() : string {
 
 // Create request url.
 final public function request($module, ?string $action = null, array $args = []) : string {
-  $data = $args;
   $data['elamodule'] = static::moduleToElakey($module);
   if ($action !== null) {
     $data['elaaction'] = $action;
     $data['elatoken'] = $this->CSRFToken();
   }
+  $data = array_merge($data, $args);
   return '?' . http_build_query($data);
 }
 
 // Create asset url, file path relative to /assets directory. Default $version = time()
-final public function asset(string $path, ?string $version = null) : string {
-  $data['elaasset'] = $path;
-  $data['ver'] = $version ?? time();
-  return '?' . http_build_query($data);
+final public function asset($module, string $path, ?string $version = null) : string {
+  return $this->request($module, null, ['elaasset' => $path, 'ver' => $version ?? time()]);
 }
 
 // Return requested asset path, null if no asset requested
 private function assetpath() : ?string {
-  return $_GET['elaasset'] ?? null;
+  $path = $_GET['elaasset'] ?? null;
+  if ($path === null)
+    return null;
+  if (strpos($path, '..') !== false)
+    throw new Exception\UnauthorizedException('Asset filename ' . $path . ' cannot contain ".." due security issues.');
+
+  $module = $this->module();
+  if ($module === null)
+    throw new Exception\UnauthorizedException('Not authorized to access asset ' . $path . ' for module "' . $this->modulekey() . '".');
+
+  $dirs = $this->views($module->elaViews());
+  $dirs[] = __DIR__ . '/../';
+  foreach ($dirs as $dir) {
+    $file = $dir . '/assets/' . $path;
+    if (file_exists($file))
+      return $file;
+  }
+  throw new Exception\BadRequestException('Asset ' . $path . ' not found  for module "' . $module->elakey() . '".');
 }
 
 // Return module instance or null if not authorized. Default $key = modulekey()
 final public function module(?string $elakey = null) : ?object {
   $elakey = $elakey ?? $this->modulekey();
   if ($elakey === null)
-    throw new Exception\BadRequestException(__('No module requested!'));
+    throw new Exception\BadRequestException('No module requested!');
   if ($elakey === '')
     return $this;
   // has the module been initialized?
   if (!isset($this->imodules[$elakey])) {
     $moduleclass = $this->modules[$elakey] ?? null;
     if ($moduleclass === null)
-      throw new Exception\BadRequestException(__('Unknown module "%s"!', $elakey));
+      throw new Exception\BadRequestException('Unknown module "' . $elakey . '"!');
     if (!static::isModule($moduleclass))
       throw new Exception\Exception('Class ' . $moduleclass . ' is not Eladmin module.');
 
     $imodule = new $moduleclass();
-    if ($this->auth && !$this->iauth->elaAuthorize($imodule->elaGetRoles())) {
+    if ($this->iauth && !$this->iauth->elaAuthorize($imodule->elaRoles())) {
       unset($this->modules[$elakey]);
       return null;
     }
@@ -328,28 +333,27 @@ final public function auth($module, ?string $action = null) : bool {
   $module = $this->module(static::moduleToElakey($module));
   if ($module === null)
     return false; // user not authorized to work with the module
-  return $this->iauth->elaAuthorize($module->elaGetRoles($action));
-}
-
-// override to add actions before the start of request proccessing
-protected function prerun() : void {
-
+  return $this->iauth->elaAuthorize($module->elaRoles($action));
 }
 
 // Return an instance of Blade.
 public function blade(array $views = []) : Blade {
+  $views = $this->views($views);
   $this->log->debug('init Blade', ['views' => $views]);
   $this->initCache();
-
-  if (is_array($this->views)) {
-    $defViews = array_merge($this->views, [__DIR__ . '/../views']);
-  } else if (is_string($this->views)) {
-    $defViews = [$this->views, __DIR__ . '/../views'];
-  } else {
-    $defViews = [__DIR__ . '/../views'];
-  }
-  $views = array_merge($views, $defViews);
   return new Blade($views, $this->cache);
+}
+
+// Extends array of directories of views and assets
+private function views(array $views = []) : array {
+  if (is_array($this->views)) {
+    $extViews = $this->views;
+  } else if (is_string($this->views)) {
+    $extViews = [$this->views];
+  } else {
+    $extViews = [];
+  }
+  return array_merge($extViews, $views, [__DIR__ . '/../views']);
 }
 
 // Return rendered view. Passes $args and instance of eladmin as $eladmin to the template.
@@ -393,28 +397,6 @@ final private function CSRFAuth() : void {
   }
 }
 
-// Determinate asset content-type and print it.
-private function renderAsset($assetpath) : void {
-  if (strpos($assetpath, '..') !== false)
-    throw new Exception\UnauthorizedException('Asset filename ' . $assetpath . ' cannot contain ".." due security issues.');
-
-  $path_parts = pathinfo($assetpath);
-  $extension = $path_parts['extension'];
-  $assetContentTypes = [
-    'css' => 'text/css',
-    'js' => 'text/javascript'
-  ];
-  $contentType = $assetContentTypes[$extension] ?? null;
-  if (!$contentType)
-    throw new Exception\UnauthorizedException('Asset extension not allowed.');
-
-  @$content = file_get_contents(__DIR__ . '/../assets/' . $assetpath);
-  if ($content === false)
-    throw new Exception\BadRequestException('Asset not found.');
-  header('Content-type:'.$contentType);
-  echo $content;
-}
-
 final public function elaActionAccount() {
   $this->iauth->elaAccount();
 }
@@ -432,18 +414,6 @@ final static public function normalizeActionName(string $action) : string {
 final public function log() : object {
   return $this->log;
 }
-
-// e2e testing with consecutive.js
-// TODO: change concept?
-public function consecutiveScript()
-{
-  echo file_get_contents($this->consecutive);
-}
-
-protected function testinit()
-{
-}
-
 
 private function initLocalization() : void {
   $this->log->debug('init localization');
@@ -511,8 +481,8 @@ private function initMonolog() : void {
   }
 }
 
-// override default module elaGetTitle method
-final public function elaGetTitle() : string {
+// override default module elaTitle method
+final public function elaTitle() : string {
   return $this->title();
 }
 

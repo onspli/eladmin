@@ -56,12 +56,12 @@ final public function elaAuth(?string $action = null) : bool {
 }
 
 // Get name of the module.
-public function elaGetTitle() : string {
+public function elaTitle() : string {
   return $this->elaTitle ?? class_basename(static::class);
 }
 
 // Get icon of the module.
-public function elaGetIcon() : string {
+public function elaIcon() : string {
   return $this->elaIcon ?? '<i class="fas fa-puzzle-piece"></i>';
 }
 
@@ -71,8 +71,14 @@ final public function elaRequest($action = null, $args = []) : string {
   return $this->eladmin->request($this->elakey(), $action, $args);
 }
 
+// Create asset url, file path relative to /assets directory. Default $version = time()
+final public function elaAsset(string $path, ?string $version = null) : string {
+  $this->elaInitCheck();
+  return $this->eladmin->asset($this->elakey(), $path, $version);
+}
+
 // Get roles authorized to work with the module, or specific action. Empty array means any role is authorized.
-final public function elaGetRoles($action = null) : array {
+final public function elaRoles($action = null) : array {
   if ($action === null)
     return $this->elaRoles ?? [];
 
@@ -109,7 +115,7 @@ final public function elaSetRoles(array $roles, $action = null) : void {
 }
 
 // Actions will be called on instance of this module returned by this method. Default is $this.
-final public function elaGetInstanceForAction() : object {
+final public function elaInstanceForAction() : object {
   return $this;
 }
 
@@ -134,27 +140,42 @@ final static public function elaOutJson(?array $json = null) : void {
     echo json_encode($json, JSON_UNESCAPED_UNICODE);
 }
 
-// Returns array of blade templates directories.
-public function elaGetViews() : array {
+// Extends array of directories of views and assets
+public function elaViews() : array {
   return [__DIR__ . '/../views/modules/module'];
 }
 
 // Return Blade instance
-public function eleGetBlade() : Blade {
+public function eleBlade() : Blade {
   $this->elaInitCheck();
-  return $this->eladmin->blade($this->elaGetViews());
+  return $this->eladmin->blade($this->elaViews());
 }
 
 // Return rendered view.
 final public function elaView(string $name, array $args = []) : string {
   $this->elaInitCheck();
-  $blade = $this->eleGetBlade();
+  $blade = $this->eleBlade();
   return $this->eladmin->view($name, array_merge($args, ['module' => $this]), $blade);
 }
 
-final public function elaAction_script() {
-  header('Content-type:text/javascript');
-  echo $this->elaView('script');
+// Determinate asset content-type and print it.
+public function elaFile($path) : void {
+  $path_parts = pathinfo($path);
+  $extension = $path_parts['extension'];
+  $assetContentTypes = [
+    'css' => 'text/css',
+    'js' => 'text/javascript'
+  ];
+  $contentType = $assetContentTypes[$extension] ?? null;
+  if (!$contentType)
+    throw new Exception\UnauthorizedException('Asset extension ' . $extension . ' not allowed.');
+
+  @$content = file_get_contents($path);
+  if ($content === false)
+    throw new Exception\Exception('Could not read asset ' . $path . '.');
+  header('Content-type:' . $contentType);
+  echo $content;
 }
+
 
 }
