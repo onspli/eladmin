@@ -142,7 +142,7 @@ final static public function elaOutJson(?array $json = null) : void {
 
 // Extends array of directories of views and assets
 public function elaViews() : array {
-  return [__DIR__ . '/../views/modules/module'];
+  return [__DIR__ . '/../views/module'];
 }
 
 // Return Blade instance
