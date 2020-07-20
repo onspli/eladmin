@@ -42,7 +42,7 @@
 <script>var _csrftoken = '{{$eladmin->CSRFToken()}}';</script>
 @stack('scripts')
 <script src="{!! $eladmin->elaAsset('layout.js', $eladmin->version()) !!}"></script>
-<script src="{!! $eladmin->elaAsset('consecutive.js', $eladmin->version()) !!}"></script>
+@include('eladmin.consecutive')
 
 </body>
 </html>

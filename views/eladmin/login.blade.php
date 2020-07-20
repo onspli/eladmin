@@ -73,7 +73,7 @@ $(function(){
   });
 });
 </script>
-<script src="{!! $eladmin->elaAsset('consecutive.js', $eladmin->version()) !!}"></script>
+@include('eladmin.consecutive')
 
 </body>
 </html>
