@@ -3,6 +3,7 @@
 namespace Onspli\Eladmin;
 use \Onspli\Eladmin\Eladmin;
 use \Onspli\Eladmin\Exception;
+use \Jenssegers\Blade\Blade;
 
 trait Module {
 
@@ -115,37 +116,43 @@ final public function elaGetInstanceForAction() : object {
 // Convinient method for plain text output. Sets HTTP header text/plain and echo $str.
 final static public function elaOutText(?string $str = null) : void {
   Header('Content-type: text/plain');
-  if($str !== null) echo $str;
+  if($str !== null)
+    echo $str;
 }
 
 // Convinient method for html output. Sets HTTP header text/html and echo $str.
 final static public function elaOutHtml(?string $str = null) : void {
   Header('Content-type: text/html');
-  if($str !== null) echo $str;
+  if($str !== null)
+    echo $str;
 }
 
 // Convinient method for json output. Sets HTTP header application/json and echo serialized $json.
 final static public function elaOutJson(?array $json = null) : void {
   Header('Content-type: application/json');
-  if($json !== null) echo json_encode($json, JSON_UNESCAPED_UNICODE);
+  if($json !== null)
+    echo json_encode($json, JSON_UNESCAPED_UNICODE);
 }
 
-// override to set views prefix (directory)
-protected function elaViewsPrefix(): string{
-  return 'modules.module.';
+// Returns array of blade templates directories.
+public function elaGetViews() : array {
+  return [__DIR__ . '/../views/modules/module'];
 }
 
-final public function elaGetView(string $key): string{
-  return $this->elaViewsPrefix() . $key;
+// Return Blade instance
+public function eleGetBlade() : Blade {
+  $this->elaInitCheck();
+  return $this->eladmin->blade($this->elaGetViews());
 }
 
-final public function elaView(string $name, array $args=[]) : string
-{
-  $name = $this->elaGetView($name);
-  return $this->eladmin->view($name, array_merge($args, ['module'=>$this]));
+// Return rendered view.
+final public function elaView(string $name, array $args = []) : string {
+  $this->elaInitCheck();
+  $blade = $this->eleGetBlade();
+  return $this->eladmin->view($name, array_merge($args, ['module' => $this]), $blade);
 }
 
-final public function elaAction_script(){
+final public function elaAction_script() {
   header('Content-type:text/javascript');
   echo $this->elaView('script');
 }

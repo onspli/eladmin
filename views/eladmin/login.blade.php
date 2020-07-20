@@ -74,7 +74,7 @@ $(function(){
 });
 </script>
 
-@include('consecutive')
+@include('eladmin.consecutive')
 
 </body>
 </html>

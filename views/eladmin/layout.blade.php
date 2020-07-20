@@ -4,7 +4,7 @@
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>{{$eladmin->title()}} | @yield('title')</title>
+<title>{{ $eladmin->title() }} | @yield('title')</title>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css" integrity="sha256-UzFD2WYH2U1dQpKDjjZK72VtPeWP50NoJjd26rnAdUI=" crossorigin="anonymous" />
 <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
@@ -19,12 +19,12 @@
 <div class="d-flex" id="wrapper">
 
 <div class="border-right" id="sidebar-wrapper">
-@include('sidebar')
+@include('eladmin.sidebar')
 </div>
 <!-- /#sidebar-wrapper -->
 
 <div id="page-content-wrapper">
-@include('content')
+@include('eladmin.content')
 </div>
 <!-- /#page-content-wrapper -->
 
@@ -43,7 +43,7 @@
 @stack('scripts')
 <script src="{!! $eladmin->asset('layout.js', $eladmin->version()) !!}"></script>
 
-@include('consecutive')
+@include('eladmin.consecutive')
 
 </body>
 </html>

@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('eladmin.layout')
 
 @section('content')
     <div class="card">

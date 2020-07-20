@@ -2,6 +2,8 @@
 
 namespace Onspli\Eladmin;
 
+use \Jenssegers\Blade\Blade;
+
 class Eladmin {
 
 // Eladmin core is itself a module
@@ -36,9 +38,6 @@ private $imodules = [];
 
 // authorization instance
 private $iauth = null;
-
-// blade template engine instance
-private $blade = null;
 
 // gettext translator
 private $t;
@@ -108,7 +107,6 @@ final public function runNoCatch() : void {
 
   $this->initLocalization();
   $this->initSessions();
-  $this->initBladeTemplates();
   $this->initAuthorization();
 
   // Authentication and authorization.
@@ -148,7 +146,7 @@ final public function runNoCatch() : void {
       } else {
         if ($this->modulekey() !== null)
           $this->redirect();
-        echo $this->view('login', ['loginFields' => $loginFields]);
+        echo $this->view('eladmin.login', ['loginFields' => $loginFields]);
         return;
       }
     }
@@ -168,9 +166,9 @@ final public function runNoCatch() : void {
       return;
     }
     if($this->module() == $this)
-      echo $this->view('hello');
+      echo $this->view('eladmin.hello');
     else
-      echo $this->view('module', ['module'=>$this->module()]);
+      echo $this->module()->elaView('eladmin.module');
     return;
   }
 
@@ -200,7 +198,7 @@ final public function runNoCatch() : void {
 }
 
 // Return administration title to show it in templates.
-final public function title() : string {
+public function title() : string {
   return $this->title;
 }
 
@@ -274,7 +272,7 @@ final public function asset(string $path, ?string $version = null) : string {
 }
 
 // Return requested asset path, null if no asset requested
-final private function assetpath() : ?string {
+private function assetpath() : ?string {
   return $_GET['elaasset'] ?? null;
 }
 
@@ -338,9 +336,27 @@ protected function prerun() : void {
 
 }
 
-// Render a view. Passes $args and instance of eladmin as $eladmin to the template.
-final public function view(string $template, array $args = []) : string {
-  return $this->blade->view()->make($template, array_merge($args, ['eladmin'=>$this]) )->render();
+// Return an instance of Blade.
+public function blade(array $views = []) : Blade {
+  $this->log->debug('init Blade', ['views' => $views]);
+  $this->initCache();
+
+  if (is_array($this->views)) {
+    $defViews = array_merge($this->views, [__DIR__ . '/../views']);
+  } else if (is_string($this->views)) {
+    $defViews = [$this->views, __DIR__ . '/../views'];
+  } else {
+    $defViews = [__DIR__ . '/../views'];
+  }
+  $views = array_merge($views, $defViews);
+  return new Blade($views, $this->cache);
+}
+
+// Return rendered view. Passes $args and instance of eladmin as $eladmin to the template.
+final public function view(string $template, array $args = [], ?Blade $blade = null) : string {
+  if ($blade === null)
+    $blade = $this->blade();
+  return $blade->make($template, array_merge($args, ['eladmin' => $this]) )->render();
 }
 
 final public function accountFields() {
@@ -399,17 +415,16 @@ private function renderAsset($assetpath) : void {
   echo $content;
 }
 
-final public function elaActionAccount(){
+final public function elaActionAccount() {
   $this->iauth->elaAccount();
 }
 
-final public function elaActionAccountForm(){
-  echo $this->view('accountForm');
+final public function elaActionAccountForm() {
+  echo $this->view('eladmin.accountForm');
 }
 
 // We want action keys to be case insensitive.
-final static public function normalizeActionName(string $action) : string
-{
+final static public function normalizeActionName(string $action) : string {
   return strtolower($action);
 }
 
@@ -430,8 +445,7 @@ protected function testinit()
 }
 
 
-private function initLocalization()
-{
+private function initLocalization() : void {
   $this->log->debug('init localization');
   try
   {
@@ -446,8 +460,7 @@ private function initLocalization()
   }
 }
 
-private function initSessions()
-{
+private function initSessions() : void {
   $this->log->debug('init sessions');
   if(!session_id())
   {
@@ -455,9 +468,8 @@ private function initSessions()
   }
 }
 
-private function initBladeTemplates()
-{
-  $this->log->debug('init Blade');
+private function initCache() : void {
+  $this->log->debug('init cache');
   if(!$this->cache)
     throw new Exception\Exception('Set '.static::class.'::$cache property to a path to some writeable directory.');
   if (!file_exists($this->cache)) {
@@ -467,18 +479,9 @@ private function initBladeTemplates()
   }
   if (!is_writeable($this->cache))
     throw new Exception\Exception('Cannot write to Blade cache directory '.$this->cache.'.');
-
-  if (is_array($this->views)) {
-    $views = array_merge($this->views, [__DIR__ . '/../views']);
-  } else if (is_string($this->views)) {
-    $views = [$this->views, __DIR__ . '/../views'];
-  } else {
-    $views = [__DIR__ . '/../views'];
-  }
-  $this->blade = new \Philo\Blade\Blade($views, $this->cache);
 }
 
-private function initAuthorization() {
+private function initAuthorization() : void {
   if ($this->auth) {
     $this->iauth = new $this->auth;
     if (!($this->iauth instanceof Auth\AuthInterface))
@@ -491,7 +494,7 @@ private function initAuthorization() {
 }
 
 private $allModulesInitialized = false;
-private function initAllModules() {
+private function initAllModules() : void {
   if ($this->allModulesInitialized)
     return;
   $this->log->debug('init all modules');
@@ -508,8 +511,8 @@ private function initMonolog() : void {
   }
 }
 
-// override default module elaTitle method
-final public function elaTitle() : string {
+// override default module elaGetTitle method
+final public function elaGetTitle() : string {
   return $this->title();
 }
 
