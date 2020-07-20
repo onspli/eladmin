@@ -1,15 +1,20 @@
-function elaRequest(action, module, args, getargs){
-  if(module === null || module === undefined){
+function elaRequest(action, module, args, getargs) {
+  if (module === null || module === undefined)
     throw 'You have to specify module!';
-  }
   return $.ajax({
-      method: 'POST',
-      url: '?'+$.param($.extend({},{
-        elamodule: module,
-        elaaction: action,
-        elatoken: _csrftoken
-      }, getargs)),
-      data: args
+      method : 'POST',
+      url : '?' + $.param($.extend({}, {
+                            elamodule : module,
+                            elaaction : action,
+                            elatoken : _csrftoken
+                          }, getargs)),
+      data : args
+  })
+  .fail(function(response) {
+    consecutive.point('request_fail', response);
+    if (response.status == 401)
+      location.reload();
+    toastr.error(response.responseText);
   });
 }
 
@@ -80,11 +85,6 @@ $(document).on('click', '*:not(form)[data-elaaction]', function(e){
   });
 
   elaRequest($(this).data('elaaction'), $(this).data('elamodule'), args, {elaid:$(this).data('elaid')})
-  .fail(function(response){
-    consecutive.point('action_fail', response);
-    if (response.status == 401) location.reload();
-    toastr.error(response.responseText);
-  })
   .done(function(data, status, xhr){
 
     var eladone = new Function('data', $(el).data('eladone')+'; if(data) toastr.success(data);');
@@ -93,14 +93,9 @@ $(document).on('click', '*:not(form)[data-elaaction]', function(e){
     var ct = xhr.getResponseHeader("content-type") || "";
     // HTML response
     if (ct.indexOf('html') > -1) {
-      //console.debug('html');
-      try{
-        var html = $(data);
-        if(html.hasClass('modal')){
-          modalOpen(html);
-        }
-      } catch(v){
-
+      var html = $(data);
+      if(html.hasClass('modal')){
+        modalOpen(html);
       }
     }
     consecutive.point('action_ok', data);
@@ -111,11 +106,6 @@ $(document).on('submit', 'form#modal-form', function(e){
   e.preventDefault();
   var form = $(this);
   elaRequest(form.data('elaaction'), form.data('elamodule'), form.serialize(), {elaid: form.data('elaid')})
-  .fail(function(response){
-    consecutive.point('form_fail', response);
-    if (response.status == 401) location.reload();
-    toastr.error(response.responseText);
-  })
   .done(function(data){
     var eladone = new Function('data', form.data('eladone')+';  if(data) toastr.success(data);');
     eladone(data);
@@ -130,9 +120,7 @@ $(document).on('click', 'form *[data-elaupdateaction]', function(e){
   var el = $(this);
 
   elaRequest($(this).data('elaupdateaction'), form.data('elamodule'), form.serialize(), {elaid: $(this).data('elaid'), elaupdate: 1})
-  .fail(function(response){
-    toastr.error(response.responseText);
-  }).done(function(response){
+  .done(function(response){
     var eladone = new Function('data', el.data('eladone')+';  if(data) toastr.success(data);');
     eladone(response);
   }).always(function(){

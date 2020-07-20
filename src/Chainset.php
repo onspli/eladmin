@@ -1,6 +1,6 @@
 <?php
 
-namespace Onspli\Eladmin\Chainset;
+namespace Onspli\Eladmin;
 
 /**
 * Chainset object is funny method to configure things.
