@@ -16,29 +16,29 @@ final class ModuleTest extends TestCase {
 
   public function testRoles() : void {
     $module = new ModuleA();
-    $this->assertEquals(['admin'], $module->elaGetRoles());
-    $this->assertEquals(['admin', 'user'], $module->elaGetRoles('read'));
-    $this->assertEquals(['admin', 'user'], $module->elaGetRoles('Read'));
-    $this->assertEquals(['admin', 'user'], $module->elaGetRoles('ReaD'));
+    $this->assertEquals(['admin'], $module->elaRoles());
+    $this->assertEquals(['admin', 'user'], $module->elaRoles('read'));
+    $this->assertEquals(['admin', 'user'], $module->elaRoles('Read'));
+    $this->assertEquals(['admin', 'user'], $module->elaRoles('ReaD'));
 
     $module->elaSetRoles([], 'REad');
-    $this->assertEquals([], $module->elaGetRoles('read'));
-    $this->assertEquals([], $module->elaGetRoles('write'));
+    $this->assertEquals([], $module->elaRoles('read'));
+    $this->assertEquals([], $module->elaRoles('write'));
 
     $module->elaSetRoles(['moderator', 'admin'], 'wRite');
-    $this->assertEquals(['moderator', 'admin'], $module->elaGetRoles('wriTe'));
+    $this->assertEquals(['moderator', 'admin'], $module->elaRoles('wriTe'));
 
     $module->elaSetRoles(['moderator']);
-    $this->assertEquals(['moderator'], $module->elaGetRoles());
+    $this->assertEquals(['moderator'], $module->elaRoles());
   }
 
   public function testDefaultRoles() : void {
     $module = new ModuleB();
-    $this->assertEquals([], $module->elaGetRoles());
-    $this->assertEquals([], $module->elaGetRoles('read'));
+    $this->assertEquals([], $module->elaRoles());
+    $this->assertEquals([], $module->elaRoles('read'));
 
     $module->elaSetRoles(['moderator', 'admin'], 'wRite');
-    $this->assertEquals(['moderator', 'admin'], $module->elaGetRoles('wriTe'));
+    $this->assertEquals(['moderator', 'admin'], $module->elaRoles('wriTe'));
   }
 
 }
