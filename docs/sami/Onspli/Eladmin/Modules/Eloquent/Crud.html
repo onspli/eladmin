@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="robots" content="index, follow, all" />
-    <title>Onspli\Eladmin\Module\Crud\Crud | Eladmin</title>
+    <title>Onspli\Eladmin\Modules\Eloquent\Crud | Eladmin</title>
 
             <link rel="stylesheet" type="text/css" href="../../../../css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="../../../../css/bootstrap-theme.min.css">
@@ -19,7 +19,7 @@
     
     </head>
 
-    <body id="class" data-name="class:Onspli_Eladmin_Module_Crud_Crud" data-root-path="../../../../">
+    <body id="class" data-name="class:Onspli_Eladmin_Modules_Eloquent_Crud" data-root-path="../../../../">
             <div id="content">
         <div id="left-column">
                 <div id="control-panel">
@@ -66,7 +66,7 @@
                         <div class="namespace-breadcrumbs">
             <ol class="breadcrumb">
                 <li><span class="label label-default">trait</span></li>
-                        <li><a href="../../../../Onspli.html">Onspli</a></li><li class="backslash">\</li><li><a href="../../../../Onspli/Eladmin.html">Eladmin</a></li><li class="backslash">\</li><li><a href="../../../../Onspli/Eladmin/Module.html">Module</a></li><li class="backslash">\</li><li><a href="../../../../Onspli/Eladmin/Module/Crud.html">Crud</a></li><li class="backslash">\</li><li>Crud</li>
+                        <li><a href="../../../../Onspli.html">Onspli</a></li><li class="backslash">\</li><li><a href="../../../../Onspli/Eladmin.html">Eladmin</a></li><li class="backslash">\</li><li><a href="../../../../Onspli/Eladmin/Modules.html">Modules</a></li><li class="backslash">\</li><li><a href="../../../../Onspli/Eladmin/Modules/Eloquent.html">Eloquent</a></li><li class="backslash">\</li><li>Crud</li>
             </ol>
         </div>
                 <div id="page-content">
@@ -238,14 +238,13 @@
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    
+                    object
                 </div>
                 <div class="col-md-8 type">
                     <a href="#method_elaInstanceForAction">elaInstanceForAction</a>()
         
-                                            <p class="no-description">No description</p>
-                                    </div>
-                <div class="col-md-2"></div>
+                                            <p>Actions will be called on instance of this module returned by this method. Default is $this.</p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#method_elaInstanceForAction"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
@@ -554,6 +553,17 @@
                                     </div>
                 <div class="col-md-2"></div>
             </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaGetActionInstance">elaGetActionInstance</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
             </div>
 
 
@@ -562,7 +572,7 @@
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method_elaInit">
-        <div class="location">at         line 13</div>
+        <div class="location">at         line 15</div>
         <code>                    
     <strong>elaInit</strong>($eladmin, $elakey)
         </code>
@@ -931,8 +941,8 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaInstanceForAction">
-        <div class="location">at         line 343</div>
-        <code>                    
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Module.html#method_elaInstanceForAction"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 165</div>
+        <code>final                    object
     <strong>elaInstanceForAction</strong>()
         </code>
     </h3>
@@ -940,8 +950,19 @@
             
     
 
+                    <div class="method-description">
+                                    <p>Actions will be called on instance of this module returned by this method. Default is $this.</p>                                                </div>
                 <div class="tags">
             
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>object</td>
+            <td></td>
+        </tr>
+    </table>
+
             
             
                     </div>
@@ -1095,7 +1116,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_tableExists">
-        <div class="location">at         line 23</div>
+        <div class="location">at         line 25</div>
         <code>final                private    
     <strong>tableExists</strong>()
         </code>
@@ -1116,7 +1137,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getTableColumns">
-        <div class="location">at         line 30</div>
+        <div class="location">at         line 32</div>
         <code>final                private    
     <strong>getTableColumns</strong>()
         </code>
@@ -1137,7 +1158,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getSchema">
-        <div class="location">at         line 37</div>
+        <div class="location">at         line 39</div>
         <code>final                private    
     <strong>getSchema</strong>()
         </code>
@@ -1158,7 +1179,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaColumnsDef">
-        <div class="location">at         line 42</div>
+        <div class="location">at         line 44</div>
         <code>final                private    
     <strong>elaColumnsDef</strong>()
         </code>
@@ -1177,7 +1198,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaActionsDef">
-        <div class="location">at         line 63</div>
+        <div class="location">at         line 65</div>
         <code>final                private    
     <strong>elaActionsDef</strong>()
         </code>
@@ -1196,7 +1217,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaFiltersDef">
-        <div class="location">at         line 90</div>
+        <div class="location">at         line 92</div>
         <code>final                private    
     <strong>elaFiltersDef</strong>()
         </code>
@@ -1215,7 +1236,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaColumns">
-        <div class="location">at         line 94</div>
+        <div class="location">at         line 96</div>
         <code>                    
     <strong>elaColumns</strong>()
         </code>
@@ -1234,7 +1255,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaActions">
-        <div class="location">at         line 98</div>
+        <div class="location">at         line 100</div>
         <code>                    
     <strong>elaActions</strong>()
         </code>
@@ -1253,7 +1274,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaFilters">
-        <div class="location">at         line 102</div>
+        <div class="location">at         line 104</div>
         <code>                    
     <strong>elaFilters</strong>()
         </code>
@@ -1272,7 +1293,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaActionPostForm">
-        <div class="location">at         line 107</div>
+        <div class="location">at         line 109</div>
         <code>                    
     <strong>elaActionPostForm</strong>()
         </code>
@@ -1291,7 +1312,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaActionPutForm">
-        <div class="location">at         line 113</div>
+        <div class="location">at         line 115</div>
         <code>                    
     <strong>elaActionPutForm</strong>()
         </code>
@@ -1310,7 +1331,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaUsesSoftDeletes">
-        <div class="location">at         line 119</div>
+        <div class="location">at         line 121</div>
         <code>                    
     <strong>elaUsesSoftDeletes</strong>()
         </code>
@@ -1329,7 +1350,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaDisabledColumns">
-        <div class="location">at         line 127</div>
+        <div class="location">at         line 129</div>
         <code>                    
     <strong>elaDisabledColumns</strong>()
         </code>
@@ -1350,7 +1371,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaVisibleColumns">
-        <div class="location">at         line 139</div>
+        <div class="location">at         line 141</div>
         <code>                    
     <strong>elaVisibleColumns</strong>()
         </code>
@@ -1369,7 +1390,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaRowValuesArray">
-        <div class="location">at         line 148</div>
+        <div class="location">at         line 150</div>
         <code>                private    
     <strong>elaRowValuesArray</strong>($row, $elaColumns)
         </code>
@@ -1403,7 +1424,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaColumnsConfigArray">
-        <div class="location">at         line 157</div>
+        <div class="location">at         line 159</div>
         <code>                private    
     <strong>elaColumnsConfigArray</strong>($elaColumns)
         </code>
@@ -1432,7 +1453,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaRowActionsArray">
-        <div class="location">at         line 173</div>
+        <div class="location">at         line 175</div>
         <code>                private    
     <strong>elaRowActionsArray</strong>($row, $elaActions, $trash = false)
         </code>
@@ -1471,7 +1492,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaReadQuery">
-        <div class="location">at         line 210</div>
+        <div class="location">at         line 212</div>
         <code>                private    
     <strong>elaReadQuery</strong>($sort = null, $direction = &#039;desc&#039;, $page = 1, $resultsperpage = 10, $search = &#039;&#039;, $columns = [], $trash = false)
         </code>
@@ -1530,7 +1551,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaActionRead">
-        <div class="location">at         line 240</div>
+        <div class="location">at         line 242</div>
         <code>                    
     <strong>elaActionRead</strong>()
         </code>
@@ -1551,7 +1572,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaActionUpdate">
-        <div class="location">at         line 282</div>
+        <div class="location">at         line 284</div>
         <code>                    
     <strong>elaActionUpdate</strong>()
         </code>
@@ -1572,7 +1593,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaActionCreate">
-        <div class="location">at         line 290</div>
+        <div class="location">at         line 292</div>
         <code>                    
     <strong>elaActionCreate</strong>()
         </code>
@@ -1593,7 +1614,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaUpdate">
-        <div class="location">at         line 295</div>
+        <div class="location">at         line 297</div>
         <code>            protected        
     <strong>elaUpdate</strong>()
         </code>
@@ -1612,7 +1633,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaActionDelete">
-        <div class="location">at         line 320</div>
+        <div class="location">at         line 322</div>
         <code>                    
     <strong>elaActionDelete</strong>()
         </code>
@@ -1633,7 +1654,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaActionForceDelete">
-        <div class="location">at         line 329</div>
+        <div class="location">at         line 331</div>
         <code>                    
     <strong>elaActionForceDelete</strong>()
         </code>
@@ -1652,9 +1673,28 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaActionRestore">
-        <div class="location">at         line 336</div>
+        <div class="location">at         line 338</div>
         <code>                    
     <strong>elaActionRestore</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                <div class="tags">
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaGetActionInstance">
+        <div class="location">at         line 345</div>
+        <code>                    
+    <strong>elaGetActionInstance</strong>()
         </code>
     </h3>
     <div class="details">

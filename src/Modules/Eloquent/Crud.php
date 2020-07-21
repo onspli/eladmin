@@ -1,18 +1,16 @@
 <?php
-namespace Onspli\Eladmin\Module\Eloquent;
+namespace Onspli\Eladmin\Modules\Eloquent;
 use \Onspli\Eladmin;
+use \Onspli\Eladmin\Module;
 use \Onspli\Eladmin\Exception;
 
 
 trait Crud
 {
-  use Eladmin\Module\Module {
-    Eladmin\Module\Module::elaInit as elaInit_Parent_Module;
+  use Module {
+    Module::elaInit as elaInit_Parent_Module;
   }
 
-  protected function elaViewsPrefix(): string{
-    return 'modules.eloquent.';
-  }
 
   public function elaInit($eladmin, $elakey){
     $this->elaInit_Parent_Module($eladmin, $elakey);

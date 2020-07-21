@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="index, follow, all" />
+    <title>Onspli\Eladmin\Modules\Crud\Chainset\Action | Eladmin</title>
+
+            <link rel="stylesheet" type="text/css" href="../../../../../css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="../../../../../css/bootstrap-theme.min.css">
+        <link rel="stylesheet" type="text/css" href="../../../../../css/sami.css">
+        <script src="../../../../../js/jquery-1.11.1.min.js"></script>
+        <script src="../../../../../js/bootstrap.min.js"></script>
+        <script src="../../../../../js/typeahead.min.js"></script>
+        <script src="../../../../../sami.js"></script>
+        <meta name="MobileOptimized" content="width">
+        <meta name="HandheldFriendly" content="true">
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+    
+    
+    </head>
+
+    <body id="class" data-name="class:Onspli_Eladmin_Modules_Crud_Chainset_Action" data-root-path="../../../../../">
+            <div id="content">
+        <div id="left-column">
+                <div id="control-panel">
+                <script>
+            $('option[data-version="'+window.projectVersion+'"]').prop('selected', true);
+        </script>
+        <form id="search-form" action="../../../../../search.html" method="GET">
+            <span class="glyphicon glyphicon-search"></span>
+            <input name="search"
+                   class="typeahead form-control"
+                   type="search"
+                   placeholder="Search">
+        </form>
+    </div>
+
+                <div id="api-tree"></div>
+
+        </div>
+        <div id="right-column">
+                <nav id="site-nav" class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-elements">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../../../../../index.html">Eladmin</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-elements">
+                <ul class="nav navbar-nav">
+                    <li><a href="../../../../../classes.html">Classes</a></li>
+                                            <li><a href="../../../../../namespaces.html">Namespaces</a></li>
+                                        <li><a href="../../../../../interfaces.html">Interfaces</a></li>
+                    <li><a href="../../../../../traits.html">Traits</a></li>
+                    <li><a href="../../../../../doc-index.html">Index</a></li>
+                    <li><a href="../../../../../search.html">Search</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+                        <div class="namespace-breadcrumbs">
+            <ol class="breadcrumb">
+                <li><span class="label label-default">class</span></li>
+                        <li><a href="../../../../../Onspli.html">Onspli</a></li><li class="backslash">\</li><li><a href="../../../../../Onspli/Eladmin.html">Eladmin</a></li><li class="backslash">\</li><li><a href="../../../../../Onspli/Eladmin/Modules.html">Modules</a></li><li class="backslash">\</li><li><a href="../../../../../Onspli/Eladmin/Modules/Crud.html">Crud</a></li><li class="backslash">\</li><li><a href="../../../../../Onspli/Eladmin/Modules/Crud/Chainset.html">Chainset</a></li><li class="backslash">\</li><li>Action</li>
+            </ol>
+        </div>
+                <div id="page-content">
+                
+    <div class="page-header">
+        <h1>
+            Action
+                
+        </h1>
+    </div>
+
+    <p>    class
+    <strong>Action</strong>        extends <a href="../../../../../Onspli/Eladmin/ChainsetChild.html"><abbr title="Onspli\Eladmin\ChainsetChild">ChainsetChild</abbr></a>
+</p>
+
+        
+    
+
+    
+    
+    
+            <h2>Properties</h2>
+
+            <table class="table table-condensed">
+                    <tr>
+                <td class="type" id="property_parent">
+                                                            private                    
+                </td>
+                <td>$parent</td>
+                <td class="last"></td>
+                <td><small>from&nbsp;<a href="../../../../../Onspli/Eladmin/ChainsetChild.html#property_parent"><abbr title="Onspli\Eladmin\ChainsetChild">ChainsetChild</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_next">
+                                                            private                    
+                </td>
+                <td>$next</td>
+                <td class="last"></td>
+                <td><small>from&nbsp;<a href="../../../../../Onspli/Eladmin/ChainsetChild.html#property_next"><abbr title="Onspli\Eladmin\ChainsetChild">ChainsetChild</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_prev">
+                                                            private                    
+                </td>
+                <td>$prev</td>
+                <td class="last"></td>
+                <td><small>from&nbsp;<a href="../../../../../Onspli/Eladmin/ChainsetChild.html#property_prev"><abbr title="Onspli\Eladmin\ChainsetChild">ChainsetChild</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_key">
+                                                            private                    
+                </td>
+                <td>$key</td>
+                <td class="last"></td>
+                <td><small>from&nbsp;<a href="../../../../../Onspli/Eladmin/ChainsetChild.html#property_key"><abbr title="Onspli\Eladmin\ChainsetChild">ChainsetChild</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_label">
+                                                                                
+                </td>
+                <td>$label</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_nonlistable">
+                                                                                
+                </td>
+                <td>$nonlistable</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_noneditable">
+                                                                                
+                </td>
+                <td>$noneditable</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_style">
+                                                                                
+                </td>
+                <td>$style</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_icon">
+                                                                                
+                </td>
+                <td>$icon</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_confirm">
+                                                                                
+                </td>
+                <td>$confirm</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_done">
+                                                                                
+                </td>
+                <td>$done</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_bulk">
+                                                                                
+                </td>
+                <td>$bulk</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+            </table>
+
+    
+            <h2>Methods</h2>
+
+            <div class="container-fluid underlined">
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method___call">__call</a>(string $name, array $arguments)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../../Onspli/Eladmin/ChainsetChild.html#method___call"><abbr title="Onspli\Eladmin\ChainsetChild">ChainsetChild</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method__setKey">_setKey</a>($key)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../../Onspli/Eladmin/ChainsetChild.html#method__setKey"><abbr title="Onspli\Eladmin\ChainsetChild">ChainsetChild</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method__getKey">_getKey</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../../Onspli/Eladmin/ChainsetChild.html#method__getKey"><abbr title="Onspli\Eladmin\ChainsetChild">ChainsetChild</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method__setNext">_setNext</a>($key)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../../Onspli/Eladmin/ChainsetChild.html#method__setNext"><abbr title="Onspli\Eladmin\ChainsetChild">ChainsetChild</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method__getNext">_getNext</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../../Onspli/Eladmin/ChainsetChild.html#method__getNext"><abbr title="Onspli\Eladmin\ChainsetChild">ChainsetChild</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method__setPrev">_setPrev</a>($key)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../../Onspli/Eladmin/ChainsetChild.html#method__setPrev"><abbr title="Onspli\Eladmin\ChainsetChild">ChainsetChild</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method__getPrev">_getPrev</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../../Onspli/Eladmin/ChainsetChild.html#method__getPrev"><abbr title="Onspli\Eladmin\ChainsetChild">ChainsetChild</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method__setParent">_setParent</a>($obj)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../../Onspli/Eladmin/ChainsetChild.html#method__setParent"><abbr title="Onspli\Eladmin\ChainsetChild">ChainsetChild</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method__getParent">_getParent</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../../Onspli/Eladmin/ChainsetChild.html#method__getParent"><abbr title="Onspli\Eladmin\ChainsetChild">ChainsetChild</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_before">before</a>($target = null)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../../Onspli/Eladmin/ChainsetChild.html#method_before"><abbr title="Onspli\Eladmin\ChainsetChild">ChainsetChild</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_after">after</a>($target = null)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../../Onspli/Eladmin/ChainsetChild.html#method_after"><abbr title="Onspli\Eladmin\ChainsetChild">ChainsetChild</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_getModule">getModule</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_getName">getName</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_evalProperty">evalProperty</a>($prop, $row)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_getAction">getAction</a>($row)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_hidden">hidden</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_confirm">confirm</a>($str = &#039;&#039;)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_auth">auth</a>($roles)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_done">done</a>($js = &#039;&#039;)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_bulk">bulk</a>($bulk = &#039;&#039;)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_nonlistable">nonlistable</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_listable">listable</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_noneditable">noneditable</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_editable">editable</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_danger">danger</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_primary">primary</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_secondary">secondary</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_success">success</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_warning">warning</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+            </div>
+
+
+        <h2>Details</h2>
+
+            <div id="method-details">
+                    <div class="method-item">
+                    <h3 id="method___call">
+        <div class="location">in <a href="../../../../../Onspli/Eladmin/ChainsetChild.html#method___call"><abbr title="Onspli\Eladmin\ChainsetChild">ChainsetChild</abbr></a> at         line 28</div>
+        <code>final                    
+    <strong>__call</strong>(string $name, array $arguments)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$name</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$arguments</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method__setKey">
+        <div class="location">in <a href="../../../../../Onspli/Eladmin/ChainsetChild.html#method__setKey"><abbr title="Onspli\Eladmin\ChainsetChild">ChainsetChild</abbr></a> at         line 33</div>
+        <code>final                    
+    <strong>_setKey</strong>($key)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$key</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method__getKey">
+        <div class="location">in <a href="../../../../../Onspli/Eladmin/ChainsetChild.html#method__getKey"><abbr title="Onspli\Eladmin\ChainsetChild">ChainsetChild</abbr></a> at         line 37</div>
+        <code>final                    
+    <strong>_getKey</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                <div class="tags">
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method__setNext">
+        <div class="location">in <a href="../../../../../Onspli/Eladmin/ChainsetChild.html#method__setNext"><abbr title="Onspli\Eladmin\ChainsetChild">ChainsetChild</abbr></a> at         line 41</div>
+        <code>final                    
+    <strong>_setNext</strong>($key)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$key</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method__getNext">
+        <div class="location">in <a href="../../../../../Onspli/Eladmin/ChainsetChild.html#method__getNext"><abbr title="Onspli\Eladmin\ChainsetChild">ChainsetChild</abbr></a> at         line 45</div>
+        <code>final                    
+    <strong>_getNext</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                <div class="tags">
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method__setPrev">
+        <div class="location">in <a href="../../../../../Onspli/Eladmin/ChainsetChild.html#method__setPrev"><abbr title="Onspli\Eladmin\ChainsetChild">ChainsetChild</abbr></a> at         line 49</div>
+        <code>final                    
+    <strong>_setPrev</strong>($key)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$key</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method__getPrev">
+        <div class="location">in <a href="../../../../../Onspli/Eladmin/ChainsetChild.html#method__getPrev"><abbr title="Onspli\Eladmin\ChainsetChild">ChainsetChild</abbr></a> at         line 53</div>
+        <code>final                    
+    <strong>_getPrev</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                <div class="tags">
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method__setParent">
+        <div class="location">in <a href="../../../../../Onspli/Eladmin/ChainsetChild.html#method__setParent"><abbr title="Onspli\Eladmin\ChainsetChild">ChainsetChild</abbr></a> at         line 57</div>
+        <code>final                    
+    <strong>_setParent</strong>($obj)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$obj</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method__getParent">
+        <div class="location">in <a href="../../../../../Onspli/Eladmin/ChainsetChild.html#method__getParent"><abbr title="Onspli\Eladmin\ChainsetChild">ChainsetChild</abbr></a> at         line 61</div>
+        <code>final                    
+    <strong>_getParent</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                <div class="tags">
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_before">
+        <div class="location">in <a href="../../../../../Onspli/Eladmin/ChainsetChild.html#method_before"><abbr title="Onspli\Eladmin\ChainsetChild">ChainsetChild</abbr></a> at         line 65</div>
+        <code>final                    
+    <strong>before</strong>($target = null)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$target</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_after">
+        <div class="location">in <a href="../../../../../Onspli/Eladmin/ChainsetChild.html#method_after"><abbr title="Onspli\Eladmin\ChainsetChild">ChainsetChild</abbr></a> at         line 88</div>
+        <code>final                    
+    <strong>after</strong>($target = null)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$target</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getModule">
+        <div class="location">at         line 17</div>
+        <code>final                    
+    <strong>getModule</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                <div class="tags">
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getName">
+        <div class="location">at         line 21</div>
+        <code>final                    
+    <strong>getName</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                <div class="tags">
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_evalProperty">
+        <div class="location">at         line 25</div>
+        <code>final                    
+    <strong>evalProperty</strong>($prop, $row)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$prop</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td></td>
+                <td>$row</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getAction">
+        <div class="location">at         line 36</div>
+        <code>final                    
+    <strong>getAction</strong>($row)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$row</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_hidden">
+        <div class="location">at         line 61</div>
+        <code>                    
+    <strong>hidden</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                <div class="tags">
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_confirm">
+        <div class="location">at         line 67</div>
+        <code>                    
+    <strong>confirm</strong>($str = &#039;&#039;)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$str</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_auth">
+        <div class="location">at         line 74</div>
+        <code>                    
+    <strong>auth</strong>($roles)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$roles</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_done">
+        <div class="location">at         line 79</div>
+        <code>                    
+    <strong>done</strong>($js = &#039;&#039;)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$js</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_bulk">
+        <div class="location">at         line 84</div>
+        <code>                    
+    <strong>bulk</strong>($bulk = &#039;&#039;)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$bulk</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_nonlistable">
+        <div class="location">at         line 90</div>
+        <code>                    
+    <strong>nonlistable</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                <div class="tags">
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_listable">
+        <div class="location">at         line 95</div>
+        <code>                    
+    <strong>listable</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                <div class="tags">
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_noneditable">
+        <div class="location">at         line 100</div>
+        <code>                    
+    <strong>noneditable</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                <div class="tags">
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_editable">
+        <div class="location">at         line 105</div>
+        <code>                    
+    <strong>editable</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                <div class="tags">
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_danger">
+        <div class="location">at         line 110</div>
+        <code>                    
+    <strong>danger</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                <div class="tags">
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_primary">
+        <div class="location">at         line 115</div>
+        <code>                    
+    <strong>primary</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                <div class="tags">
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_secondary">
+        <div class="location">at         line 120</div>
+        <code>                    
+    <strong>secondary</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                <div class="tags">
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_success">
+        <div class="location">at         line 125</div>
+        <code>                    
+    <strong>success</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                <div class="tags">
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_warning">
+        <div class="location">at         line 130</div>
+        <code>                    
+    <strong>warning</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                <div class="tags">
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+            </div>
+
+    
+            </div>
+                <div id="footer">
+        Generated by <a href="http://sami.sensiolabs.org/">Sami, the API Documentation Generator</a>.
+    </div>
+
+        </div>
+    </div>
+    </body>
+
+</html>

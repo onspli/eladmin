@@ -1,9 +1,9 @@
 <?php
+namespace Onspli\Eladmin\Modules\Crud\Chainset;
+use \Onspli\Eladmin\Exception;
+use \Onspli\Eladmin\ChainsetChild;
 
-
-namespace Onspli\Eladmin\Module\Eloquent\Chainset;
-
-class Filter extends \Onspli\Eladmin\Chainset{
+class Filter extends ChainsetChild {
 
   public $label = null;
   public $column = null;
