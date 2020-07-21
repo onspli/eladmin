@@ -92,12 +92,12 @@ consecutive
 // open - close modal
 .run("### TEST MODAL OPEN/CLOSE ###")
 .run("open account modal", _testOpenAccountForm)
-.wait("wait for account modal", 'action_ok', _testModalIsOpen)
+.wait("wait for account modal", 'request_ok', _testModalIsOpen)
 .run("close modal button", _testCloseModalButton)
 .run("account modal is closed", _testModalIsClosed)
 
 .run("open account modal", _testOpenAccountForm)
-.wait("wait for account modal", 'action_ok', _testModalIsOpen)
+.wait("wait for account modal", 'request_ok', _testModalIsOpen)
 .run("close modal history back", _testCloseModalBack)
 .wait("wait for popstate event", 'popstate')
 .run("account modal is closed", _testModalIsClosed)

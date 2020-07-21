@@ -27,7 +27,6 @@ function elaRequest(module, action, postargs, getargs) {
     }
   })
   .done(function(data, status, xhr) {
-    consecutive.point('request_ok', data);
     var contentType = xhr.getResponseHeader("content-type") || "";
     console.debug('elaRequest response content type: ' + contentType);
     if (!data) {
@@ -47,6 +46,7 @@ function elaRequest(module, action, postargs, getargs) {
     } else if (contentType.indexOf('text/plain') > -1) {
         toastr.success(data);
     }
+    consecutive.point('request_ok', data);
   });
 }
 
