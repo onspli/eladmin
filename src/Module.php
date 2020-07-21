@@ -176,7 +176,7 @@ public function elaViews() : array {
 /**
 * Return Blade instance
 */
-public function eleBlade() : Blade {
+public function elaBlade() : Blade {
   $this->elaInitCheck();
   return $this->eladmin->blade($this->elaViews());
 }
@@ -186,7 +186,7 @@ public function eleBlade() : Blade {
 */
 final public function elaView(string $name, array $args = []) : string {
   $this->elaInitCheck();
-  $blade = $this->eleBlade();
+  $blade = $this->elaBlade();
   return $this->eladmin->view($name, array_merge($args, ['module' => $this]), $blade);
 }
 
