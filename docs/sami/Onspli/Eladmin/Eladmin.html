@@ -85,6 +85,8 @@
         
     
 
+            <div class="description">
+            <p>Eladmin core class.</p>                                </div>
     
             <h2>Traits</h2>
 
@@ -96,7 +98,7 @@
                                             
                 </div>
                 <div class="col-md-6">
-                    
+                    General Eladmin Module.
                 </div>
             </div>
             </div>
@@ -106,11 +108,35 @@
 
             <table class="table table-condensed">
                     <tr>
+                <td class="type" id="property_eladmin">
+                                                            private                    
+                </td>
+                <td>$eladmin</td>
+                <td class="last">Eladmin core instance</td>
+                <td><small>from&nbsp;<a href="../../Onspli/Eladmin/Module.html#property_eladmin"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_elakey">
+                                                            private                    
+                </td>
+                <td>$elakey</td>
+                <td class="last">Module's elakey</td>
+                <td><small>from&nbsp;<a href="../../Onspli/Eladmin/Module.html#property_elakey"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_elaActionNamesNormalized">
+                                                            private                    
+                </td>
+                <td>$elaActionNamesNormalized</td>
+                <td class="last">normalizing action names for elaActionRoles is expensive, we want to do it only once</td>
+                <td><small>from&nbsp;<a href="../../Onspli/Eladmin/Module.html#property_elaActionNamesNormalized"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></td>
+            </tr>
+                    <tr>
                 <td class="type" id="property_modules">
                                         protected                                        
                 </td>
                 <td>$modules</td>
-                <td class="last"></td>
+                <td class="last">override to register admin modules</td>
                 <td></td>
             </tr>
                     <tr>
@@ -118,7 +144,7 @@
                                         protected                                        
                 </td>
                 <td>$title</td>
-                <td class="last"></td>
+                <td class="last">override to set administration title</td>
                 <td></td>
             </tr>
                     <tr>
@@ -126,7 +152,7 @@
                                         protected                                        
                 </td>
                 <td>$lang</td>
-                <td class="last"></td>
+                <td class="last">override to set language</td>
                 <td></td>
             </tr>
                     <tr>
@@ -134,7 +160,7 @@
                                         protected                                        
                 </td>
                 <td>$auth</td>
-                <td class="last"></td>
+                <td class="last">override to use advanced authorization, set to null to disable authorization completely</td>
                 <td></td>
             </tr>
                     <tr>
@@ -142,7 +168,7 @@
                                         protected                                        
                 </td>
                 <td>$cache</td>
-                <td class="last"></td>
+                <td class="last">override to set Blade cache directory</td>
                 <td></td>
             </tr>
                     <tr>
@@ -150,7 +176,7 @@
                                         protected                                        
                 </td>
                 <td>$views</td>
-                <td class="last"></td>
+                <td class="last">override to extend blade views directory</td>
                 <td></td>
             </tr>
                     <tr>
@@ -158,7 +184,7 @@
                                         protected                                        
                 </td>
                 <td>$logLevel</td>
-                <td class="last"></td>
+                <td class="last">override to set monolog report level, null disables logging</td>
                 <td></td>
             </tr>
                     <tr>
@@ -166,6 +192,62 @@
                                         protected                                        
                 </td>
                 <td>$logFile</td>
+                <td class="last">override to set monolog log file</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_imodules">
+                                                            private                    
+                </td>
+                <td>$imodules</td>
+                <td class="last">modules instances</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_iauth">
+                                                            private                    
+                </td>
+                <td>$iauth</td>
+                <td class="last">authorization instance</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_t">
+                                                            private                    
+                </td>
+                <td>$t</td>
+                <td class="last">gettext translator</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_log">
+                                                            private                    
+                </td>
+                <td>$log</td>
+                <td class="last">monolog Logger</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_actionkey">
+                                                            private                    
+                </td>
+                <td>$actionkey</td>
+                <td class="last">requested action key</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_modulekey">
+                                                            private                    
+                </td>
+                <td>$modulekey</td>
+                <td class="last">requested module elakey</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_allModulesInitialized">
+                                                            private                    
+                </td>
+                <td>$allModulesInitialized</td>
                 <td class="last"></td>
                 <td></td>
             </tr>
@@ -177,13 +259,12 @@
             <div class="container-fluid underlined">
                     <div class="row">
                 <div class="col-md-2 type">
-                    
+                    void
                 </div>
                 <div class="col-md-8 type">
                     <a href="#method_elaInit">elaInit</a>($eladmin, $elakey)
         
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p>Each module has to be initialized with eladmin instance and its own elakey.</p>                </div>
                 <div class="col-md-2"><small>from&nbsp;<a href="../../Onspli/Eladmin/Module.html#method_elaInit"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
             </div>
                     <div class="row">
@@ -193,8 +274,7 @@
                 <div class="col-md-8 type">
                     <a href="#method_elaInitCheck">elaInitCheck</a>()
         
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p>Check if module was initialized. Throws if it wasn't.</p>                </div>
                 <div class="col-md-2"><small>from&nbsp;<a href="../../Onspli/Eladmin/Module.html#method_elaInitCheck"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
             </div>
                     <div class="row">
@@ -214,8 +294,7 @@
                 <div class="col-md-8 type">
                     <a href="#method_elaAuth">elaAuth</a>(string|null $action = null)
         
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p>Check if user is authorized to do action, or athorized to access module at all.</p>                </div>
                 <div class="col-md-2"><small>from&nbsp;<a href="../../Onspli/Eladmin/Module.html#method_elaAuth"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
             </div>
                     <div class="row">
@@ -235,8 +314,7 @@
                 <div class="col-md-8 type">
                     <a href="#method_elaIcon">elaIcon</a>()
         
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p>Get icon of the module.</p>                </div>
                 <div class="col-md-2"><small>from&nbsp;<a href="../../Onspli/Eladmin/Module.html#method_elaIcon"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
             </div>
                     <div class="row">
@@ -246,8 +324,7 @@
                 <div class="col-md-8 type">
                     <a href="#method_elaRequest">elaRequest</a>($action = null, $args = [])
         
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p>Return url for this module.</p>                </div>
                 <div class="col-md-2"><small>from&nbsp;<a href="../../Onspli/Eladmin/Module.html#method_elaRequest"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
             </div>
                     <div class="row">
@@ -257,8 +334,7 @@
                 <div class="col-md-8 type">
                     <a href="#method_elaAsset">elaAsset</a>(string $path, string|null $version = null)
         
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p>Create asset url, file path relative to /assets directory. Default $version = time()</p>                </div>
                 <div class="col-md-2"><small>from&nbsp;<a href="../../Onspli/Eladmin/Module.html#method_elaAsset"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
             </div>
                     <div class="row">
@@ -268,8 +344,7 @@
                 <div class="col-md-8 type">
                     <a href="#method_elaRoles">elaRoles</a>($action = null)
         
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p>Get roles authorized to work with the module, or specific action. Empty array means any role is authorized.</p>                </div>
                 <div class="col-md-2"><small>from&nbsp;<a href="../../Onspli/Eladmin/Module.html#method_elaRoles"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
             </div>
                     <div class="row">
@@ -279,8 +354,7 @@
                 <div class="col-md-8 type">
                     <a href="#method_elaSetRoles">elaSetRoles</a>(array $roles, $action = null)
         
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p>Set roles authorized to work with the module, or specific action. Empty array means any role is authorized.</p>                </div>
                 <div class="col-md-2"><small>from&nbsp;<a href="../../Onspli/Eladmin/Module.html#method_elaSetRoles"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
             </div>
                     <div class="row">
@@ -290,42 +364,8 @@
                 <div class="col-md-8 type">
                     <a href="#method_elaInstanceForAction">elaInstanceForAction</a>()
         
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p>Actions will be called on instance of this module returned by this method. Default is $this.</p>                </div>
                 <div class="col-md-2"><small>from&nbsp;<a href="../../Onspli/Eladmin/Module.html#method_elaInstanceForAction"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    static&nbsp;void
-                </div>
-                <div class="col-md-8 type">
-                    <a href="#method_elaOutText">elaOutText</a>(string|null $str = null)
-        
-                                            <p class="no-description">No description</p>
-                                    </div>
-                <div class="col-md-2"><small>from&nbsp;<a href="../../Onspli/Eladmin/Module.html#method_elaOutText"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    static&nbsp;void
-                </div>
-                <div class="col-md-8 type">
-                    <a href="#method_elaOutHtml">elaOutHtml</a>(string|null $str = null)
-        
-                                            <p class="no-description">No description</p>
-                                    </div>
-                <div class="col-md-2"><small>from&nbsp;<a href="../../Onspli/Eladmin/Module.html#method_elaOutHtml"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    static&nbsp;void
-                </div>
-                <div class="col-md-8 type">
-                    <a href="#method_elaOutJson">elaOutJson</a>(array|null $json = null)
-        
-                                            <p class="no-description">No description</p>
-                                    </div>
-                <div class="col-md-2"><small>from&nbsp;<a href="../../Onspli/Eladmin/Module.html#method_elaOutJson"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
@@ -334,8 +374,7 @@
                 <div class="col-md-8 type">
                     <a href="#method_elaViews">elaViews</a>()
         
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p>Extends array of directories of views and assets</p>                </div>
                 <div class="col-md-2"><small>from&nbsp;<a href="../../Onspli/Eladmin/Module.html#method_elaViews"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
             </div>
                     <div class="row">
@@ -345,8 +384,7 @@
                 <div class="col-md-8 type">
                     <a href="#method_eleBlade">eleBlade</a>()
         
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p>Return Blade instance</p>                </div>
                 <div class="col-md-2"><small>from&nbsp;<a href="../../Onspli/Eladmin/Module.html#method_eleBlade"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
             </div>
                     <div class="row">
@@ -356,8 +394,7 @@
                 <div class="col-md-8 type">
                     <a href="#method_elaView">elaView</a>(string $name, array $args = [])
         
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p>Return rendered view.</p>                </div>
                 <div class="col-md-2"><small>from&nbsp;<a href="../../Onspli/Eladmin/Module.html#method_elaView"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
             </div>
                     <div class="row">
@@ -367,8 +404,7 @@
                 <div class="col-md-8 type">
                     <a href="#method_elaFile">elaFile</a>($path)
         
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p>Determinate asset content-type and print it.</p>                </div>
                 <div class="col-md-2"><small>from&nbsp;<a href="../../Onspli/Eladmin/Module.html#method_elaFile"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
             </div>
                     <div class="row">
@@ -493,12 +529,43 @@
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
+                    string|null
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_assetpath">assetpath</a>()
+        
+                                            <p>Return requested asset path, null if no asset requested</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
                     object|null
                 </div>
                 <div class="col-md-8 type">
                     <a href="#method_module">module</a>(string|null $elakey = null)
         
                                             <p>Return module instance or null if not authorized. Default $key = modulekey()</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_firstAuthorizedModuleKey">firstAuthorizedModuleKey</a>()
+        
+                                            <p>return first authorized module key</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;string
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_moduleToElakey">moduleToElakey</a>($module)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -523,6 +590,16 @@
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_views">views</a>(array $views = [])
+        
+                                            <p>Extends array of directories of views and assets</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
                     string
                 </div>
                 <div class="col-md-8 type">
@@ -533,7 +610,7 @@
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    
+                    array|null
                 </div>
                 <div class="col-md-8 type">
                     <a href="#method_accountFields">accountFields</a>()
@@ -584,6 +661,16 @@
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_CSRFAuth">CSRFAuth</a>()
+        
+                                            <p>Check if CSRF token is valid</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
                     
                 </div>
                 <div class="col-md-8 type">
@@ -616,12 +703,108 @@
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    object
+                    <abbr title="Monolog\Logger">Logger</abbr>
                 </div>
                 <div class="col-md-8 type">
                     <a href="#method_log">log</a>()
         
                                             <p>monolog Logger</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_initLocalization">initLocalization</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_initSessions">initSessions</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_initCache">initCache</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_initAuthorization">initAuthorization</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_initAllModules">initAllModules</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_initMonolog">initMonolog</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;void
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaOutText">elaOutText</a>(string|null $str = null)
+        
+                                            <p>Convinient method for plain text output. Sets HTTP header text/plain and echo $str.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;void
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaOutHtml">elaOutHtml</a>(string|null $str = null)
+        
+                                            <p>Convinient method for html output. Sets HTTP header text/html and echo $str.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;void
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaOutJson">elaOutJson</a>(array|null $json = null)
+        
+                                            <p>Convinient method for json output. Sets HTTP header application/json and echo serialized $json.</p>                </div>
                 <div class="col-md-2"></div>
             </div>
             </div>
@@ -632,8 +815,8 @@
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method_elaInit">
-        <div class="location">in <a href="../../Onspli/Eladmin/Module.html#method_elaInit"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 34</div>
-        <code>final                    
+        <div class="location">in <a href="../../Onspli/Eladmin/Module.html#method_elaInit"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 61</div>
+        <code>final                    void
     <strong>elaInit</strong>($eladmin, $elakey)
         </code>
     </h3>
@@ -641,6 +824,8 @@
             
     
 
+                    <div class="method-description">
+                                    <p>Each module has to be initialized with eladmin instance and its own elakey.</p>                                                </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
@@ -658,6 +843,15 @@
             </table>
 
             
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
             
             
                     </div>
@@ -666,7 +860,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaInitCheck">
-        <div class="location">in <a href="../../Onspli/Eladmin/Module.html#method_elaInitCheck"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 41</div>
+        <div class="location">in <a href="../../Onspli/Eladmin/Module.html#method_elaInitCheck"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 70</div>
         <code>final                    void
     <strong>elaInitCheck</strong>()
         </code>
@@ -675,6 +869,8 @@
             
     
 
+                    <div class="method-description">
+                                    <p>Check if module was initialized. Throws if it wasn't.</p>                                                </div>
                 <div class="tags">
             
                             <h4>Return Value</h4>
@@ -694,7 +890,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elakey">
-        <div class="location">at         line 227</div>
+        <div class="location">at         line 258</div>
         <code>final                    string
     <strong>elakey</strong>()
         </code>
@@ -724,7 +920,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaAuth">
-        <div class="location">in <a href="../../Onspli/Eladmin/Module.html#method_elaAuth"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 53</div>
+        <div class="location">in <a href="../../Onspli/Eladmin/Module.html#method_elaAuth"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 86</div>
         <code>final                    bool
     <strong>elaAuth</strong>(string|null $action = null)
         </code>
@@ -733,6 +929,8 @@
             
     
 
+                    <div class="method-description">
+                                    <p>Check if user is authorized to do action, or athorized to access module at all.</p>                                                </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
@@ -762,7 +960,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaTitle">
-        <div class="location">at         line 541</div>
+        <div class="location">at         line 572</div>
         <code>final                    string
     <strong>elaTitle</strong>()
         </code>
@@ -792,7 +990,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaIcon">
-        <div class="location">in <a href="../../Onspli/Eladmin/Module.html#method_elaIcon"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 64</div>
+        <div class="location">in <a href="../../Onspli/Eladmin/Module.html#method_elaIcon"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 101</div>
         <code>                    string
     <strong>elaIcon</strong>()
         </code>
@@ -801,6 +999,8 @@
             
     
 
+                    <div class="method-description">
+                                    <p>Get icon of the module.</p>                                                </div>
                 <div class="tags">
             
                             <h4>Return Value</h4>
@@ -820,7 +1020,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaRequest">
-        <div class="location">in <a href="../../Onspli/Eladmin/Module.html#method_elaRequest"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 69</div>
+        <div class="location">in <a href="../../Onspli/Eladmin/Module.html#method_elaRequest"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 108</div>
         <code>final                    string
     <strong>elaRequest</strong>($action = null, $args = [])
         </code>
@@ -829,6 +1029,8 @@
             
     
 
+                    <div class="method-description">
+                                    <p>Return url for this module.</p>                                                </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
@@ -863,7 +1065,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaAsset">
-        <div class="location">in <a href="../../Onspli/Eladmin/Module.html#method_elaAsset"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 75</div>
+        <div class="location">in <a href="../../Onspli/Eladmin/Module.html#method_elaAsset"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 116</div>
         <code>final                    string
     <strong>elaAsset</strong>(string $path, string|null $version = null)
         </code>
@@ -872,6 +1074,8 @@
             
     
 
+                    <div class="method-description">
+                                    <p>Create asset url, file path relative to /assets directory. Default $version = time()</p>                                                </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
@@ -906,7 +1110,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaRoles">
-        <div class="location">in <a href="../../Onspli/Eladmin/Module.html#method_elaRoles"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 81</div>
+        <div class="location">in <a href="../../Onspli/Eladmin/Module.html#method_elaRoles"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 124</div>
         <code>final                    array
     <strong>elaRoles</strong>($action = null)
         </code>
@@ -915,6 +1119,8 @@
             
     
 
+                    <div class="method-description">
+                                    <p>Get roles authorized to work with the module, or specific action. Empty array means any role is authorized.</p>                                                </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
@@ -944,7 +1150,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaSetRoles">
-        <div class="location">in <a href="../../Onspli/Eladmin/Module.html#method_elaSetRoles"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 104</div>
+        <div class="location">in <a href="../../Onspli/Eladmin/Module.html#method_elaSetRoles"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 149</div>
         <code>final                    void
     <strong>elaSetRoles</strong>(array $roles, $action = null)
         </code>
@@ -953,6 +1159,8 @@
             
     
 
+                    <div class="method-description">
+                                    <p>Set roles authorized to work with the module, or specific action. Empty array means any role is authorized.</p>                                                </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
@@ -987,7 +1195,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaInstanceForAction">
-        <div class="location">in <a href="../../Onspli/Eladmin/Module.html#method_elaInstanceForAction"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 118</div>
+        <div class="location">in <a href="../../Onspli/Eladmin/Module.html#method_elaInstanceForAction"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 165</div>
         <code>final                    object
     <strong>elaInstanceForAction</strong>()
         </code>
@@ -996,6 +1204,8 @@
             
     
 
+                    <div class="method-description">
+                                    <p>Actions will be called on instance of this module returned by this method. Default is $this.</p>                                                </div>
                 <div class="tags">
             
                             <h4>Return Value</h4>
@@ -1014,122 +1224,8 @@
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_elaOutText">
-        <div class="location">in <a href="../../Onspli/Eladmin/Module.html#method_elaOutText"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 123</div>
-        <code>final        static            void
-    <strong>elaOutText</strong>(string|null $str = null)
-        </code>
-    </h3>
-    <div class="details">
-            
-    
-
-                <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td>string|null</td>
-                <td>$str</td>
-                <td></td>
-            </tr>
-            </table>
-
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td>void</td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_elaOutHtml">
-        <div class="location">in <a href="../../Onspli/Eladmin/Module.html#method_elaOutHtml"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 130</div>
-        <code>final        static            void
-    <strong>elaOutHtml</strong>(string|null $str = null)
-        </code>
-    </h3>
-    <div class="details">
-            
-    
-
-                <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td>string|null</td>
-                <td>$str</td>
-                <td></td>
-            </tr>
-            </table>
-
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td>void</td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_elaOutJson">
-        <div class="location">in <a href="../../Onspli/Eladmin/Module.html#method_elaOutJson"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 137</div>
-        <code>final        static            void
-    <strong>elaOutJson</strong>(array|null $json = null)
-        </code>
-    </h3>
-    <div class="details">
-            
-    
-
-                <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td>array|null</td>
-                <td>$json</td>
-                <td></td>
-            </tr>
-            </table>
-
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td>void</td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
                     <h3 id="method_elaViews">
-        <div class="location">in <a href="../../Onspli/Eladmin/Module.html#method_elaViews"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 144</div>
+        <div class="location">in <a href="../../Onspli/Eladmin/Module.html#method_elaViews"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 172</div>
         <code>                    array
     <strong>elaViews</strong>()
         </code>
@@ -1138,6 +1234,8 @@
             
     
 
+                    <div class="method-description">
+                                    <p>Extends array of directories of views and assets</p>                                                </div>
                 <div class="tags">
             
                             <h4>Return Value</h4>
@@ -1157,7 +1255,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_eleBlade">
-        <div class="location">in <a href="../../Onspli/Eladmin/Module.html#method_eleBlade"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 149</div>
+        <div class="location">in <a href="../../Onspli/Eladmin/Module.html#method_eleBlade"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 179</div>
         <code>                    <abbr title="Jenssegers\Blade\Blade">Blade</abbr>
     <strong>eleBlade</strong>()
         </code>
@@ -1166,6 +1264,8 @@
             
     
 
+                    <div class="method-description">
+                                    <p>Return Blade instance</p>                                                </div>
                 <div class="tags">
             
                             <h4>Return Value</h4>
@@ -1185,7 +1285,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaView">
-        <div class="location">in <a href="../../Onspli/Eladmin/Module.html#method_elaView"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 155</div>
+        <div class="location">in <a href="../../Onspli/Eladmin/Module.html#method_elaView"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 187</div>
         <code>final                    string
     <strong>elaView</strong>(string $name, array $args = [])
         </code>
@@ -1194,6 +1294,8 @@
             
     
 
+                    <div class="method-description">
+                                    <p>Return rendered view.</p>                                                </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
@@ -1228,7 +1330,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaFile">
-        <div class="location">in <a href="../../Onspli/Eladmin/Module.html#method_elaFile"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 162</div>
+        <div class="location">in <a href="../../Onspli/Eladmin/Module.html#method_elaFile"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 196</div>
         <code>                    void
     <strong>elaFile</strong>($path)
         </code>
@@ -1237,6 +1339,8 @@
             
     
 
+                    <div class="method-description">
+                                    <p>Determinate asset content-type and print it.</p>                                                </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
@@ -1266,7 +1370,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location">at         line 57</div>
+        <div class="location">at         line 88</div>
         <code>final                    
     <strong>__construct</strong>()
         </code>
@@ -1287,7 +1391,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_run">
-        <div class="location">at         line 71</div>
+        <div class="location">at         line 102</div>
         <code>final                    void
     <strong>run</strong>()
         </code>
@@ -1317,7 +1421,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_runNoCatch">
-        <div class="location">at         line 96</div>
+        <div class="location">at         line 127</div>
         <code>final                    void
     <strong>runNoCatch</strong>()
         </code>
@@ -1347,7 +1451,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_title">
-        <div class="location">at         line 199</div>
+        <div class="location">at         line 230</div>
         <code>                    string
     <strong>title</strong>()
         </code>
@@ -1377,7 +1481,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_version">
-        <div class="location">at         line 206</div>
+        <div class="location">at         line 237</div>
         <code>final                    string
     <strong>version</strong>()
         </code>
@@ -1407,7 +1511,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_username">
-        <div class="location">at         line 213</div>
+        <div class="location">at         line 244</div>
         <code>final                    string|null
     <strong>username</strong>()
         </code>
@@ -1437,7 +1541,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_user">
-        <div class="location">at         line 220</div>
+        <div class="location">at         line 251</div>
         <code>final                    <abbr title="Onspli\Eladmin\Onspli\Eladmin\Auth\AuthInterface">AuthInterface</abbr>|null
     <strong>user</strong>()
         </code>
@@ -1467,7 +1571,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_actionkey">
-        <div class="location">at         line 234</div>
+        <div class="location">at         line 265</div>
         <code>final                    string|null
     <strong>actionkey</strong>()
         </code>
@@ -1497,7 +1601,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_modulekey">
-        <div class="location">at         line 245</div>
+        <div class="location">at         line 276</div>
         <code>final                    string|null
     <strong>modulekey</strong>()
         </code>
@@ -1527,7 +1631,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_CSRFToken">
-        <div class="location">at         line 255</div>
+        <div class="location">at         line 286</div>
         <code>final                    string
     <strong>CSRFToken</strong>()
         </code>
@@ -1557,7 +1661,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_request">
-        <div class="location">at         line 271</div>
+        <div class="location">at         line 302</div>
         <code>final                    string
     <strong>request</strong>($module, string|null $action = null, array $args = [])
         </code>
@@ -1607,7 +1711,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_asset">
-        <div class="location">at         line 284</div>
+        <div class="location">at         line 315</div>
         <code>final                    string
     <strong>asset</strong>($module, string $path, string|null $version = null)
         </code>
@@ -1656,8 +1760,38 @@
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_assetpath">
+        <div class="location">at         line 322</div>
+        <code>                private    string|null
+    <strong>assetpath</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Return requested asset path, null if no asset requested</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string|null</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_module">
-        <div class="location">at         line 315</div>
+        <div class="location">at         line 346</div>
         <code>final                    object|null
     <strong>module</strong>(string|null $elakey = null)
         </code>
@@ -1696,8 +1830,76 @@
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_firstAuthorizedModuleKey">
+        <div class="location">at         line 374</div>
+        <code>                private    string
+    <strong>firstAuthorizedModuleKey</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>return first authorized module key</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_moduleToElakey">
+        <div class="location">at         line 383</div>
+        <code>        static        private    string
+    <strong>moduleToElakey</strong>($module)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$module</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_auth">
-        <div class="location">at         line 363</div>
+        <div class="location">at         line 394</div>
         <code>final                    bool
     <strong>auth</strong>($module, string|null $action = null)
         </code>
@@ -1742,7 +1944,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_blade">
-        <div class="location">at         line 376</div>
+        <div class="location">at         line 407</div>
         <code>                    <abbr title="Jenssegers\Blade\Blade">Blade</abbr>
     <strong>blade</strong>(array $views = [])
         </code>
@@ -1781,8 +1983,48 @@
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_views">
+        <div class="location">at         line 417</div>
+        <code>                private    array
+    <strong>views</strong>(array $views = [])
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Extends array of directories of views and assets</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$views</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_view">
-        <div class="location">at         line 400</div>
+        <div class="location">at         line 431</div>
         <code>final                    string
     <strong>view</strong>(string $template, array $args = [], <abbr title="Jenssegers\Blade\Blade">Blade</abbr>|null $blade = null)
         </code>
@@ -1832,8 +2074,8 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_accountFields">
-        <div class="location">at         line 406</div>
-        <code>final                    
+        <div class="location">at         line 437</div>
+        <code>final                    array|null
     <strong>accountFields</strong>()
         </code>
     </h3>
@@ -1843,6 +2085,15 @@
 
                 <div class="tags">
             
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array|null</td>
+            <td></td>
+        </tr>
+    </table>
+
             
             
                     </div>
@@ -1851,7 +2102,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_modules">
-        <div class="location">at         line 413</div>
+        <div class="location">at         line 444</div>
         <code>final                    array
     <strong>modules</strong>()
         </code>
@@ -1881,7 +2132,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_isModule">
-        <div class="location">at         line 421</div>
+        <div class="location">at         line 452</div>
         <code>final        static            bool
     <strong>isModule</strong>($class)
         </code>
@@ -1921,7 +2172,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_isAjaxRequest">
-        <div class="location">at         line 428</div>
+        <div class="location">at         line 459</div>
         <code>final        static            bool
     <strong>isAjaxRequest</strong>()
         </code>
@@ -1951,7 +2202,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_redirect">
-        <div class="location">at         line 435</div>
+        <div class="location">at         line 466</div>
         <code>final        static            void
     <strong>redirect</strong>(string $url = &#039;.&#039;)
         </code>
@@ -1990,8 +2241,38 @@
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_CSRFAuth">
+        <div class="location">at         line 475</div>
+        <code>final                private    void
+    <strong>CSRFAuth</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Check if CSRF token is valid</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_elaActionAccount">
-        <div class="location">at         line 450</div>
+        <div class="location">at         line 481</div>
         <code>final                    
     <strong>elaActionAccount</strong>()
         </code>
@@ -2010,7 +2291,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaActionAccountForm">
-        <div class="location">at         line 454</div>
+        <div class="location">at         line 485</div>
         <code>final                    
     <strong>elaActionAccountForm</strong>()
         </code>
@@ -2029,7 +2310,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_normalizeActionName">
-        <div class="location">at         line 461</div>
+        <div class="location">at         line 492</div>
         <code>final        static            string
     <strong>normalizeActionName</strong>(string $action)
         </code>
@@ -2069,8 +2350,8 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_log">
-        <div class="location">at         line 468</div>
-        <code>final                    object
+        <div class="location">at         line 499</div>
+        <code>final                    <abbr title="Monolog\Logger">Logger</abbr>
     <strong>log</strong>()
         </code>
     </h3>
@@ -2086,7 +2367,295 @@
 
                     <table class="table table-condensed">
         <tr>
-            <td>object</td>
+            <td><abbr title="Monolog\Logger">Logger</abbr></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_initLocalization">
+        <div class="location">at         line 503</div>
+        <code>                private    void
+    <strong>initLocalization</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_initSessions">
+        <div class="location">at         line 518</div>
+        <code>                private    void
+    <strong>initSessions</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_initCache">
+        <div class="location">at         line 526</div>
+        <code>                private    void
+    <strong>initCache</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_initAuthorization">
+        <div class="location">at         line 539</div>
+        <code>                private    void
+    <strong>initAuthorization</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_initAllModules">
+        <div class="location">at         line 552</div>
+        <code>                private    void
+    <strong>initAllModules</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_initMonolog">
+        <div class="location">at         line 562</div>
+        <code>                private    void
+    <strong>initMonolog</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaOutText">
+        <div class="location">at         line 579</div>
+        <code>final        static            void
+    <strong>elaOutText</strong>(string|null $str = null)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Convinient method for plain text output. Sets HTTP header text/plain and echo $str.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string|null</td>
+                <td>$str</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaOutHtml">
+        <div class="location">at         line 588</div>
+        <code>final        static            void
+    <strong>elaOutHtml</strong>(string|null $str = null)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Convinient method for html output. Sets HTTP header text/html and echo $str.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string|null</td>
+                <td>$str</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaOutJson">
+        <div class="location">at         line 597</div>
+        <code>final        static            void
+    <strong>elaOutJson</strong>(array|null $json = null)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Convinient method for json output. Sets HTTP header application/json and echo serialized $json.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array|null</td>
+                <td>$json</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
             <td></td>
         </tr>
     </table>

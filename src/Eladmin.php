@@ -4,51 +4,82 @@ namespace Onspli\Eladmin;
 
 use \Jenssegers\Blade\Blade;
 
+/**
+* Eladmin core class.
+*/
 class Eladmin {
 
 // Eladmin core is itself a module
 use Module;
 
-// override to register admin modules
+/**
+* override to register admin modules
+*/
 protected $modules = [];
 
-// override to set administration title
+/**
+* override to set administration title
+*/
 protected $title = "Eladmin";
 
-// override to set language
+/**
+* override to set language
+*/
 protected $lang = "en_US";
 
-// override to use advanced authorization, set to null to disable authorization completely
+/**
+* override to use advanced authorization, set to null to disable authorization completely
+*/
 protected $auth = Auth\Password::class;
 
-// override to set Blade cache directory
+/**
+* override to set Blade cache directory
+*/
 protected $cache = __DIR__ . '/../cache';
 
-// override to extend blade views directory
+/**
+* override to extend blade views directory
+*/
 protected $views = null;
 
-// override to set monolog report level, null disables logging
+/**
+* override to set monolog report level, null disables logging
+*/
 protected $logLevel = \Monolog\Logger::DEBUG;
 
-// override to set monolog log file
+/**
+* override to set monolog log file
+*/
 protected $logFile = __DIR__ . '/../mono.log';
 
-// modules instances
+/**
+* modules instances
+*/
 private $imodules = [];
 
-// authorization instance
+/**
+* authorization instance
+*/
 private $iauth = null;
 
-// gettext translator
+/**
+* gettext translator
+*/
 private $t;
 
-// monolog Logger
+/**
+* monolog Logger
+*/
 private $log;
 
-// requested action
+/**
+* requested action key
+*/
 private $actionkey = null;
 
-// requested module
+/**
+* requested module elakey
+*/
 private $modulekey = null;
 
 /**
@@ -403,7 +434,7 @@ final public function view(string $template, array $args = [], ?Blade $blade = n
   return $blade->make($template, array_merge($args, ['eladmin' => $this]) )->render();
 }
 
-final public function accountFields() {
+final public function accountFields() : ?array {
   return $this->iauth ? $this->iauth->elaAccountFields() : null;
 }
 
@@ -465,7 +496,7 @@ final static public function normalizeActionName(string $action) : string {
 /**
 * monolog Logger
 */
-final public function log() : object {
+final public function log() : \Monolog\Logger {
   return $this->log;
 }
 
@@ -540,6 +571,33 @@ private function initMonolog() : void {
 */
 final public function elaTitle() : string {
   return $this->title();
+}
+
+/**
+* Convinient method for plain text output. Sets HTTP header text/plain and echo $str.
+*/
+final static public function elaOutText(?string $str = null) : void {
+  Header('Content-type: text/plain');
+  if($str !== null)
+    echo $str;
+}
+
+/**
+* Convinient method for html output. Sets HTTP header text/html and echo $str.
+*/
+final static public function elaOutHtml(?string $str = null) : void {
+  Header('Content-type: text/html');
+  if($str !== null)
+    echo $str;
+}
+
+/**
+* Convinient method for json output. Sets HTTP header application/json and echo serialized $json.
+*/
+final static public function elaOutJson(?array $json = null) : void {
+  Header('Content-type: application/json');
+  if($json !== null)
+    echo json_encode($json, JSON_UNESCAPED_UNICODE);
 }
 
 }

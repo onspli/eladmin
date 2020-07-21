@@ -91,16 +91,88 @@
 We can crate and access children just like they were properties
 of parent. We can set properties of children using function-call syntax.</p>
 
-<p>Example:
-// create chainset with parent 'columns', child 'name' with
+<p>Example:</p>
+
+<pre><code>// create chainset with parent 'columns', child 'name' with
 // properties value = 'Ondrej' and bg = '#555', and
 // child 'modified' with property timestamp = 'now'
 $columns = new Chainset;
-$columns->name->value('Ondrej')->bg('#555');
-$columns->modified->timestamp('now');</p>                    </div>
+$columns-&gt;name-&gt;value('Ondrej')-&gt;bg('#555');
+$columns-&gt;modified-&gt;timestamp('now');
+</code></pre>
+</p>                    </div>
     
     
     
+            <h2>Properties</h2>
+
+            <table class="table table-condensed">
+                    <tr>
+                <td class="type" id="property_position">
+                                                            private                    
+                </td>
+                <td>$position</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_first">
+                                                            private                    
+                </td>
+                <td>$first</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_last">
+                                                            private                    
+                </td>
+                <td>$last</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_children">
+                                                            private                    
+                </td>
+                <td>$children</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_parent">
+                                                            private                    
+                </td>
+                <td>$parent</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_next">
+                                                            private                    
+                </td>
+                <td>$next</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_prev">
+                                                            private                    
+                </td>
+                <td>$prev</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_key">
+                                                            private                    
+                </td>
+                <td>$key</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+            </table>
+
     
             <h2>Methods</h2>
 
@@ -377,7 +449,7 @@ $columns->modified->timestamp('now');</p>                    </div>
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___isset">
-        <div class="location">at         line 27</div>
+        <div class="location">at         line 29</div>
         <code>final                    
     <strong>__isset</strong>($key)
         </code>
@@ -406,7 +478,7 @@ $columns->modified->timestamp('now');</p>                    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method__cut_child">
-        <div class="location">at         line 35</div>
+        <div class="location">at         line 37</div>
         <code>final                    
     <strong>_cut_child</strong>($key)
         </code>
@@ -435,7 +507,7 @@ $columns->modified->timestamp('now');</p>                    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method___unset">
-        <div class="location">at         line 57</div>
+        <div class="location">at         line 59</div>
         <code>final                    
     <strong>__unset</strong>($key)
         </code>
@@ -464,7 +536,7 @@ $columns->modified->timestamp('now');</p>                    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method___get">
-        <div class="location">at         line 65</div>
+        <div class="location">at         line 67</div>
         <code>final                    
     <strong>__get</strong>($key)
         </code>
@@ -493,7 +565,7 @@ $columns->modified->timestamp('now');</p>                    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method__set_first">
-        <div class="location">at         line 90</div>
+        <div class="location">at         line 92</div>
         <code>final                    
     <strong>_set_first</strong>($key)
         </code>
@@ -522,7 +594,7 @@ $columns->modified->timestamp('now');</p>                    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method__get_first">
-        <div class="location">at         line 94</div>
+        <div class="location">at         line 96</div>
         <code>final                    
     <strong>_get_first</strong>()
         </code>
@@ -541,7 +613,7 @@ $columns->modified->timestamp('now');</p>                    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method__set_last">
-        <div class="location">at         line 98</div>
+        <div class="location">at         line 100</div>
         <code>final                    
     <strong>_set_last</strong>($key)
         </code>
@@ -570,7 +642,7 @@ $columns->modified->timestamp('now');</p>                    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method__get_last">
-        <div class="location">at         line 102</div>
+        <div class="location">at         line 104</div>
         <code>final                    
     <strong>_get_last</strong>()
         </code>
@@ -589,7 +661,7 @@ $columns->modified->timestamp('now');</p>                    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_current">
-        <div class="location">at         line 106</div>
+        <div class="location">at         line 108</div>
         <code>final                    
     <strong>current</strong>()
         </code>
@@ -608,7 +680,7 @@ $columns->modified->timestamp('now');</p>                    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_key">
-        <div class="location">at         line 111</div>
+        <div class="location">at         line 113</div>
         <code>final                    
     <strong>key</strong>()
         </code>
@@ -627,7 +699,7 @@ $columns->modified->timestamp('now');</p>                    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_next">
-        <div class="location">at         line 116</div>
+        <div class="location">at         line 118</div>
         <code>final                    void
     <strong>next</strong>()
         </code>
@@ -655,7 +727,7 @@ $columns->modified->timestamp('now');</p>                    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_rewind">
-        <div class="location">at         line 124</div>
+        <div class="location">at         line 126</div>
         <code>final                    void
     <strong>rewind</strong>()
         </code>
@@ -683,7 +755,7 @@ $columns->modified->timestamp('now');</p>                    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_valid">
-        <div class="location">at         line 129</div>
+        <div class="location">at         line 131</div>
         <code>final                    bool
     <strong>valid</strong>()
         </code>
@@ -711,7 +783,7 @@ $columns->modified->timestamp('now');</p>                    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method___call">
-        <div class="location">at         line 140</div>
+        <div class="location">at         line 142</div>
         <code>final                    
     <strong>__call</strong>(string $name, array $arguments)
         </code>
@@ -745,7 +817,7 @@ $columns->modified->timestamp('now');</p>                    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method__set_key">
-        <div class="location">at         line 149</div>
+        <div class="location">at         line 151</div>
         <code>final                    
     <strong>_set_key</strong>($key)
         </code>
@@ -774,7 +846,7 @@ $columns->modified->timestamp('now');</p>                    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method__get_key">
-        <div class="location">at         line 153</div>
+        <div class="location">at         line 155</div>
         <code>final                    
     <strong>_get_key</strong>()
         </code>
@@ -793,7 +865,7 @@ $columns->modified->timestamp('now');</p>                    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method__set_next">
-        <div class="location">at         line 157</div>
+        <div class="location">at         line 159</div>
         <code>final                    
     <strong>_set_next</strong>($key)
         </code>
@@ -822,7 +894,7 @@ $columns->modified->timestamp('now');</p>                    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method__get_next">
-        <div class="location">at         line 161</div>
+        <div class="location">at         line 163</div>
         <code>final                    
     <strong>_get_next</strong>()
         </code>
@@ -841,7 +913,7 @@ $columns->modified->timestamp('now');</p>                    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method__set_prev">
-        <div class="location">at         line 165</div>
+        <div class="location">at         line 167</div>
         <code>final                    
     <strong>_set_prev</strong>($key)
         </code>
@@ -870,7 +942,7 @@ $columns->modified->timestamp('now');</p>                    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method__get_prev">
-        <div class="location">at         line 169</div>
+        <div class="location">at         line 171</div>
         <code>final                    
     <strong>_get_prev</strong>()
         </code>
@@ -889,7 +961,7 @@ $columns->modified->timestamp('now');</p>                    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method__set_parent">
-        <div class="location">at         line 173</div>
+        <div class="location">at         line 175</div>
         <code>final                    
     <strong>_set_parent</strong>($obj)
         </code>
@@ -918,7 +990,7 @@ $columns->modified->timestamp('now');</p>                    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method__get_parent">
-        <div class="location">at         line 177</div>
+        <div class="location">at         line 179</div>
         <code>final                    
     <strong>_get_parent</strong>()
         </code>
@@ -937,7 +1009,7 @@ $columns->modified->timestamp('now');</p>                    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_before">
-        <div class="location">at         line 181</div>
+        <div class="location">at         line 183</div>
         <code>final                    
     <strong>before</strong>($target = null)
         </code>
@@ -966,7 +1038,7 @@ $columns->modified->timestamp('now');</p>                    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_after">
-        <div class="location">at         line 206</div>
+        <div class="location">at         line 208</div>
         <code>final                    
     <strong>after</strong>($target = null)
         </code>

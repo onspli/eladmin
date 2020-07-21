@@ -9,12 +9,14 @@ namespace Onspli\Eladmin;
 * of parent. We can set properties of children using function-call syntax.
 *
 * Example:
+* ```
 * // create chainset with parent 'columns', child 'name' with
 * // properties value = 'Ondrej' and bg = '#555', and
 * // child 'modified' with property timestamp = 'now'
 * $columns = new Chainset;
 * $columns->name->value('Ondrej')->bg('#555');
 * $columns->modified->timestamp('now');
+* ```
 */
 class Chainset implements \Iterator {
 
