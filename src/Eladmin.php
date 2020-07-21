@@ -51,7 +51,9 @@ private $actionkey = null;
 // requested module
 private $modulekey = null;
 
-// Initialize Eladmin.
+/**
+* Initialize Eladmin.
+*/
 final public function __construct() {
   $this->initMonolog();
   $this->log->info('Construct eladmin.', $_GET);
@@ -63,7 +65,9 @@ final public function __construct() {
   $this->elaInit($this, $this->elakey());
 }
 
-// Run Eladmin. It's just a wrapper of method runNoCatch catching exceptions.
+/**
+* Run Eladmin. It's just a wrapper of method runNoCatch catching exceptions.
+*/
 final public function run() : void {
   try {
     $this->runNoCatch();
@@ -86,7 +90,9 @@ final public function run() : void {
   }
 }
 
-// Run Eladmin. The main function which processes the requests.
+/**
+* Run Eladmin. The main function which processes the requests.
+*/
 final public function runNoCatch() : void {
 
   $asset = $this->assetpath();
@@ -187,32 +193,44 @@ final public function runNoCatch() : void {
   call_user_func([$instanceForAction, $method]);
 }
 
-// Return administration title to show it in templates.
+/**
+* Return administration title to show it in templates.
+*/
 public function title() : string {
   return $this->title;
 }
 
-// Get eladmin version.
+/**
+* Get eladmin version.
+*/
 final public function version() : string {
   return "v0.2.2-alpha";
 }
 
-// Returns username to show it in templates. Returns null if authorization is off.
+/**
+* Returns username to show it in templates. Returns null if authorization is off.
+*/
 final public function username() : ?string {
   return $this->iauth ? $this->iauth->elaUserName() : null;
 }
 
-// Return authorization instance.
-final public function user() : ?object {
+/**
+* Return authorization instance.
+*/
+final public function user() : ?Auth\AuthInterface {
   return $this->iauth;
 }
 
-// Eladmins elakey - empty string
+/**
+* Eladmins elakey - empty string
+*/
 final public function elakey() : string {
   return '';
 }
 
-// Return requested action key, null if no action requested
+/**
+* Return requested action key, null if no action requested
+*/
 final public function actionkey() : ?string {
   if ($this->actionkey !== null)
     return $this->actionkey;
@@ -221,7 +239,9 @@ final public function actionkey() : ?string {
   return $this->actionkey;
 }
 
-// Return requested module key, null if no module requested
+/**
+* Return requested module key, null if no module requested
+*/
 final public function modulekey() : ?string {
   if ($this->modulekey !== null)
     return $this->modulekey;
@@ -229,7 +249,9 @@ final public function modulekey() : ?string {
   return $this->modulekey;
 }
 
-// Generate CSRF token
+/**
+* Generate CSRF token
+*/
 final public function CSRFToken() : string {
   $token = $_SESSION['elacsrftoken'] ?? null;
   if (!$token) {
@@ -243,7 +265,9 @@ final public function CSRFToken() : string {
   return $token;
 }
 
-// Create request url.
+/**
+* Create request url.
+*/
 final public function request($module, ?string $action = null, array $args = []) : string {
   $data['elamodule'] = static::moduleToElakey($module);
   if ($action !== null) {
@@ -254,12 +278,16 @@ final public function request($module, ?string $action = null, array $args = [])
   return '?' . http_build_query($data);
 }
 
-// Create asset url, file path relative to /assets directory. Default $version = time()
+/**
+* Create asset url, file path relative to /assets directory. Default $version = time()
+*/
 final public function asset($module, string $path, ?string $version = null) : string {
   return $this->request($module, null, ['elaasset' => $path, 'ver' => $version ?? time()]);
 }
 
-// Return requested asset path, null if no asset requested
+/**
+* Return requested asset path, null if no asset requested
+*/
 private function assetpath() : ?string {
   $path = $_GET['elaasset'] ?? null;
   if ($path === null)
@@ -281,7 +309,9 @@ private function assetpath() : ?string {
   throw new Exception\BadRequestException('Asset ' . $path . ' not found  for module "' . $module->elakey() . '".');
 }
 
-// Return module instance or null if not authorized. Default $key = modulekey()
+/**
+* Return module instance or null if not authorized. Default $key = modulekey()
+*/
 final public function module(?string $elakey = null) : ?object {
   $elakey = $elakey ?? $this->modulekey();
   if ($elakey === null)
@@ -307,7 +337,9 @@ final public function module(?string $elakey = null) : ?object {
   return $this->imodules[$elakey];
 }
 
-// return first authorized module key
+/**
+* return first authorized module key
+*/
 private function firstAuthorizedModuleKey() : string {
   $this->initAllModules();
   foreach ($this->modules as $elakey => $mod)
@@ -325,7 +357,9 @@ private static function moduleToElakey($module) : string {
   return $module->elakey();
 }
 
-// Returns true if user is authorized.
+/**
+* Returns true if user is authorized.
+*/
 final public function auth($module, ?string $action = null) : bool {
   if ($this->auth === null)
     return true; // authorization off
@@ -336,7 +370,9 @@ final public function auth($module, ?string $action = null) : bool {
   return $this->iauth->elaAuthorize($module->elaRoles($action));
 }
 
-// Return an instance of Blade.
+/**
+* Return an instance of Blade.
+*/
 public function blade(array $views = []) : Blade {
   $views = $this->views($views);
   $this->log->debug('init Blade', ['views' => $views]);
@@ -344,7 +380,9 @@ public function blade(array $views = []) : Blade {
   return new Blade($views, $this->cache);
 }
 
-// Extends array of directories of views and assets
+/**
+* Extends array of directories of views and assets
+*/
 private function views(array $views = []) : array {
   if (is_array($this->views)) {
     $extViews = $this->views;
@@ -356,7 +394,9 @@ private function views(array $views = []) : array {
   return array_merge($extViews, $views, [__DIR__ . '/../views']);
 }
 
-// Return rendered view. Passes $args and instance of eladmin as $eladmin to the template.
+/**
+* Return rendered view. Passes $args and instance of eladmin as $eladmin to the template.
+*/
 final public function view(string $template, array $args = [], ?Blade $blade = null) : string {
   if ($blade === null)
     $blade = $this->blade();
@@ -367,30 +407,40 @@ final public function accountFields() {
   return $this->iauth ? $this->iauth->elaAccountFields() : null;
 }
 
-// Return instances of all authorized modules.
+/**
+* Return instances of all authorized modules.
+*/
 final public function modules() : array {
   $this->initAllModules();
   return $this->imodules;
 }
 
-// Check if class is eladmin module.
+/**
+* Check if class is eladmin module.
+*/
 final static public function isModule($class) : bool {
   return method_exists($class, 'elakey');
 }
 
-// Check if eladmin was run with ajax request.
+/**
+* Check if eladmin was run with ajax request.
+*/
 final static public function isAjaxRequest() : bool {
   return !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
 }
 
-// Redirect (or exit if ajax request). Default url = home
+/**
+* Redirect (or exit if ajax request). Default url = home
+*/
 final static public function redirect(string $url = '.') : void {
   if (!static::isAjaxRequest())
     header('Location: '.$url);
   exit;
 }
 
-// Check if CSRF token is valid
+/**
+* Check if CSRF token is valid
+*/
 final private function CSRFAuth() : void {
   if ( ($_GET['elatoken'] ?? null) !== $this->CSRFToken()) {
     throw new Exception\UnauthorizedException(__("CSRF token not valid! Try reloading page."));
@@ -405,12 +455,16 @@ final public function elaActionAccountForm() {
   echo $this->view('eladmin.accountForm');
 }
 
-// We want action keys to be case insensitive.
+/**
+* We want action keys to be case insensitive.
+*/
 final static public function normalizeActionName(string $action) : string {
   return strtolower($action);
 }
 
-// monolog Logger
+/**
+* monolog Logger
+*/
 final public function log() : object {
   return $this->log;
 }
@@ -481,7 +535,9 @@ private function initMonolog() : void {
   }
 }
 
-// override default module elaTitle method
+/**
+* override default module elaTitle method
+*/
 final public function elaTitle() : string {
   return $this->title();
 }
