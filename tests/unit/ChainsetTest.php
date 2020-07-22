@@ -98,12 +98,4 @@ final class ChainsetTest extends TestCase
       $cs->word12->val('!')->before('word1');
     }
 
-    public function testPerformance() : void {
-      $time0 = microtime(true);
-      for($i=0; $i<100000; $i++)
-        $this->performanceStep();
-      $duration = microtime(true) - $time0;
-      $this->assertLessThan(3, $duration);
-
-    }
 }
