@@ -90,6 +90,7 @@ class Password implements AuthInterface
 
     $this->passwordHash = password_hash($newpassword, PASSWORD_DEFAULT);
     file_put_contents($this->passwordFile, $this->passwordHash);
+    echo(__('Password changed.'));
   }
 
 }

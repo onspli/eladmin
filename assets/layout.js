@@ -1,6 +1,13 @@
-function elaRequest(action, module, args, getargs) {
-  if (module === null || module === undefined)
+/**
+* POST request eladmin action
+*/
+function elaRequest(module, action, postargs, getargs) {
+  if (module === null || module === undefined) {
     throw 'You have to specify module!';
+  }
+  if (action === null || module === undefined) {
+    throw 'You have to specify action!';
+  }
   return $.ajax({
       method : 'POST',
       url : '?' + $.param($.extend({}, {
@@ -8,126 +15,156 @@ function elaRequest(action, module, args, getargs) {
                             elaaction : action,
                             elatoken : _csrftoken
                           }, getargs)),
-      data : args
+      data : postargs
   })
   .fail(function(response) {
     consecutive.point('request_fail', response);
-    if (response.status == 401)
-      location.reload();
     toastr.error(response.responseText);
+    if (response.status == 401) {
+      setTimeout(function() {
+        location.reload();
+      }, 3000);
+    }
+  })
+  .done(function(data, status, xhr) {
+    var contentType = xhr.getResponseHeader("content-type") || "";
+    console.debug('elaRequest response content type: ' + contentType);
+    if (!data) {
+      return;
+    }
+    if (contentType.indexOf('text/html') > -1) {
+      try {
+        var html = $(data);
+        if(html.hasClass('modal')){
+          modalOpen(html);
+        } else {
+          toastr.success(data);
+        }
+      } catch(e) {
+        toastr.success(data);
+      }
+    } else if (contentType.indexOf('text/plain') > -1) {
+        toastr.success(data);
+    }
+    consecutive.point('request_ok', data);
   });
 }
 
-$(function(){
-
-// toggle menu side bar
+/**
+* toggle menu side bar
+*/
 $(document).on('click', "#menu-toggle", function(e) {
   e.preventDefault();
   $("#wrapper").toggleClass("toggled");
 });
 
+/**
+* tooltips on mouse hover
+*/
 $('body').tooltip({selector: '[data-toggle="tooltip"]', trigger : 'hover'});
 
-function isModalOpen()
-{
+/**
+* Check if modal window is open
+*/
+function isModalOpen() {
   return $('#dynamic>.modal').length != 0;
 }
 
-function modalClose()
-{
-  if (!isModalOpen()){
+/**
+* close modal window
+*/
+function modalClose() {
+  if (!isModalOpen()) {
     return;
   }
   $('#dynamic>.modal').modal('hide');
   $('#dynamic').html('');
 }
 
-function modalOpen(html)
-{
-  if (isModalOpen()){
-    throw 'Cannot open modal. Modal is open already.';
+/**
+* Open or reload modal
+*/
+function modalOpen(html) {
+  if (isModalOpen()) {
+    $('#dynamic').html(html);
+    return;
   }
   $('#dynamic').html(html);
   html.modal();
   history.pushState({data:'modal'}, '', '#modal');
 }
 
-// history.back event
+/**
+* history.back event
+*/
 window.onpopstate = function(e){
   modalClose();
   consecutive.point('popstate');
 };
 
-// on modal close event
+/**
+* on modal close event
+*/
 $("#dynamic").on("hidden.bs.modal", function () {
   var type = window.location.hash.substr(1);
-  if(type == 'modal') history.back();
+  if (type == 'modal') {
+    history.back();
+  }
 });
 
+/**
+* confirm prompt
+*/
 $(document).on('click', '*[data-elaconfirm]', function(e){
   var confirm = window.confirm($(this).data('elaconfirm'));
-  if(!confirm){
+  if (!confirm) {
     e.preventDefault();
     e.stopImmediatePropagation();
   }
 });
 
+/**
+* Create request according to data-ela* properties of element
+* data-elaaction
+* data-elamodule
+* data-elaarg ... postargs
+* data-ela* ... getargs
+*/
+function elaElementRequest(element, postargs) {
+  var data = $(element).data();
+  var action = data['elaaction'];
+  var module = data['elamodule'];
+  if (postargs === undefined)
+    postargs = {};
+  var getargs = {};
+  $.each(data, function(key,val) {
+    if (!key.startsWith('ela') || key.startsWith('elaaction') || key.startsWith('elamodule'))  {
+      return;
+    }
+    if (key.startsWith('elaarg')) {
+      postargs[key.substr(6)] = val;
+      return;
+    }
+    getargs[key] = val;
+  });
+  return elaRequest(module, action, postargs, getargs);
+}
 
+/**
+* Eladmin action
+*/
 $(document).on('click', '*:not(form)[data-elaaction]', function(e){
   e.preventDefault();
-
-  var el = this;
-  var data = $(this).data();
-  var args = {};
-  $.each(data, function(key,val){
-    if(!key.startsWith('elaarg')) return;
-    args[key.substr(6)] = val;
-  });
-
-  elaRequest($(this).data('elaaction'), $(this).data('elamodule'), args, {elaid:$(this).data('elaid')})
-  .done(function(data, status, xhr){
-
-    var eladone = new Function('data', $(el).data('eladone')+'; if(data) toastr.success(data);');
-    eladone(data);
-
-    var ct = xhr.getResponseHeader("content-type") || "";
-    // HTML response
-    if (ct.indexOf('html') > -1) {
-      var html = $(data);
-      if(html.hasClass('modal')){
-        modalOpen(html);
-      }
-    }
-    consecutive.point('action_ok', data);
-  });
+  elaElementRequest(this)
 });
 
-$(document).on('submit', 'form#modal-form', function(e){
+/**
+* Eladmin action - modal forms
+*/
+$(document).on('submit', 'form[data-elaaction]', function(e){
   e.preventDefault();
-  var form = $(this);
-  elaRequest(form.data('elaaction'), form.data('elamodule'), form.serialize(), {elaid: form.data('elaid')})
-  .done(function(data){
-    var eladone = new Function('data', form.data('eladone')+';  if(data) toastr.success(data);');
-    eladone(data);
+  elaElementRequest(this, $(this).serialize())
+  .done(function(data) {
     modalClose();
-    consecutive.point('form_ok', data);
   });
-});
-
-$(document).on('click', 'form *[data-elaupdateaction]', function(e){
-  e.preventDefault();
-  var form = $(this).closest('form');
-  var el = $(this);
-
-  elaRequest($(this).data('elaupdateaction'), form.data('elamodule'), form.serialize(), {elaid: $(this).data('elaid'), elaupdate: 1})
-  .done(function(response){
-    var eladone = new Function('data', el.data('eladone')+';  if(data) toastr.success(data);');
-    eladone(response);
-  }).always(function(){
-    elaRequest('putForm', form.data('elamodule'), {}, {elaid : form.data('elaid') }).done(function(html){
-      $('#dynamic .modal-dialog').html($(html).find('.modal-dialog'));
-    });
-  });
-});
-
 });

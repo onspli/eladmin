@@ -1,51 +1,65 @@
 <?php
-namespace Onspli\Eladmin\Modules\Eloquent;
-use \Onspli\Eladmin;
+namespace Onspli\Eladmin\Modules\Crud;
 use \Onspli\Eladmin\Module;
 use \Onspli\Eladmin\Exception;
 
 
-trait Crud
-{
+trait Crud {
+
   use Module {
-    Module::elaInit as elaInit_Parent_Module;
+    Module::elaAuth as elaAuth_Module;
+    Module::elaViews as elaViews_Module;
   }
 
-
-  public function elaInit($eladmin, $elakey){
-    $this->elaInit_Parent_Module($eladmin, $elakey);
-    // authorization can be set in elaActions method too
-    $this->elaActions();
-  }
-
+  private $elaRolesFromActionsChainsetAlreadySet = false;
 
   /**
-  * Check if table for the model exists in the database;
+  * Check if user is authorized to do action, or athorized to access module at all.
   */
-  final private function tableExists(){
-    return $this->getSchema()->hasTable($this->getTable());
+  final public function elaAuth(?string $action = null) : bool {
+    if (!$this->elaRolesFromActionsChainsetAlreadySet) {
+      $this->elaRolesFromActionsChainsetAlreadySet = true;
+      $this->elaActions();
+    }
+    return $this->elaAuth_Module($action);
+  }
+
+  public function elaViews() : array {
+    return array_merge([__DIR__ . '/../../../views/modules/crud'], $this->elaViews_Module());
+  }
+
+  public function elaUsesSoftDeletes(){
+    return false;
   }
 
   /**
-  * Get an array of table columns.
+  * Returns an array of columns that cannot be edited from crud by default. (i.e. primary key, automanaged timestamps)
+  */
+  public function elaDisabledColumns(){
+    return [];
+  }
+
+  public function elaVisibleColumns(){
+    $columns = $this->getTableColumns();
+    return $columns;
+  }
+
+
+  /**
+  * Get an array of real table columns data columns stored in database.
   */
   final private function getTableColumns() {
-    return $this->getSchema()->getColumnListing($this->getTable());
+    return ['id', 'name', 'desc'];
   }
 
   /**
-  * Get schema manager.
+  * Default columns chainset.
   */
-  final private function getSchema(){
-    return $this->getConnection()->getSchemaBuilder();
-  }
-
-
-  final private function elaColumnsDef(){
+  private function elaColumnsDef(){
     $visibleColumns = $this->elaVisibleColumns();
     $disabledColumns = $this->elaDisabledColumns();
     $realColumns = $this->getTableColumns();
-    $columns = new Chainset\Column;
+    $columns = new Chainset\Columns;
     foreach($realColumns as $column){
       $columns->$column;
       if(!in_array($column, $visibleColumns))
@@ -63,8 +77,8 @@ trait Crud
   }
 
   final private function elaActionsDef(){
-    $actions = new Chainset\Action;
-    $actions->_set_module($this);
+    $actions = new Chainset\Actions;
+    $actions->setModule($this);
 
     if ($this->elaAuth('restore')){
       $actions->restore->style('success')->icon('<i class="fas fa-recycle"></i>')->title(__('Restore'))->hidden();
@@ -90,7 +104,7 @@ trait Crud
   }
 
   final private function elaFiltersDef(){
-    return new Chainset\Filter;
+    return new Chainset\Filters;
   }
 
   public function elaColumns(){
@@ -116,35 +130,6 @@ trait Crud
     if(!$this->elaAuth('read'))
       throw new Exception\UnauthorizedException();
     echo $this->elaView('putForm', ['row'=>$this]);
-  }
-
-  public function elaUsesSoftDeletes(){
-    return in_array('deleted_at', $this->getTableColumns());
-  }
-
-
-  /**
-  * Returns an array of columns that cannot be edited from crud. (i.e. primary key, automanaged timestamps)
-  */
-  public function elaDisabledColumns(){
-    $columns = [$this->getKeyName()];
-    if($this->elaUsesSoftDeletes())
-      $columns[] = 'deleted_at';
-    if($this->timestamps){
-      $columns[] = static::CREATED_AT;
-      $columns[] = static::UPDATED_AT;
-    }
-    $columns = array_merge($columns, $this->appends);
-    return $columns;
-  }
-
-  public function elaVisibleColumns(){
-
-    $columns = $this->getTableColumns();
-    $columns = array_merge($columns, $this->appends);
-    if($this->visible) $visibleColumns = $this->visible;
-    else $visibleColumns = array_diff($columns, $this->hidden??[]);
-    return $visibleColumns;
   }
 
   private function elaRowValuesArray($row, $elaColumns){
@@ -342,7 +327,7 @@ trait Crud
     $this->elaOutText(__('Entry restored.'));
   }
 
-  public function elaGetActionInstance(){
+  public function elaInstanceForAction(){
     if(!isset($_GET['elaid'])) return $this;
     $entry = new static();
     $action = $this->eladmin->actionkey();
