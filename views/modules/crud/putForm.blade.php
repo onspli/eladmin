@@ -43,7 +43,7 @@
 
 @section('modal-footer')
   @if($module->elaAuth('delete'))
-  <button type="button" class="btn btn-danger mr-3" data-elaaction="delete" data-elamodule="{{ $module->elakey() }}" data-elaid="{{ $row[$module->elaPrimary()] }}" data-eladone="$('#dynamic .modal').modal('hide');" <?php if(!$row->elaUsesSoftDeletes()): ?> data-elaconfirm="{{__('Are you sure?')}}" <?php endif; ?>><i class="fas fa-trash-alt"></i> <span class="d-none d-sm-inline">{{ __('Delete')}}</span></button>
+  <button type="button" class="btn btn-danger mr-3" data-elaaction="delete" data-elamodule="{{ $module->elakey() }}" data-elaid="{{ $row[$module->elaPrimary()] }}" data-eladone="$('#dynamic .modal').modal('hide');" <?php if(!$module->elaUsesSoftDeletes()): ?> data-elaconfirm="{{__('Are you sure?')}}" <?php endif; ?>><i class="fas fa-trash-alt"></i> <span class="d-none d-sm-inline">{{ __('Delete')}}</span></button>
   @endif
   <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="far fa-times-circle"></i> <span class="">{{__('Cancel')}}</span></button>
   @if($module->elaAuth('update'))

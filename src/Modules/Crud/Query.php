@@ -26,7 +26,7 @@ public $sortBy = null;
 /**
 * Sorting direction
 */
-public $direction = DESC;
+public $direction = self::DESC;
 
 /**
 * Page number of results, starting with 1
@@ -50,9 +50,9 @@ public $trash = false;
 
 public function fill(array $q) : void {
   if (isset($q['sort']))
-    $this->sortBy = $q['sort'];
+    $this->sortBy = $q['sort'] ?? null;
   if (isset($q['direction']))
-    $this->direction = ($_POST['direction'] == ASC) ? ASC : DESC;
+    $this->direction = ($_POST['direction'] == self::ASC) ? self::ASC : self::DESC;
   if (isset($q['page']))
     $this->page = $q['page'];
   if (isset($q['resultsperpage']))

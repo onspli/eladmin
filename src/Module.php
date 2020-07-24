@@ -92,14 +92,14 @@ final public function elaAuth(?string $action = null) : bool {
 * Get name of the module.
 */
 public function elaTitle() : string {
-  return $this->elaTitle ?? class_basename(static::class);
+  return property_exists($this, 'elaTitle') ? $this->elaTitle : class_basename(static::class);
 }
 
 /**
 * Get icon of the module.
 */
 public function elaIcon() : string {
-  return $this->elaIcon ?? '<i class="fas fa-puzzle-piece"></i>';
+  return property_exists($this, 'elaIcon') ? $this->elaIcon : '<i class="fas fa-puzzle-piece"></i>';
 }
 
 /**
@@ -122,13 +122,13 @@ final public function elaAsset(string $path, ?string $version = null) : string {
 * Get roles authorized to work with the module, or specific action. Empty array means any role is authorized.
 */
 final public function elaRoles($action = null) : array {
-  if ($action === null)
-    return $this->elaRoles ?? [];
+  if (!property_exists($this, 'elaRoles'))
+    $this->elaRoles = [];
+  if (!property_exists($this, 'elaActionRoles'))
+    $this->elaActionRoles = [];
 
-  if (!isset($this->elaActionRoles)) {
-    $this->elaActionNamesNormalized = true;
-    return [];
-  }
+  if ($action === null)
+    return $this->elaRoles;
 
   if (!$this->elaActionNamesNormalized) {
     $actionRolesCopy = (new \ArrayObject($this->elaActionRoles))->getArrayCopy();
