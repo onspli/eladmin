@@ -100,8 +100,6 @@ protected function elaQuery(Query $query, &$totalResults) : array {
 */
 private function elaColumnsDef() {
   $columns = new Chainset\Columns;
-  $columns->id;
-  $columns->desc;
   return $columns;
 }
 
@@ -154,11 +152,12 @@ public function elaFilters() {
 
 /**
 * Return ID of the row which should be affected by the action.
+* Throws if ID isn't set, unless $allowNull = true.
 */
-protected function elaId() {
-  if (!isset($_GET['elaid']))
+protected function elaId($allowNull = false) {
+  if (!isset($_GET['elaid']) && !$allowNull)
     throw new Exception\BadRequestException(__('Entry not identified.'));
-  return $_GET['elaid'];
+  return $_GET['elaid'] ?? null;
 }
 
 /**
@@ -251,7 +250,7 @@ public function elaActionPostForm(){
 * ACTION. Show form - edit entry.
 */
 public function elaActionPutForm(){
-  if(!$this->elaAuth('read'))
+  if(!$this->elaAuth('update'))
     throw new Exception\UnauthorizedException();
   $this->eladmin->elaOutHtml($this->elaView('putForm', ['row' => $this->elaRead($this->elaId())]));
 }
@@ -285,7 +284,7 @@ public function elaActionRead(){
   $elaColumns = $this->elaColumns();
   $elaActions = $this->elaActions();
   foreach($rows as $row){
-    $result['actions'][] = $this->elaRowActionsArray($row, $elaActions, $trash);
+    $result['actions'][] = $this->elaRowActionsArray($row, $elaActions, $query->trash);
     $result['rows'][] = $this->elaRowValuesArray($row, $elaColumns);
   }
   $result['columns'] = $this->elaColumnsConfigArray($elaColumns);

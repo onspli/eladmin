@@ -15,3 +15,10 @@
 @endif
 
 @endsection
+
+@push('scripts')
+<script>
+var _moduleElakey = '{{ $module->elakey() }}';
+var _msg_nothingFound = '{{ __("Nothing found!") }}';
+</script>
+@endpush

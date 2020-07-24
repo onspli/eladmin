@@ -122,11 +122,12 @@ public function escaped() {
 
 /**
 * Do not show the column in the table.
-* Also ad nonsearchable flag.
+* Also ad nonsearchable and nonsortable flag.
 */
 public function nonlistable() {
   $this->nonlistable = true;
   $this->nonsearchable();
+  $this->nonsortable();
   return $this;
 }
 
@@ -172,9 +173,11 @@ public function sortable() {
 
 /**
 * Hide the column in the edit form.
+* Also sets disabled flag.
 */
 public function noneditable() {
   $this->noneditable = true;
+  $this->disabled();
   return $this;
 }
 
@@ -252,11 +255,12 @@ public function select($options = []) {
 }
 
 /**
-* Shortcut for nonlistable && noneditable
+* Shortcut for nonlistable && noneditable && disabled
 */
 public function hidden() {
   $this->nonlistable();
   $this->noneditable();
+  $this->disabled();
   return $this;
 }
 

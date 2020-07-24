@@ -1,7 +1,7 @@
 
 var crudFilters = {
-  sort: '{{$module->elaOrderBy??$module->getKeyName()}}',
-  direction: '{{$module->elaOrderDirection??"desc"}}',
+  sort: null,
+  direction: null,
   resultsperpage: 10,
   page: 1,
   totalresults: 0,
@@ -140,7 +140,9 @@ function rowFactory(values, actions, columns){
   var bulk_td = $('<td class="text-center"><input class="bulk" type="checkbox" data-elaid="' + values[0] + '"></td>');
   tr.append(bulk_td);
   for(var i=1; i<values.length; i++){
-    var value = values[i].toString();
+    var value = '';
+    if (values[i] !== null && values[i] !== undefined)
+      value = values[i].toString();
     var column = columns[i];
     var td = $('<td></td>');
     if (column.limit && value.length > column.limit){
@@ -184,9 +186,6 @@ var readRequestCount = 0;
 var searchiconHtml = $('.crud-paging .searchicon').html();
 function redrawCrudTable(){
 
-  @if(!$module->elaAuth('read'))
-    return;
-  @endif
   var maxpage = crudFilters.maxpage;
   $('.crud-paging .searchicon').html('<i class="fas fa-sync-alt fa-spin"></i>');
 
@@ -196,8 +195,15 @@ function redrawCrudTable(){
   crudFilters.onlyids = 0;
   (function(currentRequestCount){
 
-    elaRequest('read', '{{$module->elakey()}}', crudFilters)
+    elaRequest(_moduleElakey, 'read', crudFilters)
     .done(function(data){
+      $('.crud-paging .searchicon').html(searchiconHtml);
+
+      if (data.totalresults === undefined) {
+        toastr.error('Cannot read from database.');
+        return;
+      }
+
       if (currentRequestCount < readRequestCount){
         console.debug('Request #'+currentRequestCount+ " skipped");
         return;
@@ -213,10 +219,10 @@ function redrawCrudTable(){
         var tr = rowFactory(values, actions, data.columns);
         tbody.append(tr);
       }
-      $('.crud-paging .searchicon').html(searchiconHtml);
+
       if(crudFilters.maxpage != maxpage) redrawFilters(crudFilters.totalresults==0);
       if(crudFilters.totalresults == 0){
-        tbody.html('<tr><td colspan="1000" class="crud-loading"><i class="fas fa-dove"></i> {{ __('Nothing found!') }} </td></tr>');
+        tbody.html('<tr><td colspan="1000" class="crud-loading"><i class="fas fa-dove"></i> ' + _msg_nothingFound + '</td></tr>');
       }
       $('.results-shown').text(data.results);
       $('.results-total').text(crudFilters.totalresults);
@@ -229,7 +235,6 @@ function redrawCrudTable(){
         return;
       }
       $('.crud-paging .searchicon').html(searchiconHtml);
-      toastr.error(res.responseText);
     });
 
   })(currentRequestCount);
@@ -351,7 +356,7 @@ function doBulkAction(el, ids){
       if (response.status == 401) location.reload();
       toastr.error(response.responseText);
       if (finished >= selected){
-        toastr.success('{!! __('Done. %s items was affected, %s failed.', "' + success +'", "' + failed +'") !!} ');
+        toastr.warning('Done. ' + success + ' items was affected, ' + failed + ' failed.');
         var eladone = new Function('data', $(el).data('eladone')+';');
         eladone(data);
       }
@@ -360,7 +365,7 @@ function doBulkAction(el, ids){
       finished++;
       success++;
       if (finished >= selected){
-        toastr.success('{!! __('Done. %s items was affected, %s failed.', "' + success +'", "' + failed +'") !!} ');
+        toastr.success('Done. ' + success + ' items was affected, ' + failed + ' failed.');
         var eladone = new Function('data', $(el).data('eladone')+';');
         eladone(data);
       }
@@ -372,7 +377,7 @@ function doBulkAction(el, ids){
 $(document).on('click', '*[data-elabulkaction]', function(e){
   e.preventDefault();
 
-  var confirm = window.confirm( $(this).data('bulkconfirm') + ' {!! __('This will affect %s items.', "' + bulkSelectedItemsCount() +'") !!} ');
+  var confirm = window.confirm( $(this).data('bulkconfirm') + ' This will affect ' + bulkSelectedItemsCount() + ' items.');
   if(!confirm){
     return;
   }

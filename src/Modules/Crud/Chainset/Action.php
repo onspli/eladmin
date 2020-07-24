@@ -37,7 +37,7 @@ class Action extends ChainsetChild {
     $action = [
       'action' => $this->getName(),
       'done' => $this->done,
-      'id' => $row->getKey(),
+      'id' => $row[$this->getModule()->elaPrimary()],
       'style' => $this->style,
       'icon' => $this->icon,
       'module' => $this->getModule()->elakey()
