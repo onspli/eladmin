@@ -5,10 +5,10 @@
 @endsection
 
 @section('modal-body')
-  <form id="modal-form" data-elaaction="create" data-elamodule="{{$module->elakey()}}">
+  <form id="modal-form" data-elaaction="create" data-elamodule="{{ $module->elakey() }}">
     @foreach($module->elaColumns() as $column)
       <?php if ($column->noneditable) continue; ?>
-      @component('components.inputs.'.$column->input, ['column'=>$column, 'row'=>$row])
+      @component('components.inputs.'.$column->input, ['column' => $column, 'row' => $row])
       @endcomponent
     @endforeach
   </form>

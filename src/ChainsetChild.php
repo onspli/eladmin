@@ -30,41 +30,44 @@ final public function __call(string $name , array $arguments) {
   return $this;
 }
 
-final public function _setKey($key) {
+final public function _setKey(string $key) : void {
   $this->key = $key;
 }
 
-final public function _getKey(){
+final public function _getKey() : string {
   return $this->key;
 }
 
-final public function _setNext($key){
+final public function _setNext(?string $key) : void {
   $this->next = $key;
 }
 
-final public function _getNext(){
+final public function _getNext() : ?string {
   return $this->next;
 }
 
-final public function _setPrev($key){
+final public function _setPrev(?string $key) : void {
   $this->prev = $key;
 }
 
-final public function _getPrev(){
+final public function _getPrev() : ?string {
   return $this->prev;
 }
 
-final public function _setParent($obj){
+final public function _setParent(ChainsetParent $obj) : void {
   $this->parent = $obj;
 }
 
-final public function _getParent(){
+final public function _getParent() : ChainsetParent {
   return $this->parent;
 }
 
-final public function before($target = null) {
+/**
+* Place child just before $target.
+*/
+final public function before(?string $target = null) : ChainsetChild {
   if ($target == $this->key)
-    return;
+    return $this;
   if ($target !== null && !isset($this->parent->$target))
     throw new \Exception('Target '.$target.' doesn\'t exist.');
   $this->parent->cutChild($this->key);
@@ -85,9 +88,12 @@ final public function before($target = null) {
   return $this;
 }
 
-final public function after($target = null) {
+/**
+* Place child just after $target.
+*/
+final public function after(?string $target = null) : ChainsetChild {
   if ($target == $this->key)
-    return;
+    return $this;
   if ($target !== null && !isset($this->parent->$target))
     throw new \Exception('Target '.$target.' doesn\'t exist.');
   $this->parent->cutChild($this->key);

@@ -1,5 +1,9 @@
 /**
 * POST request eladmin action
+* - Logout when response is HTTP 401
+* - Toaster error on fail
+* - Open or reload modal if reponse contains modal HTML
+* - Toaster success if reponse is text/plain or doesnt contain modal HTML
 */
 function elaRequest(module, action, postargs, getargs) {
   if (module === null || module === undefined) {
@@ -113,7 +117,7 @@ $("#dynamic").on("hidden.bs.modal", function () {
 });
 
 /**
-* confirm prompt
+* confirm prompt, data-elaconfirm="message"
 */
 $(document).on('click', '*[data-elaconfirm]', function(e){
   var confirm = window.confirm($(this).data('elaconfirm'));
@@ -152,6 +156,11 @@ function elaElementRequest(element, postargs) {
 
 /**
 * Eladmin action
+*
+* data-elaaction
+* data-elamodule
+* data-elaarg ... postargs
+* data-ela* ... getargs
 */
 $(document).on('click', '*:not(form)[data-elaaction]', function(e){
   e.preventDefault();
@@ -160,6 +169,12 @@ $(document).on('click', '*:not(form)[data-elaaction]', function(e){
 
 /**
 * Eladmin action - modal forms
+* Closes modal on success.
+*
+* data-elaaction
+* data-elamodule
+* data-elaarg ... postargs
+* data-ela* ... getargs
 */
 $(document).on('submit', 'form[data-elaaction]', function(e){
   e.preventDefault();
