@@ -128,7 +128,7 @@
                                                                                 
                 </td>
                 <td>$label</td>
-                <td class="last"></td>
+                <td class="last">Column label.</td>
                 <td></td>
             </tr>
                     <tr>
@@ -136,15 +136,15 @@
                                                                                 
                 </td>
                 <td>$desc</td>
-                <td class="last"></td>
+                <td class="last">Column description.</td>
                 <td></td>
             </tr>
                     <tr>
-                <td class="type" id="property_rawoutput">
+                <td class="type" id="property_raw">
                                                                                 
                 </td>
-                <td>$rawoutput</td>
-                <td class="last"></td>
+                <td>$raw</td>
+                <td class="last">Should we excape the value of the column?</td>
                 <td></td>
             </tr>
                     <tr>
@@ -152,7 +152,7 @@
                                                                                 
                 </td>
                 <td>$nonlistable</td>
-                <td class="last"></td>
+                <td class="last">Should we show the column in the table?</td>
                 <td></td>
             </tr>
                     <tr>
@@ -160,7 +160,7 @@
                                                                                 
                 </td>
                 <td>$noneditable</td>
-                <td class="last"></td>
+                <td class="last">Should we show the column in the edit form?</td>
                 <td></td>
             </tr>
                     <tr>
@@ -168,7 +168,31 @@
                                                                                 
                 </td>
                 <td>$disabled</td>
-                <td class="last"></td>
+                <td class="last">Can we edit the value in the form?</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_nonsearchable">
+                                                                                
+                </td>
+                <td>$nonsearchable</td>
+                <td class="last">Should we use this column for searching?</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_nonsortable">
+                                                                                
+                </td>
+                <td>$nonsortable</td>
+                <td class="last">Can we sort the table by this column?</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_limit">
+                                                                                
+                </td>
+                <td>$limit</td>
+                <td class="last">Max length of value to be shown in the table.</td>
                 <td></td>
             </tr>
                     <tr>
@@ -176,7 +200,7 @@
                                                                                 
                 </td>
                 <td>$input</td>
-                <td class="last"></td>
+                <td class="last">Input type for the column editation.</td>
                 <td></td>
             </tr>
                     <tr>
@@ -184,30 +208,6 @@
                                                                                 
                 </td>
                 <td>$listformat</td>
-                <td class="last"></td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td class="type" id="property_realcolumn">
-                                                                                
-                </td>
-                <td>$realcolumn</td>
-                <td class="last"></td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td class="type" id="property_listlimit">
-                                                                                
-                </td>
-                <td>$listlimit</td>
-                <td class="last"></td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td class="type" id="property_belongsTo">
-                                                                                
-                </td>
-                <td>$belongsTo</td>
                 <td class="last"></td>
                 <td></td>
             </tr>
@@ -236,10 +236,10 @@
                 <td></td>
             </tr>
                     <tr>
-                <td class="type" id="property_nonsearchable">
+                <td class="type" id="property_belongsTo">
                                                                                 
                 </td>
-                <td>$nonsearchable</td>
+                <td>$belongsTo</td>
                 <td class="last"></td>
                 <td></td>
             </tr>
@@ -262,10 +262,10 @@
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    
+                    void
                 </div>
                 <div class="col-md-8 type">
-                    <a href="#method__setKey">_setKey</a>($key)
+                    <a href="#method__setKey">_setKey</a>(string $key)
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -273,7 +273,7 @@
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    
+                    string
                 </div>
                 <div class="col-md-8 type">
                     <a href="#method__getKey">_getKey</a>()
@@ -284,10 +284,10 @@
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    
+                    void
                 </div>
                 <div class="col-md-8 type">
-                    <a href="#method__setNext">_setNext</a>($key)
+                    <a href="#method__setNext">_setNext</a>(string|null $key)
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -295,7 +295,7 @@
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    
+                    string|null
                 </div>
                 <div class="col-md-8 type">
                     <a href="#method__getNext">_getNext</a>()
@@ -306,10 +306,10 @@
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    
+                    void
                 </div>
                 <div class="col-md-8 type">
-                    <a href="#method__setPrev">_setPrev</a>($key)
+                    <a href="#method__setPrev">_setPrev</a>(string|null $key)
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -317,7 +317,7 @@
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    
+                    string|null
                 </div>
                 <div class="col-md-8 type">
                     <a href="#method__getPrev">_getPrev</a>()
@@ -328,10 +328,10 @@
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    
+                    void
                 </div>
                 <div class="col-md-8 type">
-                    <a href="#method__setParent">_setParent</a>($obj)
+                    <a href="#method__setParent">_setParent</a>(<a href="../../../../../Onspli/Eladmin/ChainsetParent.html"><abbr title="Onspli\Eladmin\ChainsetParent">ChainsetParent</abbr></a> $obj)
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -339,7 +339,7 @@
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    
+                    <a href="../../../../../Onspli/Eladmin/ChainsetParent.html"><abbr title="Onspli\Eladmin\ChainsetParent">ChainsetParent</abbr></a>
                 </div>
                 <div class="col-md-8 type">
                     <a href="#method__getParent">_getParent</a>()
@@ -350,35 +350,32 @@
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    
+                    <a href="../../../../../Onspli/Eladmin/ChainsetChild.html"><abbr title="Onspli\Eladmin\ChainsetChild">ChainsetChild</abbr></a>
                 </div>
                 <div class="col-md-8 type">
-                    <a href="#method_before">before</a>($target = null)
+                    <a href="#method_before">before</a>(string|null $target = null)
         
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p>Place child just before $target.</p>                </div>
                 <div class="col-md-2"><small>from&nbsp;<a href="../../../../../Onspli/Eladmin/ChainsetChild.html#method_before"><abbr title="Onspli\Eladmin\ChainsetChild">ChainsetChild</abbr></a></small></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    
+                    <a href="../../../../../Onspli/Eladmin/ChainsetChild.html"><abbr title="Onspli\Eladmin\ChainsetChild">ChainsetChild</abbr></a>
                 </div>
                 <div class="col-md-8 type">
-                    <a href="#method_after">after</a>($target = null)
+                    <a href="#method_after">after</a>(string|null $target = null)
         
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p>Place child just after $target.</p>                </div>
                 <div class="col-md-2"><small>from&nbsp;<a href="../../../../../Onspli/Eladmin/ChainsetChild.html#method_after"><abbr title="Onspli\Eladmin\ChainsetChild">ChainsetChild</abbr></a></small></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    
+                    string
                 </div>
                 <div class="col-md-8 type">
                     <a href="#method_getName">getName</a>()
         
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p>Get internal name of the column.</p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -410,8 +407,7 @@
                 <div class="col-md-8 type">
                     <a href="#method_raw">raw</a>()
         
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p>Output raw value (i.e. HTML)</p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -421,19 +417,7 @@
                 <div class="col-md-8 type">
                     <a href="#method_escaped">escaped</a>()
         
-                                            <p class="no-description">No description</p>
-                                    </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    
-                </div>
-                <div class="col-md-8 type">
-                    <a href="#method_hidden">hidden</a>()
-        
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p>Output escaped value.</p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -443,8 +427,7 @@
                 <div class="col-md-8 type">
                     <a href="#method_nonlistable">nonlistable</a>()
         
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p>Do not show the column in the table.</p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -454,8 +437,7 @@
                 <div class="col-md-8 type">
                     <a href="#method_listable">listable</a>()
         
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p>Show the column in the table.</p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -465,8 +447,7 @@
                 <div class="col-md-8 type">
                     <a href="#method_nonsearchable">nonsearchable</a>()
         
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p>Do not use the column for searching.</p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -476,8 +457,27 @@
                 <div class="col-md-8 type">
                     <a href="#method_searchable">searchable</a>()
         
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p>Use the column for searching.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_nonsortable">nonsortable</a>()
+        
+                                            <p>Do not sort by the column.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_sortable">sortable</a>()
+        
+                                            <p>Use the column for sorting.</p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -487,8 +487,7 @@
                 <div class="col-md-8 type">
                     <a href="#method_noneditable">noneditable</a>()
         
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p>Hide the column in the edit form.</p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -498,8 +497,7 @@
                 <div class="col-md-8 type">
                     <a href="#method_editable">editable</a>()
         
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p>Show the column in the edit form.</p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -509,8 +507,7 @@
                 <div class="col-md-8 type">
                     <a href="#method_disabled">disabled</a>()
         
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p>Disable editing column's value.</p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -520,8 +517,17 @@
                 <div class="col-md-8 type">
                     <a href="#method_enabled">enabled</a>()
         
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p>Enable editing column's value.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_limit">limit</a>(<abbr title="Onspli\Eladmin\Modules\Crud\Chainset\integer">integer</abbr> $len)
+        
+                                            <p>Max length of value to be shown in the table.</p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -531,8 +537,7 @@
                 <div class="col-md-8 type">
                     <a href="#method_input">input</a>($type)
         
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p>Set the type of input.</p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -542,8 +547,7 @@
                 <div class="col-md-8 type">
                     <a href="#method_textarea">textarea</a>()
         
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p>Set the type of input to textarea.</p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -553,8 +557,17 @@
                 <div class="col-md-8 type">
                     <a href="#method_select">select</a>($options = [])
         
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p>Set the type of input to select.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_hidden">hidden</a>()
+        
+                                            <p>Shortcut for nonlistable &amp;&amp; noneditable</p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -574,17 +587,6 @@
                 </div>
                 <div class="col-md-8 type">
                     <a href="#method_format">format</a>($func)
-        
-                                            <p class="no-description">No description</p>
-                                    </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    
-                </div>
-                <div class="col-md-8 type">
-                    <a href="#method_limit">limit</a>($len)
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -677,8 +679,8 @@
                     <div class="method-item">
                     <h3 id="method__setKey">
         <div class="location">in <a href="../../../../../Onspli/Eladmin/ChainsetChild.html#method__setKey"><abbr title="Onspli\Eladmin\ChainsetChild">ChainsetChild</abbr></a> at         line 33</div>
-        <code>final                    
-    <strong>_setKey</strong>($key)
+        <code>final                    void
+    <strong>_setKey</strong>(string $key)
         </code>
     </h3>
     <div class="details">
@@ -690,13 +692,22 @@
 
                     <table class="table table-condensed">
                     <tr>
-                <td></td>
+                <td>string</td>
                 <td>$key</td>
                 <td></td>
             </tr>
             </table>
 
             
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
             
             
                     </div>
@@ -706,7 +717,7 @@
                     <div class="method-item">
                     <h3 id="method__getKey">
         <div class="location">in <a href="../../../../../Onspli/Eladmin/ChainsetChild.html#method__getKey"><abbr title="Onspli\Eladmin\ChainsetChild">ChainsetChild</abbr></a> at         line 37</div>
-        <code>final                    
+        <code>final                    string
     <strong>_getKey</strong>()
         </code>
     </h3>
@@ -716,6 +727,15 @@
 
                 <div class="tags">
             
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
             
             
                     </div>
@@ -725,8 +745,8 @@
                     <div class="method-item">
                     <h3 id="method__setNext">
         <div class="location">in <a href="../../../../../Onspli/Eladmin/ChainsetChild.html#method__setNext"><abbr title="Onspli\Eladmin\ChainsetChild">ChainsetChild</abbr></a> at         line 41</div>
-        <code>final                    
-    <strong>_setNext</strong>($key)
+        <code>final                    void
+    <strong>_setNext</strong>(string|null $key)
         </code>
     </h3>
     <div class="details">
@@ -738,13 +758,22 @@
 
                     <table class="table table-condensed">
                     <tr>
-                <td></td>
+                <td>string|null</td>
                 <td>$key</td>
                 <td></td>
             </tr>
             </table>
 
             
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
             
             
                     </div>
@@ -754,7 +783,7 @@
                     <div class="method-item">
                     <h3 id="method__getNext">
         <div class="location">in <a href="../../../../../Onspli/Eladmin/ChainsetChild.html#method__getNext"><abbr title="Onspli\Eladmin\ChainsetChild">ChainsetChild</abbr></a> at         line 45</div>
-        <code>final                    
+        <code>final                    string|null
     <strong>_getNext</strong>()
         </code>
     </h3>
@@ -764,6 +793,15 @@
 
                 <div class="tags">
             
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string|null</td>
+            <td></td>
+        </tr>
+    </table>
+
             
             
                     </div>
@@ -773,8 +811,8 @@
                     <div class="method-item">
                     <h3 id="method__setPrev">
         <div class="location">in <a href="../../../../../Onspli/Eladmin/ChainsetChild.html#method__setPrev"><abbr title="Onspli\Eladmin\ChainsetChild">ChainsetChild</abbr></a> at         line 49</div>
-        <code>final                    
-    <strong>_setPrev</strong>($key)
+        <code>final                    void
+    <strong>_setPrev</strong>(string|null $key)
         </code>
     </h3>
     <div class="details">
@@ -786,13 +824,22 @@
 
                     <table class="table table-condensed">
                     <tr>
-                <td></td>
+                <td>string|null</td>
                 <td>$key</td>
                 <td></td>
             </tr>
             </table>
 
             
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
             
             
                     </div>
@@ -802,7 +849,7 @@
                     <div class="method-item">
                     <h3 id="method__getPrev">
         <div class="location">in <a href="../../../../../Onspli/Eladmin/ChainsetChild.html#method__getPrev"><abbr title="Onspli\Eladmin\ChainsetChild">ChainsetChild</abbr></a> at         line 53</div>
-        <code>final                    
+        <code>final                    string|null
     <strong>_getPrev</strong>()
         </code>
     </h3>
@@ -812,6 +859,15 @@
 
                 <div class="tags">
             
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string|null</td>
+            <td></td>
+        </tr>
+    </table>
+
             
             
                     </div>
@@ -821,8 +877,8 @@
                     <div class="method-item">
                     <h3 id="method__setParent">
         <div class="location">in <a href="../../../../../Onspli/Eladmin/ChainsetChild.html#method__setParent"><abbr title="Onspli\Eladmin\ChainsetChild">ChainsetChild</abbr></a> at         line 57</div>
-        <code>final                    
-    <strong>_setParent</strong>($obj)
+        <code>final                    void
+    <strong>_setParent</strong>(<a href="../../../../../Onspli/Eladmin/ChainsetParent.html"><abbr title="Onspli\Eladmin\ChainsetParent">ChainsetParent</abbr></a> $obj)
         </code>
     </h3>
     <div class="details">
@@ -834,13 +890,22 @@
 
                     <table class="table table-condensed">
                     <tr>
-                <td></td>
+                <td><a href="../../../../../Onspli/Eladmin/ChainsetParent.html"><abbr title="Onspli\Eladmin\ChainsetParent">ChainsetParent</abbr></a></td>
                 <td>$obj</td>
                 <td></td>
             </tr>
             </table>
 
             
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
             
             
                     </div>
@@ -850,7 +915,7 @@
                     <div class="method-item">
                     <h3 id="method__getParent">
         <div class="location">in <a href="../../../../../Onspli/Eladmin/ChainsetChild.html#method__getParent"><abbr title="Onspli\Eladmin\ChainsetChild">ChainsetChild</abbr></a> at         line 61</div>
-        <code>final                    
+        <code>final                    <a href="../../../../../Onspli/Eladmin/ChainsetParent.html"><abbr title="Onspli\Eladmin\ChainsetParent">ChainsetParent</abbr></a>
     <strong>_getParent</strong>()
         </code>
     </h3>
@@ -860,6 +925,15 @@
 
                 <div class="tags">
             
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../../../Onspli/Eladmin/ChainsetParent.html"><abbr title="Onspli\Eladmin\ChainsetParent">ChainsetParent</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
             
             
                     </div>
@@ -868,27 +942,38 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_before">
-        <div class="location">in <a href="../../../../../Onspli/Eladmin/ChainsetChild.html#method_before"><abbr title="Onspli\Eladmin\ChainsetChild">ChainsetChild</abbr></a> at         line 65</div>
-        <code>final                    
-    <strong>before</strong>($target = null)
+        <div class="location">in <a href="../../../../../Onspli/Eladmin/ChainsetChild.html#method_before"><abbr title="Onspli\Eladmin\ChainsetChild">ChainsetChild</abbr></a> at         line 68</div>
+        <code>final                    <a href="../../../../../Onspli/Eladmin/ChainsetChild.html"><abbr title="Onspli\Eladmin\ChainsetChild">ChainsetChild</abbr></a>
+    <strong>before</strong>(string|null $target = null)
         </code>
     </h3>
     <div class="details">
             
     
 
+                    <div class="method-description">
+                                    <p>Place child just before $target.</p>                                                </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
                     <tr>
-                <td></td>
+                <td>string|null</td>
                 <td>$target</td>
                 <td></td>
             </tr>
             </table>
 
             
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../../../Onspli/Eladmin/ChainsetChild.html"><abbr title="Onspli\Eladmin\ChainsetChild">ChainsetChild</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
             
             
                     </div>
@@ -897,27 +982,38 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_after">
-        <div class="location">in <a href="../../../../../Onspli/Eladmin/ChainsetChild.html#method_after"><abbr title="Onspli\Eladmin\ChainsetChild">ChainsetChild</abbr></a> at         line 88</div>
-        <code>final                    
-    <strong>after</strong>($target = null)
+        <div class="location">in <a href="../../../../../Onspli/Eladmin/ChainsetChild.html#method_after"><abbr title="Onspli\Eladmin\ChainsetChild">ChainsetChild</abbr></a> at         line 94</div>
+        <code>final                    <a href="../../../../../Onspli/Eladmin/ChainsetChild.html"><abbr title="Onspli\Eladmin\ChainsetChild">ChainsetChild</abbr></a>
+    <strong>after</strong>(string|null $target = null)
         </code>
     </h3>
     <div class="details">
             
     
 
+                    <div class="method-description">
+                                    <p>Place child just after $target.</p>                                                </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
                     <tr>
-                <td></td>
+                <td>string|null</td>
                 <td>$target</td>
                 <td></td>
             </tr>
             </table>
 
             
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../../../Onspli/Eladmin/ChainsetChild.html"><abbr title="Onspli\Eladmin\ChainsetChild">ChainsetChild</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
             
             
                     </div>
@@ -926,8 +1022,8 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getName">
-        <div class="location">at         line 24</div>
-        <code>final                    
+        <div class="location">at         line 67</div>
+        <code>final                    string
     <strong>getName</strong>()
         </code>
     </h3>
@@ -935,8 +1031,19 @@
             
     
 
+                    <div class="method-description">
+                                    <p>Get internal name of the column.</p>                                                </div>
                 <div class="tags">
             
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
             
             
                     </div>
@@ -945,7 +1052,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getValue">
-        <div class="location">at         line 28</div>
+        <div class="location">at         line 71</div>
         <code>final                    
     <strong>getValue</strong>($row, $forEditing = false)
         </code>
@@ -979,7 +1086,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_evalProperty">
-        <div class="location">at         line 51</div>
+        <div class="location">at         line 94</div>
         <code>final                    
     <strong>evalProperty</strong>($prop, $row)
         </code>
@@ -1013,7 +1120,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_raw">
-        <div class="location">at         line 64</div>
+        <div class="location">at         line 110</div>
         <code>                    
     <strong>raw</strong>()
         </code>
@@ -1022,6 +1129,8 @@
             
     
 
+                    <div class="method-description">
+                                    <p>Output raw value (i.e. HTML)</p>                                                </div>
                 <div class="tags">
             
             
@@ -1032,7 +1141,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_escaped">
-        <div class="location">at         line 69</div>
+        <div class="location">at         line 118</div>
         <code>                    
     <strong>escaped</strong>()
         </code>
@@ -1041,25 +1150,8 @@
             
     
 
-                <div class="tags">
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_hidden">
-        <div class="location">at         line 74</div>
-        <code>                    
-    <strong>hidden</strong>()
-        </code>
-    </h3>
-    <div class="details">
-            
-    
-
+                    <div class="method-description">
+                                    <p>Output escaped value.</p>                                                </div>
                 <div class="tags">
             
             
@@ -1070,7 +1162,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_nonlistable">
-        <div class="location">at         line 80</div>
+        <div class="location">at         line 127</div>
         <code>                    
     <strong>nonlistable</strong>()
         </code>
@@ -1079,6 +1171,8 @@
             
     
 
+                    <div class="method-description">
+                                    <p>Do not show the column in the table.</p>                    <p>Also ad nonsearchable flag.</p>                            </div>
                 <div class="tags">
             
             
@@ -1089,7 +1183,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_listable">
-        <div class="location">at         line 85</div>
+        <div class="location">at         line 136</div>
         <code>                    
     <strong>listable</strong>()
         </code>
@@ -1098,6 +1192,8 @@
             
     
 
+                    <div class="method-description">
+                                    <p>Show the column in the table.</p>                                                </div>
                 <div class="tags">
             
             
@@ -1108,7 +1204,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_nonsearchable">
-        <div class="location">at         line 90</div>
+        <div class="location">at         line 144</div>
         <code>                    
     <strong>nonsearchable</strong>()
         </code>
@@ -1117,6 +1213,8 @@
             
     
 
+                    <div class="method-description">
+                                    <p>Do not use the column for searching.</p>                                                </div>
                 <div class="tags">
             
             
@@ -1127,7 +1225,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_searchable">
-        <div class="location">at         line 95</div>
+        <div class="location">at         line 152</div>
         <code>                    
     <strong>searchable</strong>()
         </code>
@@ -1136,6 +1234,50 @@
             
     
 
+                    <div class="method-description">
+                                    <p>Use the column for searching.</p>                                                </div>
+                <div class="tags">
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_nonsortable">
+        <div class="location">at         line 160</div>
+        <code>                    
+    <strong>nonsortable</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Do not sort by the column.</p>                                                </div>
+                <div class="tags">
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_sortable">
+        <div class="location">at         line 168</div>
+        <code>                    
+    <strong>sortable</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Use the column for sorting.</p>                                                </div>
                 <div class="tags">
             
             
@@ -1146,7 +1288,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_noneditable">
-        <div class="location">at         line 100</div>
+        <div class="location">at         line 176</div>
         <code>                    
     <strong>noneditable</strong>()
         </code>
@@ -1155,6 +1297,8 @@
             
     
 
+                    <div class="method-description">
+                                    <p>Hide the column in the edit form.</p>                                                </div>
                 <div class="tags">
             
             
@@ -1165,7 +1309,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_editable">
-        <div class="location">at         line 105</div>
+        <div class="location">at         line 184</div>
         <code>                    
     <strong>editable</strong>()
         </code>
@@ -1174,6 +1318,8 @@
             
     
 
+                    <div class="method-description">
+                                    <p>Show the column in the edit form.</p>                                                </div>
                 <div class="tags">
             
             
@@ -1184,7 +1330,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_disabled">
-        <div class="location">at         line 110</div>
+        <div class="location">at         line 192</div>
         <code>                    
     <strong>disabled</strong>()
         </code>
@@ -1193,6 +1339,8 @@
             
     
 
+                    <div class="method-description">
+                                    <p>Disable editing column's value.</p>                                                </div>
                 <div class="tags">
             
             
@@ -1203,7 +1351,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_enabled">
-        <div class="location">at         line 115</div>
+        <div class="location">at         line 200</div>
         <code>                    
     <strong>enabled</strong>()
         </code>
@@ -1212,6 +1360,8 @@
             
     
 
+                    <div class="method-description">
+                                    <p>Enable editing column's value.</p>                                                </div>
                 <div class="tags">
             
             
@@ -1221,8 +1371,39 @@
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_limit">
+        <div class="location">at         line 209</div>
+        <code>                    
+    <strong>limit</strong>(<abbr title="Onspli\Eladmin\Modules\Crud\Chainset\integer">integer</abbr> $len)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Max length of value to be shown in the table.</p>                    <p>Doesn't have any effect on raw (unescaped) columns.</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><abbr title="Onspli\Eladmin\Modules\Crud\Chainset\integer">integer</abbr></td>
+                <td>$len</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_input">
-        <div class="location">at         line 120</div>
+        <div class="location">at         line 217</div>
         <code>                    
     <strong>input</strong>($type)
         </code>
@@ -1231,6 +1412,8 @@
             
     
 
+                    <div class="method-description">
+                                    <p>Set the type of input.</p>                                                </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
@@ -1251,7 +1434,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_textarea">
-        <div class="location">at         line 125</div>
+        <div class="location">at         line 225</div>
         <code>                    
     <strong>textarea</strong>()
         </code>
@@ -1260,6 +1443,8 @@
             
     
 
+                    <div class="method-description">
+                                    <p>Set the type of input to textarea.</p>                                                </div>
                 <div class="tags">
             
             
@@ -1270,7 +1455,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_select">
-        <div class="location">at         line 130</div>
+        <div class="location">at         line 233</div>
         <code>                    
     <strong>select</strong>($options = [])
         </code>
@@ -1279,6 +1464,8 @@
             
     
 
+                    <div class="method-description">
+                                    <p>Set the type of input to select.</p>                                                </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
@@ -1298,8 +1485,29 @@
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_hidden">
+        <div class="location">at         line 257</div>
+        <code>                    
+    <strong>hidden</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Shortcut for nonlistable &amp;&amp; noneditable</p>                                                </div>
+                <div class="tags">
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_belongsTo">
-        <div class="location">at         line 151</div>
+        <div class="location">at         line 263</div>
         <code>                    
     <strong>belongsTo</strong>($model)
         </code>
@@ -1328,7 +1536,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_format">
-        <div class="location">at         line 163</div>
+        <div class="location">at         line 275</div>
         <code>                    
     <strong>format</strong>($func)
         </code>
@@ -1356,37 +1564,8 @@
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_limit">
-        <div class="location">at         line 168</div>
-        <code>                    
-    <strong>limit</strong>($len)
-        </code>
-    </h3>
-    <div class="details">
-            
-    
-
-                <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td></td>
-                <td>$len</td>
-                <td></td>
-            </tr>
-            </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
                     <h3 id="method_get">
-        <div class="location">at         line 173</div>
+        <div class="location">at         line 280</div>
         <code>                    
     <strong>get</strong>($func)
         </code>
@@ -1415,7 +1594,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_set">
-        <div class="location">at         line 178</div>
+        <div class="location">at         line 285</div>
         <code>                    
     <strong>set</strong>($func)
         </code>
@@ -1444,7 +1623,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_datetime">
-        <div class="location">at         line 183</div>
+        <div class="location">at         line 290</div>
         <code>                    
     <strong>datetime</strong>($format)
         </code>
@@ -1473,7 +1652,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_validate">
-        <div class="location">at         line 200</div>
+        <div class="location">at         line 307</div>
         <code>                    
     <strong>validate</strong>($func)
         </code>

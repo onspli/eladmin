@@ -40,7 +40,7 @@ final public function __isset($key) {
 /**
 * Remove child from linked list.
 */
-final public function cutChild($key) {
+final public function cutChild(string $key) : void {
   $prev = $this->children[$key]->_getPrev();
   $next = $this->children[$key]->_getNext();
   if ($key == $this->last) {
@@ -82,19 +82,19 @@ final public function __get($key) {
   return $this->children[$key];
 }
 
-final public function setFirst($key) {
+final public function setFirst(?string $key) : void {
   $this->first = $key;
 }
 
-final public function getFirst() {
+final public function getFirst() : ?string {
   return $this->first;
 }
 
-final public function setLast($key) {
+final public function setLast(?string $key) : void {
   $this->last = $key;
 }
 
-final public function getLast() {
+final public function getLast() : ?string {
   return $this->last;
 }
 

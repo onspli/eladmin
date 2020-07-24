@@ -1,11 +1,11 @@
 @push('header_row')
       <tr>
         <th class="text-center"><input class="bulk-all" type="checkbox"></th>
-@foreach($module->elaColumns() as $column=>$config)
-<?php if($config->nonlistable??false) continue; ?>
-        <th class="noselect" {!! $config->realcolumn? 'data-column="'.$column.'"':'' !!}>
-          {{ $config->label??$column }}
-          {!! $config->realcolumn ? '<span class="arrs"><span class="arr desc">&#x2191;</span> <span class="arr asc">&#x2193;</span></span>' : '' !!}
+@foreach($module->elaColumns() as $column => $config)
+<?php if($config->nonlistable) continue; ?>
+        <th class="noselect" {!! $config->nonsortable ? '' : 'data-column="'.$column.'"' !!}>
+          {{ $config->label ?? $column }}
+          {!! $config->nonsortable ? '' : '<span class="arrs"><span class="arr desc">&#x2191;</span> <span class="arr asc">&#x2193;</span></span>' !!}
         </th>
 @endforeach
         <th></th>

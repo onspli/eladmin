@@ -1,16 +1,16 @@
 @extends('layouts.modal')
 
 @section('modal-title')
-  {{ __('Edit entry %s', '#'.$row->getKey()) }}
+  {{ __('Edit entry %s', '#' . $row[$module->elaPrimary()]) }}
 @endsection
 
 @section('modal-body')
-  <form id="modal-form" data-elaaction="update" data-elaid="{{$row->getKey()}}" data-elamodule="{{$row->elakey()}}">
+  <form id="modal-form" data-elaaction="update" data-elaid="{{ $row[$module->elaPrimary()] }}" data-elamodule="{{ $module->elakey() }}">
 
   @section('form-body')
-  @foreach($row->elaColumns() as $column)
+  @foreach($module->elaColumns() as $column)
     <?php if($column->noneditable) continue; ?>
-    @component('components.inputs.'.$column->input, ['column'=>$column, 'row'=>$row])
+    @component('components.inputs.'.$column->input, ['column' => $column, 'row' => $row])
     @endcomponent
   @endforeach
   @show
@@ -43,7 +43,7 @@
 
 @section('modal-footer')
   @if($module->elaAuth('delete'))
-  <button type="button" class="btn btn-danger mr-3" data-elaaction="delete" data-elamodule="{{$row->elakey()}}" data-elaid="{{$row->getKey()}}" data-eladone="$('#dynamic .modal').modal('hide');" <?php if(!$row->elaUsesSoftDeletes()): ?> data-elaconfirm="{{__('Are you sure?')}}" <?php endif; ?>><i class="fas fa-trash-alt"></i> <span class="d-none d-sm-inline">{{ __('Delete')}}</span></button>
+  <button type="button" class="btn btn-danger mr-3" data-elaaction="delete" data-elamodule="{{ $module->elakey() }}" data-elaid="{{ $row[$module->elaPrimary()] }}" data-eladone="$('#dynamic .modal').modal('hide');" <?php if(!$row->elaUsesSoftDeletes()): ?> data-elaconfirm="{{__('Are you sure?')}}" <?php endif; ?>><i class="fas fa-trash-alt"></i> <span class="d-none d-sm-inline">{{ __('Delete')}}</span></button>
   @endif
   <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="far fa-times-circle"></i> <span class="">{{__('Cancel')}}</span></button>
   @if($module->elaAuth('update'))

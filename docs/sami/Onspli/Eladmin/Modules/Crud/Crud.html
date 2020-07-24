@@ -85,6 +85,23 @@
         
     
 
+            <div class="description">
+            <p>Generic CRUD module.</p>            <p>The following methods needs to be implemented for a particular ORM library.</p>
+
+<pre><code>public function elaPrimary() : string
+
+protected function elaWrite(array $row, $id = null) : void
+protected function elaRead($id) : array
+protected function elaDelete($id) : void
+protected function elaQuery(Query $query, &amp;$totalResults) : array
+
+private function elaColumnsDef()
+
+public function elaUsesSoftDeletes() : bool
+protected function elaSoftDelete($id) : void
+protected function elaRestore($id) : void
+</code></pre>
+</p>                    </div>
     
             <h2>Traits</h2>
 
@@ -128,14 +145,6 @@
                 <td>$elaActionNamesNormalized</td>
                 <td class="last">normalizing action names for elaActionRoles is expensive, we want to do it only once</td>
                 <td><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#property_elaActionNamesNormalized"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></td>
-            </tr>
-                    <tr>
-                <td class="type" id="property_elaRolesFromActionsChainsetAlreadySet">
-                                                            private                    
-                </td>
-                <td>$elaRolesFromActionsChainsetAlreadySet</td>
-                <td class="last"></td>
-                <td></td>
             </tr>
             </table>
 
@@ -181,7 +190,7 @@
                     <a href="#method_elaAuth">elaAuth</a>(string|null $action = null)
         
                                             <p>Check if user is authorized to do action, or athorized to access module at all.</p>                </div>
-                <div class="col-md-2"></div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#method_elaAuth"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
@@ -245,14 +254,13 @@
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    
+                    object
                 </div>
                 <div class="col-md-8 type">
                     <a href="#method_elaInstanceForAction">elaInstanceForAction</a>()
         
-                                            <p class="no-description">No description</p>
-                                    </div>
-                <div class="col-md-2"></div>
+                                            <p>Actions will be called on instance of this module returned by this method. Default is $this.</p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#method_elaInstanceForAction"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
@@ -261,8 +269,7 @@
                 <div class="col-md-8 type">
                     <a href="#method_elaViews">elaViews</a>()
         
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p>Extends views directory.</p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -297,44 +304,83 @@
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    
+                    bool
                 </div>
                 <div class="col-md-8 type">
                     <a href="#method_elaUsesSoftDeletes">elaUsesSoftDeletes</a>()
         
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p>IMPLEMENT. Does CRUD use soft deletes?</p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    
+                    string
                 </div>
                 <div class="col-md-8 type">
-                    <a href="#method_elaDisabledColumns">elaDisabledColumns</a>()
+                    <a href="#method_elaPrimary">elaPrimary</a>()
         
-                                            <p>Returns an array of columns that cannot be edited from crud by default. (i.e. primary key, automanaged timestamps)</p>                </div>
+                                            <p>IMPLEMENT. Name of primary key column. Default is 'id'.</p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    
+                    void
                 </div>
                 <div class="col-md-8 type">
-                    <a href="#method_elaVisibleColumns">elaVisibleColumns</a>()
+                    <a href="#method_elaWrite">elaWrite</a>(array $row, $id = null)
         
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p>IMPLEMENT. Update or create ($id = null) row.</p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    
+                    array
                 </div>
                 <div class="col-md-8 type">
-                    <a href="#method_getTableColumns">getTableColumns</a>()
+                    <a href="#method_elaRead">elaRead</a>($id)
         
-                                            <p>Get an array of real table columns data columns stored in database.</p>                </div>
+                                            <p>IMPLEMENT. Read one row, or get default one ($id = null)
+Returns row as an associative array ['columnName' => 'value']</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaDelete">elaDelete</a>($id)
+        
+                                            <p>IMPLEMENT. Hard delete row.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaSoftDelete">elaSoftDelete</a>($id)
+        
+                                            <p>IMPLEMENT. Soft delete row.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaRestore">elaRestore</a>($id)
+        
+                                            <p>IMPLEMENT. Restore soft deleted row.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaQuery">elaQuery</a>(<a href="../../../../Onspli/Eladmin/Modules/Crud/Query.html"><abbr title="Onspli\Eladmin\Modules\Crud\Query">Query</abbr></a> $query, $totalResults)
+        
+                                            <p>IMPLEMENT. Query for an array of rows.</p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -344,7 +390,7 @@
                 <div class="col-md-8 type">
                     <a href="#method_elaColumnsDef">elaColumnsDef</a>()
         
-                                            <p>Default columns chainset.</p>                </div>
+                                            <p>IMPLEMENT. Default columns chainset.</p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -354,8 +400,7 @@
                 <div class="col-md-8 type">
                     <a href="#method_elaActionsDef">elaActionsDef</a>()
         
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p>Default actions chainset.</p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -365,8 +410,7 @@
                 <div class="col-md-8 type">
                     <a href="#method_elaFiltersDef">elaFiltersDef</a>()
         
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p>Default filters chainset.</p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -407,21 +451,9 @@
                     
                 </div>
                 <div class="col-md-8 type">
-                    <a href="#method_elaActionPostForm">elaActionPostForm</a>()
+                    <a href="#method_elaId">elaId</a>()
         
-                                            <p class="no-description">No description</p>
-                                    </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    
-                </div>
-                <div class="col-md-8 type">
-                    <a href="#method_elaActionPutForm">elaActionPutForm</a>()
-        
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p>Return ID of the row which should be affected by the action.</p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -431,8 +463,7 @@
                 <div class="col-md-8 type">
                     <a href="#method_elaRowValuesArray">elaRowValuesArray</a>($row, $elaColumns)
         
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p>generate array of values for one row</p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -442,8 +473,7 @@
                 <div class="col-md-8 type">
                     <a href="#method_elaColumnsConfigArray">elaColumnsConfigArray</a>($elaColumns)
         
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p>generate array of actions for one column</p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -453,8 +483,7 @@
                 <div class="col-md-8 type">
                     <a href="#method_elaRowActionsArray">elaRowActionsArray</a>($row, $elaActions, $trash = false)
         
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p>generate array of actions for one row</p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -462,10 +491,29 @@
                     
                 </div>
                 <div class="col-md-8 type">
-                    <a href="#method_elaReadQuery">elaReadQuery</a>($sort = null, $direction = &#039;desc&#039;, $page = 1, $resultsperpage = 10, $search = &#039;&#039;, $columns = [], $trash = false)
+                    <a href="#method_elaEvalColumns">elaEvalColumns</a>()
         
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p>Validate and modify values.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaActionPostForm">elaActionPostForm</a>()
+        
+                                            <p>ACTION. Show form - create entry.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaActionPutForm">elaActionPutForm</a>()
+        
+                                            <p>ACTION. Show form - edit entry.</p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -475,7 +523,7 @@
                 <div class="col-md-8 type">
                     <a href="#method_elaActionRead">elaActionRead</a>()
         
-                                            <p>List database entries.</p>                </div>
+                                            <p>ACTION. List database entries.</p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -485,7 +533,7 @@
                 <div class="col-md-8 type">
                     <a href="#method_elaActionUpdate">elaActionUpdate</a>()
         
-                                            <p>Edit database entry.</p>                </div>
+                                            <p>ACTION. Edit database entry.</p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -495,18 +543,7 @@
                 <div class="col-md-8 type">
                     <a href="#method_elaActionCreate">elaActionCreate</a>()
         
-                                            <p>Create database entry.</p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    
-                </div>
-                <div class="col-md-8 type">
-                    <a href="#method_elaUpdate">elaUpdate</a>()
-        
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p>ACTION. Create database entry.</p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -516,7 +553,7 @@
                 <div class="col-md-8 type">
                     <a href="#method_elaActionDelete">elaActionDelete</a>()
         
-                                            <p>Delete database entry.</p>                </div>
+                                            <p>ACTION. Hard delete.</p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -524,10 +561,9 @@
                     
                 </div>
                 <div class="col-md-8 type">
-                    <a href="#method_elaActionForceDelete">elaActionForceDelete</a>()
+                    <a href="#method_elaActionSoftDelete">elaActionSoftDelete</a>()
         
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p>ACTION. Soft delete.</p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -537,8 +573,7 @@
                 <div class="col-md-8 type">
                     <a href="#method_elaActionRestore">elaActionRestore</a>()
         
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p>ACTION. Restore.</p>                </div>
                 <div class="col-md-2"></div>
             </div>
             </div>
@@ -654,7 +689,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaAuth">
-        <div class="location">at         line 19</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Module.html#method_elaAuth"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 86</div>
         <code>final                    bool
     <strong>elaAuth</strong>(string|null $action = null)
         </code>
@@ -929,8 +964,8 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaInstanceForAction">
-        <div class="location">at         line 330</div>
-        <code>                    
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Module.html#method_elaInstanceForAction"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 165</div>
+        <code>final                    object
     <strong>elaInstanceForAction</strong>()
         </code>
     </h3>
@@ -938,8 +973,19 @@
             
     
 
+                    <div class="method-description">
+                                    <p>Actions will be called on instance of this module returned by this method. Default is $this.</p>                                                </div>
                 <div class="tags">
             
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>object</td>
+            <td></td>
+        </tr>
+    </table>
+
             
             
                     </div>
@@ -948,7 +994,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaViews">
-        <div class="location">at         line 27</div>
+        <div class="location">at         line 34</div>
         <code>                    array
     <strong>elaViews</strong>()
         </code>
@@ -957,6 +1003,8 @@
             
     
 
+                    <div class="method-description">
+                                    <p>Extends views directory.</p>                                                </div>
                 <div class="tags">
             
                             <h4>Return Value</h4>
@@ -1091,8 +1139,8 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaUsesSoftDeletes">
-        <div class="location">at         line 31</div>
-        <code>                    
+        <div class="location">at         line 41</div>
+        <code>                    bool
     <strong>elaUsesSoftDeletes</strong>()
         </code>
     </h3>
@@ -1100,8 +1148,19 @@
             
     
 
+                    <div class="method-description">
+                                    <p>IMPLEMENT. Does CRUD use soft deletes?</p>                                                </div>
                 <div class="tags">
             
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
             
             
                     </div>
@@ -1109,10 +1168,10 @@
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_elaDisabledColumns">
-        <div class="location">at         line 38</div>
-        <code>                    
-    <strong>elaDisabledColumns</strong>()
+                    <h3 id="method_elaPrimary">
+        <div class="location">at         line 48</div>
+        <code>                    string
+    <strong>elaPrimary</strong>()
         </code>
     </h3>
     <div class="details">
@@ -1120,9 +1179,18 @@
     
 
                     <div class="method-description">
-                                    <p>Returns an array of columns that cannot be edited from crud by default. (i.e. primary key, automanaged timestamps)</p>                                                </div>
+                                    <p>IMPLEMENT. Name of primary key column. Default is 'id'.</p>                                                </div>
                 <div class="tags">
             
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
             
             
                     </div>
@@ -1130,29 +1198,10 @@
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_elaVisibleColumns">
-        <div class="location">at         line 42</div>
-        <code>                    
-    <strong>elaVisibleColumns</strong>()
-        </code>
-    </h3>
-    <div class="details">
-            
-    
-
-                <div class="tags">
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_getTableColumns">
-        <div class="location">at         line 51</div>
-        <code>final                private    
-    <strong>getTableColumns</strong>()
+                    <h3 id="method_elaWrite">
+        <div class="location">at         line 56</div>
+        <code>            protected        void
+    <strong>elaWrite</strong>(array $row, $id = null)
         </code>
     </h3>
     <div class="details">
@@ -1160,9 +1209,240 @@
     
 
                     <div class="method-description">
-                                    <p>Get an array of real table columns data columns stored in database.</p>                                                </div>
+                                    <p>IMPLEMENT. Update or create ($id = null) row.</p>                    <p>Row is an associative array ['columnName' => 'value']</p>                            </div>
                 <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$row</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td></td>
+                <td>$id</td>
+                <td></td>
+            </tr>
+            </table>
+
             
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaRead">
+        <div class="location">at         line 64</div>
+        <code>            protected        array
+    <strong>elaRead</strong>($id)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>IMPLEMENT. Read one row, or get default one ($id = null)
+Returns row as an associative array ['columnName' => 'value']</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$id</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaDelete">
+        <div class="location">at         line 71</div>
+        <code>            protected        void
+    <strong>elaDelete</strong>($id)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>IMPLEMENT. Hard delete row.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$id</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaSoftDelete">
+        <div class="location">at         line 78</div>
+        <code>            protected        void
+    <strong>elaSoftDelete</strong>($id)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>IMPLEMENT. Soft delete row.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$id</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaRestore">
+        <div class="location">at         line 85</div>
+        <code>            protected        void
+    <strong>elaRestore</strong>($id)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>IMPLEMENT. Restore soft deleted row.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$id</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaQuery">
+        <div class="location">at         line 94</div>
+        <code>            protected        array
+    <strong>elaQuery</strong>(<a href="../../../../Onspli/Eladmin/Modules/Crud/Query.html"><abbr title="Onspli\Eladmin\Modules\Crud\Query">Query</abbr></a> $query, $totalResults)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>IMPLEMENT. Query for an array of rows.</p>                    <p>Row is an associative array ['columnName' => 'value']
+$totalResults needs to be set to number of results without paging applied</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../../../Onspli/Eladmin/Modules/Crud/Query.html"><abbr title="Onspli\Eladmin\Modules\Crud\Query">Query</abbr></a></td>
+                <td>$query</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td></td>
+                <td>$totalResults</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
             
             
                     </div>
@@ -1171,7 +1451,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaColumnsDef">
-        <div class="location">at         line 58</div>
+        <div class="location">at         line 101</div>
         <code>                private    
     <strong>elaColumnsDef</strong>()
         </code>
@@ -1181,7 +1461,7 @@
     
 
                     <div class="method-description">
-                                    <p>Default columns chainset.</p>                                                </div>
+                                    <p>IMPLEMENT. Default columns chainset.</p>                                                </div>
                 <div class="tags">
             
             
@@ -1192,8 +1472,8 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaActionsDef">
-        <div class="location">at         line 79</div>
-        <code>final                private    
+        <div class="location">at         line 111</div>
+        <code>                private    
     <strong>elaActionsDef</strong>()
         </code>
     </h3>
@@ -1201,6 +1481,8 @@
             
     
 
+                    <div class="method-description">
+                                    <p>Default actions chainset.</p>                                                </div>
                 <div class="tags">
             
             
@@ -1211,8 +1493,8 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaFiltersDef">
-        <div class="location">at         line 106</div>
-        <code>final                private    
+        <div class="location">at         line 139</div>
+        <code>                private    
     <strong>elaFiltersDef</strong>()
         </code>
     </h3>
@@ -1220,6 +1502,8 @@
             
     
 
+                    <div class="method-description">
+                                    <p>Default filters chainset.</p>                                                </div>
                 <div class="tags">
             
             
@@ -1230,7 +1514,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaColumns">
-        <div class="location">at         line 110</div>
+        <div class="location">at         line 143</div>
         <code>                    
     <strong>elaColumns</strong>()
         </code>
@@ -1249,7 +1533,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaActions">
-        <div class="location">at         line 114</div>
+        <div class="location">at         line 147</div>
         <code>                    
     <strong>elaActions</strong>()
         </code>
@@ -1268,7 +1552,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaFilters">
-        <div class="location">at         line 118</div>
+        <div class="location">at         line 151</div>
         <code>                    
     <strong>elaFilters</strong>()
         </code>
@@ -1286,35 +1570,18 @@
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_elaActionPostForm">
-        <div class="location">at         line 123</div>
-        <code>                    
-    <strong>elaActionPostForm</strong>()
+                    <h3 id="method_elaId">
+        <div class="location">at         line 158</div>
+        <code>            protected        
+    <strong>elaId</strong>()
         </code>
     </h3>
     <div class="details">
             
     
 
-                <div class="tags">
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_elaActionPutForm">
-        <div class="location">at         line 129</div>
-        <code>                    
-    <strong>elaActionPutForm</strong>()
-        </code>
-    </h3>
-    <div class="details">
-            
-    
-
+                    <div class="method-description">
+                                    <p>Return ID of the row which should be affected by the action.</p>                                                </div>
                 <div class="tags">
             
             
@@ -1325,7 +1592,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaRowValuesArray">
-        <div class="location">at         line 135</div>
+        <div class="location">at         line 167</div>
         <code>                private    
     <strong>elaRowValuesArray</strong>($row, $elaColumns)
         </code>
@@ -1334,6 +1601,8 @@
             
     
 
+                    <div class="method-description">
+                                    <p>generate array of values for one row</p>                                                </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
@@ -1359,7 +1628,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaColumnsConfigArray">
-        <div class="location">at         line 144</div>
+        <div class="location">at         line 180</div>
         <code>                private    
     <strong>elaColumnsConfigArray</strong>($elaColumns)
         </code>
@@ -1368,6 +1637,8 @@
             
     
 
+                    <div class="method-description">
+                                    <p>generate array of actions for one column</p>                                                </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
@@ -1388,7 +1659,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaRowActionsArray">
-        <div class="location">at         line 160</div>
+        <div class="location">at         line 199</div>
         <code>                private    
     <strong>elaRowActionsArray</strong>($row, $elaActions, $trash = false)
         </code>
@@ -1397,6 +1668,8 @@
             
     
 
+                    <div class="method-description">
+                                    <p>generate array of actions for one row</p>                                                </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
@@ -1426,57 +1699,61 @@
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_elaReadQuery">
-        <div class="location">at         line 197</div>
+                    <h3 id="method_elaEvalColumns">
+        <div class="location">at         line 229</div>
         <code>                private    
-    <strong>elaReadQuery</strong>($sort = null, $direction = &#039;desc&#039;, $page = 1, $resultsperpage = 10, $search = &#039;&#039;, $columns = [], $trash = false)
+    <strong>elaEvalColumns</strong>()
         </code>
     </h3>
     <div class="details">
             
     
 
+                    <div class="method-description">
+                                    <p>Validate and modify values.</p>                                                </div>
                 <div class="tags">
-                            <h4>Parameters</h4>
+            
+            
+            
+                    </div>
+    </div>
 
-                    <table class="table table-condensed">
-                    <tr>
-                <td></td>
-                <td>$sort</td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td></td>
-                <td>$direction</td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td></td>
-                <td>$page</td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td></td>
-                <td>$resultsperpage</td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td></td>
-                <td>$search</td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td></td>
-                <td>$columns</td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td></td>
-                <td>$trash</td>
-                <td></td>
-            </tr>
-            </table>
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaActionPostForm">
+        <div class="location">at         line 244</div>
+        <code>                    
+    <strong>elaActionPostForm</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
 
+                    <div class="method-description">
+                                    <p>ACTION. Show form - create entry.</p>                                                </div>
+                <div class="tags">
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaActionPutForm">
+        <div class="location">at         line 253</div>
+        <code>                    
+    <strong>elaActionPutForm</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>ACTION. Show form - edit entry.</p>                                                </div>
+                <div class="tags">
             
             
             
@@ -1486,7 +1763,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaActionRead">
-        <div class="location">at         line 227</div>
+        <div class="location">at         line 262</div>
         <code>                    
     <strong>elaActionRead</strong>()
         </code>
@@ -1496,7 +1773,7 @@
     
 
                     <div class="method-description">
-                                    <p>List database entries.</p>                                                </div>
+                                    <p>ACTION. List database entries.</p>                                                </div>
                 <div class="tags">
             
             
@@ -1507,7 +1784,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaActionUpdate">
-        <div class="location">at         line 269</div>
+        <div class="location">at         line 299</div>
         <code>                    
     <strong>elaActionUpdate</strong>()
         </code>
@@ -1517,7 +1794,7 @@
     
 
                     <div class="method-description">
-                                    <p>Edit database entry.</p>                                                </div>
+                                    <p>ACTION. Edit database entry.</p>                                                </div>
                 <div class="tags">
             
             
@@ -1528,7 +1805,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaActionCreate">
-        <div class="location">at         line 277</div>
+        <div class="location">at         line 308</div>
         <code>                    
     <strong>elaActionCreate</strong>()
         </code>
@@ -1538,26 +1815,7 @@
     
 
                     <div class="method-description">
-                                    <p>Create database entry.</p>                                                </div>
-                <div class="tags">
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_elaUpdate">
-        <div class="location">at         line 282</div>
-        <code>            protected        
-    <strong>elaUpdate</strong>()
-        </code>
-    </h3>
-    <div class="details">
-            
-    
-
+                                    <p>ACTION. Create database entry.</p>                                                </div>
                 <div class="tags">
             
             
@@ -1568,7 +1826,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaActionDelete">
-        <div class="location">at         line 307</div>
+        <div class="location">at         line 317</div>
         <code>                    
     <strong>elaActionDelete</strong>()
         </code>
@@ -1578,7 +1836,7 @@
     
 
                     <div class="method-description">
-                                    <p>Delete database entry.</p>                                                </div>
+                                    <p>ACTION. Hard delete.</p>                                                </div>
                 <div class="tags">
             
             
@@ -1588,16 +1846,18 @@
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_elaActionForceDelete">
-        <div class="location">at         line 316</div>
+                    <h3 id="method_elaActionSoftDelete">
+        <div class="location">at         line 325</div>
         <code>                    
-    <strong>elaActionForceDelete</strong>()
+    <strong>elaActionSoftDelete</strong>()
         </code>
     </h3>
     <div class="details">
             
     
 
+                    <div class="method-description">
+                                    <p>ACTION. Soft delete.</p>                                                </div>
                 <div class="tags">
             
             
@@ -1608,7 +1868,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaActionRestore">
-        <div class="location">at         line 323</div>
+        <div class="location">at         line 333</div>
         <code>                    
     <strong>elaActionRestore</strong>()
         </code>
@@ -1617,6 +1877,8 @@
             
     
 
+                    <div class="method-description">
+                                    <p>ACTION. Restore.</p>                                                </div>
                 <div class="tags">
             
             

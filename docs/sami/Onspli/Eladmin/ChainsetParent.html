@@ -177,10 +177,10 @@ $columns-&gt;modified-&gt;timestamp('now');
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    
+                    void
                 </div>
                 <div class="col-md-8 type">
-                    <a href="#method_cutChild">cutChild</a>($key)
+                    <a href="#method_cutChild">cutChild</a>(string $key)
         
                                             <p>Remove child from linked list.</p>                </div>
                 <div class="col-md-2"></div>
@@ -209,10 +209,10 @@ $columns-&gt;modified-&gt;timestamp('now');
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    
+                    void
                 </div>
                 <div class="col-md-8 type">
-                    <a href="#method_setFirst">setFirst</a>($key)
+                    <a href="#method_setFirst">setFirst</a>(string|null $key)
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -220,7 +220,7 @@ $columns-&gt;modified-&gt;timestamp('now');
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    
+                    string|null
                 </div>
                 <div class="col-md-8 type">
                     <a href="#method_getFirst">getFirst</a>()
@@ -231,10 +231,10 @@ $columns-&gt;modified-&gt;timestamp('now');
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    
+                    void
                 </div>
                 <div class="col-md-8 type">
-                    <a href="#method_setLast">setLast</a>($key)
+                    <a href="#method_setLast">setLast</a>(string|null $key)
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -242,7 +242,7 @@ $columns-&gt;modified-&gt;timestamp('now');
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    
+                    string|null
                 </div>
                 <div class="col-md-8 type">
                     <a href="#method_getLast">getLast</a>()
@@ -373,8 +373,8 @@ $columns-&gt;modified-&gt;timestamp('now');
                     <div class="method-item">
                     <h3 id="method_cutChild">
         <div class="location">at         line 43</div>
-        <code>final                    
-    <strong>cutChild</strong>($key)
+        <code>final                    void
+    <strong>cutChild</strong>(string $key)
         </code>
     </h3>
     <div class="details">
@@ -388,13 +388,22 @@ $columns-&gt;modified-&gt;timestamp('now');
 
                     <table class="table table-condensed">
                     <tr>
-                <td></td>
+                <td>string</td>
                 <td>$key</td>
                 <td></td>
             </tr>
             </table>
 
             
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
             
             
                     </div>
@@ -462,8 +471,8 @@ $columns-&gt;modified-&gt;timestamp('now');
                     <div class="method-item">
                     <h3 id="method_setFirst">
         <div class="location">at         line 85</div>
-        <code>final                    
-    <strong>setFirst</strong>($key)
+        <code>final                    void
+    <strong>setFirst</strong>(string|null $key)
         </code>
     </h3>
     <div class="details">
@@ -475,13 +484,22 @@ $columns-&gt;modified-&gt;timestamp('now');
 
                     <table class="table table-condensed">
                     <tr>
-                <td></td>
+                <td>string|null</td>
                 <td>$key</td>
                 <td></td>
             </tr>
             </table>
 
             
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
             
             
                     </div>
@@ -491,7 +509,7 @@ $columns-&gt;modified-&gt;timestamp('now');
                     <div class="method-item">
                     <h3 id="method_getFirst">
         <div class="location">at         line 89</div>
-        <code>final                    
+        <code>final                    string|null
     <strong>getFirst</strong>()
         </code>
     </h3>
@@ -501,6 +519,15 @@ $columns-&gt;modified-&gt;timestamp('now');
 
                 <div class="tags">
             
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string|null</td>
+            <td></td>
+        </tr>
+    </table>
+
             
             
                     </div>
@@ -510,8 +537,8 @@ $columns-&gt;modified-&gt;timestamp('now');
                     <div class="method-item">
                     <h3 id="method_setLast">
         <div class="location">at         line 93</div>
-        <code>final                    
-    <strong>setLast</strong>($key)
+        <code>final                    void
+    <strong>setLast</strong>(string|null $key)
         </code>
     </h3>
     <div class="details">
@@ -523,13 +550,22 @@ $columns-&gt;modified-&gt;timestamp('now');
 
                     <table class="table table-condensed">
                     <tr>
-                <td></td>
+                <td>string|null</td>
                 <td>$key</td>
                 <td></td>
             </tr>
             </table>
 
             
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
             
             
                     </div>
@@ -539,7 +575,7 @@ $columns-&gt;modified-&gt;timestamp('now');
                     <div class="method-item">
                     <h3 id="method_getLast">
         <div class="location">at         line 97</div>
-        <code>final                    
+        <code>final                    string|null
     <strong>getLast</strong>()
         </code>
     </h3>
@@ -549,6 +585,15 @@ $columns-&gt;modified-&gt;timestamp('now');
 
                 <div class="tags">
             
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string|null</td>
+            <td></td>
+        </tr>
+    </table>
+
             
             
                     </div>
