@@ -97,19 +97,19 @@ $myEladmin->run();
 
 Eladmin comes with a simple authorization and user management out-of-the-box. Don't worry, the authorization can be easily overriden with your own solution. Default credentials are eladmin/nimdale.
 
-![Login Page](./screenshots/login.png)
+![Login Page](./docs/screenshots/login.png)
 
 Don't forget to change your password after your first login by clicking the Account button in the upper right corner.
 
-![User's Account](./screenshots/account.png)
+![User's Account](./docs/screenshots/account.png)
 
 Here is the interface got with the minimal configuration example above.
 
-![Minimal Configuration](./screenshots/helloworld2.png)
+![Minimal Configuration](./docs/screenshots/helloworld2.png)
 
-![Edit Entry](./screenshots/editentry2.png)
+![Edit Entry](./docs/screenshots/editentry2.png)
 
-![Add User](./screenshots/adduser.png)
+![Add User](./docs/screenshots/adduser.png)
 
 ## Advanced Configuration
 
@@ -317,13 +317,13 @@ $myEladmin = new MyEladmin();
 $myEladmin->run();
 ```
 
-![Advanced Configuration](./screenshots/columns1.png)
+![Advanced Configuration](./docs/screenshots/columns1.png)
 
-![Advanced Configuration](./screenshots/columns2.png)
+![Advanced Configuration](./docs/screenshots/columns2.png)
 
-![Advanced Configuration](./screenshots/columns3.png)
+![Advanced Configuration](./docs/screenshots/columns3.png)
 
-![Advanced Configuration](./screenshots/columns4.png)
+![Advanced Configuration](./docs/screenshots/columns4.png)
 
 ## Actions
 
@@ -361,7 +361,7 @@ We want do add action *cancel* which cancels a registration. Add folowing code t
 
 Result:
 
-![Action Cancel](./screenshots/actions.png)
+![Action Cancel](./docs/screenshots/actions.png)
 
 ## Authorization
 Eladmin provides a way to authorize users to do actions. The following code in *Event* module does the authorization:
@@ -385,7 +385,7 @@ Eladmin provides a way to authorize users to do actions. The following code in *
 
 It results in the following (user *onspli* has role *user*).
 
-![Authorization](./screenshots/authorization.png)
+![Authorization](./docs/screenshots/authorization.png)
 
 By default only 'admin' role is granted to work with eladmin *Users* crud.
 
@@ -426,7 +426,7 @@ public function elaFilters(){
 }
 ```
 
-![Filters](./screenshots/filters.png)
+![Filters](./docs/screenshots/filters.png)
 
 ## Contacts
 Feel free to ask me any questions on ondrej.splichal@gmail.com.
