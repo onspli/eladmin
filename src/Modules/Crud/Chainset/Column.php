@@ -1,9 +1,9 @@
 <?php
 namespace Onspli\Eladmin\Modules\Crud\Chainset;
 use \Onspli\Eladmin\Exception;
-use \Onspli\Eladmin\ChainsetChild;
+use \Onspli\Eladmin;
 
-class Column extends ChainsetChild {
+class Column extends Eladmin\Chainset\Child {
 
 /**
 * Column label.

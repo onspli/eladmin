@@ -1,9 +1,9 @@
 <?php
 namespace Onspli\Eladmin\Modules\Crud\Chainset;
 use \Onspli\Eladmin\Exception;
-use \Onspli\Eladmin\ChainsetChild;
+use \Onspli\Eladmin;
 
-class Action extends ChainsetChild {
+class Action extends Eladmin\Chainset\Child {
 
   public $label = null;
   public $nonlistable = true;

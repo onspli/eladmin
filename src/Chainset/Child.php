@@ -1,6 +1,6 @@
 <?php
 
-namespace Onspli\Eladmin;
+namespace Onspli\Eladmin\Chainset;
 
 /**
 * Chainset object is funny method to configure things.
@@ -18,7 +18,7 @@ namespace Onspli\Eladmin;
 * $columns->modified->timestamp('now');
 * ```
 */
-class ChainsetChild {
+class Child {
 
 private $parent = null;
 private $next = null;
@@ -54,18 +54,18 @@ final public function _getPrev() : ?string {
   return $this->prev;
 }
 
-final public function _setParent(ChainsetParent $obj) : void {
+final public function _setParent(Chainset $obj) : void {
   $this->parent = $obj;
 }
 
-final public function _getParent() : ChainsetParent {
+final public function _getParent() : Chainset {
   return $this->parent;
 }
 
 /**
 * Place child just before $target.
 */
-final public function before(?string $target = null) : ChainsetChild {
+final public function before(?string $target = null) : Child {
   if ($target == $this->key)
     return $this;
   if ($target !== null && !isset($this->parent->$target))
@@ -91,7 +91,7 @@ final public function before(?string $target = null) : ChainsetChild {
 /**
 * Place child just after $target.
 */
-final public function after(?string $target = null) : ChainsetChild {
+final public function after(?string $target = null) : Child {
   if ($target == $this->key)
     return $this;
   if ($target !== null && !isset($this->parent->$target))

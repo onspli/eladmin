@@ -1,6 +1,6 @@
 <?php
 
-namespace Onspli\Eladmin;
+namespace Onspli\Eladmin\Chainset;
 
 /**
 * Chainset object is funny method to configure things.
@@ -18,9 +18,9 @@ namespace Onspli\Eladmin;
 * $columns->modified->timestamp('now');
 * ```
 */
-class ChainsetParent implements \Iterator {
+class Chainset implements \Iterator {
 
-protected $childClass = ChainsetChild::class;
+protected $childClass = Child::class;
 
 private $position = null;
 private $first = null;
