@@ -12,7 +12,7 @@ Eladmin generates CRUD/admin interface for Eloquent.
 - [Filtering Results](#filtering-results)
 - [Contacts](#contacts)
 
-## Installation
+## <a name="installation"></a>Installation
 You can install Eladmin using composer:
 ```
 composer require onspli/eladmin
