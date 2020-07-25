@@ -91,6 +91,21 @@ use Module {
 }
 
 /**
+* Cached columns chainset
+*/
+private $elaColumns = null;
+
+/**
+* Cached actions chainset;
+*/
+private $elaActions = null;
+
+/**
+* Cached filters chainset.
+*/
+private $elaFilters = null;
+
+/**
 * IMPLEMENT. Does CRUD use soft deletes?
 */
 public function elaUsesSoftDeletes() : bool {
@@ -194,16 +209,52 @@ private function elaFiltersDef() {
   return new Chainset\Filters;
 }
 
-public function elaColumns() {
+/**
+* Override to configure columns.
+*/
+protected function elaColumns() {
   return $this->elaColumnsDef();
 }
 
-public function elaActions() {
+/**
+* Override to configure actions.
+*/
+protected function elaActions() {
   return $this->elaActionsDef();
 }
 
-public function elaFilters() {
+/**
+* Override to configure filters.
+*/
+protected function elaFilters() {
   return $this->elaFiltersDef();
+}
+
+/**
+* Get columns chainset.
+*/
+final public function elaColumnsGet() {
+  if ($this->elaColumns === null)
+    $this->elaColumns = $this->elaColumns();
+  return $this->elaColumns;
+}
+
+/**
+* Get actions chainset.
+*/
+final public function elaActionsGet() {
+  if ($this->elaActions === null)
+    $this->elaActions = $this->elaActions();
+  return $this->elaActions;
+}
+
+/**
+* Get filters chainset.
+*/
+final public function elaFiltersGet() {
+  if ($this->elaFilters === null)
+    $this->elaFilters = $this->elaFilters();
+  return $this->elaFilters;
 }
 
 /**
@@ -226,7 +277,8 @@ protected function elaId($throwIfNull = true) {
 /**
 * generate array of values for one row
 */
-private function elaRowValuesArray($row, $elaColumns) {
+private function elaRowValuesArray($row) {
+  $elaColumns = $this->elaColumnsGet();
   $values = [$row[$this->elaPrimary()]];
   foreach($elaColumns as $column) {
     if($column->nonlistable ?? false)
@@ -239,7 +291,8 @@ private function elaRowValuesArray($row, $elaColumns) {
 /**
 * generate array of actions for one column
 */
-private function elaColumnsConfigArray($elaColumns) {
+private function elaColumnsConfigArray() {
+  $elaColumns = $this->elaColumnsGet();
   $config = ['id'];
   foreach($elaColumns as $column) {
     if($column->nonlistable ?? false)
@@ -258,7 +311,8 @@ private function elaColumnsConfigArray($elaColumns) {
 /**
 * generate array of actions for one item
 */
-private function elaRowActionsArray($row, $elaActions, $trash = false){
+private function elaRowActionsArray($row, $trash = false) {
+  $elaActions = $this->elaActionsGet();
   $actions = array();
   if ($trash) {
     if(isset($elaActions->restore) && $this->elaAuth('restore')) {
@@ -291,7 +345,7 @@ private function elaRowActionsArray($row, $elaActions, $trash = false){
 * Validate and modify values before saving.
 */
 private function elaValidateAndModify(){
-  $columns = $this->elaColumns();
+  $columns = $this->elaColumnsGet();
   // check that disabled columns are not set
   foreach ($columns as $column => $config) {
     if ($config->disabled && isset($_POST[$column])) {
@@ -353,13 +407,11 @@ public function elaActionRead(){
   $response['rows'] = array();
   $response['actions'] = array();
 
-  $elaColumns = $this->elaColumns();
-  $elaActions = $this->elaActions();
   foreach($rows as $row){
-    $response['actions'][] = $this->elaRowActionsArray($row, $elaActions, ($_POST['trash'] ?? false) ? true : false);
-    $response['rows'][] = $this->elaRowValuesArray($row, $elaColumns);
+    $response['actions'][] = $this->elaRowActionsArray($row, ($_POST['trash'] ?? false) ? true : false);
+    $response['rows'][] = $this->elaRowValuesArray($row);
   }
-  $response['columns'] = $this->elaColumnsConfigArray($elaColumns);
+  $response['columns'] = $this->elaColumnsConfigArray();
   $this->eladmin->elaOutJson($response);
 }
 

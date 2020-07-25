@@ -4,7 +4,7 @@
     <i class="fas fa-plus-circle"></i> {{ __('Add') }}
   </button>
 @endif
-@foreach($module->elaFilters() as $filter)
+@foreach($module->elaFiltersGet() as $filter)
   <button href="#crud-filters"  class="btn btn-primary" data-toggle="collapse"><i class="fas fa-filter"></i> {{ __('Filters') }}</button>
   @break
 @endforeach
@@ -12,7 +12,7 @@
   <button class="btn btn-secondary crud-trash" data-toggle="collapse"><i class="fas fa-trash-restore"></i> {{ __('Trash') }}</button>
 @endif
 
-@foreach($module->elaActions() as $action)
+@foreach($module->elaActionsGet() as $action)
 <?php
 if(!$module->elaAuth($action->getName())) continue;
 if($action->bulk === null) continue;
