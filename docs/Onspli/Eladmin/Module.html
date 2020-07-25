@@ -88,7 +88,16 @@
     
 
             <div class="description">
-            <p>Generic Eladmin module.</p>            <p>To configure the module you may define properties as shown in the following example.
+            <p>Generic Eladmin module.</p>            <p>Features:</p>
+
+<ul>
+<li>define module's apearence in admin interface - $elaTitle, $elaIcon, elaTitle(), elaIcon()</li>
+<li>handles authorization - elaRoles, elaActionRoles, elaAuth(), elaRoles(), elaSetRoles()</li>
+<li>handles rendering - elaRequest(), elaAsset(), elaView(), aleFile(), elaViews(), elaBlade()</li>
+<li>user defined actions - elaAction<action name>()</li>
+</ul>
+
+<p>To configure the module you may define properties as shown in the following example.
 These properties shouldn't be defined in any trait extending this generic module because trait's properties cannot be overriden.</p>
 
 <pre><code class="lang-php">class MyModule {
@@ -327,7 +336,7 @@ assets/script.css  - module scripts
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method_elaInit">
-        <div class="location">at         line 91</div>
+        <div class="location">at         line 99</div>
         <code>final                    void
     <strong>elaInit</strong>($eladmin, $elakey)
         </code>
@@ -372,7 +381,7 @@ assets/script.css  - module scripts
             </div>
                     <div class="method-item">
                     <h3 id="method_elaInitCheck">
-        <div class="location">at         line 100</div>
+        <div class="location">at         line 108</div>
         <code>final                    void
     <strong>elaInitCheck</strong>()
         </code>
@@ -402,7 +411,7 @@ assets/script.css  - module scripts
             </div>
                     <div class="method-item">
                     <h3 id="method_elakey">
-        <div class="location">at         line 108</div>
+        <div class="location">at         line 116</div>
         <code>final                    string
     <strong>elakey</strong>()
         </code>
@@ -432,7 +441,7 @@ assets/script.css  - module scripts
             </div>
                     <div class="method-item">
                     <h3 id="method_elaAuth">
-        <div class="location">at         line 116</div>
+        <div class="location">at         line 124</div>
         <code>final                    bool
     <strong>elaAuth</strong>(string|null $action = null)
         </code>
@@ -472,7 +481,7 @@ assets/script.css  - module scripts
             </div>
                     <div class="method-item">
                     <h3 id="method_elaTitle">
-        <div class="location">at         line 124</div>
+        <div class="location">at         line 132</div>
         <code>                    string
     <strong>elaTitle</strong>()
         </code>
@@ -502,7 +511,7 @@ assets/script.css  - module scripts
             </div>
                     <div class="method-item">
                     <h3 id="method_elaIcon">
-        <div class="location">at         line 131</div>
+        <div class="location">at         line 139</div>
         <code>                    string
     <strong>elaIcon</strong>()
         </code>
@@ -532,7 +541,7 @@ assets/script.css  - module scripts
             </div>
                     <div class="method-item">
                     <h3 id="method_elaRequest">
-        <div class="location">at         line 138</div>
+        <div class="location">at         line 146</div>
         <code>final                    string
     <strong>elaRequest</strong>($action = null, $args = [])
         </code>
@@ -577,7 +586,7 @@ assets/script.css  - module scripts
             </div>
                     <div class="method-item">
                     <h3 id="method_elaAsset">
-        <div class="location">at         line 146</div>
+        <div class="location">at         line 154</div>
         <code>final                    string
     <strong>elaAsset</strong>(string $path, string|null $version = null)
         </code>
@@ -622,7 +631,7 @@ assets/script.css  - module scripts
             </div>
                     <div class="method-item">
                     <h3 id="method_elaRoles">
-        <div class="location">at         line 154</div>
+        <div class="location">at         line 162</div>
         <code>final                    array
     <strong>elaRoles</strong>($action = null)
         </code>
@@ -662,7 +671,7 @@ assets/script.css  - module scripts
             </div>
                     <div class="method-item">
                     <h3 id="method_elaSetRoles">
-        <div class="location">at         line 179</div>
+        <div class="location">at         line 187</div>
         <code>final                    void
     <strong>elaSetRoles</strong>(array $roles, $action = null)
         </code>
@@ -707,7 +716,7 @@ assets/script.css  - module scripts
             </div>
                     <div class="method-item">
                     <h3 id="method_elaInstanceForAction">
-        <div class="location">at         line 195</div>
+        <div class="location">at         line 203</div>
         <code>final                    object
     <strong>elaInstanceForAction</strong>()
         </code>
@@ -737,7 +746,7 @@ assets/script.css  - module scripts
             </div>
                     <div class="method-item">
                     <h3 id="method_elaViews">
-        <div class="location">at         line 202</div>
+        <div class="location">at         line 210</div>
         <code>                    array
     <strong>elaViews</strong>()
         </code>
@@ -767,7 +776,7 @@ assets/script.css  - module scripts
             </div>
                     <div class="method-item">
                     <h3 id="method_elaBlade">
-        <div class="location">at         line 209</div>
+        <div class="location">at         line 217</div>
         <code>                    <abbr title="Jenssegers\Blade\Blade">Blade</abbr>
     <strong>elaBlade</strong>()
         </code>
@@ -797,7 +806,7 @@ assets/script.css  - module scripts
             </div>
                     <div class="method-item">
                     <h3 id="method_elaView">
-        <div class="location">at         line 217</div>
+        <div class="location">at         line 225</div>
         <code>final                    string
     <strong>elaView</strong>(string $name, array $args = [])
         </code>
@@ -842,7 +851,7 @@ assets/script.css  - module scripts
             </div>
                     <div class="method-item">
                     <h3 id="method_elaFile">
-        <div class="location">at         line 226</div>
+        <div class="location">at         line 234</div>
         <code>                    void
     <strong>elaFile</strong>($path)
         </code>

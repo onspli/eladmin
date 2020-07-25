@@ -7,19 +7,78 @@ use \Onspli\Eladmin\Exception;
 /**
 * Generic CRUD module.
 *
-* Actions
+* ## Actions:
+* ```
+* postForm
+* putForm
+* read
+* update
+* create
+* delete
+* softDelete
+* restore
 * ```
 *
+* ### Action read
+* Request:
+* ```lang-js
+* {
+*   post : {
+*     onlyIds : <bool - return only ids, paging not applied>,
+*     orderBy : <column name>,
+*     direction : <'asc'|'desc'>,
+*     page : <requested page number>,
+*     resultsPerPage : <number of results per page>,
+*     trash : <bool - query only soft deleted items>,
+*     search : <search string>,
+*     filters : {
+*       <column name> : <value>,
+*       <column name> : <value>,
+*       ...
+*     }
+*   }
+* }
+* ```
+* Response (request.onlyIds == false):
+* ```lang-js
+* {
+*   totalResults : <total number of results on all pages>,
+*   ids : [
+*     <first item id>,
+*     <second item id>,
+*     ...
+*   ],
+*   columns : [{<first column config>}, {<second column config>}, ...],
+*   rows : [
+*     [<first column value>, <second column value>, ...],
+*     [<first column value>, <second column value>, ...],
+*     ...
+*   ],
+*   actions : [
+*     [<first item actions>],
+*     [<second item actions>],
+*     ...
+*   ]
+* }
+* ```
+* Response (request.onlyIds == true):
+* ```lang-js
+* [
+*   <first item id>,
+*   <second item id>,
+*   ...
+* ]
 * ```
 *
+* ## Connecting CRUD with ORM
 * The following methods needs to be implemented for a particular ORM library.
-* ```php
+* ```lang-php
 * public function elaPrimary() : string
 * private function elaColumnsDef()
-* protected function elaWrite(array $row, $id = null) : void
+* protected function elaWrite(array $values, $id = null) : void
 * protected function elaRead($id) : array
 * protected function elaDelete($id) : void
-* protected function elaQuery(Query $query, &$totalResults) : array
+* protected function elaQuery(array $query, &$totalResults) : array
 * public function elaUsesSoftDeletes() : bool
 * protected function elaSoftDelete($id) : void
 * protected function elaRestore($id) : void
@@ -29,13 +88,6 @@ trait Crud {
 
 use Module {
   Module::elaViews as elaViews_Module;
-}
-
-/**
-* Extends views directory.
-*/
-public function elaViews() : array {
-  return array_merge([__DIR__ . '/../../../views/modules/crud'], $this->elaViews_Module());
 }
 
 /**
@@ -53,10 +105,11 @@ public function elaPrimary() : string {
 }
 
 /**
-* IMPLEMENT. Update or create ($id = null) row.
-* Row is an associative array ['columnName' => 'value']
+* IMPLEMENT. Update or creat item.
+* @param $values associative array in form ['columnName' => 'value', ...]
+* @param $id id of item to be updated, or null if it's a new item
 */
-protected function elaWrite(array $row, $id = null) : void {
+protected function elaWrite(array $values, $id = null) : void {
 
 }
 
@@ -94,7 +147,7 @@ protected function elaRestore($id) : void {
 * Row is an associative array ['columnName' => 'value']
 * $totalResults needs to be set to number of results without paging applied
 */
-protected function elaQuery(Query $query, &$totalResults) : array {
+protected function elaQuery(array $query, &$totalResults) : array {
   return [];
 }
 
@@ -154,11 +207,18 @@ public function elaFilters() {
 }
 
 /**
-* Return ID of the row which should be affected by the action.
-* Throws if ID isn't set, unless $allowNull = true.
+* Extends views directory.
 */
-protected function elaId($allowNull = false) {
-  if (!isset($_GET['id']) && !$allowNull)
+public function elaViews() : array {
+  return array_merge([__DIR__ . '/../../../views/modules/crud'], $this->elaViews_Module());
+}
+
+
+/**
+* Return ID of the row which should be affected by the action.
+*/
+protected function elaId($throwIfNull = true) {
+  if (!isset($_GET['id']) && $throwIfNull)
     throw new Exception\BadRequestException(__('Entry not identified.'));
   return $_GET['id'] ?? null;
 }
@@ -196,7 +256,7 @@ private function elaColumnsConfigArray($elaColumns) {
 }
 
 /**
-* generate array of actions for one row
+* generate array of actions for one item
 */
 private function elaRowActionsArray($row, $elaActions, $trash = false){
   $actions = array();
@@ -228,16 +288,26 @@ private function elaRowActionsArray($row, $elaActions, $trash = false){
 }
 
 /**
-* Validate and modify values.
+* Validate and modify values before saving.
 */
-private function elaEvalColumns(){
+private function elaValidateAndModify(){
   $columns = $this->elaColumns();
+  // check that disabled columns are not set
   foreach ($columns as $column => $config) {
-    if($config->validate){
-      ($config->validate)($_POST[$column]??null, $this);
+    if ($config->disabled && isset($_POST[$column])) {
+      unset($_POST[$column]);
     }
-    if($config->setformat && isset($_POST[$column])){
-      $_POST[$column] = ($config->setformat)($_POST[$column], $this);
+  }
+  // validate values
+  foreach ($columns as $column => $config) {
+    if ($config->validate) {
+      ($config->validate)($_POST[$column] ?? null, $this);
+    }
+  }
+  // modify values
+  foreach ($columns as $column => $config) {
+    if ($config->setformat) {
+      $_POST[$column] = ($config->setformat)($_POST[$column] ?? null, $this);
     }
   }
 }
@@ -255,7 +325,7 @@ public function elaActionPostForm(){
 * ACTION. Show form - edit entry.
 */
 public function elaActionPutForm(){
-  if(!$this->elaAuth('update'))
+  if(!$this->elaAuth('read'))
     throw new Exception\UnauthorizedException();
   $this->eladmin->elaOutHtml($this->elaView('putForm', ['row' => $this->elaRead($this->elaId())]));
 }
@@ -265,35 +335,32 @@ public function elaActionPutForm(){
 */
 public function elaActionRead(){
 
-  $query = new Query();
-  $query->fill($_POST);
-  $onlyids = $_POST['onlyids'] ?? false;
-
   $totalResults = 0;
-  $rows = $this->elaQuery($query, $totalResults);
+  $rows = $this->elaQuery($_POST, $totalResults);
 
-  $result = [];
+  $ids = [];
+  foreach($rows as $row){
+    $ids[] = $row[$this->elaPrimary()];
+  }
+
   if ($onlyids) {
-    foreach($rows as $row){
-      $result[] = $row[$this->elaPrimary()];
-    }
-    $this->eladmin->elaOutJson($result);
+    $this->eladmin->elaOutJson($ids);
     return;
   }
 
-  $result['totalresults'] = $totalResults;
-  $result['results'] = sizeof($rows);
-  $result['rows'] = array();
-  $result['actions'] = array();
+  $response = [];
+  $response['totalResults'] = $totalResults;
+  $response['rows'] = array();
+  $response['actions'] = array();
 
   $elaColumns = $this->elaColumns();
   $elaActions = $this->elaActions();
   foreach($rows as $row){
-    $result['actions'][] = $this->elaRowActionsArray($row, $elaActions, $query->trash);
-    $result['rows'][] = $this->elaRowValuesArray($row, $elaColumns);
+    $response['actions'][] = $this->elaRowActionsArray($row, $elaActions, ($_POST['trash'] ?? false) ? true : false);
+    $response['rows'][] = $this->elaRowValuesArray($row, $elaColumns);
   }
-  $result['columns'] = $this->elaColumnsConfigArray($elaColumns);
-  $this->eladmin->elaOutJson($result);
+  $response['columns'] = $this->elaColumnsConfigArray($elaColumns);
+  $this->eladmin->elaOutJson($response);
 }
 
 
@@ -301,7 +368,7 @@ public function elaActionRead(){
 * ACTION. Edit database entry.
 */
 public function elaActionUpdate(){
-  $this->elaEvalColumns();
+  $this->elaValidateAndModify();
   $this->elaWrite($_POST, $this->elaId());
   $this->eladmin->elaOutText(__('Entry modified.'));
 }
@@ -310,7 +377,7 @@ public function elaActionUpdate(){
 * ACTION. Create database entry.
 */
 public function elaActionCreate(){
-  $this->elaEvalColumns();
+  $this->elaValidateAndModify();
   $this->elaWrite($_POST);
   $this->eladmin->elaOutText(__('Entry added.'));
 }

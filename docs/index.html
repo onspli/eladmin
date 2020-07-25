@@ -93,10 +93,13 @@
 
 <h2><a id="getting-started"></a>Getting Started</h2>
 
-<p>Let us have a simple website where users can register for events. We have two Eloquent models <em>Event</em> and <em>Registration</em> and we want to generate the admin interface for them. The steps we have to take are:
-1. use <em>Module\Eloquent\Crud</em> trait in the models
-2. extend Eladmin class with basic configuration properties <em>$cache</em> and <em>$modules</em>
-3. call <em>Eladmin::run()</em> method to run Eladmin</p>
+<p>Let us have a simple website where users can register for events. We have two Eloquent models <em>Event</em> and <em>Registration</em> and we want to generate the admin interface for them. The steps we have to take are:</p>
+
+<ol>
+<li>use <em>Module\Eloquent\Crud</em> trait in the models</li>
+<li>extend Eladmin class with basic configuration properties <em>$cache</em> and <em>$modules</em></li>
+<li>call <em>Eladmin::run()</em> method to run Eladmin</li>
+</ol>
 
 <p>Here is an example with a minimal configuration:</p>
 
