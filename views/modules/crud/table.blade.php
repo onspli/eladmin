@@ -1,7 +1,7 @@
 @push('header_row')
       <tr>
         <th class="text-center"><input class="bulk-all" type="checkbox"></th>
-@foreach($module->elaColumns() as $column => $config)
+@foreach($module->elaColumnsGet() as $column => $config)
 <?php if($config->nonlistable) continue; ?>
         <th class="noselect" {!! $config->nonsortable ? '' : 'data-column="'.$column.'"' !!}>
           {{ $config->label ?? $column }}

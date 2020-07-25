@@ -8,7 +8,7 @@
   <form id="modal-form" data-elaaction="update" data-elaid="{{ $row[$module->elaPrimary()] }}" data-elamodule="{{ $module->elakey() }}">
 
   @section('form-body')
-  @foreach($module->elaColumns() as $column)
+  @foreach($module->elaColumnsGet() as $column)
     <?php if($column->noneditable) continue; ?>
     @component('components.inputs.'.$column->input, ['column' => $column, 'row' => $row])
     @endcomponent
@@ -16,7 +16,7 @@
   @show
 
   @section('actions')
-    @foreach($module->elaActions() as $action)
+    @foreach($module->elaActionsGet() as $action)
       <?php
       if(!$module->elaAuth($action->getName())) continue;
       if($action->noneditable) continue;
