@@ -29,6 +29,7 @@
     },
     "scripts": {
         "test": "phpunit --testdox tests",
+        "install:sami": "php -r \"copy('http://get.sensiolabs.org/sami.phar', 'sami.phar');\"",
         "docs": "php sami.phar update sami.config.php"
     }
 }
