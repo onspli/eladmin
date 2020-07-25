@@ -1,0 +1,1912 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="index, follow, all" />
+    <title>Onspli\Eladmin\Modules\Crud\Crud | Eladmin Docs</title>
+
+            <link rel="stylesheet" type="text/css" href="../../../../css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="../../../../css/bootstrap-theme.min.css">
+        <link rel="stylesheet" type="text/css" href="../../../../css/sami.css">
+        <script src="../../../../js/jquery-1.11.1.min.js"></script>
+        <script src="../../../../js/bootstrap.min.js"></script>
+        <script src="../../../../js/typeahead.min.js"></script>
+        <script src="../../../../sami.js"></script>
+        <meta name="MobileOptimized" content="width">
+        <meta name="HandheldFriendly" content="true">
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+    
+    
+    </head>
+
+    <body id="class" data-name="class:Onspli_Eladmin_Modules_Crud_Crud" data-root-path="../../../../">
+            <div id="content">
+        <div id="left-column">
+                <div id="control-panel">
+                <script>
+            $('option[data-version="'+window.projectVersion+'"]').prop('selected', true);
+        </script>
+        <form id="search-form" action="../../../../search.html" method="GET">
+            <span class="glyphicon glyphicon-search"></span>
+            <input name="search"
+                   class="typeahead form-control"
+                   type="search"
+                   placeholder="Search">
+        </form>
+    </div>
+
+                <div id="api-tree"></div>
+
+        </div>
+        <div id="right-column">
+                <nav id="site-nav" class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-elements">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../../../../index.html">Eladmin Docs</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-elements">
+                <ul class="nav navbar-nav">
+                    <li><a href="../../../../classes.html">Classes</a></li>
+                                            <li><a href="../../../../namespaces.html">Namespaces</a></li>
+                                        <li><a href="../../../../interfaces.html">Interfaces</a></li>
+                    <li><a href="../../../../traits.html">Traits</a></li>
+                    <li><a href="../../../../doc-index.html">Index</a></li>
+                    <li><a href="../../../../search.html">Search</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+                        <div class="namespace-breadcrumbs">
+            <ol class="breadcrumb">
+                <li><span class="label label-default">trait</span></li>
+                        <li><a href="../../../../Onspli.html">Onspli</a></li><li class="backslash">\</li><li><a href="../../../../Onspli/Eladmin.html">Eladmin</a></li><li class="backslash">\</li><li><a href="../../../../Onspli/Eladmin/Modules.html">Modules</a></li><li class="backslash">\</li><li><a href="../../../../Onspli/Eladmin/Modules/Crud.html">Crud</a></li><li class="backslash">\</li><li>Crud</li>
+            </ol>
+        </div>
+                <div id="page-content">
+                
+    <div class="page-header">
+        <h1>
+            Crud
+                
+        </h1>
+    </div>
+
+    <p>    trait
+    <strong>Crud</strong>
+</p>
+
+        
+    
+
+            <div class="description">
+            <p>Generic CRUD module.</p>            <p>The following methods needs to be implemented for a particular ORM library.</p>
+
+<pre><code>public function elaPrimary() : string
+
+protected function elaWrite(array $row, $id = null) : void
+protected function elaRead($id) : array
+protected function elaDelete($id) : void
+protected function elaQuery(Query $query, &amp;$totalResults) : array
+
+private function elaColumnsDef()
+
+public function elaUsesSoftDeletes() : bool
+protected function elaSoftDelete($id) : void
+protected function elaRestore($id) : void
+</code></pre>
+</p>                    </div>
+    
+            <h2>Traits</h2>
+
+        
+    <div class="container-fluid underlined">
+                    <div class="row">
+                <div class="col-md-6">
+                                            <a href="../../../../Onspli/Eladmin/Module.html"><abbr title="Onspli\Eladmin\Module">Module</abbr></a>
+                                            
+                </div>
+                <div class="col-md-6">
+                    General Eladmin Module.
+                </div>
+            </div>
+            </div>
+    
+    
+            <h2>Properties</h2>
+
+            <table class="table table-condensed">
+                    <tr>
+                <td class="type" id="property_eladmin">
+                                                            private                    
+                </td>
+                <td>$eladmin</td>
+                <td class="last">Eladmin core instance</td>
+                <td><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#property_eladmin"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_elakey">
+                                                            private                    
+                </td>
+                <td>$elakey</td>
+                <td class="last">Module's elakey</td>
+                <td><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#property_elakey"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_elaActionNamesNormalized">
+                                                            private                    
+                </td>
+                <td>$elaActionNamesNormalized</td>
+                <td class="last">normalizing action names for elaActionRoles is expensive, we want to do it only once</td>
+                <td><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#property_elaActionNamesNormalized"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></td>
+            </tr>
+            </table>
+
+    
+            <h2>Methods</h2>
+
+            <div class="container-fluid underlined">
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaInit">elaInit</a>($eladmin, $elakey)
+        
+                                            <p>Each module has to be initialized with eladmin instance and its own elakey.</p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#method_elaInit"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaInitCheck">elaInitCheck</a>()
+        
+                                            <p>Check if module was initialized. Throws if it wasn't.</p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#method_elaInitCheck"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elakey">elakey</a>()
+        
+                                            <p>Each module has its elakey - index in modules array - used to address requests.</p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#method_elakey"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaAuth">elaAuth</a>(string|null $action = null)
+        
+                                            <p>Check if user is authorized to do action, or athorized to access module at all.</p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#method_elaAuth"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaTitle">elaTitle</a>()
+        
+                                            <p>Get name of the module.</p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#method_elaTitle"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaIcon">elaIcon</a>()
+        
+                                            <p>Get icon of the module.</p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#method_elaIcon"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaRequest">elaRequest</a>($action = null, $args = [])
+        
+                                            <p>Return url for this module.</p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#method_elaRequest"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaAsset">elaAsset</a>(string $path, string|null $version = null)
+        
+                                            <p>Create asset url, file path relative to /assets directory. Default $version = time()</p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#method_elaAsset"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaRoles">elaRoles</a>($action = null)
+        
+                                            <p>Get roles authorized to work with the module, or specific action. Empty array means any role is authorized.</p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#method_elaRoles"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaSetRoles">elaSetRoles</a>(array $roles, $action = null)
+        
+                                            <p>Set roles authorized to work with the module, or specific action. Empty array means any role is authorized.</p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#method_elaSetRoles"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    object
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaInstanceForAction">elaInstanceForAction</a>()
+        
+                                            <p>Actions will be called on instance of this module returned by this method. Default is $this.</p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#method_elaInstanceForAction"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaViews">elaViews</a>()
+        
+                                            <p>Extends views directory.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <abbr title="Jenssegers\Blade\Blade">Blade</abbr>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaBlade">elaBlade</a>()
+        
+                                            <p>Return Blade instance</p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#method_elaBlade"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaView">elaView</a>(string $name, array $args = [])
+        
+                                            <p>Return rendered view.</p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#method_elaView"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaFile">elaFile</a>($path)
+        
+                                            <p>Determinate asset content-type and print it.</p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#method_elaFile"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaUsesSoftDeletes">elaUsesSoftDeletes</a>()
+        
+                                            <p>IMPLEMENT. Does CRUD use soft deletes?</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaPrimary">elaPrimary</a>()
+        
+                                            <p>IMPLEMENT. Name of primary key column. Default is 'id'.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaWrite">elaWrite</a>(array $row, $id = null)
+        
+                                            <p>IMPLEMENT. Update or create ($id = null) row.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaRead">elaRead</a>($id)
+        
+                                            <p>IMPLEMENT. Read one row, or get default one ($id = null)
+Returns row as an associative array ['columnName' => 'value']</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaDelete">elaDelete</a>($id)
+        
+                                            <p>IMPLEMENT. Hard delete row.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaSoftDelete">elaSoftDelete</a>($id)
+        
+                                            <p>IMPLEMENT. Soft delete row.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaRestore">elaRestore</a>($id)
+        
+                                            <p>IMPLEMENT. Restore soft deleted row.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaQuery">elaQuery</a>(<a href="../../../../Onspli/Eladmin/Modules/Crud/Query.html"><abbr title="Onspli\Eladmin\Modules\Crud\Query">Query</abbr></a> $query, $totalResults)
+        
+                                            <p>IMPLEMENT. Query for an array of rows.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaColumnsDef">elaColumnsDef</a>()
+        
+                                            <p>IMPLEMENT. Default columns chainset.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaActionsDef">elaActionsDef</a>()
+        
+                                            <p>Default actions chainset.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaFiltersDef">elaFiltersDef</a>()
+        
+                                            <p>Default filters chainset.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaColumns">elaColumns</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaActions">elaActions</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaFilters">elaFilters</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaId">elaId</a>($allowNull = false)
+        
+                                            <p>Return ID of the row which should be affected by the action.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaRowValuesArray">elaRowValuesArray</a>($row, $elaColumns)
+        
+                                            <p>generate array of values for one row</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaColumnsConfigArray">elaColumnsConfigArray</a>($elaColumns)
+        
+                                            <p>generate array of actions for one column</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaRowActionsArray">elaRowActionsArray</a>($row, $elaActions, $trash = false)
+        
+                                            <p>generate array of actions for one row</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaEvalColumns">elaEvalColumns</a>()
+        
+                                            <p>Validate and modify values.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaActionPostForm">elaActionPostForm</a>()
+        
+                                            <p>ACTION. Show form - create entry.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaActionPutForm">elaActionPutForm</a>()
+        
+                                            <p>ACTION. Show form - edit entry.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaActionRead">elaActionRead</a>()
+        
+                                            <p>ACTION. List database entries.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaActionUpdate">elaActionUpdate</a>()
+        
+                                            <p>ACTION. Edit database entry.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaActionCreate">elaActionCreate</a>()
+        
+                                            <p>ACTION. Create database entry.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaActionDelete">elaActionDelete</a>()
+        
+                                            <p>ACTION. Hard delete.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaActionSoftDelete">elaActionSoftDelete</a>()
+        
+                                            <p>ACTION. Soft delete.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaActionRestore">elaActionRestore</a>()
+        
+                                            <p>ACTION. Restore.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+            </div>
+
+
+        <h2>Details</h2>
+
+            <div id="method-details">
+                    <div class="method-item">
+                    <h3 id="method_elaInit">
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Module.html#method_elaInit"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 61</div>
+        <code>final                    void
+    <strong>elaInit</strong>($eladmin, $elakey)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Each module has to be initialized with eladmin instance and its own elakey.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$eladmin</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td></td>
+                <td>$elakey</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaInitCheck">
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Module.html#method_elaInitCheck"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 70</div>
+        <code>final                    void
+    <strong>elaInitCheck</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Check if module was initialized. Throws if it wasn't.</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elakey">
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Module.html#method_elakey"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 78</div>
+        <code>final                    string
+    <strong>elakey</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Each module has its elakey - index in modules array - used to address requests.</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaAuth">
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Module.html#method_elaAuth"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 86</div>
+        <code>final                    bool
+    <strong>elaAuth</strong>(string|null $action = null)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Check if user is authorized to do action, or athorized to access module at all.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string|null</td>
+                <td>$action</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaTitle">
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Module.html#method_elaTitle"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 94</div>
+        <code>                    string
+    <strong>elaTitle</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Get name of the module.</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaIcon">
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Module.html#method_elaIcon"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 101</div>
+        <code>                    string
+    <strong>elaIcon</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Get icon of the module.</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaRequest">
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Module.html#method_elaRequest"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 108</div>
+        <code>final                    string
+    <strong>elaRequest</strong>($action = null, $args = [])
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Return url for this module.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$action</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td></td>
+                <td>$args</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaAsset">
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Module.html#method_elaAsset"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 116</div>
+        <code>final                    string
+    <strong>elaAsset</strong>(string $path, string|null $version = null)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Create asset url, file path relative to /assets directory. Default $version = time()</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$path</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string|null</td>
+                <td>$version</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaRoles">
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Module.html#method_elaRoles"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 124</div>
+        <code>final                    array
+    <strong>elaRoles</strong>($action = null)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Get roles authorized to work with the module, or specific action. Empty array means any role is authorized.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$action</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaSetRoles">
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Module.html#method_elaSetRoles"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 149</div>
+        <code>final                    void
+    <strong>elaSetRoles</strong>(array $roles, $action = null)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Set roles authorized to work with the module, or specific action. Empty array means any role is authorized.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$roles</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td></td>
+                <td>$action</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaInstanceForAction">
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Module.html#method_elaInstanceForAction"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 165</div>
+        <code>final                    object
+    <strong>elaInstanceForAction</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Actions will be called on instance of this module returned by this method. Default is $this.</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>object</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaViews">
+        <div class="location">at         line 34</div>
+        <code>                    array
+    <strong>elaViews</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Extends views directory.</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaBlade">
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Module.html#method_elaBlade"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 179</div>
+        <code>                    <abbr title="Jenssegers\Blade\Blade">Blade</abbr>
+    <strong>elaBlade</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Return Blade instance</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><abbr title="Jenssegers\Blade\Blade">Blade</abbr></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaView">
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Module.html#method_elaView"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 187</div>
+        <code>final                    string
+    <strong>elaView</strong>(string $name, array $args = [])
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Return rendered view.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$name</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$args</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaFile">
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Module.html#method_elaFile"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 196</div>
+        <code>                    void
+    <strong>elaFile</strong>($path)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Determinate asset content-type and print it.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$path</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaUsesSoftDeletes">
+        <div class="location">at         line 41</div>
+        <code>                    bool
+    <strong>elaUsesSoftDeletes</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>IMPLEMENT. Does CRUD use soft deletes?</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaPrimary">
+        <div class="location">at         line 48</div>
+        <code>                    string
+    <strong>elaPrimary</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>IMPLEMENT. Name of primary key column. Default is 'id'.</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaWrite">
+        <div class="location">at         line 56</div>
+        <code>            protected        void
+    <strong>elaWrite</strong>(array $row, $id = null)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>IMPLEMENT. Update or create ($id = null) row.</p>                    <p>Row is an associative array ['columnName' => 'value']</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$row</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td></td>
+                <td>$id</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaRead">
+        <div class="location">at         line 64</div>
+        <code>            protected        array
+    <strong>elaRead</strong>($id)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>IMPLEMENT. Read one row, or get default one ($id = null)
+Returns row as an associative array ['columnName' => 'value']</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$id</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaDelete">
+        <div class="location">at         line 71</div>
+        <code>            protected        void
+    <strong>elaDelete</strong>($id)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>IMPLEMENT. Hard delete row.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$id</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaSoftDelete">
+        <div class="location">at         line 78</div>
+        <code>            protected        void
+    <strong>elaSoftDelete</strong>($id)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>IMPLEMENT. Soft delete row.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$id</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaRestore">
+        <div class="location">at         line 85</div>
+        <code>            protected        void
+    <strong>elaRestore</strong>($id)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>IMPLEMENT. Restore soft deleted row.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$id</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaQuery">
+        <div class="location">at         line 94</div>
+        <code>            protected        array
+    <strong>elaQuery</strong>(<a href="../../../../Onspli/Eladmin/Modules/Crud/Query.html"><abbr title="Onspli\Eladmin\Modules\Crud\Query">Query</abbr></a> $query, $totalResults)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>IMPLEMENT. Query for an array of rows.</p>                    <p>Row is an associative array ['columnName' => 'value']
+$totalResults needs to be set to number of results without paging applied</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../../../Onspli/Eladmin/Modules/Crud/Query.html"><abbr title="Onspli\Eladmin\Modules\Crud\Query">Query</abbr></a></td>
+                <td>$query</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td></td>
+                <td>$totalResults</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaColumnsDef">
+        <div class="location">at         line 101</div>
+        <code>                private    
+    <strong>elaColumnsDef</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>IMPLEMENT. Default columns chainset.</p>                                                </div>
+                <div class="tags">
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaActionsDef">
+        <div class="location">at         line 109</div>
+        <code>                private    
+    <strong>elaActionsDef</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Default actions chainset.</p>                                                </div>
+                <div class="tags">
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaFiltersDef">
+        <div class="location">at         line 137</div>
+        <code>                private    
+    <strong>elaFiltersDef</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Default filters chainset.</p>                                                </div>
+                <div class="tags">
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaColumns">
+        <div class="location">at         line 141</div>
+        <code>                    
+    <strong>elaColumns</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                <div class="tags">
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaActions">
+        <div class="location">at         line 145</div>
+        <code>                    
+    <strong>elaActions</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                <div class="tags">
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaFilters">
+        <div class="location">at         line 149</div>
+        <code>                    
+    <strong>elaFilters</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                <div class="tags">
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaId">
+        <div class="location">at         line 157</div>
+        <code>            protected        
+    <strong>elaId</strong>($allowNull = false)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Return ID of the row which should be affected by the action.</p>                    <p>Throws if ID isn't set, unless $allowNull = true.</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$allowNull</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaRowValuesArray">
+        <div class="location">at         line 166</div>
+        <code>                private    
+    <strong>elaRowValuesArray</strong>($row, $elaColumns)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>generate array of values for one row</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$row</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td></td>
+                <td>$elaColumns</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaColumnsConfigArray">
+        <div class="location">at         line 179</div>
+        <code>                private    
+    <strong>elaColumnsConfigArray</strong>($elaColumns)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>generate array of actions for one column</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$elaColumns</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaRowActionsArray">
+        <div class="location">at         line 198</div>
+        <code>                private    
+    <strong>elaRowActionsArray</strong>($row, $elaActions, $trash = false)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>generate array of actions for one row</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$row</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td></td>
+                <td>$elaActions</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td></td>
+                <td>$trash</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaEvalColumns">
+        <div class="location">at         line 230</div>
+        <code>                private    
+    <strong>elaEvalColumns</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Validate and modify values.</p>                                                </div>
+                <div class="tags">
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaActionPostForm">
+        <div class="location">at         line 245</div>
+        <code>                    
+    <strong>elaActionPostForm</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>ACTION. Show form - create entry.</p>                                                </div>
+                <div class="tags">
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaActionPutForm">
+        <div class="location">at         line 254</div>
+        <code>                    
+    <strong>elaActionPutForm</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>ACTION. Show form - edit entry.</p>                                                </div>
+                <div class="tags">
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaActionRead">
+        <div class="location">at         line 263</div>
+        <code>                    
+    <strong>elaActionRead</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>ACTION. List database entries.</p>                                                </div>
+                <div class="tags">
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaActionUpdate">
+        <div class="location">at         line 300</div>
+        <code>                    
+    <strong>elaActionUpdate</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>ACTION. Edit database entry.</p>                                                </div>
+                <div class="tags">
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaActionCreate">
+        <div class="location">at         line 309</div>
+        <code>                    
+    <strong>elaActionCreate</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>ACTION. Create database entry.</p>                                                </div>
+                <div class="tags">
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaActionDelete">
+        <div class="location">at         line 318</div>
+        <code>                    
+    <strong>elaActionDelete</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>ACTION. Hard delete.</p>                                                </div>
+                <div class="tags">
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaActionSoftDelete">
+        <div class="location">at         line 326</div>
+        <code>                    
+    <strong>elaActionSoftDelete</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>ACTION. Soft delete.</p>                                                </div>
+                <div class="tags">
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaActionRestore">
+        <div class="location">at         line 334</div>
+        <code>                    
+    <strong>elaActionRestore</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>ACTION. Restore.</p>                                                </div>
+                <div class="tags">
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+            </div>
+
+    
+            </div>
+                <div id="footer">
+        Generated by <a href="http://sami.sensiolabs.org/">Sami, the API Documentation Generator</a>.
+    </div>
+
+        </div>
+    </div>
+    </body>
+
+</html>
