@@ -1,8 +1,8 @@
 <?php
 
-namespace Onspli\Eladmin\Auth;
+namespace Onspli\Eladmin;
 
-interface AuthInterface
+interface IAuth
 {
   /**
   * Return an array of login fields in the form of field_name=>[label=>input label, type=>input_type]

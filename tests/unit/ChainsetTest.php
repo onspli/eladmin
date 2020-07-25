@@ -1,18 +1,18 @@
 <?php
 use PHPUnit\Framework\TestCase;
-use Onspli\Eladmin\ChainsetParent;
-use Onspli\Eladmin\ChainsetChild;
+use Onspli\Eladmin\Chainset\Chainset;
+use Onspli\Eladmin\Chainset\Child;
 
 final class ChainsetTest extends TestCase
 {
 
 
   public function testAddAndDeleteChild() : void {
-    $cs = new ChainsetParent;
+    $cs = new Chainset;
     $this->assertFalse(isset($cs->child));
     // create child
     $cs->child;
-    $this->assertInstanceOf(ChainsetChild::class, $cs->child);
+    $this->assertInstanceOf(Child::class, $cs->child);
     $this->assertTrue(isset($cs->child));
     // delete child
     unset($cs->child);
@@ -20,7 +20,7 @@ final class ChainsetTest extends TestCase
   }
 
     public function testSetPropertiesToChild() : void {
-      $cs = new ChainsetParent;
+      $cs = new Chainset;
       $cs->child->prop1('val1')->prop2('val2');
       $cs->child->prop3('val3');
 
@@ -30,7 +30,7 @@ final class ChainsetTest extends TestCase
     }
 
     public function testOrder() : void {
-      $cs = new ChainsetParent;
+      $cs = new Chainset;
       $cs->word1->val('Hello');
       $cs->word3->val('world');
       $cs->word2->val('!');
@@ -40,7 +40,7 @@ final class ChainsetTest extends TestCase
     }
 
     public function testBefore() : void {
-      $cs = new ChainsetParent;
+      $cs = new Chainset;
       $cs->word1->val('Hello');
       $cs->word2->val('!');
       $cs->word3->val('world')->before('word2');
@@ -50,7 +50,7 @@ final class ChainsetTest extends TestCase
     }
 
     public function testBeforeNull() : void {
-      $cs = new ChainsetParent;
+      $cs = new Chainset;
       $cs->word1->val('Hello');
       $cs->word2->val('!');
       $cs->word3->val('world');
@@ -61,7 +61,7 @@ final class ChainsetTest extends TestCase
     }
 
     public function testAfter() : void {
-      $cs = new ChainsetParent;
+      $cs = new Chainset;
       $cs->word1->val('Hello');
       $cs->word2->val('!');
       $cs->word3->val('world');
@@ -72,7 +72,7 @@ final class ChainsetTest extends TestCase
     }
 
     public function testAfterNull() : void {
-      $cs = new ChainsetParent;
+      $cs = new Chainset;
       $cs->word3->val('world');
       $cs->word1->val('Hello');
       $cs->word2->val('!');
@@ -80,22 +80,6 @@ final class ChainsetTest extends TestCase
       $res = "";
       foreach($cs as $word) $res .= $word->val." ";
       $this->assertEquals("Hello world ! ", $res);
-    }
-
-    private function performanceStep() : void {
-      $cs = new ChainsetParent;
-      $cs->word1->val('Hello');
-      $cs->word2->val('!');
-      $cs->word3->val('world')->before('word2');
-      $cs->word4->val('!')->before('word1');
-      $cs->word5->val('!')->before('word1');
-      $cs->word6->val('!')->before('word1');
-      $cs->word7->val('!')->before('word1');
-      $cs->word8->val('!')->before('word1');
-      $cs->word9->val('!')->before('word1');
-      $cs->word10->val('!')->before('word1');
-      $cs->word11->val('!')->before('word1');
-      $cs->word12->val('!')->before('word1');
     }
 
 }

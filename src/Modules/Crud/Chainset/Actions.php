@@ -1,9 +1,9 @@
 <?php
 namespace Onspli\Eladmin\Modules\Crud\Chainset;
 use \Onspli\Eladmin\Exception;
-use \Onspli\Eladmin\ChainsetParent;
+use \Onspli\Eladmin;
 
-class Actions extends ChainsetParent {
+class Actions extends Eladmin\Chainset\Chainset {
 
 protected $childClass = Action::class;
 

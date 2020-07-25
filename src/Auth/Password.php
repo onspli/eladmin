@@ -7,8 +7,8 @@ use Onspli\Eladmin\Exception;
 * Simple username/password authorization.
 * Single user, no roles, password hash saved to file.
 */
-class Password implements AuthInterface
-{
+class Password implements \Onspli\Eladmin\IAuth {
+  
   // username
   protected $username = 'eladmin';
   // default password

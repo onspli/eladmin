@@ -248,7 +248,7 @@ final public function username() : ?string {
 /**
 * Return authorization instance.
 */
-final public function user() : ?Auth\AuthInterface {
+final public function user() : ?IAuth {
   return $this->iauth;
 }
 
@@ -538,8 +538,8 @@ private function initCache() : void {
 private function initAuthorization() : void {
   if ($this->auth) {
     $this->iauth = new $this->auth;
-    if (!($this->iauth instanceof Auth\AuthInterface))
-      throw new Exception\Exception(__('Authorization class %s does not implement Auth\AuthInterface.', $this->auth));
+    if (!($this->iauth instanceof IAuth))
+      throw new Exception\Exception(__('Authorization class %s does not implement IAuth interface.', $this->auth));
 
     $this->log->debug('init authorization');
     if (static::isModule($this->auth))
