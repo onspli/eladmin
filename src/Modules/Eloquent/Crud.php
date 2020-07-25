@@ -84,7 +84,7 @@ protected function elaSoftDelete($id) : void {
   $row = $this->find($id);
   if (!$row)
     throw new Exception\BadRequestException( __('Entry not found!') );
-  if ($this->elaUsesSoftDeletes())
+  if (!$this->elaUsesSoftDeletes())
     throw new Exception\BadRequestException( __('This CRUD doesn\'t support soft deletes!') );
   else
     $row->delete();
@@ -94,10 +94,10 @@ protected function elaSoftDelete($id) : void {
 * Restore entry
 */
 protected function elaRestore($id) : void {
-  $row = $this->find($id);
+  $row = $this->withTrashed()->find($id);
   if (!$row)
     throw new Exception\BadRequestException( __('Entry not found!') );
-  if ($this->elaUsesSoftDeletes())
+  if (!$this->elaUsesSoftDeletes())
     throw new Exception\BadRequestException( __('This CRUD doesn\'t support soft deletes!') );
   $row->restore();
 }

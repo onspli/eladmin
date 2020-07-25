@@ -114,8 +114,8 @@ private function elaActionsDef() {
     $actions->restore->style('success')->icon('<i class="fas fa-recycle"></i>')->title(__('Restore'))->hidden();
   }
 
-  if ($this->elaAuth('forceDelete')){
-    $actions->forceDelete->style('danger')->icon('<i class="fas fa-trash-alt"></i>')->title(__('Delete'))->confirm()->hidden();
+  if ($this->elaAuth('delete')){
+    $actions->delete->style('danger')->icon('<i class="fas fa-trash-alt"></i>')->title(__('Delete'))->confirm()->hidden();
   }
 
   if ($this->elaAuth('update')){
@@ -124,8 +124,8 @@ private function elaActionsDef() {
     $actions->putForm->style('primary')->icon('<i class="fas fa-eye"></i>')->done('return;')->hidden();
   }
 
-  if ($this->elaUsesSoftDeletes() && $this->elaAuth('delete')){
-    $actions->delete->style('danger')->icon('<i class="fas fa-trash-alt"></i>')->hidden();
+  if ($this->elaUsesSoftDeletes() && $this->elaAuth('softDelete')){
+    $actions->softDelete->style('danger')->icon('<i class="fas fa-trash-alt"></i>')->hidden();
   }
 
   return $actions;
@@ -155,9 +155,9 @@ public function elaFilters() {
 * Throws if ID isn't set, unless $allowNull = true.
 */
 protected function elaId($allowNull = false) {
-  if (!isset($_GET['elaid']) && !$allowNull)
+  if (!isset($_GET['id']) && !$allowNull)
     throw new Exception\BadRequestException(__('Entry not identified.'));
-  return $_GET['elaid'] ?? null;
+  return $_GET['id'] ?? null;
 }
 
 /**
@@ -177,7 +177,7 @@ private function elaRowValuesArray($row, $elaColumns) {
 * generate array of actions for one column
 */
 private function elaColumnsConfigArray($elaColumns) {
-  $config = ['elaid'];
+  $config = ['id'];
   foreach($elaColumns as $column) {
     if($column->nonlistable ?? false)
       continue;
@@ -201,8 +201,8 @@ private function elaRowActionsArray($row, $elaActions, $trash = false){
     if(isset($elaActions->restore) && $this->elaAuth('restore')) {
       $actions[] = $elaActions->restore->getAction($row);
     }
-    if(isset($elaActions->forceDelete) && $this->elaAuth('forceDelete')) {
-      $actions[] = $elaActions->forceDelete->getAction($row);
+    if(isset($elaActions->delete) && $this->elaAuth('delete')) {
+      $actions[] = $elaActions->delete->getAction($row);
     }
   } else {
     foreach($elaActions as $action) {
@@ -215,7 +215,9 @@ private function elaRowActionsArray($row, $elaActions, $trash = false){
     if(isset($elaActions->putForm) && ($this->elaAuth('update') || $this->elaAuth('read'))) {
       $actions[] = $elaActions->putForm->getAction($row);
     }
-    if(isset($elaActions->delete) && $this->elaUsesSoftDeletes() && $this->elaAuth('delete')) {
+    if(isset($elaActions->softDelete) && $this->elaUsesSoftDeletes() && $this->elaAuth('softDelete')) {
+      $actions[] = $elaActions->softDelete->getAction($row);
+    } else if (isset($elaActions->delete) && !$this->elaUsesSoftDeletes() && $this->elaAuth('delete')) {
       $actions[] = $elaActions->delete->getAction($row);
     }
   }
