@@ -331,7 +331,6 @@ private function assetpath() : ?string {
     throw new Exception\UnauthorizedException('Not authorized to access asset ' . $path . ' for module "' . $this->modulekey() . '".');
 
   $dirs = $this->views($module->elaViews());
-  $dirs[] = __DIR__ . '/../';
   foreach ($dirs as $dir) {
     $file = $dir . '/assets/' . $path;
     if (file_exists($file))
