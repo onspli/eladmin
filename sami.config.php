@@ -30,7 +30,7 @@ $sami['twig']->addFilter(
   new \Twig\TwigFilter('markdown_to_html', function ($str) {
     $markdown = new Michelf\MarkdownExtra();
     $str = preg_replace('/```(\w+)/i', '```lang-${1}', $str);
-    return $markdown->transform($str);
+    return '<div class="markdown">' . $markdown->transform($str) . '</div>';
   })
 );
 
