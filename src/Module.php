@@ -8,6 +8,14 @@ use \Jenssegers\Blade\Blade;
 /**
 * Generic Eladmin module.
 *
+* Features:
+*
+* - define module's apearence in admin interface - $elaTitle, $elaIcon, elaTitle(), elaIcon()
+* - handles authorization - elaRoles, elaActionRoles, elaAuth(), elaRoles(), elaSetRoles()
+* - handles rendering - elaRequest(), elaAsset(), elaView(), aleFile(), elaViews(), elaBlade()
+* - user defined actions - elaAction<action name>()
+*
+*
 * To configure the module you may define properties as shown in the following example.
 * These properties shouldn't be defined in any trait extending this generic module because trait's properties cannot be overriden.
 * ```lang-php

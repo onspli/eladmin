@@ -20,6 +20,7 @@ composer require onspli/eladmin
 
 ## <a id="getting-started"></a>Getting Started
 Let us have a simple website where users can register for events. We have two Eloquent models *Event* and *Registration* and we want to generate the admin interface for them. The steps we have to take are:
+
 1. use *Module\Eloquent\Crud* trait in the models
 2. extend Eladmin class with basic configuration properties *$cache* and *$modules*
 3. call *Eladmin::run()* method to run Eladmin

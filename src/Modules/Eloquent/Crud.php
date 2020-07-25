@@ -30,7 +30,7 @@ protected function elaWrite(array $row, $id = null) : void {
   $columns = $this->elaColumns();
 
   foreach ($tableColumns as $column) {
-    if (!isset($row[$column]) || !isset($columns->{$column}) || $columns->{$column}->disabled)
+    if (!isset($row[$column]) || !isset($columns->{$column}))
       continue;
     $entry->{$column} = $row[$column];
   }
@@ -59,15 +59,15 @@ protected function elaDelete($id) : void {
     $row->delete();
 }
 
-protected function elaQuery(CrudModule\Query $query, &$totalResults) : array {
+protected function elaQuery(array $query, &$totalResults) : array {
   $q = $this;
 
-  if ($query->trash){
+  if ($query['trash']){
     $q = $q->onlyTrashed();
   }
 
-  if ($query->sortBy)
-    $q = $q->orderBy($query->sortBy, $query->direction);
+  if ($query['sortBy'])
+    $q = $q->orderBy($query['sortBy'], $query['direction']);
   $totalResults = $q->count();
   $rows = $q->get()->toArray();
   return $rows;
@@ -141,7 +141,7 @@ private function elaColumnsDef(){
 
 
 public function elaGetActionInstance(){
-  $elaid = $this->elaId(true);
+$elaid = $this->elaId(false /* $throwIfNull */);
   if($elaid === null || in_array($this->eladmin->actionkey(), ['read', 'create', 'update', 'delete', 'softdelete', 'restore', 'putform', 'postform']))
     return $this;
 
