@@ -20,5 +20,6 @@
 <script>
 var _moduleElakey = '{{ $module->elakey() }}';
 var _msg_nothingFound = '{{ __("Nothing found!") }}';
+var _msg_dbError = '{{ __("Cannot read from database!") }}';
 </script>
 @endpush

@@ -2,24 +2,30 @@
 * POST request eladmin action
 * - Logout when response is HTTP 401
 * - Toaster error on fail
-* - Open or reload modal if reponse contains modal HTML
-* - Toaster success if reponse is text/plain or doesnt contain modal HTML
+* - Open or reload modal if reponse contains modal HTML (unless silent option passed)
+* - Toaster success if reponse is text/plain or doesnt contain modal HTML (unless silent option passed)
 */
-function elaRequest(module, action, postargs, getargs) {
-  if (module === null || module === undefined) {
+function elaRequest(request) {
+  request = $.extend({}, {
+    elamodule : null,
+    elaaction : null,
+    elatoken : _csrftoken,
+    get : {},             // get arguments
+    post : {},            // post argument
+    silent : true         // do not toastr or modal on success
+  }, request);
+
+  if (request.module === null) {
     throw 'You have to specify module!';
   }
-  if (action === null || module === undefined) {
+  if (request.action === null) {
     throw 'You have to specify action!';
   }
-  return $.ajax({
+
+  var promise = $.ajax({
       method : 'POST',
-      url : '?' + $.param($.extend({}, {
-                            elamodule : module,
-                            elaaction : action,
-                            elatoken : _csrftoken
-                          }, getargs)),
-      data : postargs
+      url : '?' + $.param($.extend({}, request.get, {elamodule : request.module, elaaction : request.action, elatoken : _csrftoken})),
+      data : request.post
   })
   .fail(function(response) {
     consecutive.point('request_fail', response);
@@ -29,10 +35,12 @@ function elaRequest(module, action, postargs, getargs) {
         location.reload();
       }, 3000);
     }
-  })
-  .done(function(data, status, xhr) {
+  });
+
+  if (!request.silent) {
+
+  promise.done(function(data, status, xhr) {
     var contentType = xhr.getResponseHeader("content-type") || "";
-    console.debug('elaRequest response content type: ' + contentType);
     if (!data) {
       return;
     }
@@ -50,22 +58,96 @@ function elaRequest(module, action, postargs, getargs) {
     } else if (contentType.indexOf('text/plain') > -1) {
         toastr.success(data);
     }
+  });
+
+  }
+
+  promise.done(function(data) {
     consecutive.point('request_ok', data);
   });
+  return promise;
 }
+
+/**
+* Create request according to data-ela* properties of element
+* data-elaaction
+* data-elamodule
+* data-elapost* ... postargs
+* data-elaget* ... getargs
+* data-elasilent
+* data-eladone
+*/
+function elaElementRequest(element, request) {
+  var data = $(element).data();
+
+  var htmlRequest = {
+    action : $(element).data('elaaction'),
+    module : $(element).data('elamodule'),
+    silent : $(element).data('elasilent') ? true : false,
+    post : {},
+    get : {}
+  };
+
+  $.each(data, function(key,val) {
+    if (key.startsWith('elapost')) {
+      htmlRequest.post[key.substr(7)] = val;
+      return;
+    }
+    if (key.startsWith('elaget')) {
+      htmlRequest.get[key.substr(6)] = val;
+      return;
+    }
+  });
+
+  var promise = elaRequest($.extend({}, htmlRequest, request));
+  (function(element) {
+    promise.done(function(data, status, xhr) {
+      $(element).trigger('eladone', [data, status, xhr]);
+    });
+  })();
+  return promise;
+}
+
+/**
+* Eladone event attribute
+*/
+$(document).on('eladone', '*[data-eladone]', function(e, data, status, xhr) {
+  var exe = new Function($(this).data('eladone'));
+  exe();
+});
+
+/**
+* Eladmin action
+*/
+$(document).on('click', '*:not(form)[data-elaaction]', function(e) {
+  e.preventDefault();
+  elaElementRequest(this);
+});
+
+/**
+* Eladmin action - modal forms
+* Closes modal on success.
+*/
+$(document).on('submit', 'form[data-elaaction]', function(e) {
+  e.preventDefault();
+  elaElementRequest(this, {post : $(this).serialize()})
+  .done(function(data) {
+    modalClose();
+  });
+});
 
 /**
 * toggle menu side bar
 */
-$(document).on('click', "#menu-toggle", function(e) {
+$(document).on('click', '#menu-toggle', function(e) {
   e.preventDefault();
-  $("#wrapper").toggleClass("toggled");
+  $('#wrapper').toggleClass('toggled');
 });
 
 /**
 * tooltips on mouse hover
 */
-$('body').tooltip({selector: '[data-toggle="tooltip"]', trigger : 'hover'});
+$('body').tooltip({selector : '[data-toggle="tooltip"]', trigger : 'hover'});
 
 /**
 * Check if modal window is open
@@ -95,7 +177,7 @@ function modalOpen(html) {
   }
   $('#dynamic').html(html);
   html.modal();
-  history.pushState({data:'modal'}, '', '#modal');
+  history.pushState({data : 'modal'}, '', '#modal');
 }
 
 /**
@@ -109,7 +191,7 @@ window.onpopstate = function(e){
 /**
 * on modal close event
 */
-$("#dynamic").on("hidden.bs.modal", function () {
+$('#dynamic').on('hidden.bs.modal', function () {
   var type = window.location.hash.substr(1);
   if (type == 'modal') {
     history.back();
@@ -117,69 +199,12 @@ $("#dynamic").on("hidden.bs.modal", function () {
 });
 
 /**
-* confirm prompt, data-elaconfirm="message"
+* confirm prompt, data-confirm="message"
 */
-$(document).on('click', '*[data-elaconfirm]', function(e){
-  var confirm = window.confirm($(this).data('elaconfirm'));
+$(document).on('click', '*[data-confirm]', function(e){
+  var confirm = window.confirm($(this).data('confirm'));
   if (!confirm) {
     e.preventDefault();
     e.stopImmediatePropagation();
   }
-});
-
-/**
-* Create request according to data-ela* properties of element
-* data-elaaction
-* data-elamodule
-* data-elaarg ... postargs
-* data-ela* ... getargs
-*/
-function elaElementRequest(element, postargs) {
-  var data = $(element).data();
-  var action = data['elaaction'];
-  var module = data['elamodule'];
-  if (postargs === undefined)
-    postargs = {};
-  var getargs = {};
-  $.each(data, function(key,val) {
-    if (!key.startsWith('ela') || key.startsWith('elaaction') || key.startsWith('elamodule'))  {
-      return;
-    }
-    if (key.startsWith('elaarg')) {
-      postargs[key.substr(6)] = val;
-      return;
-    }
-    getargs[key] = val;
-  });
-  return elaRequest(module, action, postargs, getargs);
-}
-
-/**
-* Eladmin action
-*
-* data-elaaction
-* data-elamodule
-* data-elaarg ... postargs
-* data-ela* ... getargs
-*/
-$(document).on('click', '*:not(form)[data-elaaction]', function(e){
-  e.preventDefault();
-  elaElementRequest(this)
-});
-
-/**
-* Eladmin action - modal forms
-* Closes modal on success.
-*
-* data-elaaction
-* data-elamodule
-* data-elaarg ... postargs
-* data-ela* ... getargs
-*/
-$(document).on('submit', 'form[data-elaaction]', function(e){
-  e.preventDefault();
-  elaElementRequest(this, $(this).serialize())
-  .done(function(data) {
-    modalClose();
-  });
 });

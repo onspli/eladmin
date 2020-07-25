@@ -1,16 +1,143 @@
-
+/**
+* Holding crud filter config.
+*/
 var crudFilters = {
-  sort: null,
-  direction: null,
-  resultsperpage: 10,
-  page: 1,
-  totalresults: 0,
+  sort : null,
+  direction : null,
+  resultsperpage : 10,
+  page : 1,
+  totalresults : 0,
   maxpage : 1,
-  search:'',
-  columns:{},
-  trash: 0,
-  onlyids: 0
+  search : '',
+  columns : {},
+  trash : 0,
+  onlyids : 0
 };
+
+/**
+* We need to track read requests count to draw the last request onlz.
+*/
+var crudReadRequestCount = 0;
+
+/**
+* Default search icon
+*/
+var crudSearchIconDefault = $('.crud-paging .searchicon').html();
+
+/**
+* Populate table with data accoring to filters, paging and other setting.
+*/
+function crudRead() {
+  crudReadRequestCount++;
+  var crudCurrentReadRequestCount = crudReadRequestCount;
+
+  var crudQuery = crudFilters;
+
+  (function(crudCurrentReadRequestCount){
+    elaRequest({module : _moduleElakey, action : 'read', post : crudQuery})
+    .done(function(data){
+      // it wasn't response to the last request, skip update
+      if (crudCurrentReadRequestCount < crudReadRequestCount){
+        console.debug('Request #' + crudCurrentReadRequestCount + ' skipped. Last request is #' + crudReadRequestCount + '.');
+        return;
+      }
+      $('.crud-paging .searchicon').html(crudSearchIconDefault);
+
+      // probably php error
+      if (data.totalresults === undefined) {
+        toastr.error(_msg_dbError);
+        return;
+      }
+
+      crudFilters.totalresults = data.totalresults;
+      crudFilters.maxpage = Math.ceil(crudFilters.totalresults / crudFilters.resultsperpage);
+
+      var tbody = $('#crud-table tbody');
+      tbody.empty();
+      for (var i = 0; i < data.results; i++){
+        var values = data.rows[i];
+        var actions = data.actions[i];
+        var tr = rowFactory(values, actions, data.columns);
+        tbody.append(tr);
+      }
+
+      // ???
+      //if (crudFilters.maxpage != maxpage) {
+      //  redrawFilters(crudFilters.totalresults == 0);
+      //}
+      if (crudFilters.totalresults == 0) {
+        tbody.html('<tr><td colspan="1000" class="crud-loading"><i class="fas fa-dove"></i> ' + _msg_nothingFound + '</td></tr>');
+      }
+      $('.results-shown').text(data.results);
+      $('.results-total').text(crudFilters.totalresults);
+      bulkRedraw();
+      consecutive.point('crud_read');
+    })
+    .fail(function(res){
+      // it wasn't response to the last request, skip update
+      if (crudCurrentReadRequestCount < crudReadRequestCount){
+        console.debug('Request #' + crudCurrentReadRequestCount + ' skipped. Last request is #' + crudReadRequestCount + '.');
+        return;
+      }
+      $('.crud-paging .searchicon').html(crudSearchIconDefault);
+    });
+  })();
+
+}
+
+/**
+* Validate and update crudFilters config values
+*/
+function validateFilters() {
+  crudFilters.maxpage = Math.ceil(crudFilters.totalresults / crudFilters.resultsperpage);
+  if (crudFilters.maxpage < 1)
+    crudFilters.maxpage = 1;
+  if (parseInt(crudFilters.page) != crudFilters.page)
+    crudFilters.page = 1;
+  if (crudFilters.page > crudFilters.maxpage)
+    crudFilters.page = crudFilters.maxpage;
+  if (crudFilters.page < 1)
+    crudFilters.page = 1;
+}
+
+/**
+* Redraw all filters to match crudFilters config
+*/
+function redrawFilters() {
+  $('#crud-table th[data-column] .arr.active').removeClass('active');
+  $('#crud-table th[data-column=' + crudFilters.sort + '] .arr.' + (crudFilters.direction == 'desc' ? 'desc' : 'asc')).addClass('active');
+
+  if (crudFilters.page == 1) {
+    $('.crud-paging .prev-page').attr('disabled', 'disabled');
+  } else {
+    $(' .crud-paging .prev-page').removeAttr('disabled');
+  }
+
+  if (crudFilters.page == crudFilters.maxpage) {
+    $('.crud-paging .next-page').attr('disabled', 'disabled');
+  } else {
+    $(' .crud-paging .next-page').removeAttr('disabled');
+  }
+  $('.crud-paging .maxpage').text('/ ' + crudFilters.maxpage);
+  $('.crud-paging *[data-crudfilter]').each(function() {
+    $(this).val(crudFilters[$(this).data('crudfilter')]);
+  });
+
+  if (crudFilters.trash) {
+    $(' .crud-trash').addClass('btn-warning').removeClass('btn-secondary');
+  } else {
+    $(' .crud-trash').addClass('btn-secondary').removeClass('btn-warning');
+  }
+}
+
+/**
+* Populate CRUD table on document load.
+*/
+window.addEventListener("load", function() {
+  validateFilters();
+  redrawFilters();
+  crudRead();
+});
 
 var bulkConfig = {
   all: false,
@@ -170,9 +297,9 @@ function actionButtonFactory(action){
   button.attr('data-elaaction', action.action);
   button.attr('data-eladone', action.done?action.done:'' + ';redrawCrudTable();');
   button.attr('data-elamodule', action.module);
-  button.attr('data-elaid', action.id);
+  button.attr('data-elagetid', action.id);
   if(action.confirm !== undefined)
-    button.attr('data-elaconfirm', action.confirm?action.confirm:action.action);
+    button.attr('data-confirm', action.confirm?action.confirm:action.action);
   button.attr('class', 'btn m-1 btn-'+(action.style?action.style:'primary'));
   if(action.icon){
     button.html( action.icon+' <span class="d-none d-lg-inline">'+ (action.label?action.label:'') + '</span>' );
@@ -182,99 +309,9 @@ function actionButtonFactory(action){
   return button;
 }
 
-var readRequestCount = 0;
-var searchiconHtml = $('.crud-paging .searchicon').html();
-function redrawCrudTable(){
-
-  var maxpage = crudFilters.maxpage;
-  $('.crud-paging .searchicon').html('<i class="fas fa-sync-alt fa-spin"></i>');
-
-  // we want to update only last request
-  readRequestCount++;
-  var currentRequestCount = readRequestCount;
-  crudFilters.onlyids = 0;
-  (function(currentRequestCount){
-
-    elaRequest(_moduleElakey, 'read', crudFilters)
-    .done(function(data){
-      $('.crud-paging .searchicon').html(searchiconHtml);
-
-      if (data.totalresults === undefined) {
-        toastr.error('Cannot read from database.');
-        return;
-      }
-
-      if (currentRequestCount < readRequestCount){
-        console.debug('Request #'+currentRequestCount+ " skipped");
-        return;
-      }
-
-      var tbody = $('#crud-table tbody');
-      crudFilters.totalresults = data.totalresults;
-      crudFilters.maxpage = Math.ceil(crudFilters.totalresults/crudFilters.resultsperpage);
-      tbody.empty();
-      for(var i=0; i<data.results; i++){
-        var values = data.rows[i];
-        var actions = data.actions[i];
-        var tr = rowFactory(values, actions, data.columns);
-        tbody.append(tr);
-      }
-
-      if(crudFilters.maxpage != maxpage) redrawFilters(crudFilters.totalresults==0);
-      if(crudFilters.totalresults == 0){
-        tbody.html('<tr><td colspan="1000" class="crud-loading"><i class="fas fa-dove"></i> ' + _msg_nothingFound + '</td></tr>');
-      }
-      $('.results-shown').text(data.results);
-      $('.results-total').text(crudFilters.totalresults);
-      bulkRedraw();
-      consecutive.point('crud_read');
-    })
-    .fail(function(res){
-      if (currentRequestCount < readRequestCount){
-        console.debug('Request #'+currentRequestCount+ " skipped");
-        return;
-      }
-      $('.crud-paging .searchicon').html(searchiconHtml);
-    });
-
-  })(currentRequestCount);
-}
-
 
 $(' #crud-table th[data-column]').css('cursor','pointer').css('white-space','nowrap');
 
-function redrawFilters(doNotRedraw, doNotUncheckAll){
-  crudFilters.maxpage = Math.ceil(crudFilters.totalresults/crudFilters.resultsperpage);
-  if(crudFilters.maxpage < 1) crudFilters.maxpage = 1;
-  if(parseInt(crudFilters.page) != crudFilters.page) crudFilters.page = 1;
-  if(crudFilters.page > crudFilters.maxpage) crudFilters.page = crudFilters.maxpage;
-  if(crudFilters.page < 1) crudFilters.page = 1;
-
-  console.debug(crudFilters);
-  $(' #crud-table th[data-column] .arr.active').removeClass('active');
-  $(' #crud-table th[data-column='+crudFilters.sort+'] .arr.'+(crudFilters.direction == 'desc'?'desc':'asc')).addClass('active');
-
-  if(crudFilters.page == 1) $('.crud-paging .prev-page').attr('disabled', 'disabled');
-  else $(' .crud-paging .prev-page').removeAttr('disabled');
-  if(crudFilters.page == crudFilters.maxpage) $('.crud-paging .next-page').attr('disabled', 'disabled');
-  else $(' .crud-paging .next-page').removeAttr('disabled');
-  $(' .crud-paging .maxpage').text('/ '+crudFilters.maxpage);
-
-  $(' .crud-paging *[data-crudfilter]').each(function(){
-    $(this).val( crudFilters[$(this).data('crudfilter')] );
-  });
-
-  if(crudFilters.trash) $(' .crud-trash').addClass('btn-warning').removeClass('btn-secondary');
-  else $(' .crud-trash').addClass('btn-secondary').removeClass('btn-warning');
-
-  if(!doNotUncheckAll)
-    bulkUncheckAll();
-
-  if(!doNotRedraw)
-    redrawCrudTable();
-}
-
-window.addEventListener("load", function(){ redrawFilters(); });
 
 $(' #crud-table').on('click', 'th[data-column]',function(e){
   e.preventDefault();
@@ -291,11 +328,6 @@ $(' #crud-table').on('click', 'th[data-column]',function(e){
   redrawFilters(false, true);
 });
 
-$(' .crud-paging *[data-crudfilter=search]').on('input', function(){
-  crudFilters[$(this).data('crudfilter')] = $(this).val();
-  redrawFilters(false);
-});
-
 $(' .crud-paging *[data-crudfilter]').change(function(){
   crudFilters[$(this).data('crudfilter')] = $(this).val();
   redrawFilters(false, $(this).data('donotuncheck'));
@@ -309,29 +341,60 @@ $(' #crud-filters *[data-crudfiltercolumn]').change(function(){
   redrawFilters(false);
 });
 
+/**
+* Search while typing.
+*/
+$('.crud-paging *[data-crudfilter=search]').on('input', function(){
+  crudFilters[$(this).data('crudfilter')] = $(this).val();
+  validateFilters();
+  redrawFilters();
+  crudRead();
+});
 
-$(' .crud-paging .prev-page').click(function(){
+/**
+* Show previous page.
+*/
+$('.crud-paging .prev-page').click(function() {
   crudFilters.page--;
-  redrawFilters(false, true);
+  validateFilters();
+  redrawFilters();
+  crudRead();
 });
 
-$(' .crud-paging .next-page').click(function(){
+/**
+* Show next page.
+*/
+$('.crud-paging .next-page').click(function() {
   crudFilters.page++;
-  redrawFilters(false, true);
-});
-
-$(' .crud-paging .erase').click(function(){
-  crudFilters.search= '';
+  validateFilters();
   redrawFilters();
+  crudRead();
 });
 
-$(' .crud-trash').click(function(){
-  crudFilters.trash= crudFilters.trash?0:1;
+/**
+* Erase search field.
+*/
+$('.crud-paging .erase').click(function() {
+  crudFilters.search = '';
+  validateFilters();
   redrawFilters();
+  crudRead();
 });
 
-$("#dynamic").on("hidden.bs.modal", function () {
-  redrawCrudTable();
+/**
+* Toggle trashed items
+*/
+$('.crud-trash').click(function() {
+  crudFilters.trash = crudFilters.trash ? 0 : 1;
+  validateFilters();
+  redrawFilters();
+  crudRead();
+});
+
+$('#dynamic').on('hidden.bs.modal', function() {
+  validateFilters();
+  redrawFilters();
+  crudRead();
 });
 
 function doBulkAction(el, ids){

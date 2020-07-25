@@ -6,12 +6,12 @@ class Query {
 /**
 * ascending direction for sorting
 */
-const ASC = 1;
+const ASC = 'asc';
 
 /**
 * descending direction for sorting
 */
-const DESC = 2;
+const DESC = 'desc';
 
 /**
 * infinite number of results
