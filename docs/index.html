@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="robots" content="index, follow, all" />
-    <title>Namespaces | Eladmin Docs</title>
+    <title>Eladmin Docs</title>
 
             <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="css/bootstrap-theme.min.css">
@@ -20,7 +20,7 @@
     
     </head>
 
-    <body id="index" data-name="" data-root-path="">
+    <body id="" data-name="" data-root-path="">
             <div id="content">
         <div id="left-column">
                 <div id="control-panel">
@@ -65,26 +65,444 @@
     </nav>
 
                         <div id="page-content">
-                    <div class="page-header">
-        <h1>Namespaces</h1>
-    </div>
+                
+    <h1>eladmin</h1>
 
-            <div class="namespaces clearfix">
-                                                                                                <div class="namespace-container">
-                        <h2>Onspli</h2>
-                        <ul>
-                                                    <li><a href="Onspli.html">Onspli</a></li>
-                                                            <li><a href="Onspli/Eladmin.html">Onspli\Eladmin</a></li>
-                                                            <li><a href="Onspli/Eladmin/Auth.html">Onspli\Eladmin\Auth</a></li>
-                                                            <li><a href="Onspli/Eladmin/Exception.html">Onspli\Eladmin\Exception</a></li>
-                                                            <li><a href="Onspli/Eladmin/Modules.html">Onspli\Eladmin\Modules</a></li>
-                                                            <li><a href="Onspli/Eladmin/Modules/Crud.html">Onspli\Eladmin\Modules\Crud</a></li>
-                                                            <li><a href="Onspli/Eladmin/Modules/Crud/Chainset.html">Onspli\Eladmin\Modules\Crud\Chainset</a></li>
-                                                            <li><a href="Onspli/Eladmin/Modules/Eloquent.html">Onspli\Eladmin\Modules\Eloquent</a></li>
-                            </ul>
-            </div>
-        </div>
-    
+<p>Eladmin generates CRUD/admin interface for Eloquent.</p>
+
+<h2>Table of Contents</h2>
+
+<ul>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#getting-started">Getting Started</a></li>
+<li><a href="#advanced-configuration">Advanced Configuration</a></li>
+<li><a href="#actions">Actions</a></li>
+<li><a href="#authorization">Authorization</a></li>
+<li><a href="#data-validation-and-modification">Data Validation and Modification</a></li>
+<li><a href="#filtering-results">Filtering Results</a></li>
+<li><a href="#contacts">Contacts</a></li>
+</ul>
+
+<h2>Installation</h2>
+
+<p>You can install Eladmin using composer:</p>
+
+<pre><code>composer require onspli/eladmin
+</code></pre>
+
+<h2>Getting Started</h2>
+
+<p>Let us have a simple website where users can register for events. We have two Eloquent models <em>Event</em> and <em>Registration</em> and we want to generate the admin interface for them. The steps we have to take are:
+1. use <em>Module\Eloquent\Crud</em> trait in the models
+2. extend Eladmin class with basic configuration properties <em>$cache</em> and <em>$modules</em>
+3. call <em>Eladmin::run()</em> method to run Eladmin</p>
+
+<p>Here is an example with a minimal configuration:</p>
+
+<pre><code class="lang-php">&lt;?php
+
+require __DIR__.'/../vendor/autoload.php';
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+use Onspli\Eladmin\Eladmin;
+use Onspli\Eladmin\Module\Eloquent\Crud;
+
+/**
+* Events schema:
+* $table-&gt;increments('id');
+* $table-&gt;string('name');
+* $table-&gt;datetime('when');
+* $table-&gt;string('where');
+* $table-&gt;integer('price');
+* $table-&gt;text('description');
+* $table-&gt;timestamps();
+* $table-&gt;softDeletes();
+*/
+class Event extends Model
+{
+  use Crud;
+  use SoftDeletes;
+}
+
+
+/**
+* Registrations schema:
+* $table-&gt;increments('id');
+* $table-&gt;string('name');
+* $table-&gt;integer('event_id')-&gt;unsigned();
+* $table-&gt;string('email');
+* $table-&gt;string('status');
+* $table-&gt;timestamps();
+* $table-&gt;softDeletes();
+*/
+class Registration extends Model
+{
+  use Crud;
+  use SoftDeletes;
+}
+
+/**
+* Eladmin configuration
+*/
+class MyEladmin extends Eladmin
+{
+  /**
+  * Cache directory used by template engine
+  */
+  protected $cache = __DIR__.'/../cache';
+
+  /**
+  * Add modules to the administration.
+  */
+  protected $modules = [Registration::class, Event::class];
+}
+
+/**
+* Run Eladmin
+*/
+$myEladmin = new MyEladmin();
+$myEladmin-&gt;run();
+
+</code></pre>
+
+<p>Eladmin comes with a simple authorization and user management out-of-the-box. Don't worry, the authorization can be easily overriden with your own solution. Default credentials are eladmin/nimdale.</p>
+
+<p><img src="screenshot/login.png" alt="Login Page" /></p>
+
+<p>Don't forget to change your password after your first login by clicking the Account button in the upper right corner.</p>
+
+<p><img src="screenshot/account.png" alt="User's Account" /></p>
+
+<p>Here is the interface got with the minimal configuration example above.</p>
+
+<p><img src="screenshot/helloworld2.png" alt="Minimal Configuration" /></p>
+
+<p><img src="screenshot/editentry2.png" alt="Edit Entry" /></p>
+
+<p><img src="screenshot/adduser.png" alt="Add User" /></p>
+
+<h2>Advanced Configuration</h2>
+
+<p>An example and screenshots:</p>
+
+<pre><code class="lang-php">&lt;?php
+
+require __DIR__.'/../vendor/autoload.php';
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+use Onspli\Eladmin\Eladmin;
+use Onspli\Eladmin\User;
+use Onspli\Eladmin\Module\Eloquent\Crud;
+
+/**
+* Events schema:
+* $table-&gt;increments('id');
+* $table-&gt;string('name');
+* $table-&gt;datetime('when');
+* $table-&gt;string('where');
+* $table-&gt;integer('price');
+* $table-&gt;text('description');
+* $table-&gt;timestamps();
+* $table-&gt;softDeletes();
+*/
+class Event extends Model
+{
+  use Crud;
+  use SoftDeletes;
+
+  /**
+  * Set the title and icon used in the admin menu.
+  */
+  protected $elaTitle = 'Events';
+  protected $elaIcon = '&lt;i class="fas fa-calendar-alt"&gt;&lt;/i&gt;';
+
+  /**
+  * Default order
+  */
+  public $elaOrderBy = 'name';
+  public $elaOrderDirection = 'asc';
+
+  /**
+  * Column used to represent event in relations with other models.
+  */
+  public $elaRepresentativeColumn = 'name';
+
+  /**
+  * Configure appearance and inputs for the table columns.
+  */
+  public function elaColumns(){
+    $columns = $this-&gt;elaColumnsDef();
+
+    /**
+    * Set label and datetime format.
+    */
+    $columns-&gt;when-&gt;label('When')-&gt;datetime('j.n.Y');
+
+    /**
+    * Set description to help people fill the input.
+    */
+    $columns-&gt;name-&gt;label('Event')-&gt;desc('The name of the event.');
+
+    /**
+    * Don't show desc column in the table of events.
+    * Use textarea for editing the value.
+    */
+    $columns-&gt;description-&gt;label('Description')-&gt;nonlistable()-&gt;textarea();
+
+    /**
+    * Move where column just before when column.
+    */
+    $columns-&gt;where-&gt;label('Where')-&gt;before('when');
+
+    /**
+    * Move created column just after where column.
+    * Remove created_at from CREATE and EDIT form.
+    */
+    $columns-&gt;created_at-&gt;label('Created')-&gt;after('where')-&gt;noneditable();
+
+    /**
+    * Move price column to the end.
+    * Change format of displayed value and output it unescaped.
+    */
+    $columns-&gt;price-&gt;label('Price')-&gt;before()-&gt;format(function($val){ return '&lt;em class="text-right d-block"&gt;'.$val.' Kč&lt;/em&gt;'; })-&gt;raw();
+
+    /**
+    * Add new column computing the number of attenders.
+    * Disable the editation as the value won't save anyway.
+    */
+    $columns-&gt;attenders-&gt;label('Attenders')-&gt;format(function($val, $row){ return Registration::where('event_id', $row-&gt;id)-&gt;count(); })-&gt;disabled();
+
+    /**
+    * Don't show or edit updated_at column.
+    */
+    unset($columns-&gt;updated_at);
+
+    return $columns;
+  }
+}
+
+
+/**
+* Registrations schema:
+* $table-&gt;increments('id');
+* $table-&gt;string('name');
+* $table-&gt;integer('event_id')-&gt;unsigned();
+* $table-&gt;string('email');
+* $table-&gt;string('status');
+* $table-&gt;timestamps();
+* $table-&gt;softDeletes();
+*/
+class Registration extends Model
+{
+  use Crud;
+  use SoftDeletes;
+
+  /**
+  * Set the title and icon used in the admin menu.
+  */
+  protected $elaTitle = 'Attenders';
+  protected $elaIcon = '&lt;i class="fas fa-user-check"&gt;&lt;/i&gt;';
+
+  public function elaColumns(){
+    $columns = $this-&gt;elaColumnsDef();
+
+    $columns-&gt;name-&gt;label('Name');
+    $columns-&gt;email-&gt;label('E-mail');
+    $columns-&gt;created_at-&gt;label('Registered');
+
+    /**
+    * Select input with constant options. Format the output and show it unescaped.
+    */
+    $columns-&gt;status
+        -&gt;label('Status')
+        -&gt;select(['new'=&gt;'New', 'confirmed'=&gt;'Confirmed', 'cancelled'=&gt;'Cancelled'])
+        -&gt;format(function($val){
+          switch($val){
+            case 'new': return '&lt;span class="badge badge-primary"&gt;'.$val.'&lt;/span&gt;';
+            case 'confirmed': return '&lt;span class="badge badge-success"&gt;'.$val.'&lt;/span&gt;';
+            case 'cancelled': return '&lt;span class="badge badge-danger"&gt;'.$val.'&lt;/span&gt;';
+          }
+          return $val;
+        })
+        -&gt;raw();
+
+    /**
+    * Registration belongs to Event relation.
+    */
+    $columns-&gt;event_id-&gt;label('Event')-&gt;belongsTo(Event::class)-&gt;select();
+
+    /**
+    * Don't show or edit updated_at column.
+    */
+    unset($columns-&gt;updated_at);
+
+    return $columns;
+  }
+}
+
+/**
+* Eladmin configuration
+*/
+class MyEladmin extends Eladmin
+{
+  /**
+  * Cache directory used by template engine
+  */
+  protected $cache = __DIR__.'/../cache';
+
+  /**
+  * Add modules to the administration.
+  */
+  protected $modules = [Registration::class, Event::class];
+
+  /**
+  * Localize the interface. Supported languages are en_US, cs_CZ.
+  */
+  protected $lang = 'en_US';
+
+  /**
+  * Set the title for the administration.
+  */
+  protected $title = 'Cool Website';
+
+  /**
+  * Set the directory with views, so we can override default appearance and
+  * add new components. Eladmin uses Blade template engine.
+  */
+  protected $views = __DIR__.'/../views';
+
+  /**
+  * Authorization class implementing Iface\Authorization interface
+  */
+  protected $auth = User::class;
+}
+
+/**
+* Run Eladmin
+*/
+$myEladmin = new MyEladmin();
+$myEladmin-&gt;run();
+</code></pre>
+
+<p><img src="screenshot/columns1.png" alt="Advanced Configuration" /></p>
+
+<p><img src="screenshot/columns2.png" alt="Advanced Configuration" /></p>
+
+<p><img src="screenshot/columns3.png" alt="Advanced Configuration" /></p>
+
+<p><img src="screenshot/columns4.png" alt="Advanced Configuration" /></p>
+
+<h2>Actions</h2>
+
+<p>There are 4 default actions we can do with the records: <em>create</em>, <em>read</em>, <em>update</em>, <em>delete</em>. Sometimes it's not enough and we want to define our own actions. Eladmin can do that.</p>
+
+<p>We want do add action <em>cancel</em> which cancels a registration. Add folowing code to the <em>Registration</em> model:</p>
+
+<pre><code class="lang-php">  /**
+  * Define new action 'cancel' which cancels registration.
+  */
+  public function elaActionCancel(){
+    if($this-&gt;status == 'cancelled')
+      throw new Exception\BadRequestException('Already cancelled!');
+    $this-&gt;status = 'cancelled';
+    $this-&gt;save();
+    echo 'Registration #'.$this-&gt;id.' was cancelled.';
+  }
+
+  /**
+  * Configure actions.
+  */
+  public function elaActions(){
+    $actions = $this-&gt;elaActionsDef();
+    $actions-&gt;cancel          // method elaActionCancel
+      -&gt;label(function($val, $row){return 'Cancel #'.$row-&gt;id;}) // label can be string or function
+      -&gt;icon('&lt;i class="far fa-times-circle"&gt;&lt;/i&gt;')
+      -&gt;style('warning')      // boostrap button styles
+      -&gt;confirm('Do you really want to cancel?')    // confirm the action
+      -&gt;done('console.log("Action \'cancel\' done.")')  // run script after the action is done
+      -&gt;listable()            // show the action in the table of registrations
+      -&gt;editable();           // show the action in the update form
+    return $actions;
+  }
+</code></pre>
+
+<p>Result:</p>
+
+<p><img src="screenshot/actions.png" alt="Action Cancel" /></p>
+
+<h2>Authorization</h2>
+
+<p>Eladmin provides a way to authorize users to do actions. The following code in <em>Event</em> module does the authorization:</p>
+
+<pre><code class="lang-php">  /**
+  * Roles authorized to work with the Event crud.
+  */
+  protected $elaAuthorizedRoles = ['admin', 'user'];
+
+  /**
+  * Authorized roles for specific actions.
+  */
+  protected $elaAuthorizedRolesActions = [
+    'update' =&gt; ['admin'],          // only 'admin' role can update records
+    'delete' =&gt; ['admin'],
+    'read' =&gt; [],                   // all users can do that
+    'create' =&gt; ['admin', 'user']   // only users with roles 'admin' or 'user' are allowed
+  ];
+</code></pre>
+
+<p>It results in the following (user <em>onspli</em> has role <em>user</em>).</p>
+
+<p><img src="screenshot/authorization.png" alt="Authorization" /></p>
+
+<p>By default only 'admin' role is granted to work with eladmin <em>Users</em> crud.</p>
+
+<h2>Data Validation and Modification</h2>
+
+<p>Example code in <em>Event</em> model:</p>
+
+<pre><code class="lang-php">   public function elaColumns(){
+    $columns = $this-&gt;elaColumnsDef();
+
+    $columns-&gt;name
+        // validate column name
+        -&gt;validate(function($val, $row){
+          if(!$val)
+            throw new Exception\BadRequestException('You have to fill the name!');
+        })
+        // modify column name
+        -&gt;set(function($val, $row){
+          if($val == 'change') return 'changed';
+          return $val;
+        });
+
+    return $columns;
+  }
+</code></pre>
+
+<h2>Filtering Results</h2>
+
+<p>You can add your own filters to crud. Code in <em>Registration</em> model:</p>
+
+<pre><code class="lang-php">public function elaFilters(){
+  $filters = $this-&gt;elaFiltersDef();
+  $filters-&gt;name-&gt;label('Name')-&gt;icon('&lt;i class="fas fa-user"&gt;&lt;/i&gt;');
+  $filters-&gt;event_id-&gt;label('Event')-&gt;icon('&lt;i class="fas fa-calendar-alt"&gt;&lt;/i&gt;')-&gt;select(Event::class);
+  $filters-&gt;status-&gt;select([''=&gt;'All', 'new'=&gt;'New', 'confirmed'=&gt;'Confirmed', 'cancelled'=&gt;'Canceled']);
+  return $filters;
+}
+</code></pre>
+
+<p><img src="screenshot/filters.png" alt="Filters" /></p>
+
+<h2>Contacts</h2>
+
+<p>Feel free to ask me any questions on ondrej.splichal@gmail.com.</p>
+
+
             </div>
                 <div id="footer">
         Generated by <a href="http://sami.sensiolabs.org/">Sami, the API Documentation Generator</a>.

@@ -6,23 +6,53 @@ use \Onspli\Eladmin\Exception;
 use \Jenssegers\Blade\Blade;
 
 /**
-* General Eladmin Module.
+* Generic Eladmin module.
 *
-* To configure the module define properties as shown in the following example:
+* To configure the module you may define properties as shown in the following example.
+* These properties shouldn't be defined in any trait extending this generic module because trait's properties cannot be overriden.
 * ```lang-php
+* class MyModule {
+*
+* use Eladmin\Module;
+*
 * // set module's name
-* protected $elaTitle = class_basename(static::class);
+* protected $elaTitle = 'My module';
 *
 * // set module's icon
 * protected $elaIcon = '<i class="fas fa-puzzle-piece"></i>';
 *
-* // set authorized roles. empty array means any role
+* // set authorized roles.
+* // Empty array means any role can access the module (Design choice: What's the point having a module no one can access?)
 * protected $elaRoles = ['admin', 'user'];
 *
 * // override to set authorized roles. empty array means any role.
-* // It doesn't make sanse to have actions no one can perform.
 * protected $elaActionRoles = ['read' => [], 'write' => ['admin']];
+*
+* }
 * ```
+*
+* Extend views directory:
+* ```lang-php
+* class MyModule {
+*
+* use Eladmin\Module {
+*   Eladmin\Module::elaViews as elaViews_Module;
+* }
+*
+* public function elaViews() : array {
+*   return array_merge([__DIR__ . '/views'], $this->elaViews_Module());
+* }
+*
+* }
+* ```
+*
+* Views directory structure:
+* ```
+* render.blade.php   - module content
+* assets/style.css   - module style
+* assets/script.css  - module scripts
+* ```
+*
 */
 trait Module {
 
