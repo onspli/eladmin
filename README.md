@@ -12,13 +12,13 @@ Eladmin generates CRUD/admin interface for Eloquent.
 - [Filtering Results](#filtering-results)
 - [Contacts](#contacts)
 
-## <a name="installation"></a>Installation
+## <a id="installation"></a>Installation
 You can install Eladmin using composer:
 ```
 composer require onspli/eladmin
 ```
 
-## Getting Started
+## <a id="getting-started"></a>Getting Started
 Let us have a simple website where users can register for events. We have two Eloquent models *Event* and *Registration* and we want to generate the admin interface for them. The steps we have to take are:
 1. use *Module\Eloquent\Crud* trait in the models
 2. extend Eladmin class with basic configuration properties *$cache* and *$modules*
@@ -111,7 +111,7 @@ Here is the interface got with the minimal configuration example above.
 
 ![Add User](./docs/screenshots/adduser.png)
 
-## Advanced Configuration
+## <a id="advanced-configuration"></a>Advanced Configuration
 
 An example and screenshots:
 
@@ -325,7 +325,7 @@ $myEladmin->run();
 
 ![Advanced Configuration](./docs/screenshots/columns4.png)
 
-## Actions
+## <a id="actions"></a>Actions
 
 There are 4 default actions we can do with the records: *create*, *read*, *update*, *delete*. Sometimes it's not enough and we want to define our own actions. Eladmin can do that.
 
@@ -363,7 +363,7 @@ Result:
 
 ![Action Cancel](./docs/screenshots/actions.png)
 
-## Authorization
+## <a id="authorization"></a>Authorization
 Eladmin provides a way to authorize users to do actions. The following code in *Event* module does the authorization:
 
 ```php
@@ -389,7 +389,7 @@ It results in the following (user *onspli* has role *user*).
 
 By default only 'admin' role is granted to work with eladmin *Users* crud.
 
-## Data Validation and Modification
+## <a id="data-validation-and-modification"></a>Data Validation and Modification
 
 Example code in *Event* model:
 
@@ -413,7 +413,7 @@ Example code in *Event* model:
   }
 ```
 
-## Filtering Results
+## <a id="filtering-results"></a>Filtering Results
 You can add your own filters to crud. Code in *Registration* model:
 
 ```php
@@ -428,5 +428,5 @@ public function elaFilters(){
 
 ![Filters](./docs/screenshots/filters.png)
 
-## Contacts
+## <a id="contacts"></a>Contacts
 Feel free to ask me any questions on ondrej.splichal@gmail.com.

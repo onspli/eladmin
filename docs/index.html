@@ -84,14 +84,14 @@
 <li><a href="#contacts">Contacts</a></li>
 </ul>
 
-<h2><a name="installation"></a>Installation</h2>
+<h2><a id="installation"></a>Installation</h2>
 
 <p>You can install Eladmin using composer:</p>
 
 <pre><code>composer require onspli/eladmin
 </code></pre>
 
-<h2>Getting Started</h2>
+<h2><a id="getting-started"></a>Getting Started</h2>
 
 <p>Let us have a simple website where users can register for events. We have two Eloquent models <em>Event</em> and <em>Registration</em> and we want to generate the admin interface for them. The steps we have to take are:
 1. use <em>Module\Eloquent\Crud</em> trait in the models
@@ -184,7 +184,7 @@ $myEladmin-&gt;run();
 
 <p><img src="./screenshots/adduser.png" alt="Add User" /></p>
 
-<h2>Advanced Configuration</h2>
+<h2><a id="advanced-configuration"></a>Advanced Configuration</h2>
 
 <p>An example and screenshots:</p>
 
@@ -397,7 +397,7 @@ $myEladmin-&gt;run();
 
 <p><img src="./screenshots/columns4.png" alt="Advanced Configuration" /></p>
 
-<h2>Actions</h2>
+<h2><a id="actions"></a>Actions</h2>
 
 <p>There are 4 default actions we can do with the records: <em>create</em>, <em>read</em>, <em>update</em>, <em>delete</em>. Sometimes it's not enough and we want to define our own actions. Eladmin can do that.</p>
 
@@ -435,7 +435,7 @@ $myEladmin-&gt;run();
 
 <p><img src="./screenshots/actions.png" alt="Action Cancel" /></p>
 
-<h2>Authorization</h2>
+<h2><a id="authorization"></a>Authorization</h2>
 
 <p>Eladmin provides a way to authorize users to do actions. The following code in <em>Event</em> module does the authorization:</p>
 
@@ -461,7 +461,7 @@ $myEladmin-&gt;run();
 
 <p>By default only 'admin' role is granted to work with eladmin <em>Users</em> crud.</p>
 
-<h2>Data Validation and Modification</h2>
+<h2><a id="data-validation-and-modification"></a>Data Validation and Modification</h2>
 
 <p>Example code in <em>Event</em> model:</p>
 
@@ -484,7 +484,7 @@ $myEladmin-&gt;run();
   }
 </code></pre>
 
-<h2>Filtering Results</h2>
+<h2><a id="filtering-results"></a>Filtering Results</h2>
 
 <p>You can add your own filters to crud. Code in <em>Registration</em> model:</p>
 
@@ -499,7 +499,7 @@ $myEladmin-&gt;run();
 
 <p><img src="./screenshots/filters.png" alt="Filters" /></p>
 
-<h2>Contacts</h2>
+<h2><a id="contacts"></a>Contacts</h2>
 
 <p>Feel free to ask me any questions on ondrej.splichal@gmail.com.</p>
 </div>
