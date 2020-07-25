@@ -9,7 +9,7 @@ use \Jenssegers\Blade\Blade;
 * General Eladmin Module.
 *
 * To configure the module define properties as shown in the following example:
-* ```php
+* ```lang-php
 * // set module's name
 * protected $elaTitle = class_basename(static::class);
 *

@@ -6,17 +6,20 @@ use \Onspli\Eladmin\Exception;
 
 /**
 * Generic CRUD module.
-* The following methods needs to be implemented for a particular ORM library.
-* ```
-* public function elaPrimary() : string
 *
+* Actions
+* ```
+*
+* ```
+*
+* The following methods needs to be implemented for a particular ORM library.
+* ```php
+* public function elaPrimary() : string
+* private function elaColumnsDef()
 * protected function elaWrite(array $row, $id = null) : void
 * protected function elaRead($id) : array
 * protected function elaDelete($id) : void
 * protected function elaQuery(Query $query, &$totalResults) : array
-*
-* private function elaColumnsDef()
-*
 * public function elaUsesSoftDeletes() : bool
 * protected function elaSoftDelete($id) : void
 * protected function elaRestore($id) : void

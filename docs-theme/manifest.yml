@@ -1,0 +1,6 @@
+name:   docs-theme
+parent: default
+
+static:
+    'prism.css': 'prism.css'
+    'prism.js': 'prism.js'
