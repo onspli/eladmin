@@ -1,8 +1,0 @@
-{% extends "layout/layout.twig" %}
-{% from "macros.twig" import class_link %}
-
-{% block page_content %}
-
-    {{ include('README.md') | markdown_to_html | raw }}
-
-{% endblock %}

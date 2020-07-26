@@ -31,6 +31,6 @@
         "test": "phpunit --testdox tests",
         "docs:install": "php -r \"copy('http://get.sensiolabs.org/sami.phar', 'sami.phar');\"",
         "docs:update": "php sami.phar update sami.config.php",
-        "docs:render": "rm -rf docs/sami; php sami.phar render sami.config.php"
+        "docs:render": "rm -rf docs; php sami.phar render sami.config.php"
     }
 }
