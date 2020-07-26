@@ -1,5 +1,5 @@
 # eladmin
-Eladmin generates CRUD/admin interface for Eloquent.
+Eladmin generates CRUD/admin interface for Eloquent. [Docs and examples](https://onspli.github.io/eladmin/)
 
 ## Table of Contents
 
