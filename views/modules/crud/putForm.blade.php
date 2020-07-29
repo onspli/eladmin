@@ -5,7 +5,7 @@
 @endsection
 
 @section('modal-body')
-  <form id="modal-form" data-elaaction="update" data-elaid="{{ $row[$module->elaPrimary()] }}" data-elamodule="{{ $module->elakey() }}">
+  <form id="modal-form" data-elaaction="update" data-elagetid="{{ $row[$module->elaPrimary()] }}">
 
   @section('form-body')
   @foreach($module->elaColumnsGet() as $column)
@@ -15,40 +15,50 @@
   @endforeach
   @show
 
-  @section('actions')
-    @foreach($module->elaActionsGet() as $action)
-      <?php
-      if(!$module->elaAuth($action->getName())) continue;
-      if($action->noneditable) continue;
-      $actionArr = $action->getAction($row);
-      ?>
-      <div class="form-group">
-        <button type="button" data-elaupdateaction="{{$action->getName()}}"
-          @if(isset($actionArr['confirm']))
-          data-elaconfirm="{{ $actionArr['confirm'] }}"
-          @endif
-          data-elamodule="{{ $actionArr['module'] }}"
-          data-eladone="{!! htmlspecialchars($actionArr['done']) !!}"
-          data-elaid="{{ $actionArr['id'] }}"
-          class="btn btn-{{ $actionArr['style'] }}">
-          {!! $actionArr['icon'] !!} {{ $actionArr['label'] }}
-       </button>
-      </div>
-    @endforeach
-  @show
-
   </form>
 
 @endsection
 
 @section('modal-footer')
-  @if(!$module->elaUsesSoftDeletes() && $module->elaAuth('delete'))
-  <button type="button" class="btn btn-danger mr-3" data-elaaction="delete" data-elamodule="{{ $module->elakey() }}" data-elaid="{{ $row[$module->elaPrimary()] }}" data-eladone="$('#dynamic .modal').modal('hide');" data-confirm="{{__('Are you sure?')}}"><i class="fas fa-trash-alt"></i> <span class="d-none d-sm-inline">{{ __('Delete')}}</span></button>
-  @elseif($module->elaUsesSoftDeletes() && $module->elaAuth('softDelete'))
-  <button type="button" class="btn btn-danger mr-3" data-elaaction="softDelete" data-elamodule="{{ $module->elakey() }}" data-elaid="{{ $row[$module->elaPrimary()] }}" data-eladone="$('#dynamic .modal').modal('hide');"><i class="fas fa-trash-alt"></i> <span class="d-none d-sm-inline">{{ __('Delete')}}</span></button>
+
+<?php
+$elaActions = [];
+foreach ($module->elaActionsGet() as $action) {
+  if(!$module->elaAuth($action->getName())) continue;
+  if($action->noneditable) continue;
+  $elaActions[] = $action;
+}
+?>
+
+@section('actions')
+@if(sizeof($elaActions) || ((!$module->elaImplementsSoftDeletes() && $module->elaAuth('delete')) || ($module->elaImplementsSoftDeletes() && $module->elaAuth('softDelete'))))
+<span class="dropdown actions-dropdown mr-auto">
+  <button class="btn btn-primary m-1 dropdown-toggle" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i> <span class="d-none d-sm-inline">{{ __('Actions')}}</span></button>
+  <div class="dropdown-menu">
+  @foreach($elaActions as $action)
+    <?php $actionArr = $action->getAction(); ?>
+    <a href="#" data-elaupdateaction="{{$action->getName()}}"
+        @if(isset($actionArr['confirm']))
+        data-confirm="{{ $actionArr['confirm'] }}"
+        @endif
+        data-eladone="{!! htmlspecialchars($actionArr['done']) !!}"
+        data-elagetid="{{ $row[$module->elaPrimary()] }}"
+        class="dropdown-item text-{{ $actionArr['style'] }}">
+    {!! $actionArr['icon'] !!} {{ $actionArr['label'] }}
+    </a>
+  @endforeach
+  @if(!$module->elaImplementsSoftDeletes() && $module->elaAuth('delete'))
+  <a href="#" type="button" class="dropdown-item text-danger" data-elaaction="delete" data-elagetid="{{ $row[$module->elaPrimary()] }}" data-eladone="modalClose();" data-confirm="{{__('Are you sure?')}}"><i class="fas fa-trash-alt"></i> <span class="d-none d-sm-inline">{{ __('Delete')}}</span></a>
+  @elseif($module->elaImplementsSoftDeletes() && $module->elaAuth('softDelete'))
+  <a href="#" type="button" class="dropdown-item text-danger" data-elaaction="softDelete" data-elagetid="{{ $row[$module->elaPrimary()] }}" data-eladone="modalClose();"><i class="fas fa-trash-alt"></i> <span class="d-none d-sm-inline">{{ __('Move to trash')}}</span></a>
   @endif
+  </div>
+</span>
+@endif
+@show
+
   <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="far fa-times-circle"></i> <span class="">{{__('Cancel')}}</span></button>
   @if($module->elaAuth('update'))
-    <button type="submit" form="modal-form" class="btn btn-primary"><i class="fas fa-save"></i> <span class="">{{__('Save')}}</span></button>
+  <button type="submit" form="modal-form" class="btn btn-primary"><i class="fas fa-save"></i> <span class="">{{__('Save')}}</span></button>
   @endif
 @endsection

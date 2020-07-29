@@ -8,7 +8,9 @@ use \Onspli\Eladmin\Modules\Crud as CrudModule;
 */
 trait Crud {
 
-use CrudModule\Crud;
+use CrudModule\Crud {
+  CrudModule\Crud::elaInstanceForAction as elaInstanceForAction_CrudModule_Crud;
+}
 
 /**
 * Primary column name.
@@ -50,31 +52,79 @@ protected function elaRead($id) : array {
 * Hard delete entry.
 */
 protected function elaDelete($id) : void {
-  $row = $this->find($id);
-  if (!$row)
-    throw new Exception\BadRequestException( __('Entry not found!') );
-  if ($this->elaUsesSoftDeletes())
+  if ($this->elaImplementsSoftDeletes()) {
+    $row = $this->withTrashed()->find($id);
+    if (!$row)
+      throw new Exception\BadRequestException( __('Entry not found!') );
+
     $row->forceDelete();
-  else
+  } else {
+    $row = $this->find($id);
+    if (!$row)
+      throw new Exception\BadRequestException( __('Entry not found!') );
     $row->delete();
+  }
 }
 
-protected function elaQuery(array $query, &$totalResults) : array {
+protected function elaRequest(array $request, &$totalResults) : array {
   $q = $this;
 
-  if ($query['trash']){
+  if ($request['trash']){
     $q = $q->onlyTrashed();
   }
 
-  if ($query['sortBy'])
-    $q = $q->orderBy($query['sortBy'], $query['direction']);
+  $search = $request['search'];
+  if ($search && $this->elaImplementsSearch()) {
+    foreach ($this->elaColumnsGet() as $column) {
+      if ($column->nonsearchable)
+        continue;
+      $q = $q->orWhere($column->getName(), 'LIKE', '%' . $search . '%');
+    }
+  }
+
+  if ($this->elaImplementsFilters()) {
+    foreach ($this->elaFiltersGet() as $filterName => $filter) {
+      $filterPost = $_POST['filters'][$filterName] ?? null;
+      if (!$filterPost)
+        continue;
+      $q = $q->where($filterName, '=', $filterPost['val']);
+    }
+  }
+
+  if ($this->elaImplementsSorting()) {
+    $q = $q->orderBy($request['sortBy'], $request['direction']);
+  }
+
   $totalResults = $q->count();
+
+  if ($request['resultsPerPage'] != $this->INFINITY) {
+    $resultsPerPage = $request['resultsPerPage'];
+    $page = $request['page'];
+    $q = $q->offset(($page - 1) * $resultsPerPage)->limit($resultsPerPage);
+  }
+
   $rows = $q->get()->toArray();
   return $rows;
 }
 
-public function elaUsesSoftDeletes() : bool {
+public function elaImplementsSoftDeletes() : bool {
   return method_exists($this, 'trashed');
+}
+
+public function elaImplementsSorting() : bool {
+  return true;
+}
+
+public function elaImplementsPaging() : bool {
+  return true;
+}
+
+public function elaImplementsSearch() : bool {
+  return true;
+}
+
+public function elaImplementsFilters() : bool {
+  return true;
 }
 
 /**
@@ -84,7 +134,7 @@ protected function elaSoftDelete($id) : void {
   $row = $this->find($id);
   if (!$row)
     throw new Exception\BadRequestException( __('Entry not found!') );
-  if (!$this->elaUsesSoftDeletes())
+  if (!$this->elaImplementsSoftDeletes())
     throw new Exception\BadRequestException( __('This CRUD doesn\'t support soft deletes!') );
   else
     $row->delete();
@@ -94,11 +144,11 @@ protected function elaSoftDelete($id) : void {
 * Restore entry
 */
 protected function elaRestore($id) : void {
+  if (!$this->elaImplementsSoftDeletes())
+    throw new Exception\BadRequestException( __('This CRUD doesn\'t support soft deletes!') );
   $row = $this->withTrashed()->find($id);
   if (!$row)
     throw new Exception\BadRequestException( __('Entry not found!') );
-  if (!$this->elaUsesSoftDeletes())
-    throw new Exception\BadRequestException( __('This CRUD doesn\'t support soft deletes!') );
   $row->restore();
 }
 
@@ -128,20 +178,21 @@ private function elaColumnsDef(){
   // disable editing for primary key
   $columns->{$this->elaPrimary()}->disabled();
   // hide and disable deleted_at column
-  if ($this->elaUsesSoftDeletes())
+  if ($this->elaImplementsSoftDeletes())
     $columns->{$this->getDeletedAtColumn()}->hidden();
 
   if (in_array(static::CREATED_AT, $tableColumns))
-    $columns->{static::CREATED_AT}->disabled();
+    $columns->{static::CREATED_AT}->disabled()->nonsearchable();
   if (in_array(static::UPDATED_AT, $tableColumns))
-    $columns->{static::UPDATED_AT}->disabled();
+    $columns->{static::UPDATED_AT}->disabled()->nonsearchable();
 
   return $columns;
 }
 
 
-public function elaGetActionInstance(){
-$elaid = $this->elaId(false /* $throwIfNull */);
+public function elaInstanceForAction() {
+  $this->elaInstanceForAction_CrudModule_Crud();
+  $elaid = $this->elaId(false /* $throwIfNull */);
   if($elaid === null || in_array($this->eladmin->actionkey(), ['read', 'create', 'update', 'delete', 'softdelete', 'restore', 'putform', 'postform']))
     return $this;
 

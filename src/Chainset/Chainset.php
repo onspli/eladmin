@@ -33,7 +33,7 @@ function __construct($childClass = null) {
   }
 }
 
-final public function __isset($key) {
+public function __isset($key) {
   return isset($this->children[$key]);
 }
 
@@ -57,14 +57,14 @@ final public function cutChild(string $key) : void {
   }
 }
 
-final public function __unset($key) {
+public function __unset($key) {
   if (!isset($this->children[$key]))
     return;
   $this->cutChild($key);
   unset($this->children[$key]);
 }
 
-final public function __get($key) {
+public function __get($key) {
   if (!isset($this->children[$key])) {
     if ($this->last === null) {
       // children empty

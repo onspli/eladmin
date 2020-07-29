@@ -6,13 +6,17 @@ use \Onspli\Eladmin;
 class Action extends Eladmin\Chainset\Child {
 
   public $label = null;
-  public $nonlistable = true;
+  public $nonlistable = false;
   public $noneditable = false;
   public $style = 'secondary';
-  public $icon = '';
+  public $icon = '<i class="fas fa-play"></i>';
   public $confirm = null;
   public $done = '';
   public $bulk = null;
+
+  public function _getKey() : string {
+    return Eladmin\Eladmin::normalizeActionName(parent::_getKey());
+  }
 
   final public function getModule() {
     return $this->_getParent()->getModule();
@@ -22,38 +26,19 @@ class Action extends Eladmin\Chainset\Child {
     return $this->_getKey();
   }
 
-  final public function evalProperty($prop, $row) {
-    if (!isset($this->$prop))
-      return null;
-    if (is_callable($this->$prop)) {
-      // we pass second argument for backward compatibility
-      return ($this->$prop)($row, $row);
-    } else {
-      return $this->$prop;
-    }
-  }
-
-  final public function getAction($row) {
+  final public function getAction() {
     $action = [
-      'action' => $this->getName(),
       'done' => $this->done,
-      'id' => $row[$this->getModule()->elaPrimary()],
+      'label' => $this->label ?? ucfirst($this->getName()),
       'style' => $this->style,
-      'icon' => $this->icon,
-      'module' => $this->getModule()->elakey()
+      'icon' => $this->icon
     ];
 
-    if (isset($this->label)) {
-      $action['label'] = $this->evalProperty('label', $row);
-    } else if (!$this->icon) {
-      $action['label'] = $this->getName();
-    }
-
     if (isset($this->title)) {
-      $action['title'] = $this->evalProperty('title', $row);
+      $action['title'] = $this->title;
     }
     if (isset($this->confirm)) {
-      $action['confirm'] = $this->evalProperty('confirm', $row);
+      $action['confirm'] = $this->confirm;
     }
     return $action;
   }
@@ -81,9 +66,13 @@ class Action extends Eladmin\Chainset\Child {
     return $this;
   }
 
-  public function bulk($bulk=''){
-    if ($bulk === '') $bulk = $this->getName();
-    $this->bulk = $bulk;
+  public function bulk(){
+    $this->bulk = true;
+    return $this;
+  }
+
+  public function nonbulk(){
+    $this->bulk = null;
     return $this;
   }
 

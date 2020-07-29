@@ -27,6 +27,7 @@ final class ModuleTest extends TestCase {
 
     $module->elaSetRoles(['moderator', 'admin'], 'wRite');
     $this->assertEquals(['moderator', 'admin'], $module->elaRoles('wriTe'));
+    $this->assertEquals([], $module->elaRoles('read'));
 
     $module->elaSetRoles(['moderator']);
     $this->assertEquals(['moderator'], $module->elaRoles());

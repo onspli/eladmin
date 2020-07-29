@@ -171,8 +171,8 @@ final public function elaRoles($action = null) : array {
   if (!$this->elaActionNamesNormalized) {
     $actionRolesCopy = (new \ArrayObject($this->elaActionRoles))->getArrayCopy();
     $this->elaActionRoles = [];
-    foreach ($actionRolesCopy as $action => $roles) {
-      $this->elaSetRoles($roles, $action);
+    foreach ($actionRolesCopy as $actionName => $roles) {
+      $this->elaSetRoles($roles, $actionName);
     }
     $this->elaActionNamesNormalized = true;
   }
@@ -249,5 +249,25 @@ public function elaFile($path) : void {
   echo $content;
 }
 
+/**
+* Return array of all defined actions.
+*/
+final public function elaActionsList() : array {
+  $actions = [];
+  $classMethods = get_class_methods(static::class);
+  foreach ($classMethods as $classMethod) {
+    if (substr($classMethod, 0, 9) != 'elaAction' || !strlen(substr($classMethod, 9, 1)) || !ctype_upper(substr($classMethod, 9, 1)))
+      continue;
+    $actions[] = Eladmin::normalizeActionName(substr($classMethod, 9));
+  }
+  return $actions;
+}
+
+/**
+* Check if actions is defined.
+*/
+final public function elaHasAction($action) : bool {
+  return in_array(Eladmin::normalizeActionName($action), $this->elaActionsList());
+}
 
 }

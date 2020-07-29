@@ -1,12 +1,8 @@
 <?php
 require __DIR__.'/../vendor/autoload.php';
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
-
-use Onspli\Eladmin\Exception;
-use Onspli\Eladmin\Eladmin;
-use Onspli\Eladmin\Module\Eloquent\Crud;
+use Illuminate\Database\Eloquent;
+use Onspli\Eladmin;
 
 /**
 * Events schema:
@@ -19,10 +15,10 @@ use Onspli\Eladmin\Module\Eloquent\Crud;
 * $table->timestamps();
 * $table->softDeletes();
 */
-class Event extends Model
+class Event extends Eloquent\Model
 {
-  use Crud;
-  use SoftDeletes;
+  use Eladmin\Modules\Eloquent\Crud;
+  use Eloquent\SoftDeletes;
 
   /**
   * Set the title and icon used in the admin menu.
@@ -30,20 +26,6 @@ class Event extends Model
   protected $elaTitle = 'Events';
   protected $elaIcon = '<i class="fas fa-calendar-alt"></i>';
 
-  /**
-  * Roles authorized to work with the Event crud.
-  */
-  protected $elaAuthorizedRoles = ['admin', 'user'];
-
-  /**
-  * Specify authorized roles for different actions.
-  */
-  protected $elaAuthorizedRolesActions = [
-    'update' => ['admin'],          // only 'admin' role can update records
-    'delete' => ['admin'],
-    'read' => [],                   // all users can do that
-    'create' => ['admin', 'user']   // only users with roles 'admin' or 'user' are allowed
-  ];
 
   /**
   * Column used to represent event in relations with other models.
@@ -93,7 +75,7 @@ class Event extends Model
     * Add new column computing the number of attenders.
     * Disable the editation as the value won't save anyway.
     */
-    $columns->attenders->label('Attenders')->format(function($val, $row){ return Registration::where('event_id', $row->id)->count(); })->disabled();
+    $columns->attenders->label('Attenders')->format(function($val, $row){ return Registration::where('event_id', $row['id'])->count(); })->disabled();
 
     /**
     * Don't show or edit updated_at column.
@@ -129,10 +111,10 @@ class Event extends Model
 * $table->timestamps();
 * $table->softDeletes();
 */
-class Registration extends Model
+class Registration extends Eloquent\Model
 {
-  use Crud;
-  use SoftDeletes;
+  use Eladmin\Modules\Eloquent\Crud;
+  use Eloquent\SoftDeletes;
 
   /**
   * Set the title and icon used in the admin menu.
@@ -141,6 +123,7 @@ class Registration extends Model
   protected $elaIcon = '<i class="fas fa-user-check"></i>';
   public $elaOrderBy = 'name';
   public $elaOrderDirection = 'asc';
+  protected $elaActionRoles = ['cncel' => ['none'], 'softDelte' => ['none']];
 
 
   public function elaColumns(){
@@ -184,46 +167,57 @@ class Registration extends Model
   */
   public function elaActionCancel(){
     if($this->status == 'cancelled')
-      throw new Exception\BadRequestException('Already cancelled!');
+      throw new Eladmin\Exception\BadRequestException('Already cancelled!');
     $this->status = 'cancelled';
     $this->save();
     echo 'Registration #'.$this->id.' was cancelled.';
   }
 
+  public function elaFilters(){
+    $filters = $this->elaFiltersDef();
+    $filters->name->label('Name')->icon('<i class="fas fa-user"></i>');
+    $filters->event_id->label('Event')->icon('<i class="fas fa-calendar-alt"></i>')->select(Event::class);
+    $filters->status->select([''=>'All', 'new'=>'New', 'confirmed'=>'Confirmed', 'cancelled'=>'Canceled']);
+    return $filters;
+  }
+
   /**
   * Configure actions.
   */
-  public function elaActions(){
+  public function elaAactions(){
     $actions = $this->elaActionsDef();
     $actions->cancel          // method elaActionCancel
-      ->label(function($row){return 'Cancel #'.$row->id;}) // label can be string or function
+      ->label('Cancel')
       ->icon('<i class="far fa-times-circle"></i>')
       ->style('warning')      // boostrap button styles
       ->confirm('Do you really want to cancel?')    // confirm the action
       ->done('console.log("Action \'cancel\' done.");')  // run script after the action is done
       ->listable()            // show the action in the table of registrations
       ->editable()           // show the action in the update form
-      ->auth('admin')
       ->bulk('Cancel');             // enable bulk action
     return $actions;
   }
 
 }
 
+class Password extends Eladmin\Auth\Password {
+  public function elaAuthorize(array $authorizedRoles = []) : bool {
+    if (sizeof($authorizedRoles)) {
+      return false;
+    }
+    return parent::elaAuthorize($authorizedRoles);
+  }
+}
+
 /**
 * Eladmin configuration
 */
-class MyEladmin extends Eladmin
+class MyEladmin extends Eladmin\Eladmin
 {
-  /**
-  * Cache directory used by template engine
-  */
-  protected $cache = __DIR__.'/../../cache';
-
   /**
   * Add modules to the administration.
   */
-  protected $modules = [Registration::class, Event::class];
+  protected $modules = [Event::class, Registration::class];
 
   /**
   * Localize the interface. Supported languages are en_US, cs_CZ.
@@ -235,11 +229,7 @@ class MyEladmin extends Eladmin
   */
   protected $title = 'Cool Website';
 
-  /**
-  * Set the directory with views, so we can override default appearance and
-  * add new components. Eladmin uses Blade template engine.
-  */
-  protected $views = __DIR__.'/../views';
+  protected $auth = Password::class;
 }
 
 /**

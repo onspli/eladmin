@@ -3,7 +3,7 @@
   <div class="input-group mr-2 mb-3">
     <div class="input-group-prepend"><label class="input-group-text">{!! $filter->icon !!}&nbsp;{{$filter->label??$name}}</label></div>
     @if($filter->input == 'select')
-    <select class="form-control" data-crudfiltercolumn="{{$filter->column??$name}}">
+    <select class="form-control" data-crudfilter="{{$filter->column??$name}}">
       <?php
       if(is_callable($filter->selectOptions)) {
         $selectOptions = ($filter->selectOptions)($filter, $name);
@@ -16,7 +16,7 @@
       @endforeach
     </select>
     @else
-      <input type="text" class="form-control" data-crudfiltercolumn="{{$filter->column??$name}}">
+      <input type="text" class="form-control" data-crudfilter="{{$filter->column??$name}}">
     @endif
   </div>
 @endforeach

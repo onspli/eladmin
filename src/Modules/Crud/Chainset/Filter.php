@@ -24,8 +24,6 @@ class Filter extends Eladmin\Chainset\Child {
     } else{
       $this->selectOptions = $options;
     }
-
-
     return $this;
   }
 }

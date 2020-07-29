@@ -25,47 +25,47 @@ private $next = null;
 private $prev = null;
 private $key = null;
 
-final public function __call(string $name , array $arguments) {
+ public function __call(string $name , array $arguments) {
   $this->$name = $arguments[0] ?? null;
   return $this;
 }
 
-final public function _setKey(string $key) : void {
+ public function _setKey(string $key) : void {
   $this->key = $key;
 }
 
-final public function _getKey() : string {
+ public function _getKey() : string {
   return $this->key;
 }
 
-final public function _setNext(?string $key) : void {
+ public function _setNext(?string $key) : void {
   $this->next = $key;
 }
 
-final public function _getNext() : ?string {
+ public function _getNext() : ?string {
   return $this->next;
 }
 
-final public function _setPrev(?string $key) : void {
+ public function _setPrev(?string $key) : void {
   $this->prev = $key;
 }
 
-final public function _getPrev() : ?string {
+ public function _getPrev() : ?string {
   return $this->prev;
 }
 
-final public function _setParent(Chainset $obj) : void {
+ public function _setParent(Chainset $obj) : void {
   $this->parent = $obj;
 }
 
-final public function _getParent() : Chainset {
+ public function _getParent() : Chainset {
   return $this->parent;
 }
 
 /**
 * Place child just before $target.
 */
-final public function before(?string $target = null) : Child {
+ public function before(?string $target = null) : Child {
   if ($target == $this->key)
     return $this;
   if ($target !== null && !isset($this->parent->$target))
@@ -91,7 +91,7 @@ final public function before(?string $target = null) : Child {
 /**
 * Place child just after $target.
 */
-final public function after(?string $target = null) : Child {
+ public function after(?string $target = null) : Child {
   if ($target == $this->key)
     return $this;
   if ($target !== null && !isset($this->parent->$target))

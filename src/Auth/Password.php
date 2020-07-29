@@ -8,7 +8,7 @@ use Onspli\Eladmin\Exception;
 * Single user, no roles, password hash saved to file.
 */
 class Password implements \Onspli\Eladmin\IAuth {
-  
+
   // username
   protected $username = 'eladmin';
   // default password

@@ -96,10 +96,15 @@ final public function __construct() {
   $this->elaInit($this, $this->elakey());
 }
 
+final static public function errorHandler($errno, $errstr, $errfile, $errline) {
+  throw new \ErrorException($errstr, $errno, 0, $errfile, $errline);
+}
+
 /**
 * Run Eladmin. It's just a wrapper of method runNoCatch catching exceptions.
 */
 final public function run() : void {
+  set_error_handler(array(self::class, 'errorHandler'), (E_ALL | E_STRICT) &  ~(E_DEPRECATED | E_USER_DEPRECATED));
   try {
     $this->runNoCatch();
   } catch(Exception\UnauthorizedException $e) {
@@ -113,6 +118,9 @@ final public function run() : void {
     header("HTTP/1.1 400 Bad Request");
     echo $e->getMessage();
   } catch(Exception\Exception $e) {
+    header("HTTP/1.1 500 Internal Server Error");
+    echo $e->getMessage();
+  } catch (\Throwable $e) {
     header("HTTP/1.1 500 Internal Server Error");
     echo $e->getMessage();
   } catch(\Exception $e) {
@@ -202,8 +210,9 @@ final public function runNoCatch() : void {
   // CSRF token comparsion
   $this->CSRFAuth();
   // Check if user is authorized to do the action.
-  if (!$this->module()->elaAuth($this->actionkey()))
+  if (!$this->module()->elaAuth($this->actionkey())) {
     throw new Exception\UnauthorizedException();
+  }
 
   $elakey = $this->module()->elakey();
   if ($elakey == $this->elakey())
@@ -219,8 +228,9 @@ final public function runNoCatch() : void {
   $method = 'elaAction' . ucfirst($this->actionkey());
 
   // Check if action exists.
-  if (!is_callable([$instanceForAction, $method]))
-    throw new Exception\BadRequestException('Class ' . $classname . ' does not have method ' . $method . '!');
+  if (!is_callable([$instanceForAction, $method]) || !$this->module()->elaHasAction($this->actionkey())) {
+    throw new Exception\BadRequestException('Class ' . $classname . ' does not have method ' . $method . '! Available actions: ' . json_encode($this->module()->elaActionsList()));
+  }
   call_user_func([$instanceForAction, $method]);
 }
 
