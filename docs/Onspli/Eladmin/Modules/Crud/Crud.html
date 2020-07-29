@@ -114,8 +114,8 @@ restore
     trash : &lt;bool - query only soft deleted items&gt;,
     search : &lt;search string&gt;,
     filters : {
-      &lt;column name&gt; : &lt;value&gt;,
-      &lt;column name&gt; : &lt;value&gt;,
+      &lt;column name&gt; : {op : &lt;operator&gt;, val : &lt;value&gt;},
+      &lt;column name&gt; : {op : &lt;operator&gt;, val : &lt;value&gt;},
       ...
     }
   }
@@ -131,7 +131,6 @@ restore
     &lt;second item id&gt;,
     ...
   ],
-  columns : [{&lt;first column config&gt;}, {&lt;second column config&gt;}, ...],
   rows : [
     [&lt;first column value&gt;, &lt;second column value&gt;, ...],
     [&lt;first column value&gt;, &lt;second column value&gt;, ...],
@@ -163,8 +162,13 @@ private function elaColumnsDef()
 protected function elaWrite(array $values, $id = null) : void
 protected function elaRead($id) : array
 protected function elaDelete($id) : void
-protected function elaQuery(array $query, &amp;$totalResults) : array
-public function elaUsesSoftDeletes() : bool
+protected function elaRequest(array $request, &amp;$totalResults) : array
+
+public function elaImplementsPaging() : bool
+public function elaImplementsSorting() : bool
+public function elaImplementsSearch() : bool
+public function elaImplementsFilters() : bool
+public function elaImplementsSoftDeletes() : bool
 protected function elaSoftDelete($id) : void
 protected function elaRestore($id) : void
 </code></pre>
@@ -186,6 +190,59 @@ protected function elaRestore($id) : void
             </div>
     
     
+            <h2>Properties</h2>
+
+            <table class="table table-condensed">
+                    <tr>
+                <td class="type" id="property_INFINITY">
+                                        protected                                        
+                </td>
+                <td>$INFINITY</td>
+                <td class="last">Constant. Infinite number of results requested.</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_ASC">
+                                        protected                                        
+                </td>
+                <td>$ASC</td>
+                <td class="last">Constant. Ascending order.</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_DESC">
+                                        protected                                        
+                </td>
+                <td>$DESC</td>
+                <td class="last">Constant. Descending order.</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_elaColumns">
+                                                            private                    
+                </td>
+                <td>$elaColumns</td>
+                <td class="last">Cached columns chainset</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_elaActions">
+                                                            private                    
+                </td>
+                <td>$elaActions</td>
+                <td class="last">Cached actions chainset;</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_elaFilters">
+                                                            private                    
+                </td>
+                <td>$elaFilters</td>
+                <td class="last">Cached filters chainset.</td>
+                <td></td>
+            </tr>
+            </table>
+
     
             <h2>Methods</h2>
 
@@ -195,9 +252,49 @@ protected function elaRestore($id) : void
                     bool
                 </div>
                 <div class="col-md-8 type">
-                    <a href="#method_elaUsesSoftDeletes">elaUsesSoftDeletes</a>()
+                    <a href="#method_elaImplementsSoftDeletes">elaImplementsSoftDeletes</a>()
         
                                             <p>IMPLEMENT. Does CRUD use soft deletes?</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaImplementsSearch">elaImplementsSearch</a>()
+        
+                                            <p>IMPLEMENT. Does CRUD support searching?</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaImplementsPaging">elaImplementsPaging</a>()
+        
+                                            <p>IMPLEMENT. Does CRUD support paging?</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaImplementsSorting">elaImplementsSorting</a>()
+        
+                                            <p>IMPLEMENT. Does CRUD support sorting?</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaImplementsFilters">elaImplementsFilters</a>()
+        
+                                            <p>IMPLEMENT. Does CRUD support filtering?</p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -266,7 +363,7 @@ Returns row as an associative array ['columnName' => 'value']</p>               
                     array
                 </div>
                 <div class="col-md-8 type">
-                    <a href="#method_elaQuery">elaQuery</a>(array $query, $totalResults)
+                    <a href="#method_elaRequest">elaRequest</a>(array $request, $totalResults)
         
                                             <p>IMPLEMENT. Query for an array of rows.</p>                </div>
                 <div class="col-md-2"></div>
@@ -308,8 +405,7 @@ Returns row as an associative array ['columnName' => 'value']</p>               
                 <div class="col-md-8 type">
                     <a href="#method_elaColumns">elaColumns</a>()
         
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p>Override to configure columns.</p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -319,8 +415,7 @@ Returns row as an associative array ['columnName' => 'value']</p>               
                 <div class="col-md-8 type">
                     <a href="#method_elaActions">elaActions</a>()
         
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p>Override to configure actions.</p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -330,8 +425,37 @@ Returns row as an associative array ['columnName' => 'value']</p>               
                 <div class="col-md-8 type">
                     <a href="#method_elaFilters">elaFilters</a>()
         
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p>Override to configure filters.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaColumnsGet">elaColumnsGet</a>()
+        
+                                            <p>Get columns chainset.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaActionsGet">elaActionsGet</a>()
+        
+                                            <p>Get actions chainset.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaFiltersGet">elaFiltersGet</a>()
+        
+                                            <p>Get filters chainset.</p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -359,7 +483,7 @@ Returns row as an associative array ['columnName' => 'value']</p>               
                     
                 </div>
                 <div class="col-md-8 type">
-                    <a href="#method_elaRowValuesArray">elaRowValuesArray</a>($row, $elaColumns)
+                    <a href="#method_elaRowValuesArray">elaRowValuesArray</a>($row)
         
                                             <p>generate array of values for one row</p>                </div>
                 <div class="col-md-2"></div>
@@ -369,17 +493,7 @@ Returns row as an associative array ['columnName' => 'value']</p>               
                     
                 </div>
                 <div class="col-md-8 type">
-                    <a href="#method_elaColumnsConfigArray">elaColumnsConfigArray</a>($elaColumns)
-        
-                                            <p>generate array of actions for one column</p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    
-                </div>
-                <div class="col-md-8 type">
-                    <a href="#method_elaRowActionsArray">elaRowActionsArray</a>($row, $elaActions, $trash = false)
+                    <a href="#method_elaRowActionsArray">elaRowActionsArray</a>($row)
         
                                             <p>generate array of actions for one item</p>                </div>
                 <div class="col-md-2"></div>
@@ -392,6 +506,17 @@ Returns row as an associative array ['columnName' => 'value']</p>               
                     <a href="#method_elaValidateAndModify">elaValidateAndModify</a>()
         
                                             <p>Validate and modify values before saving.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    object
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaInstanceForAction">elaInstanceForAction</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -481,10 +606,10 @@ Returns row as an associative array ['columnName' => 'value']</p>               
 
             <div id="method-details">
                     <div class="method-item">
-                    <h3 id="method_elaUsesSoftDeletes">
-        <div class="location">at         line 96</div>
+                    <h3 id="method_elaImplementsSoftDeletes">
+        <div class="location">at         line 130</div>
         <code>                    bool
-    <strong>elaUsesSoftDeletes</strong>()
+    <strong>elaImplementsSoftDeletes</strong>()
         </code>
     </h3>
     <div class="details">
@@ -511,8 +636,128 @@ Returns row as an associative array ['columnName' => 'value']</p>               
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_elaImplementsSearch">
+        <div class="location">at         line 137</div>
+        <code>                    bool
+    <strong>elaImplementsSearch</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>IMPLEMENT. Does CRUD support searching?</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaImplementsPaging">
+        <div class="location">at         line 144</div>
+        <code>                    bool
+    <strong>elaImplementsPaging</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>IMPLEMENT. Does CRUD support paging?</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaImplementsSorting">
+        <div class="location">at         line 151</div>
+        <code>                    bool
+    <strong>elaImplementsSorting</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>IMPLEMENT. Does CRUD support sorting?</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaImplementsFilters">
+        <div class="location">at         line 158</div>
+        <code>                    bool
+    <strong>elaImplementsFilters</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>IMPLEMENT. Does CRUD support filtering?</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_elaPrimary">
-        <div class="location">at         line 103</div>
+        <div class="location">at         line 165</div>
         <code>                    string
     <strong>elaPrimary</strong>()
         </code>
@@ -542,7 +787,7 @@ Returns row as an associative array ['columnName' => 'value']</p>               
             </div>
                     <div class="method-item">
                     <h3 id="method_elaWrite">
-        <div class="location">at         line 112</div>
+        <div class="location">at         line 174</div>
         <code>            protected        void
     <strong>elaWrite</strong>(array $values, $id = null)
         </code>
@@ -587,7 +832,7 @@ Returns row as an associative array ['columnName' => 'value']</p>               
             </div>
                     <div class="method-item">
                     <h3 id="method_elaRead">
-        <div class="location">at         line 120</div>
+        <div class="location">at         line 182</div>
         <code>            protected        array
     <strong>elaRead</strong>($id)
         </code>
@@ -628,7 +873,7 @@ Returns row as an associative array ['columnName' => 'value']</p>               
             </div>
                     <div class="method-item">
                     <h3 id="method_elaDelete">
-        <div class="location">at         line 127</div>
+        <div class="location">at         line 189</div>
         <code>            protected        void
     <strong>elaDelete</strong>($id)
         </code>
@@ -668,7 +913,7 @@ Returns row as an associative array ['columnName' => 'value']</p>               
             </div>
                     <div class="method-item">
                     <h3 id="method_elaSoftDelete">
-        <div class="location">at         line 134</div>
+        <div class="location">at         line 196</div>
         <code>            protected        void
     <strong>elaSoftDelete</strong>($id)
         </code>
@@ -708,7 +953,7 @@ Returns row as an associative array ['columnName' => 'value']</p>               
             </div>
                     <div class="method-item">
                     <h3 id="method_elaRestore">
-        <div class="location">at         line 141</div>
+        <div class="location">at         line 203</div>
         <code>            protected        void
     <strong>elaRestore</strong>($id)
         </code>
@@ -747,10 +992,10 @@ Returns row as an associative array ['columnName' => 'value']</p>               
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_elaQuery">
-        <div class="location">at         line 150</div>
+                    <h3 id="method_elaRequest">
+        <div class="location">at         line 212</div>
         <code>            protected        array
-    <strong>elaQuery</strong>(array $query, $totalResults)
+    <strong>elaRequest</strong>(array $request, $totalResults)
         </code>
     </h3>
     <div class="details">
@@ -766,7 +1011,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
                     <table class="table table-condensed">
                     <tr>
                 <td>array</td>
-                <td>$query</td>
+                <td>$request</td>
                 <td></td>
             </tr>
                     <tr>
@@ -794,7 +1039,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_elaColumnsDef">
-        <div class="location">at         line 157</div>
+        <div class="location">at         line 219</div>
         <code>                private    
     <strong>elaColumnsDef</strong>()
         </code>
@@ -815,7 +1060,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_elaActionsDef">
-        <div class="location">at         line 165</div>
+        <div class="location">at         line 227</div>
         <code>                private    
     <strong>elaActionsDef</strong>()
         </code>
@@ -836,7 +1081,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_elaFiltersDef">
-        <div class="location">at         line 193</div>
+        <div class="location">at         line 262</div>
         <code>                private    
     <strong>elaFiltersDef</strong>()
         </code>
@@ -857,8 +1102,8 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_elaColumns">
-        <div class="location">at         line 197</div>
-        <code>                    
+        <div class="location">at         line 269</div>
+        <code>            protected        
     <strong>elaColumns</strong>()
         </code>
     </h3>
@@ -866,6 +1111,8 @@ $totalResults needs to be set to number of results without paging applied</p>   
             
     
 
+                    <div class="method-description">
+                                    <p>Override to configure columns.</p>                                                </div>
                 <div class="tags">
             
             
@@ -876,8 +1123,8 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_elaActions">
-        <div class="location">at         line 201</div>
-        <code>                    
+        <div class="location">at         line 276</div>
+        <code>            protected        
     <strong>elaActions</strong>()
         </code>
     </h3>
@@ -885,6 +1132,8 @@ $totalResults needs to be set to number of results without paging applied</p>   
             
     
 
+                    <div class="method-description">
+                                    <p>Override to configure actions.</p>                                                </div>
                 <div class="tags">
             
             
@@ -895,8 +1144,8 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_elaFilters">
-        <div class="location">at         line 205</div>
-        <code>                    
+        <div class="location">at         line 283</div>
+        <code>            protected        
     <strong>elaFilters</strong>()
         </code>
     </h3>
@@ -904,6 +1153,71 @@ $totalResults needs to be set to number of results without paging applied</p>   
             
     
 
+                    <div class="method-description">
+                                    <p>Override to configure filters.</p>                                                </div>
+                <div class="tags">
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaColumnsGet">
+        <div class="location">at         line 290</div>
+        <code>final                    
+    <strong>elaColumnsGet</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Get columns chainset.</p>                                                </div>
+                <div class="tags">
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaActionsGet">
+        <div class="location">at         line 299</div>
+        <code>final                    
+    <strong>elaActionsGet</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Get actions chainset.</p>                                                </div>
+                <div class="tags">
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaFiltersGet">
+        <div class="location">at         line 308</div>
+        <code>final                    
+    <strong>elaFiltersGet</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Get filters chainset.</p>                                                </div>
                 <div class="tags">
             
             
@@ -914,7 +1228,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_elaViews">
-        <div class="location">at         line 212</div>
+        <div class="location">at         line 317</div>
         <code>                    array
     <strong>elaViews</strong>()
         </code>
@@ -944,7 +1258,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_elaId">
-        <div class="location">at         line 220</div>
+        <div class="location">at         line 325</div>
         <code>            protected        
     <strong>elaId</strong>($throwIfNull = true)
         </code>
@@ -975,9 +1289,9 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_elaRowValuesArray">
-        <div class="location">at         line 229</div>
+        <div class="location">at         line 334</div>
         <code>                private    
-    <strong>elaRowValuesArray</strong>($row, $elaColumns)
+    <strong>elaRowValuesArray</strong>($row)
         </code>
     </h3>
     <div class="details">
@@ -995,42 +1309,6 @@ $totalResults needs to be set to number of results without paging applied</p>   
                 <td>$row</td>
                 <td></td>
             </tr>
-                    <tr>
-                <td></td>
-                <td>$elaColumns</td>
-                <td></td>
-            </tr>
-            </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_elaColumnsConfigArray">
-        <div class="location">at         line 242</div>
-        <code>                private    
-    <strong>elaColumnsConfigArray</strong>($elaColumns)
-        </code>
-    </h3>
-    <div class="details">
-            
-    
-
-                    <div class="method-description">
-                                    <p>generate array of actions for one column</p>                                                </div>
-                <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td></td>
-                <td>$elaColumns</td>
-                <td></td>
-            </tr>
             </table>
 
             
@@ -1042,9 +1320,9 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_elaRowActionsArray">
-        <div class="location">at         line 261</div>
+        <div class="location">at         line 348</div>
         <code>                private    
-    <strong>elaRowActionsArray</strong>($row, $elaActions, $trash = false)
+    <strong>elaRowActionsArray</strong>($row)
         </code>
     </h3>
     <div class="details">
@@ -1062,16 +1340,6 @@ $totalResults needs to be set to number of results without paging applied</p>   
                 <td>$row</td>
                 <td></td>
             </tr>
-                    <tr>
-                <td></td>
-                <td>$elaActions</td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td></td>
-                <td>$trash</td>
-                <td></td>
-            </tr>
             </table>
 
             
@@ -1083,7 +1351,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_elaValidateAndModify">
-        <div class="location">at         line 293</div>
+        <div class="location">at         line 364</div>
         <code>                private    
     <strong>elaValidateAndModify</strong>()
         </code>
@@ -1103,8 +1371,36 @@ $totalResults needs to be set to number of results without paging applied</p>   
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_elaInstanceForAction">
+        <div class="location">at         line 386</div>
+        <code>final                    object
+    <strong>elaInstanceForAction</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>object</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_elaActionPostForm">
-        <div class="location">at         line 318</div>
+        <div class="location">at         line 398</div>
         <code>                    
     <strong>elaActionPostForm</strong>()
         </code>
@@ -1125,7 +1421,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_elaActionPutForm">
-        <div class="location">at         line 327</div>
+        <div class="location">at         line 407</div>
         <code>                    
     <strong>elaActionPutForm</strong>()
         </code>
@@ -1146,7 +1442,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_elaActionRead">
-        <div class="location">at         line 336</div>
+        <div class="location">at         line 416</div>
         <code>                    
     <strong>elaActionRead</strong>()
         </code>
@@ -1167,7 +1463,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_elaActionUpdate">
-        <div class="location">at         line 370</div>
+        <div class="location">at         line 475</div>
         <code>                    
     <strong>elaActionUpdate</strong>()
         </code>
@@ -1188,7 +1484,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_elaActionCreate">
-        <div class="location">at         line 379</div>
+        <div class="location">at         line 484</div>
         <code>                    
     <strong>elaActionCreate</strong>()
         </code>
@@ -1209,7 +1505,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_elaActionDelete">
-        <div class="location">at         line 388</div>
+        <div class="location">at         line 493</div>
         <code>                    
     <strong>elaActionDelete</strong>()
         </code>
@@ -1230,7 +1526,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_elaActionSoftDelete">
-        <div class="location">at         line 396</div>
+        <div class="location">at         line 501</div>
         <code>                    
     <strong>elaActionSoftDelete</strong>()
         </code>
@@ -1251,7 +1547,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_elaActionRestore">
-        <div class="location">at         line 404</div>
+        <div class="location">at         line 509</div>
         <code>                    
     <strong>elaActionRestore</strong>()
         </code>

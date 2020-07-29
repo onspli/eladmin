@@ -157,7 +157,7 @@
                     array
                 </div>
                 <div class="col-md-8 type">
-                    <a href="#method_elaQuery">elaQuery</a>(array $query, $totalResults)
+                    <a href="#method_elaRequest">elaRequest</a>(array $request, $totalResults)
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -168,7 +168,51 @@
                     bool
                 </div>
                 <div class="col-md-8 type">
-                    <a href="#method_elaUsesSoftDeletes">elaUsesSoftDeletes</a>()
+                    <a href="#method_elaImplementsSoftDeletes">elaImplementsSoftDeletes</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaImplementsSorting">elaImplementsSorting</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaImplementsPaging">elaImplementsPaging</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaImplementsSearch">elaImplementsSearch</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_elaImplementsFilters">elaImplementsFilters</a>()
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -229,7 +273,7 @@
                     
                 </div>
                 <div class="col-md-8 type">
-                    <a href="#method_elaGetActionInstance">elaGetActionInstance</a>()
+                    <a href="#method_elaInstanceForAction">elaInstanceForAction</a>()
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -243,7 +287,7 @@
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method_elaPrimary">
-        <div class="location">at         line 16</div>
+        <div class="location">at         line 18</div>
         <code>                    string
     <strong>elaPrimary</strong>()
         </code>
@@ -273,7 +317,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaWrite">
-        <div class="location">at         line 20</div>
+        <div class="location">at         line 22</div>
         <code>            protected        void
     <strong>elaWrite</strong>(array $row, $id = null)
         </code>
@@ -316,7 +360,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaRead">
-        <div class="location">at         line 41</div>
+        <div class="location">at         line 43</div>
         <code>            protected        array
     <strong>elaRead</strong>($id)
         </code>
@@ -354,7 +398,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaDelete">
-        <div class="location">at         line 52</div>
+        <div class="location">at         line 54</div>
         <code>            protected        void
     <strong>elaDelete</strong>($id)
         </code>
@@ -393,10 +437,10 @@
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_elaQuery">
-        <div class="location">at         line 62</div>
+                    <h3 id="method_elaRequest">
+        <div class="location">at         line 69</div>
         <code>            protected        array
-    <strong>elaQuery</strong>(array $query, $totalResults)
+    <strong>elaRequest</strong>(array $request, $totalResults)
         </code>
     </h3>
     <div class="details">
@@ -409,7 +453,7 @@
                     <table class="table table-condensed">
                     <tr>
                 <td>array</td>
-                <td>$query</td>
+                <td>$request</td>
                 <td></td>
             </tr>
                     <tr>
@@ -436,10 +480,122 @@
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_elaUsesSoftDeletes">
-        <div class="location">at         line 76</div>
+                    <h3 id="method_elaImplementsSoftDeletes">
+        <div class="location">at         line 110</div>
         <code>                    bool
-    <strong>elaUsesSoftDeletes</strong>()
+    <strong>elaImplementsSoftDeletes</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaImplementsSorting">
+        <div class="location">at         line 114</div>
+        <code>                    bool
+    <strong>elaImplementsSorting</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaImplementsPaging">
+        <div class="location">at         line 118</div>
+        <code>                    bool
+    <strong>elaImplementsPaging</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaImplementsSearch">
+        <div class="location">at         line 122</div>
+        <code>                    bool
+    <strong>elaImplementsSearch</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elaImplementsFilters">
+        <div class="location">at         line 126</div>
+        <code>                    bool
+    <strong>elaImplementsFilters</strong>()
         </code>
     </h3>
     <div class="details">
@@ -465,7 +621,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaSoftDelete">
-        <div class="location">at         line 83</div>
+        <div class="location">at         line 133</div>
         <code>            protected        void
     <strong>elaSoftDelete</strong>($id)
         </code>
@@ -505,7 +661,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaRestore">
-        <div class="location">at         line 96</div>
+        <div class="location">at         line 146</div>
         <code>            protected        void
     <strong>elaRestore</strong>($id)
         </code>
@@ -545,7 +701,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_tableExists">
-        <div class="location">at         line 108</div>
+        <div class="location">at         line 158</div>
         <code>            protected        bool
     <strong>tableExists</strong>()
         </code>
@@ -575,7 +731,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_tableColumns">
-        <div class="location">at         line 115</div>
+        <div class="location">at         line 165</div>
         <code>                private    array
     <strong>tableColumns</strong>()
         </code>
@@ -605,7 +761,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_elaColumnsDef">
-        <div class="location">at         line 122</div>
+        <div class="location">at         line 172</div>
         <code>                private    
     <strong>elaColumnsDef</strong>()
         </code>
@@ -625,10 +781,10 @@
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_elaGetActionInstance">
-        <div class="location">at         line 143</div>
+                    <h3 id="method_elaInstanceForAction">
+        <div class="location">at         line 193</div>
         <code>                    
-    <strong>elaGetActionInstance</strong>()
+    <strong>elaInstanceForAction</strong>()
         </code>
     </h3>
     <div class="details">
