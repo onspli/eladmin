@@ -184,7 +184,7 @@ class Registration extends Eloquent\Model
   /**
   * Configure actions.
   */
-  public function elaAactions(){
+  public function elaActions(){
     $actions = $this->elaActionsDef();
     $actions->cancel          // method elaActionCancel
       ->label('Cancel')
@@ -194,7 +194,7 @@ class Registration extends Eloquent\Model
       ->done('console.log("Action \'cancel\' done.");')  // run script after the action is done
       ->listable()            // show the action in the table of registrations
       ->editable()           // show the action in the update form
-      ->bulk('Cancel');             // enable bulk action
+      ->bulk();             // enable bulk action
     return $actions;
   }
 
