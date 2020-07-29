@@ -29,11 +29,14 @@ foreach ($module->elaActionsGet() as $action) {
 
 @if(sizeof($elaActions))
 <span class="dropdown actions-dropdown bulk-action">
-  <button class="btn btn-primary mr-1 dropdown-toggle" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i> {{ __('Actions')}}</button>
+  <button class="btn btn-primary mr-1 dropdown-toggle bulk-action" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i> {{ __('Actions')}}</button>
   <div class="dropdown-menu">
   @foreach($elaActions as $action)
     <?php $actionArr = $action->getAction(); ?>
     <a href="#" data-elabulkaction="{{$action->getName()}}"
+        @if($action->form)
+        data-formaction="true"
+        @endif
         @if(isset($actionArr['confirm']))
         data-bulkconfirm="{{ $actionArr['confirm'] }}"
         @else

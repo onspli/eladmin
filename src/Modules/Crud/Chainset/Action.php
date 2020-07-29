@@ -13,6 +13,7 @@ class Action extends Eladmin\Chainset\Child {
   public $confirm = null;
   public $done = '';
   public $bulk = null;
+  public $form = false;
 
   public function _getKey() : string {
     return Eladmin\Eladmin::normalizeActionName(parent::_getKey());
@@ -31,7 +32,8 @@ class Action extends Eladmin\Chainset\Child {
       'done' => $this->done,
       'label' => $this->label ?? ucfirst($this->getName()),
       'style' => $this->style,
-      'icon' => $this->icon
+      'icon' => $this->icon,
+      'form' => $this->form
     ];
 
     if (isset($this->title)) {
@@ -73,6 +75,17 @@ class Action extends Eladmin\Chainset\Child {
 
   public function nonbulk(){
     $this->bulk = null;
+    return $this;
+  }
+
+  public function form(){
+    $this->form = true;
+    $this->noneditable();
+    return $this;
+  }
+
+  public function nonform(){
+    $this->form = false;
     return $this;
   }
 

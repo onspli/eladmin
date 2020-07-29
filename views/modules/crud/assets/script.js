@@ -243,6 +243,8 @@ function actionLinkFactory(name, id){
   button.attr('data-elaaction', name);
   button.attr('data-eladone', (action.done ? action.done : '') + ';bulkUncheckAll();crudRead();');
   button.attr('data-elagetid', id);
+  if (action.form)
+    button.attr('data-formaction', 'true');
   if (action.confirm !== undefined)
     button.attr('data-confirm', action.confirm ? action.confirm : action.action);
   button.attr('class', 'dropdown-item text-' + (action.style ? action.style : 'primary'));
@@ -265,6 +267,8 @@ function actionButtonFactory(name, id){
   button.attr('data-elaaction', name);
   button.attr('data-eladone', (action.done ? action.done : '') + ';bulkUncheckAll();crudRead();');
   button.attr('data-elagetid', id);
+  if (action.form)
+    button.attr('data-formaction', 'true');
   if (action.confirm !== undefined)
     button.attr('data-confirm', action.confirm ? action.confirm : action.action);
   button.attr('class', 'btn m-1 btn-' + (action.style ? action.style : 'primary'));
@@ -551,50 +555,52 @@ $(document).on('click', 'input.bulk', function(){
 /**
 *
 */
-function doBulkAction(el, ids){
+function doBulkAction(el, ids, request){
   var selected = bulkSelectedItemsCount();
   var finished = 0;
   var success = 0;
   var failed = 0;
 
   for (id of ids) {
-    elaElementRequest(el, {
+    elaElementRequest(el, $.extend(true, {}, {
       action : $(el).data('elabulkaction'),
       silent : true,
       get : {id : id}
-    })
-    .fail(function(response) {
+    }, request))
+    .fail(function() {
       failed++;
     })
-    .done(function(data, status, xhr) {
+    .done(function() {
       success++;
     })
     .always(function() {
       finished++;
       if (finished >= selected) {
-        toastr.info(_msg_bulkDone.replace('%success', success).replace('%failed', failed));
-        crudRead();
-        bulkUncheckAll();
+        if (success > 0) {
+          toastr.info(_msg_bulkDone.replace('%success', success).replace('%failed', failed));
+          modalClose();
+          crudRead();
+          bulkUncheckAll();
+        } else {
+          toastr.error(_msg_bulkDone.replace('%success', success).replace('%failed', failed));
+        }
       }
     });
   }
 }
 
-/**
-*
-*/
-$(document).on('click', '*[data-elabulkaction]', function(e){
-  e.preventDefault();
-
-  var confirm = window.confirm( $(this).data('bulkconfirm') + ' (' + _msg_bulkConfirm.replace('%count', bulkSelectedItemsCount()) + ')');
+function idsForBulkAction(el, request) {
+  var confirmMsg = $(el).data('bulkconfirm');
+  if (!confirmMsg)
+    confirmMsg = _msg_areYouSure;
+  var confirm = window.confirm( confirmMsg + ' (' + _msg_bulkConfirm.replace('%count', bulkSelectedItemsCount()) + ')');
   if(!confirm){
     return;
   }
 
   if (bulkConfig.all) {
     crudRequest.onlyIds = 1;
-    var el = this;
-    elaRequest({ action : 'read', module : elaElementModule(this), post : crudRequest})
+    elaRequest({ action : 'read', module : elaElementModule(el), post : crudRequest})
     .done(function(data){
       console.debug(data);
       for(id of bulkConfig.ids){
@@ -602,9 +608,51 @@ $(document).on('click', '*[data-elabulkaction]', function(e){
           return item !== id;
         });
       }
-      doBulkAction(el, data);
+      doBulkAction(el, data, request);
     });
   } else{
-    doBulkAction(this, bulkConfig.ids);
+    doBulkAction(el, bulkConfig.ids, request);
   }
+}
+
+$(document).on('eladone', '[data-elaaction]', function(){
+  console.debug(this);
+  console.debug($(this).data('formaction'));
+  console.debug($(this).data('elagetid'));
+  console.debug(isModalOpen() );
+  console.debug($('#dynamic .modal form').data('elagetid'));
+  if ($(this).data('formaction') && $(this).data('elagetid') && isModalOpen() && !$('#dynamic .modal form').data('elagetid')) {
+    $('#dynamic .modal form').attr('data-elagetid', $(this).data('elagetid'));
+  }
+});
+
+/**
+*
+*/
+$(document).on('click', ':not(form)*[data-elabulkaction]', function(e){
+  e.preventDefault();
+
+  if ($(this).data('formaction')) {
+    elaElementRequest($(this), {
+      action : $(this).data('elabulkaction'),
+      silent : false
+    })
+    .done(function(){
+      var action = $('#dynamic .modal form').data('elaaction');
+      $('#dynamic .modal form').removeAttr('data-elaaction');
+      $('#dynamic .modal form').attr('data-elabulkaction', action);
+    });
+    return;
+  }
+
+  idsForBulkAction(this);
+
+});
+
+/**
+*
+*/
+$(document).on('submit', '*[data-elabulkaction]', function(e) {
+  e.preventDefault();
+  idsForBulkAction(this, {post : $(this).serialize()});
 });

@@ -19,6 +19,7 @@
 @push('scripts')
 <script>
 var _msg_nothingFound = '{{ __("Nothing found!") }}';
+var _msg_areYouSure = '{{ __("Are you sure?") }}';
 var _msg_dbError = '{{ __("Cannot read from database!") }}';
 var _msg_bulkConfirm = '{{ __("Action will affect %count items.") }}';
 var _msg_bulkDone = '{{ __("Done. %success items was affected, %failed failed.") }}';

@@ -229,7 +229,7 @@ final public function runNoCatch() : void {
 
   // Check if action exists.
   if (!is_callable([$instanceForAction, $method]) || !$this->module()->elaHasAction($this->actionkey())) {
-    throw new Exception\BadRequestException('Class ' . $classname . ' does not have method ' . $method . '! Available actions: ' . json_encode($this->module()->elaActionsList()));
+    throw new Exception\BadRequestException('Class ' . $classname . ' does not have method ' . $method . '!');
   }
   call_user_func([$instanceForAction, $method]);
 }

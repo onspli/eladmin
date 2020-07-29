@@ -228,22 +228,13 @@ private function elaActionsDef() {
   $actions = new Chainset\Actions;
   $actions->setModule($this);
 
-  foreach ($this->elaActionsList() as $action) {
-    $actions->{$action}->bulk();
-  }
-
-  unset($actions->create);
-  unset($actions->update);
-  unset($actions->read);
   $actions->putForm->hidden()->label('')->style('primary')->icon('<i class="fas fa-edit"></i>')->nonbulk();
   $actions->postForm->hidden()->nonbulk();
-  $actions->restore->style('success')->label('')->icon('<i class="fas fa-recycle"></i>')->title(__('Restore'))->hidden();
   $actions->delete->style('danger')->label('')->icon('<i class="fas fa-trash-alt"></i>')->title(__('Delete'))->confirm()->hidden();
-  $actions->softDelete->style('danger')->label('')->icon('<i class="fas fa-trash-alt"></i>')->hidden();
 
-  if (!$this->elaImplementsSoftDeletes()) {
-    unset($actions->restore);
-    unset($actions->softDelete);
+  if ($this->elaImplementsSoftDeletes()) {
+    $actions->restore->style('success')->label('')->icon('<i class="fas fa-recycle"></i>')->title(__('Restore'))->hidden();
+    $actions->softDelete->style('danger')->label('')->icon('<i class="fas fa-trash-alt"></i>')->hidden();
   }
 
   if (!$this->elaAuth('update') && $this->elaAuth('read')) {
