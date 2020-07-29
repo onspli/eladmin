@@ -42,5 +42,5 @@
   display: none;
 }
 
-.actions-dropdown i.fas { width: 1.5em;}
+.actions-dropdown i.fas, .actions-dropdown i.far { width: 1.5em;}
 .actions-dropdown .dropdown-toggle::after { display: none;}
