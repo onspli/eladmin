@@ -1,7 +1,7 @@
 <?php
 
 namespace Onspli\Eladmin;
-use \Onspli\Eladmin\Eladmin;
+use \Onspli\Eladmin;
 use \Onspli\Eladmin\Exception;
 use \Jenssegers\Blade\Blade;
 
@@ -10,46 +10,27 @@ use \Jenssegers\Blade\Blade;
 *
 * Features:
 *
-* - define module's apearence in admin interface - $elaTitle, $elaIcon, elaTitle(), elaIcon()
-* - handles authorization - elaRoles, elaActionRoles, elaAuth(), elaRoles(), elaSetRoles()
-* - handles rendering - elaRequest(), elaAsset(), elaView(), aleFile(), elaViews(), elaBlade()
-* - user defined actions - elaAction<action name>()
+* - define module's apearence in admin interface - $title, $icon, title(), icon()
+* - handles authorization - $roles, $actionRoles, auth(), getRoles(), setRoles()
+* - handles rendering - requestUrl(), assetUrl(), view(), asset(), views(), blade()
+* - user defined actions - action<action name>(), actions(), hasAction()
 *
 *
 * To configure the module you may define properties as shown in the following example.
-* These properties shouldn't be defined in any trait extending this generic module because trait's properties cannot be overriden.
 * ```lang-php
-* class MyModule {
-*
-* use Eladmin\Module;
+* class MyModule extends Eladmin\Module {
 *
 * // set module's name
-* protected $elaTitle = 'My module';
+* protected $title = 'My module';
 *
 * // set module's icon
-* protected $elaIcon = '<i class="fas fa-puzzle-piece"></i>';
+* protected $icon = '<i class="fas fa-puzzle-piece"></i>';
 *
 * // set authorized roles.
-* // Empty array means any role can access the module (Design choice: What's the point having a module no one can access?)
-* protected $elaRoles = ['admin', 'user'];
+* protected $roles = ['admin', 'user'];
 *
 * // override to set authorized roles. empty array means any role.
-* protected $elaActionRoles = ['read' => [], 'write' => ['admin']];
-*
-* }
-* ```
-*
-* Extend views directory:
-* ```lang-php
-* class MyModule {
-*
-* use Eladmin\Module {
-*   Eladmin\Module::elaViews as elaViews_Module;
-* }
-*
-* public function elaViews() : array {
-*   return array_merge([__DIR__ . '/views'], $this->elaViews_Module());
-* }
+* protected $actionRoles = ['read' => self::ANYONE, 'write' => ['admin'], 'delete' => self::NOONE];
 *
 * }
 * ```
@@ -62,192 +43,270 @@ use \Jenssegers\Blade\Blade;
 * ```
 *
 */
-trait Module {
+class Module {
 
 /**
 * Eladmin core instance
 */
-private $eladmin = null;
+private $core = null;
 
 /**
 * Module's elakey
 */
 private $elakey = null;
 
-// override to set module's name
-// protected $elaTitle = class_basename(static::class);
+/**
+* override to set module's name
+*/
+protected $title = null;
 
-// override to set module's icon
-// protected $elaIcon = '<i class="fas fa-puzzle-piece"></i>';
+/**
+* override to set module's icon
+*/
+protected $icon = '<i class="fas fa-puzzle-piece"></i>';
 
-// override to set authorized roles. empty array means any role
-// protected $elaRoles = [];
+/**
+* Action methods prefix
+*/
+const ACTION_PREFIX = 'action';
 
-// override to set authorized roles. empty array means any role.
-// It doesn't make sanse to have actions no one can perform.
-// format ['read' => [], 'write' => ['admin']]
-// protected $elaActionRoles = [];
+/**
+* Add views directory to module;
+*/
+protected $views = null;
+
+/**
+* override to set authorized roles
+*/
+protected $roles = Eladmin\IAuth::ANYONE;
+
+/**
+* override to set authorized roles
+*/
+protected $actionRoles = [];
 
 /**
 * normalizing action names for elaActionRoles is expensive, we want to do it only once
 */
-private $elaActionNamesNormalized = false;
+private $actionsParsed = false;
 
 /**
 * Each module has to be initialized with eladmin instance and its own elakey.
 */
-final public function elaInit($eladmin, $elakey) : void {
-  $eladmin->log()->debug('init module', ['class' => static::class, 'elakey' => $elakey]);
-  $this->eladmin = $eladmin;
+public function __construct($core, $elakey) {
+  $this->core = $core;
   $this->elakey = $elakey;
 }
 
 /**
-* Check if module was initialized. Throws if it wasn't.
+* Return core instance
 */
-final public function elaInitCheck() : void {
-  if ($this->eladmin === null)
-    throw new Exception(__('Module ' . static::class . ' was not initialized.'));
+final public function core() : Core {
+  return $this->core;
 }
 
 /**
 * Each module has its elakey - index in modules array - used to address requests.
 */
 final public function elakey() : string {
-  $this->elaInitCheck();
   return $this->elakey;
 }
 
 /**
 * Check if user is authorized to do action, or athorized to access module at all.
 */
-final public function elaAuth(?string $action = null) : bool {
-  $this->elaInitCheck();
-  return $this->eladmin->auth($this, $action);
+final public function auth(?string $action = null) : bool {
+  if ($this->core->iauth() === null)
+    return true; // authorization off
+  $module = $this->core->module($this->elakey());
+  if ($module === null)
+    return false; // user not authorized to work with the module
+  $roles = $this->roles($action);
+  if ($roles === Eladmin\IAuth::NOONE)
+    return false;
+  return $this->core->iauth()->authorize($roles);
 }
 
 /**
 * Get name of the module.
 */
-public function elaTitle() : string {
-  return property_exists($this, 'elaTitle') ? $this->elaTitle : class_basename(static::class);
+public function title() : string {
+  return $this->title ?? class_basename(static::class);
 }
 
 /**
 * Get icon of the module.
 */
-public function elaIcon() : string {
-  return property_exists($this, 'elaIcon') ? $this->elaIcon : '<i class="fas fa-puzzle-piece"></i>';
+public function icon() : string {
+  return $this->icon;
 }
 
 /**
 * Return url for this module.
 */
-final public function elaRequest($action = null, $args = []) : string {
-  $this->elaInitCheck();
-  return $this->eladmin->request($this->elakey(), $action, $args);
+final public function requestUrl(?string $action = null, array $args = []) : string {
+  $data['elamodule'] = $this->elakey();
+  if ($action !== null) {
+    $data['elaaction'] = $action;
+    $data['elatoken'] = $this->core->CSRFToken();
+  }
+  $data = array_merge($data, $args);
+  return '?' . http_build_query($data);
 }
 
 /**
 * Create asset url, file path relative to /assets directory. Default $version = time()
 */
-final public function elaAsset(string $path, ?string $version = null) : string {
-  $this->elaInitCheck();
-  return $this->eladmin->asset($this->elakey(), $path, $version);
+final public function assetUrl(string $path, ?string $version = null) : string {
+   return $this->requestUrl(null, ['elaasset' => $path, 'ver' => $version ?? time()]);
+}
+
+/**
+* Runs before any action is executed.
+*/
+public function prepare() : void {
+
 }
 
 /**
 * Get roles authorized to work with the module, or specific action. Empty array means any role is authorized.
 */
-final public function elaRoles($action = null) : array {
-  if (!property_exists($this, 'elaRoles'))
-    $this->elaRoles = [];
-  if (!property_exists($this, 'elaActionRoles'))
-    $this->elaActionRoles = [];
+final public function roles(?string $action = null) : ?array {
 
   if ($action === null)
-    return $this->elaRoles;
+    return $this->roles;
 
-  if (!$this->elaActionNamesNormalized) {
-    $actionRolesCopy = (new \ArrayObject($this->elaActionRoles))->getArrayCopy();
-    $this->elaActionRoles = [];
-    foreach ($actionRolesCopy as $action => $roles) {
-      $this->elaSetRoles($roles, $action);
+  if (!$this->actionsParsed) {
+    $actionRolesCopy = (new \ArrayObject($this->actionRoles))->getArrayCopy();
+    $this->actionRoles = [];
+    foreach ($actionRolesCopy as $actionName => $roles) {
+      $this->setRoles($roles, $actionName);
     }
-    $this->elaActionNamesNormalized = true;
+    $this->actionsParsed = true;
   }
 
-  $action = Eladmin::normalizeActionName($action);
-  return $this->elaActionRoles[$action] ?? [];
+  $action = self::parseAction($action);
+  return $this->actionRoles[$action] ?? IAuth::ANYONE;
 }
 
 /**
 * Set roles authorized to work with the module, or specific action. Empty array means any role is authorized.
 */
-final public function elaSetRoles(array $roles, $action = null) : void {
+private function setRoles(?array $roles, ?string $action = null) : void {
   if ($action === null) {
     $this->elaRoles = $roles;
     return;
   }
 
-  if (!isset($this->elaActionRoles) || !is_array($this->elaActionRoles))
-    $this->elaActionRoles = [];
-
-  $action = Eladmin::normalizeActionName($action);
-  $this->elaActionRoles[$action] = $roles;
+  $action = self::parseAction($action);
+  $this->actionRoles[$action] = $roles;
 }
 
 /**
-* Actions will be called on instance of this module returned by this method. Default is $this.
+* Extends array of directories of views and assets.
+*
+* Example:
+* ```lang-php
+* public function views() : array {
+*  return array_merge([__DIR__ . '/my_module'], parent::views());
+* }
+* ```
+*
 */
-final public function elaInstanceForAction() : object {
-  return $this;
-}
-
-/**
-* Extends array of directories of views and assets
-*/
-public function elaViews() : array {
-  return [__DIR__ . '/../views/module'];
+protected function views() : array {
+  $views = [];
+  if (is_string($this->views)) {
+    $views[] = $this->views;
+  }
+  $views[] = __DIR__ . '/../views/module';
+  return array_merge($views, $this->core->views());
 }
 
 /**
 * Return Blade instance
 */
-public function elaBlade() : Blade {
-  $this->elaInitCheck();
-  return $this->eladmin->blade($this->elaViews());
+protected function blade() : Blade {
+  return $this->core->blade();
 }
 
 /**
 * Return rendered view.
 */
-final public function elaView(string $name, array $args = []) : string {
-  $this->elaInitCheck();
-  $blade = $this->elaBlade();
-  return $this->eladmin->view($name, array_merge($args, ['module' => $this]), $blade);
+final public function render(string $template, array $args = []) : string {
+  $blade = $this->blade();
+  return $blade->make($template, array_merge($args, ['eladmin' => $this->core, 'module' => $this]))->render();
 }
 
 /**
-* Determinate asset content-type and print it.
+* Determinate asset content-type and render it.
 */
-public function elaFile($path) : void {
-  $path_parts = pathinfo($path);
-  $extension = $path_parts['extension'];
-  $assetContentTypes = [
-    'css' => 'text/css',
-    'js' => 'text/javascript'
-  ];
-  $contentType = $assetContentTypes[$extension] ?? null;
-  if (!$contentType)
-    throw new Exception\UnauthorizedException('Asset extension ' . $extension . ' not allowed.');
-
-  @$content = file_get_contents($path);
-  if ($content === false)
-    throw new Exception\Exception('Could not read asset ' . $path . '.');
-  header('Content-type:' . $contentType);
-  echo $content;
+public function renderAsset(string $path) : void {
+  $this->core->renderAsset($path);
 }
 
+/**
+* Return array of all defined actions.
+*/
+final static public function actions() : array {
+  $actions = [];
+  $classMethods = get_class_methods(static::class);
+  foreach ($classMethods as $classMethod) {
+    if (substr($classMethod, 0, strlen(self::ACTION_PREFIX)) != self::ACTION_PREFIX ||
+        !strlen(substr($classMethod, strlen(self::ACTION_PREFIX), 1)) ||
+        !ctype_upper(substr($classMethod, strlen(self::ACTION_PREFIX), 1))) {
+      continue;
+    }
+    $actions[] = self::parseAction(substr($classMethod, strlen(self::ACTION_PREFIX)));
+  }
+  return $actions;
+}
+
+/**
+* Check if actions is defined.
+*/
+final static public function hasAction(string $action) : bool {
+  return in_array(self::parseAction($action), static::actions());
+}
+
+/**
+* Check if actions is executed.
+*/
+final static public function isAction(string $action) : bool {
+  return $this->elakey() === $this->core->modulekey() && self::parseAction($action) === $this->core->actionkey();
+}
+
+/**
+* We want action keys to be case insensitive. This converts action to lowercase.
+*/
+final static public function parseAction(string $action) : string {
+  return strtolower($action);
+}
+
+/**
+* Convinient method for plain text output. Sets HTTP header text/plain and echo $str.
+*/
+final static public function renderText(?string $str = null) : void {
+  Header('Content-type: text/plain');
+  if($str !== null)
+    echo $str;
+}
+
+/**
+* Convinient method for html output. Sets HTTP header text/html and echo $str.
+*/
+final static public function renderHtml(?string $str = null) : void {
+  Header('Content-type: text/html');
+  if($str !== null)
+    echo $str;
+}
+
+/**
+* Convinient method for json output. Sets HTTP header application/json and echo serialized $json.
+*/
+final static public function renderJson(?array $json = null) : void {
+  Header('Content-type: application/json');
+  if($json !== null)
+    echo json_encode($json, JSON_UNESCAPED_UNICODE);
+}
 
 }

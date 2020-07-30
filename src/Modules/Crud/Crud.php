@@ -9,8 +9,8 @@ use \Onspli\Eladmin\Exception;
 *
 * ## Actions:
 * ```
-* postForm
-* putForm
+* updateForm
+* createForm
 * read
 * update
 * create
@@ -32,8 +32,8 @@ use \Onspli\Eladmin\Exception;
 *     trash : <bool - query only soft deleted items>,
 *     search : <search string>,
 *     filters : {
-*       <column name> : <value>,
-*       <column name> : <value>,
+*       <column name> : {op : <operator>, val : <value>},
+*       <column name> : {op : <operator>, val : <value>},
 *       ...
 *     }
 *   }
@@ -48,7 +48,6 @@ use \Onspli\Eladmin\Exception;
 *     <second item id>,
 *     ...
 *   ],
-*   columns : [{<first column config>}, {<second column config>}, ...],
 *   rows : [
 *     [<first column value>, <second column value>, ...],
 *     [<first column value>, <second column value>, ...],
@@ -70,61 +69,95 @@ use \Onspli\Eladmin\Exception;
 * ]
 * ```
 *
-* ## Connecting CRUD with ORM
-* The following methods needs to be implemented for a particular ORM library.
-* ```lang-php
-* public function elaPrimary() : string
-* private function elaColumnsDef()
-* protected function elaWrite(array $values, $id = null) : void
-* protected function elaRead($id) : array
-* protected function elaDelete($id) : void
-* protected function elaQuery(array $query, &$totalResults) : array
-* public function elaUsesSoftDeletes() : bool
-* protected function elaSoftDelete($id) : void
-* protected function elaRestore($id) : void
-* ```
 */
-trait Crud {
+class Crud extends Module {
 
-use Module {
-  Module::elaViews as elaViews_Module;
-}
+/**
+* Constant. Infinite number of results requested.
+*/
+const INFINITY = 0;
+
+/**
+* Constant. Ascending order.
+*/
+const ASC = 'asc';
+
+/**
+* Constant. Descending order.
+*/
+const DESC = 'desc';
 
 /**
 * Cached columns chainset
 */
-private $elaColumns = null;
+private $crudColumns = null;
 
 /**
 * Cached actions chainset;
 */
-private $elaActions = null;
+private $crudActions = null;
 
 /**
 * Cached filters chainset.
 */
-private $elaFilters = null;
+private $crudFilters = null;
 
 /**
 * IMPLEMENT. Does CRUD use soft deletes?
 */
-public function elaUsesSoftDeletes() : bool {
+public function implementsSoftDeletes() : bool {
+  return false;
+}
+
+/**
+* IMPLEMENT. Does CRUD support searching?
+*/
+public function implementsSearch() : bool {
+  return false;
+}
+
+/**
+* IMPLEMENT. Does CRUD support paging?
+*/
+public function implementsPaging() : bool {
+  return false;
+}
+
+/**
+* IMPLEMENT. Does CRUD support sorting?
+*/
+public function implementsSorting() : bool {
+  return false;
+}
+
+/**
+* IMPLEMENT. Does CRUD support filtering?
+*/
+public function implementsFilters() : bool {
   return false;
 }
 
 /**
 * IMPLEMENT. Name of primary key column. Default is 'id'.
 */
-public function elaPrimary() : string {
+public function primary() : string {
   return 'id';
 }
 
 /**
-* IMPLEMENT. Update or creat item.
+* IMPLEMENT. Create item.
 * @param $values associative array in form ['columnName' => 'value', ...]
-* @param $id id of item to be updated, or null if it's a new item
 */
-protected function elaWrite(array $values, $id = null) : void {
+protected function create(array $values) : void {
+
+}
+
+/**
+* IMPLEMENT. Update item.
+* @param $values associative array in form ['columnName' => 'value', ...]
+* @param $id id of item to be updated
+*/
+protected function update(array $values, $id) : void {
 
 }
 
@@ -132,143 +165,116 @@ protected function elaWrite(array $values, $id = null) : void {
 * IMPLEMENT. Read one row, or get default one ($id = null)
 * Returns row as an associative array ['columnName' => 'value']
 */
-protected function elaRead($id) : array {
-  return [$this->elaPrimary() => null];
+protected function get($id) : array {
+  return [$this->primary() => null];
 }
 
 /**
 * IMPLEMENT. Hard delete row.
 */
-protected function elaDelete($id) : void {
+protected function delete($id) : void {
 
 }
 
 /**
 * IMPLEMENT. Soft delete row.
 */
-protected function elaSoftDelete($id) : void {
+protected function softDelete($id) : void {
 
 }
 
 /**
 * IMPLEMENT. Restore soft deleted row.
 */
-protected function elaRestore($id) : void {
+protected function restore($id) : void {
 
 }
 
 /**
-* IMPLEMENT. Query for an array of rows.
+* IMPLEMENT. Fetch an array of rows.
 * Row is an associative array ['columnName' => 'value']
 * $totalResults needs to be set to number of results without paging applied
 */
-protected function elaQuery(array $query, &$totalResults) : array {
+protected function read(array $request, &$totalResults) : array {
   return [];
 }
 
 /**
-* IMPLEMENT. Default columns chainset.
+* IMPLEMENT. Default columns chainset. Override to configure columns.
 */
-private function elaColumnsDef() {
+protected function crudColumns() {
   $columns = new Chainset\Columns;
   return $columns;
 }
 
 /**
-* Default actions chainset.
+* Default actions chainset. Override to configure actions.
 */
-private function elaActionsDef() {
+protected function crudActions() {
   $actions = new Chainset\Actions;
-  $actions->setModule($this);
 
-  if ($this->elaAuth('restore')){
-    $actions->restore->style('success')->icon('<i class="fas fa-recycle"></i>')->title(__('Restore'))->hidden();
+  $actions->updateForm->hidden()->label('')->style('primary')->icon('<i class="fas fa-edit"></i>')->nonbulk();
+  $actions->createForm->hidden()->nonbulk();
+  $actions->delete->style('danger')->label('')->icon('<i class="fas fa-trash-alt"></i>')->title(__('Delete'))->confirm()->hidden();
+
+  if ($this->implementsSoftDeletes()) {
+    $actions->restore->style('success')->label('')->icon('<i class="fas fa-recycle"></i>')->title(__('Restore'))->hidden();
+    $actions->softDelete->style('danger')->label('')->icon('<i class="fas fa-trash-alt"></i>')->hidden();
   }
 
-  if ($this->elaAuth('delete')){
-    $actions->delete->style('danger')->icon('<i class="fas fa-trash-alt"></i>')->title(__('Delete'))->confirm()->hidden();
-  }
-
-  if ($this->elaAuth('update')){
-    $actions->putForm->style('primary')->icon('<i class="fas fa-edit"></i>')->done('return;')->hidden();
-  } elseif ($this->elaAuth('read')){
-    $actions->putForm->style('primary')->icon('<i class="fas fa-eye"></i>')->done('return;')->hidden();
-  }
-
-  if ($this->elaUsesSoftDeletes() && $this->elaAuth('softDelete')){
-    $actions->softDelete->style('danger')->icon('<i class="fas fa-trash-alt"></i>')->hidden();
+  if (!$this->auth('update') && $this->auth('read')) {
+    $actions->updateForm->icon('<i class="fas fa-eye"></i>');
   }
 
   return $actions;
 }
 
 /**
-* Default filters chainset.
+* Default filters chainset. Override to configure filters.
 */
-private function elaFiltersDef() {
+protected function crudFilters() {
   return new Chainset\Filters;
-}
-
-/**
-* Override to configure columns.
-*/
-protected function elaColumns() {
-  return $this->elaColumnsDef();
-}
-
-/**
-* Override to configure actions.
-*/
-protected function elaActions() {
-  return $this->elaActionsDef();
-}
-
-/**
-* Override to configure filters.
-*/
-protected function elaFilters() {
-  return $this->elaFiltersDef();
 }
 
 /**
 * Get columns chainset.
 */
-final public function elaColumnsGet() {
-  if ($this->elaColumns === null)
-    $this->elaColumns = $this->elaColumns();
-  return $this->elaColumns;
+final public function getCrudColumns() {
+  if ($this->crudColumns === null)
+    $this->crudColumns = $this->crudColumns();
+  return $this->crudColumns;
 }
 
 /**
 * Get actions chainset.
 */
-final public function elaActionsGet() {
-  if ($this->elaActions === null)
-    $this->elaActions = $this->elaActions();
-  return $this->elaActions;
+final public function getCrudActions() {
+  if ($this->crudActions === null)
+    $this->crudActions = $this->crudActions();
+  return $this->crudActions;
 }
 
 /**
 * Get filters chainset.
 */
-final public function elaFiltersGet() {
-  if ($this->elaFilters === null)
-    $this->elaFilters = $this->elaFilters();
-  return $this->elaFilters;
+final public function getCrudFilters() {
+  if ($this->crudFilters === null)
+    $this->crudFilters = $this->crudFilters();
+  return $this->crudFilters;
 }
 
 /**
 * Extends views directory.
 */
-public function elaViews() : array {
-  return array_merge([__DIR__ . '/../../../views/modules/crud'], $this->elaViews_Module());
+protected function views() : array {
+  return array_merge([__DIR__ . '/../../../views/modules/crud'], parent::views());
 }
 
 
 /**
 * Return ID of the row which should be affected by the action.
 */
-protected function elaId($throwIfNull = true) {
+protected function id($throwIfNull = true) {
   if (!isset($_GET['id']) && $throwIfNull)
     throw new Exception\BadRequestException(__('Entry not identified.'));
   return $_GET['id'] ?? null;
@@ -277,10 +283,10 @@ protected function elaId($throwIfNull = true) {
 /**
 * generate array of values for one row
 */
-private function elaRowValuesArray($row) {
-  $elaColumns = $this->elaColumnsGet();
-  $values = [$row[$this->elaPrimary()]];
-  foreach($elaColumns as $column) {
+private function rowValuesArray($row) {
+  $crudColumns = $this->getCrudColumns();
+  $values = [];
+  foreach($crudColumns as $column) {
     if($column->nonlistable ?? false)
       continue;
     $values[] = $column->getValue($row);
@@ -289,54 +295,17 @@ private function elaRowValuesArray($row) {
 }
 
 /**
-* generate array of actions for one column
-*/
-private function elaColumnsConfigArray() {
-  $elaColumns = $this->elaColumnsGet();
-  $config = ['id'];
-  foreach($elaColumns as $column) {
-    if($column->nonlistable ?? false)
-      continue;
-    $configArr = [];
-    if (!$column->raw) {
-      $configArr["limit"] = $column->limit;
-    } else {
-      $configArr["raw"] = 1;
-    }
-    $config[] = $configArr;
-  }
-  return $config;
-}
-
-/**
 * generate array of actions for one item
 */
-private function elaRowActionsArray($row, $trash = false) {
-  $elaActions = $this->elaActionsGet();
+private function rowActionsArray($row) {
+  $crudActions = $this->getCrudActions();
   $actions = array();
-  if ($trash) {
-    if(isset($elaActions->restore) && $this->elaAuth('restore')) {
-      $actions[] = $elaActions->restore->getAction($row);
-    }
-    if(isset($elaActions->delete) && $this->elaAuth('delete')) {
-      $actions[] = $elaActions->delete->getAction($row);
-    }
-  } else {
-    foreach($elaActions as $action) {
-      if(!$this->elaAuth($action->getName()))
-        continue;
-      if($action->nonlistable)
-        continue;
-      $actions[] = $action->getAction($row);
-    }
-    if(isset($elaActions->putForm) && ($this->elaAuth('update') || $this->elaAuth('read'))) {
-      $actions[] = $elaActions->putForm->getAction($row);
-    }
-    if(isset($elaActions->softDelete) && $this->elaUsesSoftDeletes() && $this->elaAuth('softDelete')) {
-      $actions[] = $elaActions->softDelete->getAction($row);
-    } else if (isset($elaActions->delete) && !$this->elaUsesSoftDeletes() && $this->elaAuth('delete')) {
-      $actions[] = $elaActions->delete->getAction($row);
-    }
+  foreach($crudActions as $action) {
+    if(!$this->auth($action->getName()))
+      continue;
+    if($action->nonlistable)
+      continue;
+    $actions[] = $action->getName();
   }
   return $actions;
 }
@@ -344,8 +313,8 @@ private function elaRowActionsArray($row, $trash = false) {
 /**
 * Validate and modify values before saving.
 */
-private function elaValidateAndModify(){
-  $columns = $this->elaColumnsGet();
+private function validateAndModify(){
+  $columns = $this->getCrudColumns();
   // check that disabled columns are not set
   foreach ($columns as $column => $config) {
     if ($config->disabled && isset($_POST[$column])) {
@@ -366,96 +335,131 @@ private function elaValidateAndModify(){
   }
 }
 
+public function prepare() : void {
+  if (($_GET['update'] ?? null) && $this->auth('update')) {
+    $this->validateAndModify();
+    $this->update($_POST, $this->id());
+  }
+}
+
+
 /**
 * ACTION. Show form - create entry.
 */
-public function elaActionPostForm(){
-  if(!$this->elaAuth('create'))
+public function actionCreateForm(){
+  if(!$this->auth('create'))
     throw new Exception\UnauthorizedException();
-  $this->eladmin->elaOutHtml($this->elaView('postForm', ['row' => $this->elaRead(null)]));
+  $this->renderHtml($this->render('createForm', ['row' => $this->get(null)]));
 }
 
 /**
 * ACTION. Show form - edit entry.
 */
-public function elaActionPutForm(){
-  if(!$this->elaAuth('read'))
+public function actionUpdateForm(){
+  if(!$this->auth('read'))
     throw new Exception\UnauthorizedException();
-  $this->eladmin->elaOutHtml($this->elaView('putForm', ['row' => $this->elaRead($this->elaId())]));
+  $this->renderHtml($this->render('updateForm', ['row' => $this->get($this->id())]));
 }
 
 /**
 * ACTION. List database entries.
 */
-public function elaActionRead(){
+public function actionRead() {
 
   $totalResults = 0;
-  $rows = $this->elaQuery($_POST, $totalResults);
+  $onlyIds = $_POST['onlyIds'] ?? false;
+  $trash = ($_POST['trash'] ?? false) ? true : false;
+  if (!$this->implementsPaging() || $onlyIds) {
+    $_POST['page'] = 1;
+    $_POST['resultsPerPage'] = self::INFINITY;
+  }
+  if (!$this->implementsSoftDeletes()) {
+    $_POST['trash'] = 0;
+  }
+  if (!$this->implementsSearch()) {
+    $_POST['search'] = '';
+  }
+  if (!$this->implementsFilters()) {
+    $_POST['filters'] = [];
+  }
+  if (!$this->implementsSorting()) {
+    $_POST['sortBy'] = null;
+    $_POST['direction'] = null;
+  }
+
+  if (!$_POST['sortBy']) {
+    $_POST['sortBy'] = $this->primary();
+  }
+  if (!in_array($_POST['direction'], [self::ASC, self::DESC])) {
+    $_POST['direction'] = self::DESC;
+  }
+
+  $rows = $this->read($_POST, $totalResults);
 
   $ids = [];
   foreach($rows as $row){
-    $ids[] = $row[$this->elaPrimary()];
+    $ids[] = $row[$this->primary()];
   }
 
-  if ($onlyids) {
-    $this->eladmin->elaOutJson($ids);
+  if ($onlyIds) {
+    $this->renderJson($ids);
     return;
   }
 
   $response = [];
   $response['totalResults'] = $totalResults;
+  $response['ids'] = $ids;
   $response['rows'] = array();
   $response['actions'] = array();
 
   foreach($rows as $row){
-    $response['actions'][] = $this->elaRowActionsArray($row, ($_POST['trash'] ?? false) ? true : false);
-    $response['rows'][] = $this->elaRowValuesArray($row);
+    $response['actions'][] = $trash ? [] : $this->rowActionsArray($row);
+    $response['rows'][] = $this->rowValuesArray($row);
   }
-  $response['columns'] = $this->elaColumnsConfigArray();
-  $this->eladmin->elaOutJson($response);
+  $this->renderJson($response);
 }
 
 
 /**
 * ACTION. Edit database entry.
 */
-public function elaActionUpdate(){
-  $this->elaValidateAndModify();
-  $this->elaWrite($_POST, $this->elaId());
-  $this->eladmin->elaOutText(__('Entry modified.'));
+public function actionUpdate(){
+  $this->validateAndModify();
+  $this->update($_POST, $this->id());
+  $this->renderText(__('Entry modified.'));
 }
 
 /**
 * ACTION. Create database entry.
 */
-public function elaActionCreate(){
-  $this->elaValidateAndModify();
-  $this->elaWrite($_POST);
-  $this->eladmin->elaOutText(__('Entry added.'));
+public function actionCreate(){
+  $this->validateAndModify();
+  $this->create($_POST);
+  $this->renderText(__('Entry added.'));
 }
 
 /**
 * ACTION. Hard delete.
 */
-public function elaActionDelete(){
-  $this->elaDelete($this->elaId());
-  $this->eladmin->elaOutText(__('Entry deleted.'));
+public function actionDelete(){
+  $this->delete($this->id());
+  $this->renderText(__('Entry deleted.'));
 }
 
 /**
 * ACTION. Soft delete.
 */
-public function elaActionSoftDelete(){
-  $this->elaSoftDelete($this->elaId());
-  $this->eladmin->elaOutText(__('Entry deleted. It can be restored from Trash later.'));
+public function actionSoftDelete(){
+  $this->softDelete($this->id());
+  $this->renderText(__('Entry deleted. It can be restored from Trash later.'));
 }
 
 /**
 * ACTION. Restore.
 */
-public function elaActionRestore(){
-  $this->elaRestore($this->elaId());
-  $this->eladmin->elaOutText(__('Entry restored.'));
+public function actionRestore(){
+  $this->restore($this->id());
+  $this->renderText(__('Entry restored.'));
 }
 
 }

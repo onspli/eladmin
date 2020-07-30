@@ -1,7 +1,7 @@
 @component('components.card')
 
 @slot('header')
-  <h2>{!! $module->elaIcon() !!} {{ $module->elaTitle() }}</h2>
+  <h2>{!! $module->icon() !!} {{ $module->title() }}</h2>
 @endslot
 
 <p>I am a generic module.</p>

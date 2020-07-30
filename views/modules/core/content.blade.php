@@ -24,7 +24,7 @@
 
 <div id="page">
 <div class="container-fluid">
-<div id="content">
+<div id="content" {!! isset($module) ? 'data-elamodule="' . $module->elakey() . '"' : '' !!}>
 
 @section('content')
   <h1 class="mt-4">Simple Sidebar</h1>

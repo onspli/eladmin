@@ -91,7 +91,7 @@ final public function before(?string $target = null) : Child {
 /**
 * Place child just after $target.
 */
-final public function after(?string $target = null) : Child {
+ final public function after(?string $target = null) : Child {
   if ($target == $this->key)
     return $this;
   if ($target !== null && !isset($this->parent->$target))

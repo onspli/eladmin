@@ -1,12 +1,18 @@
 @push('header_row')
       <tr>
         <th class="text-center"><input class="bulk-all" type="checkbox"></th>
-@foreach($module->elaColumnsGet() as $column => $config)
+@foreach($module->getCrudColumns() as $column => $config)
 <?php if($config->nonlistable) continue; ?>
-        <th class="noselect" {!! $config->nonsortable ? '' : 'data-column="'.$column.'"' !!}>
+        @if($config->nonsortable || !$module->implementsSorting())
+        <th class="noselect">
           {{ $config->label ?? $column }}
-          {!! $config->nonsortable ? '' : '<span class="arrs"><span class="arr desc">&#x2191;</span> <span class="arr asc">&#x2193;</span></span>' !!}
         </th>
+        @else
+        <th class="noselect" data-column="{{$column}}">
+          {{ $config->label ?? $column }}
+          <span class="arrs"><span class="arr desc">&#x2191;</span> <span class="arr asc">&#x2193;</span></span>
+        </th>
+        @endif
 @endforeach
         <th></th>
       </tr>
@@ -21,8 +27,8 @@
 
 @stack('results_info')
 
-<div class="table-responsive mb-1">
-  <table id="crud-table" class="table table-striped table-bordered">
+<div class="table-responsive mb-1 mt-1">
+  <table id="crud-table" class="table table-striped table-bordered mb-0 mt-0">
     <thead>
 @stack('header_row')
     </thead>

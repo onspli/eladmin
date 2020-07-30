@@ -5,7 +5,7 @@
 @endsection
 
 @section('modal-body')
-  <form id="modal-form" data-elaaction="account" data-elamodule="">
+  <form id="modal-form" data-elaaction="accountUpdate">
       @foreach($eladmin->accountFields() as $column=>$config)
         <div class="form-group">
             <label>{{$config['label']??$column}}</label>

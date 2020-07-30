@@ -2,8 +2,8 @@
 * POST request eladmin action
 * - Logout when response is HTTP 401
 * - Toaster error on fail
-* - Open or reload modal if reponse contains modal HTML (unless silent option passed)
-* - Toaster success if reponse is text/plain or doesnt contain modal HTML (unless silent option passed)
+* - Open or reload modal if reponse contains modal HTML (iff silent option off)
+* - Toaster success if reponse is text/plain or doesnt contain modal HTML (iff silent option off)
 */
 function elaRequest(request) {
   request = $.extend({}, {
@@ -69,6 +69,33 @@ function elaRequest(request) {
 }
 
 /**
+* confirm prompt, data-confirm="message"
+*/
+$(document).on('click', '*[data-confirm]', function(e){
+  var confirm = window.confirm($(this).data('confirm'));
+  if (!confirm) {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+  }
+});
+
+/**
+* Get elament module.
+*/
+function elaElementModule(element) {
+  var module = $(element).data('elamodule');
+  // if element itself hasn't data-elamodule attribute,
+  // try to find closest parent which has it.
+  if (module === undefined) {
+    var moduleElement = $(element).closest("*[data-elamodule]");
+    if (moduleElement) {
+      module = moduleElement.data('elamodule');
+    }
+  }
+  return module;
+}
+
+/**
 * Create request according to data-ela* properties of element
 * data-elaaction
 * data-elamodule
@@ -79,16 +106,15 @@ function elaRequest(request) {
 */
 function elaElementRequest(element, request) {
   var data = $(element).data();
-
   var htmlRequest = {
     action : $(element).data('elaaction'),
-    module : $(element).data('elamodule'),
+    module : elaElementModule(element),
     silent : $(element).data('elasilent') ? true : false,
     post : {},
     get : {}
   };
 
-  $.each(data, function(key,val) {
+  $.each(data, function(key, val) {
     if (key.startsWith('elapost')) {
       htmlRequest.post[key.substr(7)] = val;
       return;
@@ -99,12 +125,10 @@ function elaElementRequest(element, request) {
     }
   });
 
-  var promise = elaRequest($.extend({}, htmlRequest, request));
-  (function(element) {
-    promise.done(function(data, status, xhr) {
-      $(element).trigger('eladone', [data, status, xhr]);
-    });
-  })();
+  var promise = elaRequest($.extend(true, {}, htmlRequest, request));
+  promise.done(function(data, status, xhr) {
+    $(element).trigger('eladone', [data, status, xhr]);
+  });
   return promise;
 }
 
@@ -112,6 +136,7 @@ function elaElementRequest(element, request) {
 * Eladone event attribute
 */
 $(document).on('eladone', '*[data-eladone]', function(e, data, status, xhr) {
+  console.debug('done: ' + $(this).data('eladone'));
   var exe = new Function($(this).data('eladone'));
   exe();
 });
@@ -171,13 +196,15 @@ function modalClose() {
 * Open or reload modal
 */
 function modalOpen(html) {
+  var wasOpen = isModalOpen();
   if (isModalOpen()) {
-    $('#dynamic').html(html);
+    $('#dynamic .modal').html($(html).find('.modal-dialog'));
     return;
   }
   $('#dynamic').html(html);
   html.modal();
   history.pushState({data : 'modal'}, '', '#modal');
+  $('#dynamic form input:visible:enabled:first').focus();
 }
 
 /**
@@ -195,16 +222,5 @@ $('#dynamic').on('hidden.bs.modal', function () {
   var type = window.location.hash.substr(1);
   if (type == 'modal') {
     history.back();
-  }
-});
-
-/**
-* confirm prompt, data-confirm="message"
-*/
-$(document).on('click', '*[data-confirm]', function(e){
-  var confirm = window.confirm($(this).data('confirm'));
-  if (!confirm) {
-    e.preventDefault();
-    e.stopImmediatePropagation();
   }
 });

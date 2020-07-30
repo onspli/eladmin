@@ -1,44 +1,33 @@
 <?php
 use PHPUnit\Framework\TestCase;
-use Onspli\Eladmin\Module;
+use Onspli\Eladmin;
 
-class ModuleA {
-  use Module;
-  protected $elaRoles = ['admin'];
-  protected $elaActionRoles = [ 'Read' => ['admin', 'user']];
+class TModule extends Eladmin\Module {
+function __construct() {
+
+}
 }
 
-class ModuleB {
-  use Module;
+class ModuleRoles extends TModule {
+  protected $roles = ['admin'];
+  protected $actionRoles = [ 'Read' => ['admin', 'user']];
 }
 
 final class ModuleTest extends TestCase {
 
-  public function testRoles() : void {
-    $module = new ModuleA();
-    $this->assertEquals(['admin'], $module->elaRoles());
-    $this->assertEquals(['admin', 'user'], $module->elaRoles('read'));
-    $this->assertEquals(['admin', 'user'], $module->elaRoles('Read'));
-    $this->assertEquals(['admin', 'user'], $module->elaRoles('ReaD'));
-
-    $module->elaSetRoles([], 'REad');
-    $this->assertEquals([], $module->elaRoles('read'));
-    $this->assertEquals([], $module->elaRoles('write'));
-
-    $module->elaSetRoles(['moderator', 'admin'], 'wRite');
-    $this->assertEquals(['moderator', 'admin'], $module->elaRoles('wriTe'));
-
-    $module->elaSetRoles(['moderator']);
-    $this->assertEquals(['moderator'], $module->elaRoles());
+  public function testDefaultRoles() : void {
+    $module = new TModule();
+    $this->assertEquals([], $module->roles());
+    $this->assertEquals([], $module->roles('read'));
   }
 
-  public function testDefaultRoles() : void {
-    $module = new ModuleB();
-    $this->assertEquals([], $module->elaRoles());
-    $this->assertEquals([], $module->elaRoles('read'));
-
-    $module->elaSetRoles(['moderator', 'admin'], 'wRite');
-    $this->assertEquals(['moderator', 'admin'], $module->elaRoles('wriTe'));
+  public function testRoles() : void {
+    $module = new ModuleRoles();
+    $this->assertEquals(['admin'], $module->roles());
+    $this->assertEquals(['admin', 'user'], $module->roles('read'));
+    $this->assertEquals(['admin', 'user'], $module->roles('Read'));
+    $this->assertEquals(['admin', 'user'], $module->roles('ReaD'));
+    $this->assertEquals([], $module->roles('write'));
   }
 
 }
