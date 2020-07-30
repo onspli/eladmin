@@ -43,7 +43,7 @@ protected $views = null;
 /**
 * override to set monolog report level, null disables logging
 */
-protected $logLevel = \Monolog\Logger::DEBUG;
+protected $logLevel = null;
 
 /**
 * override to set monolog log file
@@ -252,7 +252,7 @@ public function blade() : Blade {
 * Get eladmin version.
 */
 final public function version() : string {
-  return "v0.2.2-alpha";
+  return "v0.3.0";
 }
 
 /**
@@ -387,7 +387,7 @@ private function firstAuthorizedModuleKey() : string {
   foreach ($this->modules as $elakey => $mod)
     return $elakey;
   if ($this->auth !== null)
-    $this->iauth->elaLogout();
+    $this->iauth->logout();
   throw new Exception\UnauthorizedException(__("You are not authorized to access any module!"));
 }
 

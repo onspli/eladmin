@@ -80,7 +80,7 @@
         </h1>
     </div>
 
-    <p>    class
+    <p>abstract     class
     <strong>Crud</strong>        extends <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a>
 </p>
 
@@ -178,7 +178,7 @@
                         protected                
     </td>
     <td>$model</td>
-    <td class="last">Model class name</td>
+    <td class="last">Model class name. Must be overriden.</td>
     <td></td>
 </tr>
 
@@ -187,7 +187,7 @@
                                 private        
     </td>
     <td>$imodel</td>
-    <td class="last"></td>
+    <td class="last">Model instance</td>
     <td></td>
 </tr>
 
@@ -310,7 +310,7 @@
     <div class="col-md-8 type">
         <a href="#method_prepare">prepare</a>()
         
-                    <p>Runs before any action is executed.</p>    </div>
+                    <p>Prepare action. Initialise model() with the requested db entry.</p>    </div>
     <div class="col-md-2"></div>
 </div>
 
@@ -746,7 +746,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
     <div class="col-md-8 type">
         <a href="#method_delete">delete</a>($id)
         
-                    <p>Hard delete entry.</p>    </div>
+                    <p>IMPLEMENT. Hard delete row.</p>    </div>
     <div class="col-md-2"></div>
 </div>
 
@@ -759,7 +759,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
     <div class="col-md-8 type">
         <a href="#method_softDelete">softDelete</a>($id)
         
-                    <p>Soft delete entry</p>    </div>
+                    <p>IMPLEMENT. Soft delete row.</p>    </div>
     <div class="col-md-2"></div>
 </div>
 
@@ -772,7 +772,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
     <div class="col-md-8 type">
         <a href="#method_restore">restore</a>($id)
         
-                    <p>Restore entry</p>    </div>
+                    <p>IMPLEMENT. Restore soft deleted row.</p>    </div>
     <div class="col-md-2"></div>
 </div>
 
@@ -867,7 +867,20 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
     <div class="col-md-2"></div>
 </div>
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  </div>
+                                      <div class="row">
+    <div class="col-md-1 type">
+                            </div>
+    <div class="col-md-1 type">
+        array
+    </div>
+    <div class="col-md-8 type">
+        <a href="#method_tableColumns">tableColumns</a>()
+        
+                    <p>Get an array of table columns.</p>    </div>
+    <div class="col-md-2"></div>
+</div>
+
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </div>
 
 
         <h2>Private Methods</h2>
@@ -882,25 +895,11 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
     <div class="col-md-8 type">
         <a href="#method_updateOrCreate">updateOrCreate</a>($entry, $row)
         
-                    <p class="no-description">No description</p>
-            </div>
+                    <p>Update or create entry.</p>    </div>
     <div class="col-md-2"></div>
 </div>
 
-                                                        <div class="row">
-    <div class="col-md-1 type">
-                            </div>
-    <div class="col-md-1 type">
-        array
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_tableColumns">tableColumns</a>()
-        
-                    <p>Get an array of table columns.</p>    </div>
-    <div class="col-md-2"></div>
-</div>
-
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </div>
 
 
         <h2>Details</h2>
@@ -1194,7 +1193,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_prepare">
-        <div class="location">at         line 56</div>
+        <div class="location">at         line 85</div>
         <code>                    void
     <strong>prepare</strong>()
         </code>
@@ -1204,7 +1203,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
     
 
                     <div class="method-description">
-                                    <p>Runs before any action is executed.</p>                                                </div>
+                                    <p>Prepare action. Initialise model() with the requested db entry.</p>                                                </div>
                 <div class="tags">
             
                             <h4>Return Value</h4>
@@ -1730,7 +1729,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_implementsSoftDeletes">
-        <div class="location">at         line 148</div>
+        <div class="location">at         line 22</div>
         <code>                    bool
     <strong>implementsSoftDeletes</strong>()
         </code>
@@ -1760,7 +1759,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_implementsSearch">
-        <div class="location">at         line 160</div>
+        <div class="location">at         line 34</div>
         <code>                    bool
     <strong>implementsSearch</strong>()
         </code>
@@ -1790,7 +1789,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_implementsPaging">
-        <div class="location">at         line 156</div>
+        <div class="location">at         line 30</div>
         <code>                    bool
     <strong>implementsPaging</strong>()
         </code>
@@ -1820,7 +1819,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_implementsSorting">
-        <div class="location">at         line 152</div>
+        <div class="location">at         line 26</div>
         <code>                    bool
     <strong>implementsSorting</strong>()
         </code>
@@ -1850,7 +1849,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_implementsFilters">
-        <div class="location">at         line 164</div>
+        <div class="location">at         line 38</div>
         <code>                    bool
     <strong>implementsFilters</strong>()
         </code>
@@ -1880,7 +1879,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_primary">
-        <div class="location">at         line 38</div>
+        <div class="location">at         line 61</div>
         <code>                    string
     <strong>primary</strong>()
         </code>
@@ -1910,7 +1909,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_create">
-        <div class="location">at         line 69</div>
+        <div class="location">at         line 98</div>
         <code>            protected        void
     <strong>create</strong>(array $row)
         </code>
@@ -1950,7 +1949,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_update">
-        <div class="location">at         line 74</div>
+        <div class="location">at         line 103</div>
         <code>            protected        void
     <strong>update</strong>(array $row, $id)
         </code>
@@ -1995,7 +1994,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_get">
-        <div class="location">at         line 81</div>
+        <div class="location">at         line 110</div>
         <code>            protected        array
     <strong>get</strong>($id)
         </code>
@@ -2036,7 +2035,7 @@ Returns row as an associative array ['columnName' => 'value']</p>               
             </div>
                     <div class="method-item">
                     <h3 id="method_delete">
-        <div class="location">at         line 92</div>
+        <div class="location">at         line 118</div>
         <code>            protected        void
     <strong>delete</strong>($id)
         </code>
@@ -2046,7 +2045,7 @@ Returns row as an associative array ['columnName' => 'value']</p>               
     
 
                     <div class="method-description">
-                                    <p>Hard delete entry.</p>                                                </div>
+                                    <p>IMPLEMENT. Hard delete row.</p>                                                </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
@@ -2076,7 +2075,7 @@ Returns row as an associative array ['columnName' => 'value']</p>               
             </div>
                     <div class="method-item">
                     <h3 id="method_softDelete">
-        <div class="location">at         line 171</div>
+        <div class="location">at         line 174</div>
         <code>            protected        void
     <strong>softDelete</strong>($id)
         </code>
@@ -2086,7 +2085,7 @@ Returns row as an associative array ['columnName' => 'value']</p>               
     
 
                     <div class="method-description">
-                                    <p>Soft delete entry</p>                                                </div>
+                                    <p>IMPLEMENT. Soft delete row.</p>                                                </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
@@ -2126,7 +2125,7 @@ Returns row as an associative array ['columnName' => 'value']</p>               
     
 
                     <div class="method-description">
-                                    <p>Restore entry</p>                                                </div>
+                                    <p>IMPLEMENT. Restore soft deleted row.</p>                                                </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
@@ -2156,7 +2155,7 @@ Returns row as an associative array ['columnName' => 'value']</p>               
             </div>
                     <div class="method-item">
                     <h3 id="method_read">
-        <div class="location">at         line 107</div>
+        <div class="location">at         line 133</div>
         <code>            protected        array
     <strong>read</strong>(array $request, $totalResults)
         </code>
@@ -2610,7 +2609,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_model">
-        <div class="location">at         line 22</div>
+        <div class="location">at         line 45</div>
         <code>            protected        
     <strong>model</strong>()
         </code>
@@ -2631,7 +2630,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_updateOrCreate">
-        <div class="location">at         line 42</div>
+        <div class="location">at         line 68</div>
         <code>                private    void
     <strong>updateOrCreate</strong>($entry, $row)
         </code>
@@ -2640,6 +2639,8 @@ $totalResults needs to be set to number of results without paging applied</p>   
             
     
 
+                    <div class="method-description">
+                                    <p>Update or create entry.</p>                                                </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
@@ -2705,7 +2706,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
                     <div class="method-item">
                     <h3 id="method_tableColumns">
         <div class="location">at         line 203</div>
-        <code>                private    array
+        <code>            protected        array
     <strong>tableColumns</strong>()
         </code>
     </h3>

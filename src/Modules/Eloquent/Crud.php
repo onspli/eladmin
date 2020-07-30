@@ -7,14 +7,37 @@ use Illuminate\Database;
 /**
 * Crud module for Eloquent model.
 */
-class Crud extends Eladmin\Modules\Crud\Crud {
+abstract class Crud extends Eladmin\Modules\Crud\Crud {
 
 /**
-* Model class name
+* Model class name. Must be overriden.
 */
-protected $model = Database\Eloquent\Model::class;
+protected $model = null;
+
+/**
+* Model instance
+*/
 private $imodel = null;
 
+public function implementsSoftDeletes() : bool {
+  return method_exists($this->model, 'trashed');
+}
+
+public function implementsSorting() : bool {
+  return true;
+}
+
+public function implementsPaging() : bool {
+  return true;
+}
+
+public function implementsSearch() : bool {
+  return true;
+}
+
+public function implementsFilters() : bool {
+  return true;
+}
 
 /**
 * Return model instance for action.
@@ -39,6 +62,9 @@ public function primary() : string {
   return $this->model()->getKeyName();
 }
 
+/**
+* Update or create entry.
+*/
 private function updateOrCreate($entry, $row) : void {
   $tableColumns = $this->tableColumns();
   $columns = $this->getCrudColumns();
@@ -53,6 +79,9 @@ private function updateOrCreate($entry, $row) : void {
   $entry->refresh();
 }
 
+/**
+* Prepare action. Initialise model() with the requested db entry.
+*/
 public function prepare() : void {
   parent::prepare();
   if (in_array($this->core()->actionkey(), Eladmin\Modules\Crud\Crud::actions()))
@@ -86,9 +115,6 @@ protected function get($id) : array {
   return $row;
 }
 
-/**
-* Hard delete entry.
-*/
 protected function delete($id) : void {
   if ($this->implementsSoftDeletes()) {
     $row = $this->model()->withTrashed()->find($id);
@@ -145,29 +171,6 @@ protected function read(array $request, &$totalResults) : array {
   return $rows;
 }
 
-public function implementsSoftDeletes() : bool {
-  return method_exists($this->model, 'trashed');
-}
-
-public function implementsSorting() : bool {
-  return true;
-}
-
-public function implementsPaging() : bool {
-  return true;
-}
-
-public function implementsSearch() : bool {
-  return true;
-}
-
-public function implementsFilters() : bool {
-  return true;
-}
-
-/**
-* Soft delete entry
-*/
 protected function softDelete($id) : void {
   $row = $this->model()->find($id);
   if (!$row)
@@ -178,9 +181,6 @@ protected function softDelete($id) : void {
     $row->delete();
 }
 
-/**
-* Restore entry
-*/
 protected function restore($id) : void {
   if (!$this->implementsSoftDeletes())
     throw new Exception\BadRequestException( __('This CRUD doesn\'t support soft deletes!') );
@@ -200,7 +200,7 @@ protected function tableExists() : bool {
 /**
 * Get an array of table columns.
 */
-private function tableColumns() : array {
+protected function tableColumns() : array {
   return $this->model()->getConnection()->getSchemaBuilder()->getColumnListing($this->model()->getTable());
 }
 
