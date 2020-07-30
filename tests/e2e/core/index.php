@@ -1,8 +1,8 @@
 <?php
 require_once __DIR__ . '/../EladminTest.php';
 
-class TestModule {
-  use Onspli\Eladmin\Module;
+class TestModule extends Onspli\Eladmin\Module {
+
 }
 
 class MyEladmin extends EladminTest {

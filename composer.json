@@ -27,7 +27,7 @@
         "phpunit/phpunit": "^7"
     },
     "scripts": {
-        "test": "phpunit --testdox tests",
+        "test": "phpunit --testdox tests/unit",
         "docs:install": "php -r \"copy('http://get.sensiolabs.org/sami.phar', 'sami.phar');\"",
         "docs:update": "php sami.phar update sami.config.php",
         "docs:render": "rm -rf docs; php sami.phar render sami.config.php"
