@@ -214,11 +214,6 @@ class RegistrationCrud extends Eladmin\Modules\Eloquent\Crud {
 class MyEladmin extends Eladmin\Core
 {
   /**
-  * Add modules to the administration.
-  */
-  protected $modules = [EventCrud::class, RegistrationCrud::class];
-
-  /**
   * Localize the interface. Supported languages are en_US, cs_CZ.
   */
   protected $lang = 'en_US';
@@ -226,12 +221,12 @@ class MyEladmin extends Eladmin\Core
   /**
   * Set the title for the administration.
   */
-  protected $title = 'Cool Website';
+  protected $title = 'Actions';
 
 }
 
 /**
 * Run Eladmin
 */
-$myEladmin = new MyEladmin();
+$myEladmin = new MyEladmin([EventCrud::class, RegistrationCrud::class]);
 $myEladmin->run();

@@ -15,7 +15,11 @@ class Crud extends Eladmin\Modules\Crud\Crud {
 protected $model = Database\Eloquent\Model::class;
 private $imodel = null;
 
-public function model() {
+
+/**
+* Return model instance for action.
+*/
+protected function model() {
   if ($this->imodel === null) {
     try {
       $this->imodel = new $this->model;
@@ -46,11 +50,12 @@ private function updateOrCreate($entry, $row) : void {
   }
 
   $entry->save();
+  $entry->refresh();
 }
 
 public function prepare() : void {
   parent::prepare();
-  if (in_array($this->core()->actionkey(), parent::actions()))
+  if (in_array($this->core()->actionkey(), Eladmin\Modules\Crud\Crud::actions()))
     return;
   $id = $this->id(false /* $throwIfNull */);
   if ($id !== null) {
