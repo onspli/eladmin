@@ -1,6 +1,6 @@
 {
     "name": "onspli/eladmin",
-    "description": "Eladmin generates CRUD/admin interface for Eloquent.",
+    "description": "Eladmin generates CRUD admin interface for Eloquent.",
     "license": "MIT",
     "authors": [
         {
@@ -15,7 +15,7 @@
         "jenssegers/blade": "^1.3"
     },
     "suggest":{
-      "illuminate/database": "Allows using Eloquent as a standalone package."
+        "illuminate/database": "Allows using Eloquent as a standalone package."
     },
     "autoload": {
         "psr-4": {
@@ -31,5 +31,8 @@
         "docs:install": "php -r \"copy('http://get.sensiolabs.org/sami.phar', 'sami.phar');\"",
         "docs:update": "php sami.phar update sami.config.php",
         "docs:render": "rm -rf docs; php sami.phar render sami.config.php"
+    },
+    "archive": {
+        "exclude": ["/docs", "/docs-theme", "/examples", "/screenshots", "/tests", "/_config.yml", "/sami.config.php"]
     }
 }
