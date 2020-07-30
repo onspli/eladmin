@@ -1,6 +1,6 @@
-@if($module->elaImplementsPaging() || $module->elaImplementsSearch())
+@if($module->implementsPaging() || $module->implementsSearch())
 <div class="crud-paging form-inline mt-3">
-  @if($module->elaImplementsSearch())
+  @if($module->implementsSearch())
   <div class="form-group mb-3 mr-2">
     <div class="input-group">
       <input type="text" class="form-control search" data-crudrequest="search" placeholder="{{ __('Search') }}">
@@ -11,7 +11,7 @@
     </div>
   </div>
   @endif
-  @if($module->elaImplementsPaging())
+  @if($module->implementsPaging())
   <div class="input-group mr-2 mb-3 form-sm-inline">
     <div class="input-group-prepend"><label class="input-group-text"><i class="fas fa-list"></i></label></div>
     <select class="custom-select form-sm-inline resultsperpage" data-crudrequest="resultsPerPage" data-donotuncheck="true">

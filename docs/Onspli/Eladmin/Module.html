@@ -67,7 +67,7 @@
 
                         <div class="namespace-breadcrumbs">
             <ol class="breadcrumb">
-                <li><span class="label label-default">trait</span></li>
+                <li><span class="label label-default">class</span></li>
                         <li><a href="../../Onspli.html">Onspli</a></li><li class="backslash">\</li><li><a href="../../Onspli/Eladmin.html">Eladmin</a></li><li class="backslash">\</li><li>Module</li>
             </ol>
         </div>
@@ -80,7 +80,7 @@
         </h1>
     </div>
 
-    <p>    trait
+    <p>    class
     <strong>Module</strong>
 </p>
 
@@ -91,46 +91,27 @@
             <p>Generic Eladmin module.</p>            <p>Features:</p>
 
 <ul>
-<li>define module's apearence in admin interface - $elaTitle, $elaIcon, elaTitle(), elaIcon()</li>
-<li>handles authorization - elaRoles, elaActionRoles, elaAuth(), elaRoles(), elaSetRoles()</li>
-<li>handles rendering - elaRequest(), elaAsset(), elaView(), aleFile(), elaViews(), elaBlade()</li>
-<li>user defined actions - elaAction<action name>()</li>
+<li>define module's apearence in admin interface - $title, $icon, title(), icon()</li>
+<li>handles authorization - $roles, $actionRoles, auth(), getRoles(), setRoles()</li>
+<li>handles rendering - requestUrl(), assetUrl(), view(), asset(), views(), blade()</li>
+<li>user defined actions - action<action name>(), actions(), hasAction()</li>
 </ul>
 
-<p>To configure the module you may define properties as shown in the following example.
-These properties shouldn't be defined in any trait extending this generic module because trait's properties cannot be overriden.</p>
+<p>To configure the module you may define properties as shown in the following example.</p>
 
-<pre><code class="lang-php">class MyModule {
-
-use Eladmin\Module;
+<pre><code class="lang-php">class MyModule extends Eladmin\Module {
 
 // set module's name
-protected $elaTitle = 'My module';
+protected $title = 'My module';
 
 // set module's icon
-protected $elaIcon = '&lt;i class="fas fa-puzzle-piece"&gt;&lt;/i&gt;';
+protected $icon = '&lt;i class="fas fa-puzzle-piece"&gt;&lt;/i&gt;';
 
 // set authorized roles.
-// Empty array means any role can access the module (Design choice: What's the point having a module no one can access?)
-protected $elaRoles = ['admin', 'user'];
+protected $roles = ['admin', 'user'];
 
 // override to set authorized roles. empty array means any role.
-protected $elaActionRoles = ['read' =&gt; [], 'write' =&gt; ['admin']];
-
-}
-</code></pre>
-
-<p>Extend views directory:</p>
-
-<pre><code class="lang-php">class MyModule {
-
-use Eladmin\Module {
-  Eladmin\Module::elaViews as elaViews_Module;
-}
-
-public function elaViews() : array {
-  return array_merge([__DIR__ . '/views'], $this-&gt;elaViews_Module());
-}
+protected $actionRoles = ['read' =&gt; self::ANYONE, 'write' =&gt; ['admin'], 'delete' =&gt; self::NOONE];
 
 }
 </code></pre>
@@ -144,221 +125,396 @@ assets/script.css  - module scripts
 </p>                    </div>
     
     
-    
-            <h2>Properties</h2>
+            <h2>Constants</h2>
 
             <table class="table table-condensed">
                     <tr>
-                <td class="type" id="property_eladmin">
-                                                            private                    
+                <td>ACTION_PREFIX</td>
+                <td class="last">
+                    <p><em>Action methods prefix</em></p>
+                    <p></p>
                 </td>
-                <td>$eladmin</td>
-                <td class="last">Eladmin core instance</td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td class="type" id="property_elakey">
-                                                            private                    
-                </td>
-                <td>$elakey</td>
-                <td class="last">Module's elakey</td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td class="type" id="property_elaActionNamesNormalized">
-                                                            private                    
-                </td>
-                <td>$elaActionNamesNormalized</td>
-                <td class="last">normalizing action names for elaActionRoles is expensive, we want to do it only once</td>
-                <td></td>
             </tr>
             </table>
 
     
-            <h2>Methods</h2>
+            <h2>Properties</h2>
+
+            <table class="table table-condensed">
+                                                                                                                                                                                                                                                                                                                                                                                                                          <tr>
+    <td class="type" id="property_title">
+                        protected                
+    </td>
+    <td>$title</td>
+    <td class="last">override to set module's name</td>
+    <td></td>
+</tr>
+
+                                              <tr>
+    <td class="type" id="property_icon">
+                        protected                
+    </td>
+    <td>$icon</td>
+    <td class="last">override to set module's icon</td>
+    <td></td>
+</tr>
+
+                                              <tr>
+    <td class="type" id="property_views">
+                        protected                
+    </td>
+    <td>$views</td>
+    <td class="last">Add views directory to module;</td>
+    <td></td>
+</tr>
+
+                                              <tr>
+    <td class="type" id="property_roles">
+                        protected                
+    </td>
+    <td>$roles</td>
+    <td class="last">override to set authorized roles</td>
+    <td></td>
+</tr>
+
+                                              <tr>
+    <td class="type" id="property_actionRoles">
+                        protected                
+    </td>
+    <td>$actionRoles</td>
+    <td class="last">override to set authorized roles</td>
+    <td></td>
+</tr>
+
+                                                                          <tr>
+    <td class="type" id="property_core">
+                                private        
+    </td>
+    <td>$core</td>
+    <td class="last">Eladmin core instance</td>
+    <td></td>
+</tr>
+
+                                              <tr>
+    <td class="type" id="property_elakey">
+                                private        
+    </td>
+    <td>$elakey</td>
+    <td class="last">Module's elakey</td>
+    <td></td>
+</tr>
+
+                                                                                                                                                  <tr>
+    <td class="type" id="property_actionsParsed">
+                                private        
+    </td>
+    <td>$actionsParsed</td>
+    <td class="last">normalizing action names for elaActionRoles is expensive, we want to do it only once</td>
+    <td></td>
+</tr>
+
+                        </table>
+
+    
+            <h2>Public Methods</h2>
 
             <div class="container-fluid underlined">
-                    <div class="row">
-                <div class="col-md-2 type">
-                    void
-                </div>
-                <div class="col-md-8 type">
-                    <a href="#method_elaInit">elaInit</a>($eladmin, $elakey)
+                            <div class="row">
+    <div class="col-md-1 type">
+                            </div>
+    <div class="col-md-1 type">
         
-                                            <p>Each module has to be initialized with eladmin instance and its own elakey.</p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    void
-                </div>
-                <div class="col-md-8 type">
-                    <a href="#method_elaInitCheck">elaInitCheck</a>()
+    </div>
+    <div class="col-md-8 type">
+        <a href="#method___construct">__construct</a>($core, $elakey)
         
-                                            <p>Check if module was initialized. Throws if it wasn't.</p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    string
-                </div>
-                <div class="col-md-8 type">
-                    <a href="#method_elakey">elakey</a>()
+                    <p>Each module has to be initialized with eladmin instance and its own elakey.</p>    </div>
+    <div class="col-md-2"></div>
+</div>
+
+                                      <div class="row">
+    <div class="col-md-1 type">
+        final                    </div>
+    <div class="col-md-1 type">
+        string
+    </div>
+    <div class="col-md-8 type">
+        <a href="#method_elakey">elakey</a>()
         
-                                            <p>Each module has its elakey - index in modules array - used to address requests.</p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    bool
-                </div>
-                <div class="col-md-8 type">
-                    <a href="#method_elaAuth">elaAuth</a>(string|null $action = null)
+                    <p>Each module has its elakey - index in modules array - used to address requests.</p>    </div>
+    <div class="col-md-2"></div>
+</div>
+
+                                      <div class="row">
+    <div class="col-md-1 type">
+        final                    </div>
+    <div class="col-md-1 type">
+        bool
+    </div>
+    <div class="col-md-8 type">
+        <a href="#method_auth">auth</a>(string|null $action = null)
         
-                                            <p>Check if user is authorized to do action, or athorized to access module at all.</p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    string
-                </div>
-                <div class="col-md-8 type">
-                    <a href="#method_elaTitle">elaTitle</a>()
+                    <p>Check if user is authorized to do action, or athorized to access module at all.</p>    </div>
+    <div class="col-md-2"></div>
+</div>
+
+                                      <div class="row">
+    <div class="col-md-1 type">
+                            </div>
+    <div class="col-md-1 type">
+        string
+    </div>
+    <div class="col-md-8 type">
+        <a href="#method_title">title</a>()
         
-                                            <p>Get name of the module.</p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    string
-                </div>
-                <div class="col-md-8 type">
-                    <a href="#method_elaIcon">elaIcon</a>()
+                    <p>Get name of the module.</p>    </div>
+    <div class="col-md-2"></div>
+</div>
+
+                                      <div class="row">
+    <div class="col-md-1 type">
+                            </div>
+    <div class="col-md-1 type">
+        string
+    </div>
+    <div class="col-md-8 type">
+        <a href="#method_icon">icon</a>()
         
-                                            <p>Get icon of the module.</p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    string
-                </div>
-                <div class="col-md-8 type">
-                    <a href="#method_elaRequest">elaRequest</a>($action = null, $args = [])
+                    <p>Get icon of the module.</p>    </div>
+    <div class="col-md-2"></div>
+</div>
+
+                                      <div class="row">
+    <div class="col-md-1 type">
+        final                    </div>
+    <div class="col-md-1 type">
+        string
+    </div>
+    <div class="col-md-8 type">
+        <a href="#method_requestUrl">requestUrl</a>(string|null $action = null, array $args = [])
         
-                                            <p>Return url for this module.</p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    string
-                </div>
-                <div class="col-md-8 type">
-                    <a href="#method_elaAsset">elaAsset</a>(string $path, string|null $version = null)
+                    <p>Return url for this module.</p>    </div>
+    <div class="col-md-2"></div>
+</div>
+
+                                      <div class="row">
+    <div class="col-md-1 type">
+        final                    </div>
+    <div class="col-md-1 type">
+        string
+    </div>
+    <div class="col-md-8 type">
+        <a href="#method_assetUrl">assetUrl</a>(string $path, string|null $version = null)
         
-                                            <p>Create asset url, file path relative to /assets directory. Default $version = time()</p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    array
-                </div>
-                <div class="col-md-8 type">
-                    <a href="#method_elaRoles">elaRoles</a>($action = null)
+                    <p>Create asset url, file path relative to /assets directory. Default $version = time()</p>    </div>
+    <div class="col-md-2"></div>
+</div>
+
+                                      <div class="row">
+    <div class="col-md-1 type">
+                            </div>
+    <div class="col-md-1 type">
+        void
+    </div>
+    <div class="col-md-8 type">
+        <a href="#method_prepare">prepare</a>()
         
-                                            <p>Get roles authorized to work with the module, or specific action. Empty array means any role is authorized.</p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    void
-                </div>
-                <div class="col-md-8 type">
-                    <a href="#method_elaSetRoles">elaSetRoles</a>(array $roles, $action = null)
+                    <p>Runs before any action is executed.</p>    </div>
+    <div class="col-md-2"></div>
+</div>
+
+                                      <div class="row">
+    <div class="col-md-1 type">
+        final                    </div>
+    <div class="col-md-1 type">
+        array|null
+    </div>
+    <div class="col-md-8 type">
+        <a href="#method_roles">roles</a>(string|null $action = null)
         
-                                            <p>Set roles authorized to work with the module, or specific action. Empty array means any role is authorized.</p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    object
-                </div>
-                <div class="col-md-8 type">
-                    <a href="#method_elaInstanceForAction">elaInstanceForAction</a>()
+                    <p>Get roles authorized to work with the module, or specific action. Empty array means any role is authorized.</p>    </div>
+    <div class="col-md-2"></div>
+</div>
+
+                                                                                            <div class="row">
+    <div class="col-md-1 type">
+        final                    </div>
+    <div class="col-md-1 type">
+        string
+    </div>
+    <div class="col-md-8 type">
+        <a href="#method_render">render</a>(string $template, array $args = [])
         
-                                            <p>Actions will be called on instance of this module returned by this method. Default is $this.</p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    array
-                </div>
-                <div class="col-md-8 type">
-                    <a href="#method_elaViews">elaViews</a>()
+                    <p>Return rendered view.</p>    </div>
+    <div class="col-md-2"></div>
+</div>
+
+                                      <div class="row">
+    <div class="col-md-1 type">
+                            </div>
+    <div class="col-md-1 type">
+        void
+    </div>
+    <div class="col-md-8 type">
+        <a href="#method_renderAsset">renderAsset</a>(string $path)
         
-                                            <p>Extends array of directories of views and assets</p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    <abbr title="Jenssegers\Blade\Blade">Blade</abbr>
-                </div>
-                <div class="col-md-8 type">
-                    <a href="#method_elaBlade">elaBlade</a>()
+                    <p>Determinate asset content-type and render it.</p>    </div>
+    <div class="col-md-2"></div>
+</div>
+
+                                                                                                                                                                                                                                                                                                                                                                                                                                        <div class="row">
+    <div class="col-md-1 type">
+        final                static    </div>
+    <div class="col-md-1 type">
+        array
+    </div>
+    <div class="col-md-8 type">
+        <a href="#method_actions">actions</a>()
         
-                                            <p>Return Blade instance</p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    string
-                </div>
-                <div class="col-md-8 type">
-                    <a href="#method_elaView">elaView</a>(string $name, array $args = [])
+                    <p>Return array of all defined actions.</p>    </div>
+    <div class="col-md-2"></div>
+</div>
+
+                                      <div class="row">
+    <div class="col-md-1 type">
+        final                static    </div>
+    <div class="col-md-1 type">
+        bool
+    </div>
+    <div class="col-md-8 type">
+        <a href="#method_hasAction">hasAction</a>(string $action)
         
-                                            <p>Return rendered view.</p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    void
-                </div>
-                <div class="col-md-8 type">
-                    <a href="#method_elaFile">elaFile</a>($path)
+                    <p>Check if actions is defined.</p>    </div>
+    <div class="col-md-2"></div>
+</div>
+
+                                      <div class="row">
+    <div class="col-md-1 type">
+        final                static    </div>
+    <div class="col-md-1 type">
+        bool
+    </div>
+    <div class="col-md-8 type">
+        <a href="#method_isAction">isAction</a>(string $action)
         
-                                            <p>Determinate asset content-type and print it.</p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    array
-                </div>
-                <div class="col-md-8 type">
-                    <a href="#method_elaActionsList">elaActionsList</a>()
+                    <p>Check if actions is executed.</p>    </div>
+    <div class="col-md-2"></div>
+</div>
+
+                                      <div class="row">
+    <div class="col-md-1 type">
+        final                static    </div>
+    <div class="col-md-1 type">
+        string
+    </div>
+    <div class="col-md-8 type">
+        <a href="#method_parseAction">parseAction</a>(string $action)
         
-                                            <p>Return array of all defined actions.</p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    bool
-                </div>
-                <div class="col-md-8 type">
-                    <a href="#method_elaHasAction">elaHasAction</a>($action)
+                    <p>We want action keys to be case insensitive. This converts action to lowercase.</p>    </div>
+    <div class="col-md-2"></div>
+</div>
+
+                                      <div class="row">
+    <div class="col-md-1 type">
+        final                static    </div>
+    <div class="col-md-1 type">
+        void
+    </div>
+    <div class="col-md-8 type">
+        <a href="#method_renderText">renderText</a>(string|null $str = null)
         
-                                            <p>Check if actions is defined.</p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-            </div>
+                    <p>Convinient method for plain text output. Sets HTTP header text/plain and echo $str.</p>    </div>
+    <div class="col-md-2"></div>
+</div>
+
+                                      <div class="row">
+    <div class="col-md-1 type">
+        final                static    </div>
+    <div class="col-md-1 type">
+        void
+    </div>
+    <div class="col-md-8 type">
+        <a href="#method_renderHtml">renderHtml</a>(string|null $str = null)
+        
+                    <p>Convinient method for html output. Sets HTTP header text/html and echo $str.</p>    </div>
+    <div class="col-md-2"></div>
+</div>
+
+                                      <div class="row">
+    <div class="col-md-1 type">
+        final                static    </div>
+    <div class="col-md-1 type">
+        void
+    </div>
+    <div class="col-md-8 type">
+        <a href="#method_renderJson">renderJson</a>(array|null $json = null)
+        
+                    <p>Convinient method for json output. Sets HTTP header application/json and echo serialized $json.</p>    </div>
+    <div class="col-md-2"></div>
+</div>
+
+                      </div>
+
+
+        <h2>Protected Methods</h2>
+
+            <div class="container-fluid underlined">
+                                                                                                                                                                                                                <div class="row">
+    <div class="col-md-1 type">
+                            </div>
+    <div class="col-md-1 type">
+        array
+    </div>
+    <div class="col-md-8 type">
+        <a href="#method_views">views</a>()
+        
+                    <p>Extends array of directories of views and assets.</p>    </div>
+    <div class="col-md-2"></div>
+</div>
+
+                                      <div class="row">
+    <div class="col-md-1 type">
+                            </div>
+    <div class="col-md-1 type">
+        <abbr title="Jenssegers\Blade\Blade">Blade</abbr>
+    </div>
+    <div class="col-md-8 type">
+        <a href="#method_blade">blade</a>()
+        
+                    <p>Return Blade instance</p>    </div>
+    <div class="col-md-2"></div>
+</div>
+
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          </div>
+
+
+        <h2>Private Methods</h2>
+
+            <div class="container-fluid underlined">
+                                                                                                                                                                                              <div class="row">
+    <div class="col-md-1 type">
+                            </div>
+    <div class="col-md-1 type">
+        void
+    </div>
+    <div class="col-md-8 type">
+        <a href="#method_setRoles">setRoles</a>(array|null $roles, string|null $action = null)
+        
+                    <p>Set roles authorized to work with the module, or specific action. Empty array means any role is authorized.</p>    </div>
+    <div class="col-md-2"></div>
+</div>
+
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              </div>
 
 
         <h2>Details</h2>
 
             <div id="method-details">
                     <div class="method-item">
-                    <h3 id="method_elaInit">
-        <div class="location">at         line 99</div>
-        <code>final                    void
-    <strong>elaInit</strong>($eladmin, $elakey)
+                    <h3 id="method___construct">
+        <div class="location">at         line 96</div>
+        <code>                    
+    <strong>__construct</strong>($core, $elakey)
         </code>
     </h3>
     <div class="details">
@@ -373,7 +529,7 @@ assets/script.css  - module scripts
                     <table class="table table-condensed">
                     <tr>
                 <td></td>
-                <td>$eladmin</td>
+                <td>$core</td>
                 <td></td>
             </tr>
                     <tr>
@@ -384,45 +540,6 @@ assets/script.css  - module scripts
             </table>
 
             
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td>void</td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_elaInitCheck">
-        <div class="location">at         line 108</div>
-        <code>final                    void
-    <strong>elaInitCheck</strong>()
-        </code>
-    </h3>
-    <div class="details">
-            
-    
-
-                    <div class="method-description">
-                                    <p>Check if module was initialized. Throws if it wasn't.</p>                                                </div>
-                <div class="tags">
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td>void</td>
-            <td></td>
-        </tr>
-    </table>
-
             
             
                     </div>
@@ -431,7 +548,7 @@ assets/script.css  - module scripts
             </div>
                     <div class="method-item">
                     <h3 id="method_elakey">
-        <div class="location">at         line 116</div>
+        <div class="location">at         line 104</div>
         <code>final                    string
     <strong>elakey</strong>()
         </code>
@@ -460,10 +577,10 @@ assets/script.css  - module scripts
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_elaAuth">
-        <div class="location">at         line 124</div>
+                    <h3 id="method_auth">
+        <div class="location">at         line 111</div>
         <code>final                    bool
-    <strong>elaAuth</strong>(string|null $action = null)
+    <strong>auth</strong>(string|null $action = null)
         </code>
     </h3>
     <div class="details">
@@ -500,10 +617,10 @@ assets/script.css  - module scripts
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_elaTitle">
-        <div class="location">at         line 132</div>
+                    <h3 id="method_title">
+        <div class="location">at         line 126</div>
         <code>                    string
-    <strong>elaTitle</strong>()
+    <strong>title</strong>()
         </code>
     </h3>
     <div class="details">
@@ -530,10 +647,10 @@ assets/script.css  - module scripts
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_elaIcon">
-        <div class="location">at         line 139</div>
+                    <h3 id="method_icon">
+        <div class="location">at         line 133</div>
         <code>                    string
-    <strong>elaIcon</strong>()
+    <strong>icon</strong>()
         </code>
     </h3>
     <div class="details">
@@ -560,10 +677,10 @@ assets/script.css  - module scripts
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_elaRequest">
-        <div class="location">at         line 146</div>
+                    <h3 id="method_requestUrl">
+        <div class="location">at         line 140</div>
         <code>final                    string
-    <strong>elaRequest</strong>($action = null, $args = [])
+    <strong>requestUrl</strong>(string|null $action = null, array $args = [])
         </code>
     </h3>
     <div class="details">
@@ -577,12 +694,12 @@ assets/script.css  - module scripts
 
                     <table class="table table-condensed">
                     <tr>
-                <td></td>
+                <td>string|null</td>
                 <td>$action</td>
                 <td></td>
             </tr>
                     <tr>
-                <td></td>
+                <td>array</td>
                 <td>$args</td>
                 <td></td>
             </tr>
@@ -605,10 +722,10 @@ assets/script.css  - module scripts
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_elaAsset">
-        <div class="location">at         line 154</div>
+                    <h3 id="method_assetUrl">
+        <div class="location">at         line 153</div>
         <code>final                    string
-    <strong>elaAsset</strong>(string $path, string|null $version = null)
+    <strong>assetUrl</strong>(string $path, string|null $version = null)
         </code>
     </h3>
     <div class="details">
@@ -650,10 +767,40 @@ assets/script.css  - module scripts
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_elaRoles">
-        <div class="location">at         line 162</div>
-        <code>final                    array
-    <strong>elaRoles</strong>($action = null)
+                    <h3 id="method_prepare">
+        <div class="location">at         line 160</div>
+        <code>                    void
+    <strong>prepare</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Runs before any action is executed.</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_roles">
+        <div class="location">at         line 167</div>
+        <code>final                    array|null
+    <strong>roles</strong>(string|null $action = null)
         </code>
     </h3>
     <div class="details">
@@ -667,7 +814,7 @@ assets/script.css  - module scripts
 
                     <table class="table table-condensed">
                     <tr>
-                <td></td>
+                <td>string|null</td>
                 <td>$action</td>
                 <td></td>
             </tr>
@@ -678,7 +825,7 @@ assets/script.css  - module scripts
 
                     <table class="table table-condensed">
         <tr>
-            <td>array</td>
+            <td>array|null</td>
             <td></td>
         </tr>
     </table>
@@ -690,10 +837,10 @@ assets/script.css  - module scripts
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_elaSetRoles">
-        <div class="location">at         line 187</div>
-        <code>final                    void
-    <strong>elaSetRoles</strong>(array $roles, $action = null)
+                    <h3 id="method_setRoles">
+        <div class="location">at         line 188</div>
+        <code>                private    void
+    <strong>setRoles</strong>(array|null $roles, string|null $action = null)
         </code>
     </h3>
     <div class="details">
@@ -707,12 +854,12 @@ assets/script.css  - module scripts
 
                     <table class="table table-condensed">
                     <tr>
-                <td>array</td>
+                <td>array|null</td>
                 <td>$roles</td>
                 <td></td>
             </tr>
                     <tr>
-                <td></td>
+                <td>string|null</td>
                 <td>$action</td>
                 <td></td>
             </tr>
@@ -735,10 +882,10 @@ assets/script.css  - module scripts
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_elaInstanceForAction">
-        <div class="location">at         line 203</div>
-        <code>final                    object
-    <strong>elaInstanceForAction</strong>()
+                    <h3 id="method_views">
+        <div class="location">at         line 209</div>
+        <code>            protected        array
+    <strong>views</strong>()
         </code>
     </h3>
     <div class="details">
@@ -746,37 +893,13 @@ assets/script.css  - module scripts
     
 
                     <div class="method-description">
-                                    <p>Actions will be called on instance of this module returned by this method. Default is $this.</p>                                                </div>
-                <div class="tags">
-            
-                            <h4>Return Value</h4>
+                                    <p>Extends array of directories of views and assets.</p>                    <p>Example:</p>
 
-                    <table class="table table-condensed">
-        <tr>
-            <td>object</td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_elaViews">
-        <div class="location">at         line 210</div>
-        <code>                    array
-    <strong>elaViews</strong>()
-        </code>
-    </h3>
-    <div class="details">
-            
-    
-
-                    <div class="method-description">
-                                    <p>Extends array of directories of views and assets</p>                                                </div>
+<pre><code class="lang-php">public function views() : array {
+ return array_merge([__DIR__ . '/my_module'], parent::views());
+}
+</code></pre>
+</p>                            </div>
                 <div class="tags">
             
                             <h4>Return Value</h4>
@@ -795,10 +918,10 @@ assets/script.css  - module scripts
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_elaBlade">
-        <div class="location">at         line 217</div>
-        <code>                    <abbr title="Jenssegers\Blade\Blade">Blade</abbr>
-    <strong>elaBlade</strong>()
+                    <h3 id="method_blade">
+        <div class="location">at         line 221</div>
+        <code>            protected        <abbr title="Jenssegers\Blade\Blade">Blade</abbr>
+    <strong>blade</strong>()
         </code>
     </h3>
     <div class="details">
@@ -825,10 +948,10 @@ assets/script.css  - module scripts
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_elaView">
-        <div class="location">at         line 225</div>
+                    <h3 id="method_render">
+        <div class="location">at         line 228</div>
         <code>final                    string
-    <strong>elaView</strong>(string $name, array $args = [])
+    <strong>render</strong>(string $template, array $args = [])
         </code>
     </h3>
     <div class="details">
@@ -843,7 +966,7 @@ assets/script.css  - module scripts
                     <table class="table table-condensed">
                     <tr>
                 <td>string</td>
-                <td>$name</td>
+                <td>$template</td>
                 <td></td>
             </tr>
                     <tr>
@@ -870,10 +993,10 @@ assets/script.css  - module scripts
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_elaFile">
-        <div class="location">at         line 234</div>
+                    <h3 id="method_renderAsset">
+        <div class="location">at         line 236</div>
         <code>                    void
-    <strong>elaFile</strong>($path)
+    <strong>renderAsset</strong>(string $path)
         </code>
     </h3>
     <div class="details">
@@ -881,13 +1004,13 @@ assets/script.css  - module scripts
     
 
                     <div class="method-description">
-                                    <p>Determinate asset content-type and print it.</p>                                                </div>
+                                    <p>Determinate asset content-type and render it.</p>                                                </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
                     <tr>
-                <td></td>
+                <td>string</td>
                 <td>$path</td>
                 <td></td>
             </tr>
@@ -910,10 +1033,10 @@ assets/script.css  - module scripts
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_elaActionsList">
-        <div class="location">at         line 255</div>
-        <code>final                    array
-    <strong>elaActionsList</strong>()
+                    <h3 id="method_actions">
+        <div class="location">at         line 243</div>
+        <code>final        static            array
+    <strong>actions</strong>()
         </code>
     </h3>
     <div class="details">
@@ -940,10 +1063,10 @@ assets/script.css  - module scripts
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_elaHasAction">
-        <div class="location">at         line 269</div>
-        <code>final                    bool
-    <strong>elaHasAction</strong>($action)
+                    <h3 id="method_hasAction">
+        <div class="location">at         line 260</div>
+        <code>final        static            bool
+    <strong>hasAction</strong>(string $action)
         </code>
     </h3>
     <div class="details">
@@ -957,7 +1080,7 @@ assets/script.css  - module scripts
 
                     <table class="table table-condensed">
                     <tr>
-                <td></td>
+                <td>string</td>
                 <td>$action</td>
                 <td></td>
             </tr>
@@ -969,6 +1092,206 @@ assets/script.css  - module scripts
                     <table class="table table-condensed">
         <tr>
             <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_isAction">
+        <div class="location">at         line 267</div>
+        <code>final        static            bool
+    <strong>isAction</strong>(string $action)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Check if actions is executed.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$action</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_parseAction">
+        <div class="location">at         line 274</div>
+        <code>final        static            string
+    <strong>parseAction</strong>(string $action)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>We want action keys to be case insensitive. This converts action to lowercase.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$action</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_renderText">
+        <div class="location">at         line 281</div>
+        <code>final        static            void
+    <strong>renderText</strong>(string|null $str = null)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Convinient method for plain text output. Sets HTTP header text/plain and echo $str.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string|null</td>
+                <td>$str</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_renderHtml">
+        <div class="location">at         line 290</div>
+        <code>final        static            void
+    <strong>renderHtml</strong>(string|null $str = null)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Convinient method for html output. Sets HTTP header text/html and echo $str.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string|null</td>
+                <td>$str</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_renderJson">
+        <div class="location">at         line 299</div>
+        <code>final        static            void
+    <strong>renderJson</strong>(array|null $json = null)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Convinient method for json output. Sets HTTP header application/json and echo serialized $json.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array|null</td>
+                <td>$json</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
             <td></td>
         </tr>
     </table>

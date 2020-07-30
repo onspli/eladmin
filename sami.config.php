@@ -18,7 +18,7 @@ $sami = new Sami\Sami($iterator, [
     'build_dir' => __DIR__ . '/docs',
     'theme'     => 'docs-theme',
     'template_dirs' => ['./docs-theme'],
-    'include_parent_data' => false
+    'include_parent_data' => true
 ]);
 
 // document all methods and properties

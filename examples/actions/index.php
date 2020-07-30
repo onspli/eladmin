@@ -17,13 +17,18 @@ use Onspli\Eladmin;
 */
 class Event extends Eloquent\Model
 {
-  use Eladmin\Modules\Eloquent\Crud;
   use Eloquent\SoftDeletes;
+
+}
+
+class EventCrud extends Eladmin\Modules\Eloquent\Crud {
+
+  protected $model = Event::class;
 
   /**
   * Set the title and icon used in the admin menu.
   */
-  protected $elaTitle = 'Events';
+  protected $title = 'Events';
   protected $elaIcon = '<i class="fas fa-calendar-alt"></i>';
 
 
@@ -113,21 +118,23 @@ class Event extends Eloquent\Model
 */
 class Registration extends Eloquent\Model
 {
-  use Eladmin\Modules\Eloquent\Crud;
   use Eloquent\SoftDeletes;
+}
+
+class RegistrationCrud extends Eladmin\Modules\Eloquent\Crud {
+
+  protected $model = Registration::class;
 
   /**
   * Set the title and icon used in the admin menu.
   */
-  protected $elaTitle = 'Attenders';
-  protected $elaIcon = '<i class="fas fa-user-check"></i>';
-  public $elaOrderBy = 'name';
-  public $elaOrderDirection = 'asc';
-  protected $elaActionRoles = ['cncel' => ['none'], 'softDelte' => ['none']];
+  protected $title = 'Attenders';
+  protected $icon = '<i class="fas fa-user-check"></i>';
+  protected $actionRoles = ['cncel' => ['none'], 'softDelte' => ['none']];
 
 
-  public function elaColumns(){
-    $columns = $this->elaColumnsDef();
+  protected function crudColumns(){
+    $columns = parent::crudColumns();
 
     $columns->name->label('Name');
     $columns->email->label('E-mail');
@@ -165,16 +172,17 @@ class Registration extends Eloquent\Model
   /**
   * Define new action 'cancel' which cancels registration.
   */
-  public function elaActionCancel(){
-    if($this->status == 'cancelled')
+  public function actionCancel(){
+    $entry = $this->model();
+    if($entry->status == 'cancelled')
       throw new Eladmin\Exception\BadRequestException('Already cancelled!');
-    $this->status = 'cancelled';
-    $this->save();
-    echo 'Registration #'.$this->id.' was cancelled.';
+    $entry->status = 'cancelled';
+    $entry->save();
+    echo 'Registration #'.$entry->id.' was cancelled.';
   }
 
-  public function elaFilters(){
-    $filters = $this->elaFiltersDef();
+  protected function crudFilters(){
+    $filters = parent::crudFilters();
     $filters->name->label('Name')->icon('<i class="fas fa-user"></i>');
     $filters->event_id->label('Event')->icon('<i class="fas fa-calendar-alt"></i>')->select(Event::class);
     $filters->status->select([''=>'All', 'new'=>'New', 'confirmed'=>'Confirmed', 'cancelled'=>'Canceled']);
@@ -184,8 +192,8 @@ class Registration extends Eloquent\Model
   /**
   * Configure actions.
   */
-  public function elaActions(){
-    $actions = $this->elaActionsDef();
+  protected function crudActions(){
+    $actions = parent::crudActions();
     $actions->cancel          // method elaActionCancel
       ->label('Cancel')
       ->icon('<i class="far fa-times-circle"></i>')
@@ -200,24 +208,15 @@ class Registration extends Eloquent\Model
 
 }
 
-class Password extends Eladmin\Auth\Password {
-  public function elaAuthorize(array $authorizedRoles = []) : bool {
-    if (sizeof($authorizedRoles)) {
-      return false;
-    }
-    return parent::elaAuthorize($authorizedRoles);
-  }
-}
-
 /**
 * Eladmin configuration
 */
-class MyEladmin extends Eladmin\Eladmin
+class MyEladmin extends Eladmin\Core
 {
   /**
   * Add modules to the administration.
   */
-  protected $modules = [Event::class, Registration::class];
+  protected $modules = [EventCrud::class, RegistrationCrud::class];
 
   /**
   * Localize the interface. Supported languages are en_US, cs_CZ.
@@ -229,7 +228,6 @@ class MyEladmin extends Eladmin\Eladmin
   */
   protected $title = 'Cool Website';
 
-  protected $auth = Password::class;
 }
 
 /**

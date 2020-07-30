@@ -1,35 +1,43 @@
 <?php
 namespace Onspli\Eladmin\Modules\Eloquent;
+use \Onspli\Eladmin;
 use \Onspli\Eladmin\Exception;
-use \Onspli\Eladmin\Modules\Crud as CrudModule;
+use Illuminate\Database;
 
 /**
 * Crud module for Eloquent model.
 */
-trait Crud {
+class Crud extends Eladmin\Modules\Crud\Crud {
 
-use CrudModule\Crud {
-  CrudModule\Crud::elaInstanceForAction as elaInstanceForAction_CrudModule_Crud;
+/**
+* Model class name
+*/
+protected $model = Database\Eloquent\Model::class;
+private $imodel = null;
+
+public function model() {
+  if ($this->imodel === null) {
+    try {
+      $this->imodel = new $this->model;
+    } catch(\Throwable $e) {
+      throw new Exception\BadRequestException( __('You have to set $model property to %s module!', static::class) );
+    } catch(\Exception $e) {
+      throw new Exception\BadRequestException( __('You have to set $model property to %s module!', static::class) );
+    }
+  }
+  return $this->imodel;
 }
 
 /**
 * Primary column name.
 */
-public function elaPrimary() : string {
-  return $this->getKeyName();
+public function primary() : string {
+  return $this->model()->getKeyName();
 }
 
-protected function elaWrite(array $row, $id = null) : void {
-  if ($id === null)
-    $entry= new static();
-  else
-    $entry = $this->find($id);
-
-  if (!$entry)
-    throw new Exception\BadRequestException( __('Entry not found!') );
-
+private function updateOrCreate($entry, $row) : void {
   $tableColumns = $this->tableColumns();
-  $columns = $this->elaColumns();
+  $columns = $this->getCrudColumns();
 
   foreach ($tableColumns as $column) {
     if (!isset($row[$column]) || !isset($columns->{$column}))
@@ -40,50 +48,73 @@ protected function elaWrite(array $row, $id = null) : void {
   $entry->save();
 }
 
-protected function elaRead($id) : array {
-  if ($id === null)
-    return $this->toArray();
+public function prepare() : void {
+  parent::prepare();
+  $id = $this->id(false /* $throwIfNull */);
+  if ($id !== null) {
+    $entry = $this->model()->find($id);
+    if (!$entry)
+      throw new Exception\BadRequestException( __('Entry not found!') );
+    $this->imodel = $entry;
+  }
+}
 
-  $row = $this->find($id)->toArray();
+protected function create(array $row) : void {
+  $entry = new $this->model;
+  $this->updateOrCreate($entry, $row);
+}
+
+protected function update(array $row, $id) : void {
+  $entry = $this->model()->find($id);
+  if (!$entry)
+    throw new Exception\BadRequestException( __('Entry not found!') );
+  $this->updateOrCreate($entry, $row);
+}
+
+protected function get($id) : array {
+  if ($id === null)
+    return $this->model()->toArray();
+
+  $row = $this->model()->find($id)->toArray();
   return $row;
 }
 
 /**
 * Hard delete entry.
 */
-protected function elaDelete($id) : void {
-  if ($this->elaImplementsSoftDeletes()) {
-    $row = $this->withTrashed()->find($id);
+protected function delete($id) : void {
+  if ($this->implementsSoftDeletes()) {
+    $row = $this->model()->withTrashed()->find($id);
     if (!$row)
       throw new Exception\BadRequestException( __('Entry not found!') );
 
     $row->forceDelete();
   } else {
-    $row = $this->find($id);
+    $row = $this->model()->find($id);
     if (!$row)
       throw new Exception\BadRequestException( __('Entry not found!') );
     $row->delete();
   }
 }
 
-protected function elaRequest(array $request, &$totalResults) : array {
-  $q = $this;
+protected function read(array $request, &$totalResults) : array {
+  $q = $this->model();
 
   if ($request['trash']){
     $q = $q->onlyTrashed();
   }
 
   $search = $request['search'];
-  if ($search && $this->elaImplementsSearch()) {
-    foreach ($this->elaColumnsGet() as $column) {
+  if ($search && $this->implementsSearch()) {
+    foreach ($this->getCrudColumns() as $column) {
       if ($column->nonsearchable)
         continue;
       $q = $q->orWhere($column->getName(), 'LIKE', '%' . $search . '%');
     }
   }
 
-  if ($this->elaImplementsFilters()) {
-    foreach ($this->elaFiltersGet() as $filterName => $filter) {
+  if ($this->implementsFilters()) {
+    foreach ($this->getCrudFilters() as $filterName => $filter) {
       $filterPost = $_POST['filters'][$filterName] ?? null;
       if (!$filterPost)
         continue;
@@ -91,13 +122,13 @@ protected function elaRequest(array $request, &$totalResults) : array {
     }
   }
 
-  if ($this->elaImplementsSorting()) {
+  if ($this->implementsSorting()) {
     $q = $q->orderBy($request['sortBy'], $request['direction']);
   }
 
   $totalResults = $q->count();
 
-  if ($request['resultsPerPage'] != $this->INFINITY) {
+  if ($request['resultsPerPage'] != self::INFINITY) {
     $resultsPerPage = $request['resultsPerPage'];
     $page = $request['page'];
     $q = $q->offset(($page - 1) * $resultsPerPage)->limit($resultsPerPage);
@@ -107,34 +138,34 @@ protected function elaRequest(array $request, &$totalResults) : array {
   return $rows;
 }
 
-public function elaImplementsSoftDeletes() : bool {
-  return method_exists($this, 'trashed');
+public function implementsSoftDeletes() : bool {
+  return method_exists($this->model, 'trashed');
 }
 
-public function elaImplementsSorting() : bool {
+public function implementsSorting() : bool {
   return true;
 }
 
-public function elaImplementsPaging() : bool {
+public function implementsPaging() : bool {
   return true;
 }
 
-public function elaImplementsSearch() : bool {
+public function implementsSearch() : bool {
   return true;
 }
 
-public function elaImplementsFilters() : bool {
+public function implementsFilters() : bool {
   return true;
 }
 
 /**
 * Soft delete entry
 */
-protected function elaSoftDelete($id) : void {
-  $row = $this->find($id);
+protected function softDelete($id) : void {
+  $row = $this->model()->find($id);
   if (!$row)
     throw new Exception\BadRequestException( __('Entry not found!') );
-  if (!$this->elaImplementsSoftDeletes())
+  if (!$this->implementsSoftDeletes())
     throw new Exception\BadRequestException( __('This CRUD doesn\'t support soft deletes!') );
   else
     $row->delete();
@@ -143,10 +174,10 @@ protected function elaSoftDelete($id) : void {
 /**
 * Restore entry
 */
-protected function elaRestore($id) : void {
-  if (!$this->elaImplementsSoftDeletes())
+protected function restore($id) : void {
+  if (!$this->implementsSoftDeletes())
     throw new Exception\BadRequestException( __('This CRUD doesn\'t support soft deletes!') );
-  $row = $this->withTrashed()->find($id);
+  $row = $this->model()->withTrashed()->find($id);
   if (!$row)
     throw new Exception\BadRequestException( __('Entry not found!') );
   $row->restore();
@@ -156,51 +187,37 @@ protected function elaRestore($id) : void {
 * Check if table for the model exists in the database;
 */
 protected function tableExists() : bool {
-  return $this->getConnection()->getSchemaBuilder()->hasTable($this->getTable());
+  return $this->model()->getConnection()->getSchemaBuilder()->hasTable($this->model()->getTable());
 }
 
 /**
 * Get an array of table columns.
 */
 private function tableColumns() : array {
-  return $this->getConnection()->getSchemaBuilder()->getColumnListing($this->getTable());
+  return $this->model()->getConnection()->getSchemaBuilder()->getColumnListing($this->model()->getTable());
 }
 
 /**
 * Default columns setting.
 */
-private function elaColumnsDef(){
-  $columns = new CrudModule\Chainset\Columns;
+protected function crudColumns(){
+  $columns = parent::crudColumns();
   $tableColumns = $this->tableColumns();
   // add all columns from the table
   foreach ($tableColumns as $column)
     $columns->$column;
   // disable editing for primary key
-  $columns->{$this->elaPrimary()}->disabled();
+  $columns->{$this->primary()}->disabled();
   // hide and disable deleted_at column
-  if ($this->elaImplementsSoftDeletes())
-    $columns->{$this->getDeletedAtColumn()}->hidden();
+  if ($this->implementsSoftDeletes())
+    $columns->{$this->model()->getDeletedAtColumn()}->hidden();
 
-  if (in_array(static::CREATED_AT, $tableColumns))
-    $columns->{static::CREATED_AT}->disabled()->nonsearchable();
-  if (in_array(static::UPDATED_AT, $tableColumns))
-    $columns->{static::UPDATED_AT}->disabled()->nonsearchable();
+  if (in_array($this->model::CREATED_AT, $tableColumns))
+    $columns->{$this->model::CREATED_AT}->disabled()->nonsearchable();
+  if (in_array($this->model::UPDATED_AT, $tableColumns))
+    $columns->{$this->model::UPDATED_AT}->disabled()->nonsearchable();
 
   return $columns;
-}
-
-
-public function elaInstanceForAction() {
-  $this->elaInstanceForAction_CrudModule_Crud();
-  $elaid = $this->elaId(false /* $throwIfNull */);
-  if($elaid === null || in_array($this->eladmin->actionkey(), ['read', 'create', 'update', 'delete', 'softdelete', 'restore', 'putform', 'postform']))
-    return $this;
-
-  $entry = static::find($elaid);
-  if(!$entry)
-    throw new Exception\BadRequestException( __('Entry not found!') );
-  $entry->elaInit($this->eladmin, $this->elakey);
-  return $entry;
 }
 
 }

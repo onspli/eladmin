@@ -1,13 +1,13 @@
 <?php
 
 namespace Onspli\Eladmin\Auth;
-use Onspli\Eladmin\Exception;
+use Onspli\Eladmin;
 
 /**
 * Simple username/password authorization.
 * Single user, no roles, password hash saved to file.
 */
-class Password implements \Onspli\Eladmin\IAuth {
+class Password implements Eladmin\IAuth {
 
   // username
   protected $username = 'eladmin';
@@ -30,38 +30,38 @@ class Password implements \Onspli\Eladmin\IAuth {
     $this->isPasswordFileWriteable = file_put_contents($this->passwordFile, $this->passwordHash);
   }
 
-  public function elaLoginFields() : ?array {
+  public function loginFields() : ?array {
     return [
       'login' => ['label' => __('Login'), 'type' => 'text'],
       'password' => ['label' => __('Password'), 'type' => 'password']
     ];
   }
 
-  public function elaUnauthorized() : void { }
+  public function unauthorized() : void { }
 
-  public function elaLogin() : void {
-    $login = $_POST['login'] ?? '';
-    $password = $_POST['password'] ?? '';
+  public function login($fields) : void {
+    $login = $fields['login'];
+    $password = $fields['password'];
     if ($login == $this->username && password_verify($password , $this->passwordHash)) {
       $_SESSION['elauser'] = $this->username;
       return;
     }
-    $this->elaLogout();
+    $this->logout();
   }
 
-  public function elaLogout() : void {
+  public function logout() : void {
     $_SESSION['elauser'] = null;
   }
 
-  public function elaAuthorize(array $authorizedRoles = []) : bool {
+  public function authorize(array $authorizedRoles = []) : bool {
     return ($_SESSION['elauser'] ?? null) !== null;
   }
 
-  public function elaUserName() : string {
+  public function userName() : string {
     return $this->username;
   }
 
-  public function elaAccountFields() : ?array {
+  public function accountFields() : ?array {
     if (!$this->isPasswordFileWriteable)
       return null;
     return [
@@ -71,22 +71,22 @@ class Password implements \Onspli\Eladmin\IAuth {
     ];
   }
 
-  public function elaAccount() : void {
+  public function accountUpdate($fields) : void {
     if (!$this->isPasswordFileWriteable)
-      throw new Exception(__('Cannot save new password.'));
-    if (!$this->elaAuthorize())
-      throw new Exception\UnauthorizedException();
+      throw new Eladmin\Exception(__('Cannot save new password.'));
+    if (!$this->authorize())
+      throw new Eladmin\Exception\UnauthorizedException();
 
-    $oldpassword = $_POST['oldpassword'] ?? '';
-    $newpassword = $_POST['newpassword'] ?? '';
-    $newpasswordconfirm = $_POST['newpasswordconfirm'] ?? '';
+    $oldpassword = $fields['oldpassword'];
+    $newpassword = $fields['newpassword'];
+    $newpasswordconfirm = $fields['newpasswordconfirm'];
 
     if (!password_verify($oldpassword , $this->passwordHash))
-      throw new Exception\BadRequestException(__('Current password is not correct!'));
+      throw new Eladmin\Exception\BadRequestException(__('Current password is not correct!'));
     if (!$newpassword)
-      throw new Exception\BadRequestException(__('New password must not be empty!'));
+      throw new Eladmin\Exception\BadRequestException(__('New password must not be empty!'));
     if ($newpassword != $newpasswordconfirm)
-      throw new Exception\BadRequestException(__('Passwords do not match!'));
+      throw new Eladmin\Exception\BadRequestException(__('Passwords do not match!'));
 
     $this->passwordHash = password_hash($newpassword, PASSWORD_DEFAULT);
     file_put_contents($this->passwordFile, $this->passwordHash);

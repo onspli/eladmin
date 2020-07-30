@@ -15,14 +15,6 @@ class Action extends Eladmin\Chainset\Child {
   public $bulk = null;
   public $form = false;
 
-  public function _getKey() : string {
-    return Eladmin\Eladmin::normalizeActionName(parent::_getKey());
-  }
-
-  final public function getModule() {
-    return $this->_getParent()->getModule();
-  }
-
   final public function getName() {
     return $this->_getKey();
   }
@@ -55,11 +47,6 @@ class Action extends Eladmin\Chainset\Child {
     if ($str === '')
       $str = __('Are you sure?');
     $this->confirm = $str;
-    return $this;
-  }
-
-  public function auth($roles){
-    $this->getModule()->elaSetRoles($roles, $this->getName());
     return $this;
   }
 

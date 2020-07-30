@@ -221,7 +221,7 @@ function rowFactory(id, values, actions){
     action_td.append(actionButtonFactory('restore', id));
     action_td.append(actionButtonFactory('delete', id));
   } else {
-    action_td.append(actionButtonFactory('putform', id));
+    action_td.append(actionButtonFactory('updateform', id));
     if (crudUsesSoftDeletes)
       action_td.append(actionButtonFactory('softdelete', id));
     else
@@ -417,7 +417,7 @@ $(document).on('click', '*[data-elaupdateaction]', function(e){
   var el = this;
   elaElementRequest(el, {action : $(this).data('elaupdateaction'), post : $('#modal-form').serialize(), get : {'update' : 1}})
   .done(function() {
-    elaElementRequest(el, {action : 'putForm', silent: false});
+    elaElementRequest(el, {action : 'updateForm', silent: false});
   });
 });
 

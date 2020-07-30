@@ -1,9 +1,9 @@
 @push('header_row')
       <tr>
         <th class="text-center"><input class="bulk-all" type="checkbox"></th>
-@foreach($module->elaColumnsGet() as $column => $config)
+@foreach($module->getCrudColumns() as $column => $config)
 <?php if($config->nonlistable) continue; ?>
-        @if($config->nonsortable || !$module->elaImplementsSorting())
+        @if($config->nonsortable || !$module->implementsSorting())
         <th class="noselect">
           {{ $config->label ?? $column }}
         </th>

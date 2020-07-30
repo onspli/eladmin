@@ -204,6 +204,7 @@ function modalOpen(html) {
   $('#dynamic').html(html);
   html.modal();
   history.pushState({data : 'modal'}, '', '#modal');
+  $('#dynamic form input:visible:enabled:first').focus();
 }
 
 /**
