@@ -99,6 +99,13 @@ public function __construct($core, $elakey) {
 }
 
 /**
+* Return core instance
+*/
+final public function core() : Core {
+  return $this->core;
+}
+
+/**
 * Each module has its elakey - index in modules array - used to address requests.
 */
 final public function elakey() : string {

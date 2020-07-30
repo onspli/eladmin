@@ -50,6 +50,8 @@ private function updateOrCreate($entry, $row) : void {
 
 public function prepare() : void {
   parent::prepare();
+  if (in_array($this->core()->actionkey(), parent::actions()))
+    return;
   $id = $this->id(false /* $throwIfNull */);
   if ($id !== null) {
     $entry = $this->model()->find($id);
