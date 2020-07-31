@@ -33,6 +33,6 @@
         "docs:render": "rm -rf docs; php sami.phar render sami.config.php"
     },
     "archive": {
-        "exclude": ["/docs", "/docs-theme", "/examples", "/screenshots", "/tests", "/_config.yml", "/sami.config.php"]
+        "exclude": ["/docs", "/docs-theme", "/examples", "/screenshots", "/tests", "/_config.yml", "/sami.config.php", "/.github", "/.gitignore"]
     }
 }
