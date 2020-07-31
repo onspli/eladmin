@@ -119,7 +119,7 @@ protected function get($id) : array {
 
 protected function delete($id) : void {
   if ($this->implementsSoftDeletes()) {
-    $row = $this->model()->withTrashed()->find($id);
+    $row = $this->model::withTrashed()->find($id);
     if (!$row)
       throw new Exception\BadRequestException( __('Entry not found!') );
 
@@ -135,7 +135,7 @@ protected function delete($id) : void {
 protected function read(array $request, &$totalResults) : array {
   $q = $this->model();
 
-  if ($request['trash']){
+  if ($request['trash']) {
     $q = $q->onlyTrashed();
   }
 
