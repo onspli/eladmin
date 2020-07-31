@@ -50,7 +50,7 @@ interface IAuth {
   /**
   * Check if user is logged in. Also check if user has one of the $authorizedRoles (if specified).
   */
-  public function authorize(array $authorizedRoles = ANYONE) : bool;
+  public function authorize(array $authorizedRoles = self::ANYONE) : bool;
 
   /**
   * Get user's name to show it in admin.

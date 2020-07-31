@@ -93,7 +93,7 @@
             <h2>Properties</h2>
 
             <table class="table table-condensed">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      <tr>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  <tr>
     <td class="type" id="property_label">
                 public                        
     </td>
@@ -219,16 +219,7 @@
     <td></td>
 </tr>
 
-                                              <tr>
-    <td class="type" id="property_belongsTo">
-                public                        
-    </td>
-    <td>$belongsTo</td>
-    <td class="last"></td>
-    <td></td>
-</tr>
-
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </table>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </table>
 
     
             <h2>Public Methods</h2>
@@ -616,6 +607,20 @@
         
     </div>
     <div class="col-md-8 type">
+        <a href="#method_password">password</a>()
+        
+                    <p>Set the type of input to password
+Add nonlistable flag</p>    </div>
+    <div class="col-md-2"></div>
+</div>
+
+                                      <div class="row">
+    <div class="col-md-1 type">
+                            </div>
+    <div class="col-md-1 type">
+        
+    </div>
+    <div class="col-md-8 type">
         <a href="#method_textarea">textarea</a>()
         
                     <p>Set the type of input to textarea.</p>    </div>
@@ -645,20 +650,6 @@
         <a href="#method_hidden">hidden</a>()
         
                     <p>Shortcut for nonlistable &amp;&amp; noneditable &amp;&amp; disabled</p>    </div>
-    <div class="col-md-2"></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-                            </div>
-    <div class="col-md-1 type">
-        
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_belongsTo">belongsTo</a>($model)
-        
-                    <p class="no-description">No description</p>
-            </div>
     <div class="col-md-2"></div>
 </div>
 
@@ -1130,7 +1121,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getName">
-        <div class="location">at         line 67</div>
+        <div class="location">at         line 66</div>
         <code>final                    string
     <strong>getName</strong>()
         </code>
@@ -1160,7 +1151,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getValue">
-        <div class="location">at         line 71</div>
+        <div class="location">at         line 70</div>
         <code>final                    
     <strong>getValue</strong>($row, $forEditing = false)
         </code>
@@ -1194,7 +1185,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_evalProperty">
-        <div class="location">at         line 94</div>
+        <div class="location">at         line 86</div>
         <code>final                    
     <strong>evalProperty</strong>($prop, $row)
         </code>
@@ -1228,7 +1219,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_raw">
-        <div class="location">at         line 110</div>
+        <div class="location">at         line 102</div>
         <code>                    
     <strong>raw</strong>()
         </code>
@@ -1249,7 +1240,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_escaped">
-        <div class="location">at         line 118</div>
+        <div class="location">at         line 110</div>
         <code>                    
     <strong>escaped</strong>()
         </code>
@@ -1270,7 +1261,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_nonlistable">
-        <div class="location">at         line 127</div>
+        <div class="location">at         line 119</div>
         <code>                    
     <strong>nonlistable</strong>()
         </code>
@@ -1291,7 +1282,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_listable">
-        <div class="location">at         line 137</div>
+        <div class="location">at         line 129</div>
         <code>                    
     <strong>listable</strong>()
         </code>
@@ -1312,7 +1303,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_nonsearchable">
-        <div class="location">at         line 145</div>
+        <div class="location">at         line 137</div>
         <code>                    
     <strong>nonsearchable</strong>()
         </code>
@@ -1333,7 +1324,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_searchable">
-        <div class="location">at         line 153</div>
+        <div class="location">at         line 145</div>
         <code>                    
     <strong>searchable</strong>()
         </code>
@@ -1354,7 +1345,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_nonsortable">
-        <div class="location">at         line 161</div>
+        <div class="location">at         line 153</div>
         <code>                    
     <strong>nonsortable</strong>()
         </code>
@@ -1375,7 +1366,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_sortable">
-        <div class="location">at         line 169</div>
+        <div class="location">at         line 161</div>
         <code>                    
     <strong>sortable</strong>()
         </code>
@@ -1396,7 +1387,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_noneditable">
-        <div class="location">at         line 178</div>
+        <div class="location">at         line 170</div>
         <code>                    
     <strong>noneditable</strong>()
         </code>
@@ -1417,7 +1408,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_editable">
-        <div class="location">at         line 187</div>
+        <div class="location">at         line 179</div>
         <code>                    
     <strong>editable</strong>()
         </code>
@@ -1438,7 +1429,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_disabled">
-        <div class="location">at         line 195</div>
+        <div class="location">at         line 187</div>
         <code>                    
     <strong>disabled</strong>()
         </code>
@@ -1459,7 +1450,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_enabled">
-        <div class="location">at         line 203</div>
+        <div class="location">at         line 195</div>
         <code>                    
     <strong>enabled</strong>()
         </code>
@@ -1480,7 +1471,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_limit">
-        <div class="location">at         line 212</div>
+        <div class="location">at         line 204</div>
         <code>                    
     <strong>limit</strong>(<abbr title="Onspli\Eladmin\Modules\Crud\Chainset\integer">integer</abbr> $len)
         </code>
@@ -1511,7 +1502,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_input">
-        <div class="location">at         line 220</div>
+        <div class="location">at         line 212</div>
         <code>                    
     <strong>input</strong>($type)
         </code>
@@ -1541,8 +1532,30 @@
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_password">
+        <div class="location">at         line 221</div>
+        <code>                    
+    <strong>password</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Set the type of input to password
+Add nonlistable flag</p>                                                </div>
+                <div class="tags">
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_textarea">
-        <div class="location">at         line 228</div>
+        <div class="location">at         line 230</div>
         <code>                    
     <strong>textarea</strong>()
         </code>
@@ -1563,7 +1576,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_select">
-        <div class="location">at         line 236</div>
+        <div class="location">at         line 238</div>
         <code>                    
     <strong>select</strong>($options = [])
         </code>
@@ -1594,7 +1607,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_hidden">
-        <div class="location">at         line 260</div>
+        <div class="location">at         line 247</div>
         <code>                    
     <strong>hidden</strong>()
         </code>
@@ -1614,37 +1627,8 @@
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_belongsTo">
-        <div class="location">at         line 267</div>
-        <code>                    
-    <strong>belongsTo</strong>($model)
-        </code>
-    </h3>
-    <div class="details">
-            
-    
-
-                <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td></td>
-                <td>$model</td>
-                <td></td>
-            </tr>
-            </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
                     <h3 id="method_format">
-        <div class="location">at         line 279</div>
+        <div class="location">at         line 254</div>
         <code>                    
     <strong>format</strong>($func)
         </code>
@@ -1673,7 +1657,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_get">
-        <div class="location">at         line 284</div>
+        <div class="location">at         line 259</div>
         <code>                    
     <strong>get</strong>($func)
         </code>
@@ -1702,7 +1686,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_set">
-        <div class="location">at         line 289</div>
+        <div class="location">at         line 264</div>
         <code>                    
     <strong>set</strong>($func)
         </code>
@@ -1731,7 +1715,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_datetime">
-        <div class="location">at         line 294</div>
+        <div class="location">at         line 269</div>
         <code>                    
     <strong>datetime</strong>($format)
         </code>
@@ -1760,7 +1744,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_validate">
-        <div class="location">at         line 311</div>
+        <div class="location">at         line 286</div>
         <code>                    
     <strong>validate</strong>($func)
         </code>

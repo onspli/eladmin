@@ -2,7 +2,7 @@
 require_once(__DIR__ . '/../../vendor/autoload.php');
 
 require_once(__DIR__ . '/model/Event.php');
-require_once(__DIR__ . '/model/Registration.php');
+require_once(__DIR__ . '/model/Ticket.php');
 
 $capsule = new Illuminate\Database\Capsule\Manager;
 $capsule->addConnection([

@@ -10,6 +10,9 @@
         <div class="form-group">
             <label>{{$config['label']??$column}}</label>
             <input type="{{ $config['type']??'text' }}" class="form-control" name="{{$column}}">
+            @if($config['desc']??false)
+            <small class="form-text text-muted">{!! $config['desc'] !!}</small>
+            @endif
         </div>
       @endforeach
   </form>

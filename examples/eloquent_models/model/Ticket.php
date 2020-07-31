@@ -2,7 +2,8 @@
 namespace Examples\Eloquent;
 use \Illuminate\Database\Eloquent;
 
-class Event extends Eloquent\Model {
+class Ticket extends Eloquent\Model {
+  use Eloquent\SoftDeletes;
 
   function __construct() {
     parent::__construct();
@@ -12,11 +13,11 @@ class Event extends Eloquent\Model {
       $schema->create($this->getTable(), function ($table) {
         $table->increments('id');
         $table->string('name');
-        $table->datetime('when');
-        $table->string('where');
-        $table->integer('price');
-        $table->text('description');
+        $table->integer('event_id')->unsigned();
+        $table->string('email');
+        $table->string('status');
         $table->timestamps();
+        $table->softDeletes();
       });
 
     }

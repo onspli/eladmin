@@ -1,7 +1,3 @@
-@push('scripts')
-<script src="{!! $module->assetUrl('script.js') !!}"></script>
-@endpush
-
 @push('styles')
 <link href="{!! $module->assetUrl('style.css') !!}" rel="stylesheet">
 @endpush
@@ -12,3 +8,7 @@
 @section('content')
 @include('render')
 @endsection
+
+@push('scripts')
+<script src="{!! $module->assetUrl('script.js') !!}"></script>
+@endpush

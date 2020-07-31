@@ -1,5 +1,5 @@
 # eladmin
-Eladmin generates CRUD admin interface for Eloquent. [Docs and examples](https://onspli.github.io/eladmin/)
+Eladmin generates CRUD admin interface. Although it was created for Eloquent, it can be extended to support other libraries as well. Look at [docs and examples](https://onspli.github.io/eladmin/).
 
 ## Table of Contents
 
@@ -7,7 +7,7 @@ Eladmin generates CRUD admin interface for Eloquent. [Docs and examples](https:/
 - [Contacts](#contacts)
 
 ## Installation
-You can install Eladmin using composer:
+You can install Eladmin from [Packagist](https://packagist.org/packages/onspli/eladmin) using composer:
 ```
 composer require onspli/eladmin
 ```

@@ -53,7 +53,7 @@ class Password implements Eladmin\IAuth {
     $_SESSION['elauser'] = null;
   }
 
-  public function authorize(array $authorizedRoles = []) : bool {
+  public function authorize(array $authorizedRoles = self::ANYONE) : bool {
     return ($_SESSION['elauser'] ?? null) !== null;
   }
 
@@ -90,7 +90,7 @@ class Password implements Eladmin\IAuth {
 
     $this->passwordHash = password_hash($newpassword, PASSWORD_DEFAULT);
     file_put_contents($this->passwordFile, $this->passwordHash);
-    echo(__('Password changed.'));
+    $this->renderText(__('Password changed.'));
   }
 
 }

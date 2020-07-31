@@ -1,6 +1,6 @@
 {
     "name": "onspli/eladmin",
-    "description": "Eladmin generates CRUD admin interface for Eloquent.",
+    "description": "CRUD admin interface in PHP",
     "license": "MIT",
     "authors": [
         {
