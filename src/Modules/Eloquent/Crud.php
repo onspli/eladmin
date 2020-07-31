@@ -47,8 +47,10 @@ protected function model() {
     try {
       $this->imodel = new $this->model;
     } catch(\Throwable $e) {
+      $this->core()->log()->error($e->getMessage());
       throw new Exception\BadRequestException( __('You have to set $model property to %s module!', static::class) );
     } catch(\Exception $e) {
+      $this->core()->log()->error($e->getMessage());
       throw new Exception\BadRequestException( __('You have to set $model property to %s module!', static::class) );
     }
   }
@@ -67,12 +69,12 @@ public function primary() : string {
 */
 private function updateOrCreate($entry, $row) : void {
   $tableColumns = $this->tableColumns();
-  $columns = $this->getCrudColumns();
 
-  foreach ($tableColumns as $column) {
-    if (!isset($row[$column]) || !isset($columns->{$column}))
+  foreach ($row as $column => $value) {
+    if (!in_array($column, $tableColumns) ) {
       continue;
-    $entry->{$column} = $row[$column];
+    }
+    $entry->{$column} = $value;
   }
 
   $entry->save();
@@ -148,7 +150,7 @@ protected function read(array $request, &$totalResults) : array {
 
   if ($this->implementsFilters()) {
     foreach ($this->getCrudFilters() as $filterName => $filter) {
-      $filterPost = $_POST['filters'][$filterName] ?? null;
+      $filterPost = $request['filters'][$filterName] ?? null;
       if (!$filterPost)
         continue;
       $q = $q->where($filterName, '=', $filterPost['val']);

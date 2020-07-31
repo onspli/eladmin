@@ -213,13 +213,14 @@ protected function crudColumns() {
 protected function crudActions() {
   $actions = new Chainset\Actions;
 
+  $actions->create->icon('<i class="fas fa-plus-circle"></i>')->label(__('Add'))->hidden();
   $actions->updateForm->hidden()->label('')->style('primary')->icon('<i class="fas fa-edit"></i>')->nonbulk();
   $actions->createForm->hidden()->nonbulk();
-  $actions->delete->style('danger')->label('')->icon('<i class="fas fa-trash-alt"></i>')->title(__('Delete'))->confirm()->hidden();
+  $actions->delete->style('danger')->label('')->icon('<i class="fas fa-trash-alt"></i>')->title(__('Delete'))->confirm()->bulk()->hidden();
 
   if ($this->implementsSoftDeletes()) {
-    $actions->restore->style('success')->label('')->icon('<i class="fas fa-recycle"></i>')->title(__('Restore'))->hidden();
-    $actions->softDelete->style('danger')->label('')->icon('<i class="fas fa-trash-alt"></i>')->hidden();
+    $actions->restore->style('success')->label('')->icon('<i class="fas fa-recycle"></i>')->title(__('Restore'))->bulk()->hidden();
+    $actions->softDelete->style('danger')->label('')->icon('<i class="fas fa-trash-alt"></i>')->bulk()->hidden();
   }
 
   if (!$this->auth('update') && $this->auth('read')) {
@@ -315,22 +316,25 @@ private function rowActionsArray($row) {
 */
 private function validateAndModify(){
   $columns = $this->getCrudColumns();
-  // check that disabled columns are not set
-  foreach ($columns as $column => $config) {
-    if ($config->disabled && isset($_POST[$column])) {
-      unset($_POST[$column]);
+  // unset columns which we shouldn't recieve
+  foreach ($_POST as $key => $value) {
+    if (!isset($columns->$key) || $columns->$key->disabled || $columns->$key->noneditable) {
+      unset($_POST[$key]);
     }
   }
   // validate values
-  foreach ($columns as $column => $config) {
-    if ($config->validate) {
-      ($config->validate)($_POST[$column] ?? null, $this);
-    }
+  foreach ($columns as $column) {
+    $column->evalProperty('validate', $_POST);
   }
   // modify values
-  foreach ($columns as $column => $config) {
-    if ($config->setformat) {
-      $_POST[$column] = ($config->setformat)($_POST[$column] ?? null, $this);
+  foreach ($columns as $key => $column) {
+    if ($column->setformat) {
+      $value = $column->evalProperty('setformat', $_POST);
+      if ($value !== null) {
+        $_POST[$key] = $value;
+      } else {
+        unset($_POST[$key]);
+      }
     }
   }
 }
@@ -451,7 +455,7 @@ public function actionDelete(){
 */
 public function actionSoftDelete(){
   $this->softDelete($this->id());
-  $this->renderText(__('Entry deleted. It can be restored from Trash later.'));
+  $this->renderText(__('Entry moved to trash.'));
 }
 
 /**

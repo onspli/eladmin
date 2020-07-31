@@ -40,8 +40,8 @@
 <script src="{!! $eladmin->assetUrl('toastr-2.1.3/toastr.min.js', '2.1.3') !!}"></script>
 
 <script>var _csrftoken = '{{$eladmin->CSRFToken()}}';</script>
-@stack('scripts')
 <script src="{!! $eladmin->assetUrl('layout.js', $eladmin->version()) !!}"></script>
+@stack('scripts')
 @include('modules.core.consecutive')
 
 </body>

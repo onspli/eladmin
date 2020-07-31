@@ -4,6 +4,8 @@ use Onspli\Eladmin;
 
 class Admin extends Eladmin\Core {
 
+protected $auth = Eladmin\Auth\EloquentUser\Module::class;
+
 }
 
 $admin = new Admin();

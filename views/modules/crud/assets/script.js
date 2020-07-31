@@ -417,7 +417,7 @@ $(document).on('click', '*[data-elaupdateaction]', function(e){
   var el = this;
   elaElementRequest(el, {action : $(this).data('elaupdateaction'), post : $('#modal-form').serialize(), get : {'update' : 1}})
   .done(function() {
-    elaElementRequest(el, {action : 'updateForm', silent: false});
+    elaElementRequest(el, {action : 'updateForm', silent: false, noerror: true});
   });
 });
 

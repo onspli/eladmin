@@ -28,10 +28,20 @@ foreach ($module->getCrudActions() as $action) {
   if($action->noneditable) continue;
   $elaActions[] = $action;
 }
+$deleteAuth = !$module->implementsSoftDeletes() &&
+              $module->auth('delete') &&
+              isset($module->getCrudActions()->delete) &&
+              !$module->getCrudActions()->delete->noneditable;
+
+$softDeleteAuth = $module->implementsSoftDeletes() &&
+                    $module->auth('softDelete') &&
+                    isset($module->getCrudActions()->softDelete) &&
+                    !$module->getCrudActions()->softDelete->noneditable;
+
 ?>
 
 @section('actions')
-@if(sizeof($elaActions) || ((!$module->implementsSoftDeletes() && $module->auth('delete')) || ($module->implementsSoftDeletes() && $module->auth('softDelete'))))
+@if(sizeof($elaActions) || $deleteAuth || $softDeleteAuth)
 <span class="dropdown actions-dropdown mr-auto">
   <button class="btn btn-primary m-1 dropdown-toggle" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i> <span class="d-none d-sm-inline">{{ __('Actions')}}</span></button>
   <div class="dropdown-menu">
@@ -47,9 +57,9 @@ foreach ($module->getCrudActions() as $action) {
     {!! $actionArr['icon'] !!} {{ $actionArr['label'] }}
     </a>
   @endforeach
-  @if(!$module->implementsSoftDeletes() && $module->auth('delete'))
+  @if($deleteAuth)
   <a href="#" type="button" class="dropdown-item text-danger" data-elaaction="delete" data-elagetid="{{ $row[$module->primary()] }}" data-eladone="modalClose();" data-confirm="{{__('Are you sure?')}}"><i class="fas fa-trash-alt"></i> <span class="d-none d-sm-inline">{{ __('Delete')}}</span></a>
-  @elseif($module->implementsSoftDeletes() && $module->auth('softDelete'))
+  @elseif($softDeleteAuth)
   <a href="#" type="button" class="dropdown-item text-danger" data-elaaction="softDelete" data-elagetid="{{ $row[$module->primary()] }}" data-eladone="modalClose();"><i class="fas fa-trash-alt"></i> <span class="d-none d-sm-inline">{{ __('Move to trash')}}</span></a>
   @endif
   </div>

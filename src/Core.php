@@ -9,6 +9,10 @@ use \Jenssegers\Blade\Blade;
 */
 class Core extends Module {
 
+/**
+* Auth module elakey
+*/
+const AUTH_ELAKEY = 'elaauth';
 
 /**
 * override to register admin modules
@@ -86,6 +90,9 @@ public function __construct(?array $modules = null) {
   }
   $this->initMonolog();
   $this->log->info('Construct eladmin.', $_GET);
+  if (is_subclass_of($this->auth, Module::class)) {
+    $this->modules[static::AUTH_ELAKEY] = $this->auth;
+  }
   parent::__construct($this, '');
 }
 
@@ -491,10 +498,12 @@ private function initAuthorization() : void {
   if ($this->auth) {
     if (!is_subclass_of($this->auth, IAuth::class))
       throw new Exception\Exception(__('Authorization class %s does not implement IAuth interface.', $this->auth));
-    $this->iauth = new $this->auth;
     $this->log->debug('init authorization');
-    if ($this->auth instanceof Module)
-      $this->modules[] = $this->auth;
+    if (is_subclass_of($this->auth, Module::class)) {
+      $this->iauth = new $this->auth($this, static::AUTH_ELAKEY);
+    } else {
+      $this->iauth = new $this->auth();
+    }
   }
 }
 

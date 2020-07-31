@@ -12,7 +12,8 @@ function elaRequest(request) {
     elatoken : _csrftoken,
     get : {},             // get arguments
     post : {},            // post argument
-    silent : true         // do not toastr or modal on success
+    silent : true,         // do not toastr or modal on success,
+    noerror : false       // do not toastr on error
   }, request);
 
   if (request.module === null) {
@@ -26,10 +27,16 @@ function elaRequest(request) {
       method : 'POST',
       url : '?' + $.param($.extend({}, request.get, {elamodule : request.module, elaaction : request.action, elatoken : _csrftoken})),
       data : request.post
-  })
-  .fail(function(response) {
+  });
+
+  if (!request.noerror) {
+    promise.fail(function(response) {
+      toastr.error(response.responseText);
+    });
+  }
+
+  promise.fail(function(response) {
     consecutive.point('request_fail', response);
-    toastr.error(response.responseText);
     if (response.status == 401) {
       setTimeout(function() {
         location.reload();
