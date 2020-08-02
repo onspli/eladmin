@@ -222,10 +222,6 @@ function rowFactory(id, values, actions){
     action_td.append(actionButtonFactory('delete', id));
   } else {
     action_td.append(actionButtonFactory('updateform', id));
-    if (crudUsesSoftDeletes)
-      action_td.append(actionButtonFactory('softdelete', id));
-    else
-      action_td.append(actionButtonFactory('delete', id));
   }
 
   tr.append(action_td);
@@ -272,6 +268,9 @@ function actionButtonFactory(name, id){
   if (action.confirm !== undefined)
     button.attr('data-confirm', action.confirm ? action.confirm : action.action);
   button.attr('class', 'btn m-1 btn-' + (action.style ? action.style : 'primary'));
+  if (crudRequest.trash) {
+    action.label = '';
+  }
   if (action.icon) {
     button.html(action.icon + ' <span class="d-none d-lg-inline">' + (action.label ? action.label : '') + '</span>');
   } else {

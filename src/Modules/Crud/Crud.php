@@ -70,7 +70,7 @@ use \Onspli\Eladmin\Exception;
 * ```
 *
 */
-class Crud extends Module {
+abstract class Crud extends Module {
 
 /**
 * Constant. Infinite number of results requested.
@@ -140,64 +140,48 @@ public function implementsFilters() : bool {
 /**
 * IMPLEMENT. Name of primary key column. Default is 'id'.
 */
-public function primary() : string {
-  return 'id';
-}
+abstract public function primary() : string;
 
 /**
 * IMPLEMENT. Create item.
 * @param $values associative array in form ['columnName' => 'value', ...]
 */
-protected function create(array $values) : void {
-
-}
+abstract protected function create(array $values) : void;
 
 /**
 * IMPLEMENT. Update item.
 * @param $values associative array in form ['columnName' => 'value', ...]
 * @param $id id of item to be updated
 */
-protected function update(array $values, $id) : void {
-
-}
+abstract protected function update(array $values, $id) : void;
 
 /**
 * IMPLEMENT. Read one row, or get default one ($id = null)
 * Returns row as an associative array ['columnName' => 'value']
 */
-protected function get($id) : array {
-  return [$this->primary() => null];
-}
+abstract protected function get($id) : array;
 
 /**
 * IMPLEMENT. Hard delete row.
 */
-protected function delete($id) : void {
-
-}
+abstract protected function delete($id) : void;
 
 /**
 * IMPLEMENT. Soft delete row.
 */
-protected function softDelete($id) : void {
-
-}
+abstract protected function softDelete($id) : void;
 
 /**
 * IMPLEMENT. Restore soft deleted row.
 */
-protected function restore($id) : void {
-
-}
+abstract protected function restore($id) : void;
 
 /**
 * IMPLEMENT. Fetch an array of rows.
 * Row is an associative array ['columnName' => 'value']
 * $totalResults needs to be set to number of results without paging applied
 */
-protected function read(array $request, &$totalResults) : array {
-  return [];
-}
+abstract protected function read(array $request, &$totalResults) : array;
 
 /**
 * IMPLEMENT. Default columns chainset. Override to configure columns.
@@ -216,11 +200,14 @@ protected function crudActions() {
   $actions->create->icon('<i class="fas fa-plus-circle"></i>')->label(__('Add'))->hidden();
   $actions->updateForm->hidden()->label('')->style('primary')->icon('<i class="fas fa-edit"></i>')->nonbulk();
   $actions->createForm->hidden()->nonbulk();
-  $actions->delete->style('danger')->label('')->icon('<i class="fas fa-trash-alt"></i>')->title(__('Delete'))->confirm()->bulk()->hidden();
+  $actions->delete->style('danger')->label(__('Delete'))->icon('<i class="fas fa-trash-alt"></i>')->title()->confirm()->bulk()->done('modalClose();');
 
   if ($this->implementsSoftDeletes()) {
-    $actions->restore->style('success')->label('')->icon('<i class="fas fa-recycle"></i>')->title(__('Restore'))->bulk()->hidden();
-    $actions->softDelete->style('danger')->label('')->icon('<i class="fas fa-trash-alt"></i>')->bulk()->hidden();
+    $actions->restore->style('success')->label(__('Restore'))->icon('<i class="fas fa-recycle"></i>')->bulk()->hidden();
+    $actions->softDelete->style('danger')->label(__('Move to trash'))->icon('<i class="fas fa-trash-alt"></i>')->bulk()->done('modalClose();');
+    $actions->delete->hidden();
+  } else {
+    $actions->delete->listable()->editable();
   }
 
   if (!$this->auth('update') && $this->auth('read')) {
@@ -277,7 +264,7 @@ protected function views() : array {
 */
 protected function id($throwIfNull = true) {
   if (!isset($_GET['id']) && $throwIfNull)
-    throw new Exception\BadRequestException(__('Entry not identified.'));
+    throw new Exception\BadRequestException(__('Entry not found!'));
   return $_GET['id'] ?? null;
 }
 

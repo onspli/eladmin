@@ -18,7 +18,7 @@
     </a>
   </span>
 @else
-  <span class="float-right"><strong>{{ __('Authorization is disabled!!!') }}</strong></span>
+  <span class="float-right"><strong>{{ __('Authorization is disabled!') }}</strong></span>
 @endif
 </div>
 

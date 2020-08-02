@@ -102,9 +102,8 @@ protected function crudActions() {
   // disable default deletes and create new action
   unset($actions->delete);
   $actions->authorizedDelete->style('danger')->label(__('Delete'))
-      ->icon('<i class="fas fa-trash-alt"></i>')->title(__('Delete'))->confirm()->nonlistable()
-      ->done('modalClose();');
-
+                            ->icon('<i class="fas fa-trash-alt"></i>')->confirm()
+                            ->nonlistable()->done('modalClose();');
   return $actions;
 }
 

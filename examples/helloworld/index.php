@@ -12,7 +12,22 @@ class Tickets extends Eladmin\Modules\Eloquent\Crud {
   protected function crudColumns() {
     $columns = parent::crudColumns();
     $columns->updated_at->nonlistable();
+    $columns->status->select(['new' => 'New', 'confirmed' => 'Confirmed', 'cancelled' => 'Cancelled']);
     return $columns;
+  }
+
+  protected function crudActions() {
+    $actions = parent::crudActions();
+    $actions->cancel->label('Cancel')->bulk()->nonlistable();
+    return $actions;
+  }
+
+  public function actionCancel() {
+    if ($this->model()->status == 'cancelled')
+      throw new Eladmin\Exception\BadRequestException('Already cancelled.');
+    $this->model()->status = 'cancelled';
+    $this->model()->save();
+    $this->renderText('Cancelled.');
   }
 }
 

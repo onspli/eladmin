@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2020-08-02 22:06+0200\n"
-"PO-Revision-Date: 2020-08-02 22:12+0200\n"
+"POT-Creation-Date: 2020-08-02 23:24+0200\n"
+"PO-Revision-Date: 2020-08-02 23:24+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: cs_CZ\n"
@@ -24,12 +24,12 @@ msgstr "Účet"
 
 #: views/modules/core/accountForm.blade.php:22
 #: views/modules/crud/createForm.blade.php:18
-#: views/modules/crud/updateForm.blade.php:70
+#: views/modules/crud/updateForm.blade.php:55
 msgid "Cancel"
 msgstr "Zrušit"
 
 #: views/modules/core/accountForm.blade.php:23
-#: views/modules/crud/updateForm.blade.php:72
+#: views/modules/crud/updateForm.blade.php:57
 msgid "Save"
 msgstr "Uložit"
 
@@ -42,8 +42,8 @@ msgid "Log out"
 msgstr "Odhlásit"
 
 #: views/modules/core/content.blade.php:21
-msgid "Authorization is disabled!!!"
-msgstr "Autorizace je vypnutá!!!"
+msgid "Authorization is disabled!"
+msgstr "Autorizace je vypnutá!"
 
 #: views/modules/core/login.blade.php:42
 msgid "Log in"
@@ -58,7 +58,7 @@ msgid "Trash"
 msgstr "Koš"
 
 #: views/modules/crud/actions.blade.php:32
-#: views/modules/crud/updateForm.blade.php:46
+#: views/modules/crud/updateForm.blade.php:36
 msgid "Actions"
 msgstr "Akce"
 
@@ -85,21 +85,11 @@ msgstr "Označeno %s položek."
 msgid "Edit entry %s"
 msgstr "Upravit záznam %s"
 
-#: views/modules/crud/updateForm.blade.php:61
-#: src/Auth/EloquentUser/Module.php:104 src/Auth/EloquentUser/Module.php:105
-#: src/Modules/Crud/Crud.php:219
-msgid "Delete"
-msgstr "Smazat"
-
-#: views/modules/crud/updateForm.blade.php:63
-msgid "Move to trash"
-msgstr "Přesunot do koše"
-
 #: src/Auth/EloquentUser/Module.php:20
 msgid "Users"
 msgstr "Uživatelé"
 
-#: src/Auth/EloquentUser/Module.php:25 src/Auth/EloquentUser/Module.php:118
+#: src/Auth/EloquentUser/Module.php:25 src/Auth/EloquentUser/Module.php:117
 #: src/Auth/Password.php:35
 msgid "Login"
 msgstr "Login"
@@ -108,17 +98,17 @@ msgstr "Login"
 msgid "Password"
 msgstr "Heslo"
 
-#: src/Auth/EloquentUser/Module.php:76 src/Auth/EloquentUser/Module.php:128
+#: src/Auth/EloquentUser/Module.php:76 src/Auth/EloquentUser/Module.php:127
 #: src/Auth/Password.php:85
 msgid "Current password is not correct!"
 msgstr "Současné heslo není správně!"
 
-#: src/Auth/EloquentUser/Module.php:78 src/Auth/EloquentUser/Module.php:144
+#: src/Auth/EloquentUser/Module.php:78 src/Auth/EloquentUser/Module.php:143
 #: src/Auth/Password.php:87
 msgid "New password must not be empty!"
 msgstr "Nové heslo nesmí být prázdné!"
 
-#: src/Auth/EloquentUser/Module.php:80 src/Auth/EloquentUser/Module.php:149
+#: src/Auth/EloquentUser/Module.php:80 src/Auth/EloquentUser/Module.php:148
 #: src/Auth/Password.php:89
 msgid "Passwords do not match!"
 msgstr "Hesla se neshodují!"
@@ -131,41 +121,45 @@ msgstr "Heslo změněno."
 msgid "Current password"
 msgstr "Současné heslo"
 
-#: src/Auth/EloquentUser/Module.php:92 src/Auth/EloquentUser/Module.php:120
+#: src/Auth/EloquentUser/Module.php:92 src/Auth/EloquentUser/Module.php:119
 msgid "You have to authorize the change with your current password."
 msgstr "Změna musí být autorizována tvým současným heslem."
 
-#: src/Auth/EloquentUser/Module.php:93 src/Auth/EloquentUser/Module.php:113
+#: src/Auth/EloquentUser/Module.php:93 src/Auth/EloquentUser/Module.php:112
 #: src/Auth/Password.php:69
 msgid "New password"
 msgstr "Nové heslo"
 
-#: src/Auth/EloquentUser/Module.php:94 src/Auth/EloquentUser/Module.php:114
+#: src/Auth/EloquentUser/Module.php:94 src/Auth/EloquentUser/Module.php:113
 #: src/Auth/Password.php:70
 msgid "Confirm new password"
 msgstr "Potvrď nové heslo"
 
-#: src/Auth/EloquentUser/Module.php:116
+#: src/Auth/EloquentUser/Module.php:104 src/Modules/Crud/Crud.php:203
+msgid "Delete"
+msgstr "Smazat"
+
+#: src/Auth/EloquentUser/Module.php:115
 msgid "Updated"
 msgstr "Upraveno"
 
-#: src/Auth/EloquentUser/Module.php:117
+#: src/Auth/EloquentUser/Module.php:116
 msgid "Created"
 msgstr "Vytvořeno"
 
-#: src/Auth/EloquentUser/Module.php:119
+#: src/Auth/EloquentUser/Module.php:118
 msgid "Role"
 msgstr "Role"
 
-#: src/Auth/EloquentUser/Module.php:134
+#: src/Auth/EloquentUser/Module.php:133
 msgid "Login must not be empty!"
 msgstr "Login nesmí být prázdný!"
 
-#: src/Auth/EloquentUser/Module.php:138
+#: src/Auth/EloquentUser/Module.php:137
 msgid "Login already exists!"
 msgstr "Login už existuje!"
 
-#: src/Auth/EloquentUser/Module.php:163 src/Auth/EloquentUser/Module.php:171
+#: src/Auth/EloquentUser/Module.php:162 src/Auth/EloquentUser/Module.php:170
 msgid "You cannot delete yourself!"
 msgstr "Nemůžeš smazat sám sebe!"
 
@@ -214,35 +208,42 @@ msgstr "Opravdu?"
 msgid "Date or time format is not valid."
 msgstr "Nesprávný formát data a času."
 
-#: src/Modules/Crud/Crud.php:216
+#: src/Modules/Crud/Crud.php:200
 msgid "Add"
 msgstr "Přidat"
 
-#: src/Modules/Crud/Crud.php:222
+#: src/Modules/Crud/Crud.php:206
 msgid "Restore"
 msgstr "Obnovit"
 
-#: src/Modules/Crud/Crud.php:280
-msgid "Entry not identified."
-msgstr "Záznam nenalezen."
+#: src/Modules/Crud/Crud.php:207
+msgid "Move to trash"
+msgstr "Přesunot do koše"
 
-#: src/Modules/Crud/Crud.php:433
+#: src/Modules/Crud/Crud.php:267 src/Modules/Eloquent/Crud.php:95
+#: src/Modules/Eloquent/Crud.php:108 src/Modules/Eloquent/Crud.php:124
+#: src/Modules/Eloquent/Crud.php:130 src/Modules/Eloquent/Crud.php:179
+#: src/Modules/Eloquent/Crud.php:191
+msgid "Entry not found!"
+msgstr "Záznam nenalezen!"
+
+#: src/Modules/Crud/Crud.php:420
 msgid "Entry modified."
 msgstr "Záznam byl změněn."
 
-#: src/Modules/Crud/Crud.php:442
+#: src/Modules/Crud/Crud.php:429
 msgid "Entry added."
 msgstr "Záznam byl přidán."
 
-#: src/Modules/Crud/Crud.php:450
+#: src/Modules/Crud/Crud.php:437
 msgid "Entry deleted."
 msgstr "Záznam byl vymazán."
 
-#: src/Modules/Crud/Crud.php:458
+#: src/Modules/Crud/Crud.php:445
 msgid "Entry moved to trash."
 msgstr "Záznam přesunut do koše."
 
-#: src/Modules/Crud/Crud.php:466
+#: src/Modules/Crud/Crud.php:453
 msgid "Entry restored."
 msgstr "Záznam byl obnoven."
 
@@ -251,15 +252,12 @@ msgstr "Záznam byl obnoven."
 msgid "You have to set $model property to %s module!"
 msgstr "Je třeba nastavit vlastnost $model modulu %s!"
 
-#: src/Modules/Eloquent/Crud.php:95 src/Modules/Eloquent/Crud.php:108
-#: src/Modules/Eloquent/Crud.php:124 src/Modules/Eloquent/Crud.php:130
-#: src/Modules/Eloquent/Crud.php:179 src/Modules/Eloquent/Crud.php:191
-msgid "Entry not found!"
-msgstr "Záznam nenalezen!"
-
 #: src/Modules/Eloquent/Crud.php:181 src/Modules/Eloquent/Crud.php:188
 msgid "This CRUD doesn't support soft deletes!"
 msgstr "CRUD nepodporuje přesouvání do koše!"
+
+#~ msgid "Entry not identified."
+#~ msgstr "Záznam nenalezen."
 
 #~ msgid "Loading data"
 #~ msgstr "Načítám data"
