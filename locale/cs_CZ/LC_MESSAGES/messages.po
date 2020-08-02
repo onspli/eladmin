@@ -1,15 +1,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2019-07-30 06:53+0200\n"
-"PO-Revision-Date: 2019-07-30 06:53+0200\n"
+"POT-Creation-Date: 2020-08-02 22:06+0200\n"
+"PO-Revision-Date: 2020-08-02 22:12+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: cs_CZ\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.2.3\n"
+"X-Generator: Poedit 2.2.1\n"
 "X-Poedit-Basepath: ../../..\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
 "X-Poedit-KeywordsList: __\n"
@@ -17,174 +17,264 @@ msgstr ""
 "X-Poedit-SearchPath-0: views\n"
 "X-Poedit-SearchPath-1: src\n"
 
-#: views/accountForm.blade.php:4 views/layout.blade.php:47
+#: views/modules/core/accountForm.blade.php:4
+#: views/modules/core/content.blade.php:11
 msgid "Account"
 msgstr "Účet"
 
-#: views/accountForm.blade.php:19 views/modules/eloquent/postForm.blade.php:22
-#: views/modules/eloquent/putForm.blade.php:44
+#: views/modules/core/accountForm.blade.php:22
+#: views/modules/crud/createForm.blade.php:18
+#: views/modules/crud/updateForm.blade.php:70
 msgid "Cancel"
 msgstr "Zrušit"
 
-#: views/accountForm.blade.php:20 views/modules/eloquent/putForm.blade.php:46
+#: views/modules/core/accountForm.blade.php:23
+#: views/modules/crud/updateForm.blade.php:72
 msgid "Save"
 msgstr "Uložit"
 
-#: views/layout.blade.php:45
+#: views/modules/core/content.blade.php:6
 msgid "Logged in as"
 msgstr "Přihlášen jako"
 
-#: views/layout.blade.php:50
+#: views/modules/core/content.blade.php:17
 msgid "Log out"
 msgstr "Odhlásit"
 
-#: views/layout.blade.php:53
+#: views/modules/core/content.blade.php:21
 msgid "Authorization is disabled!!!"
 msgstr "Autorizace je vypnutá!!!"
 
-#: views/login.blade.php:50
+#: views/modules/core/login.blade.php:42
 msgid "Log in"
 msgstr "Přihlásit"
 
-#: views/modules/eloquent/postForm.blade.php:4
+#: views/modules/crud/actions.blade.php:11
+msgid "Filters"
+msgstr "Filtry"
+
+#: views/modules/crud/actions.blade.php:17
+msgid "Trash"
+msgstr "Koš"
+
+#: views/modules/crud/actions.blade.php:32
+#: views/modules/crud/updateForm.blade.php:46
+msgid "Actions"
+msgstr "Akce"
+
+#: views/modules/crud/createForm.blade.php:4
 msgid "Create new entry"
 msgstr "Vložit nový záznam"
 
-#: views/modules/eloquent/postForm.blade.php:23
+#: views/modules/crud/createForm.blade.php:19
 msgid "Create"
 msgstr "Vytvořit"
 
-#: views/modules/eloquent/putForm.blade.php:4
+#: views/modules/crud/table.blade.php:23
+#, python-format
+msgid "Showing %s of %s results."
+msgstr "Zobrazeno %s z %s výsledků."
+
+#: views/modules/crud/table.blade.php:24
+#, python-format
+msgid "%s items selected."
+msgstr "Označeno %s položek."
+
+#: views/modules/crud/updateForm.blade.php:4
 #, python-format
 msgid "Edit entry %s"
 msgstr "Upravit záznam %s"
 
-#: views/modules/eloquent/putForm.blade.php:42
+#: views/modules/crud/updateForm.blade.php:61
+#: src/Auth/EloquentUser/Module.php:104 src/Auth/EloquentUser/Module.php:105
+#: src/Modules/Crud/Crud.php:219
 msgid "Delete"
 msgstr "Smazat"
 
-#: views/modules/eloquent/render.blade.php:7
-msgid "Loading data"
-msgstr "Načítám data"
+#: views/modules/crud/updateForm.blade.php:63
+msgid "Move to trash"
+msgstr "Přesunot do koše"
 
-#: views/modules/eloquent/render.blade.php:8
-msgid "Nothing found!"
-msgstr "Nic nenalezeno!"
-
-#: views/modules/eloquent/render.blade.php:9
-msgid "Search"
-msgstr "Vyhledat"
-
-#: views/modules/eloquent/render.blade.php:70
-msgid "Add"
-msgstr "Přidat"
-
-#: views/modules/eloquent/render.blade.php:74
-msgid "Filters"
-msgstr "Filtry"
-
-#: views/modules/eloquent/render.blade.php:78
-msgid "Trash"
-msgstr "Koš"
-
-#: src/Eladmin.php:170
-msgid "CSRF token not valid! Try reloading page."
-msgstr "Neplatný CSRF token! Zkus znovu načíst stránku."
-
-#: src/Eladmin.php:230
-msgid "Wrong credentials!"
-msgstr "Chybné přihlašovací údaje!"
-
-#: src/Exception/BadRequestException.php:7
-msgid "Invalid arguments!"
-msgstr "Neplatné argumenty!"
-
-#: src/Exception/Exception.php:12
-msgid "Something went wrong!"
-msgstr "Něco se pokazilo!"
-
-#: src/Exception/UnauthorizedException.php:7
-msgid "Unauthorized access!"
-msgstr "Neautorizovaný přístup!"
-
-#: src/Module/Eloquent/Crud.php:108 src/Module/Eloquent/Crud.php:194
-msgid "Entry not found!"
-msgstr "Záznam nenalezen!"
-
-#: src/Module/Eloquent/Crud.php:208
-msgid "Entry modified."
-msgstr "Záznam byl změněn."
-
-#: src/Module/Eloquent/Crud.php:227
-msgid "Entry added."
-msgstr "Záznam byl přidán."
-
-#: src/Module/Eloquent/Crud.php:239
-msgid "Entry deleted. It can be restored from Trash later."
-msgstr "Záznam byl vymazán. Lze ho později obnovit z Koše."
-
-#: src/Module/Eloquent/Crud.php:241
-msgid "Entry deleted."
-msgstr "Záznam byl vymazán."
-
-#: src/Module/Eloquent/Crud.php:249
-msgid "Deleted forever!"
-msgstr "Smazáno navždy!"
-
-#: src/Module/Eloquent/Crud.php:257
-msgid "Entry restored."
-msgstr "Záznam byl obnoven."
-
-#: src/User.php:25
+#: src/Auth/EloquentUser/Module.php:20
 msgid "Users"
 msgstr "Uživatelé"
 
-#: src/User.php:57
+#: src/Auth/EloquentUser/Module.php:25 src/Auth/EloquentUser/Module.php:118
+#: src/Auth/Password.php:35
 msgid "Login"
 msgstr "Login"
 
-#: src/User.php:58
+#: src/Auth/EloquentUser/Module.php:26 src/Auth/Password.php:36
 msgid "Password"
 msgstr "Heslo"
 
-#: src/User.php:64 src/User.php:129
-msgid "New password"
-msgstr "Nové heslo"
-
-#: src/User.php:71
-msgid "Login must not be empty!"
-msgstr "Login nesmí být prázdný!"
-
-#: src/User.php:76
-msgid "Login already exists!"
-msgstr "Login už existuje!"
-
-#: src/User.php:80 src/User.php:154
-msgid "New password must not be empty!"
-msgstr "Nové heslo nesmí být prázdné!"
-
-#: src/User.php:128
-msgid "Current password"
-msgstr "Současné heslo"
-
-#: src/User.php:130
-msgid "Confirm new password"
-msgstr "Potvrď nové heslo"
-
-#: src/User.php:137
-msgid "You cannot delete yourself!"
-msgstr "Nemůžeš smazat sám sebe!"
-
-#: src/User.php:152
+#: src/Auth/EloquentUser/Module.php:76 src/Auth/EloquentUser/Module.php:128
+#: src/Auth/Password.php:85
 msgid "Current password is not correct!"
 msgstr "Současné heslo není správně!"
 
-#: src/User.php:156
+#: src/Auth/EloquentUser/Module.php:78 src/Auth/EloquentUser/Module.php:144
+#: src/Auth/Password.php:87
+msgid "New password must not be empty!"
+msgstr "Nové heslo nesmí být prázdné!"
+
+#: src/Auth/EloquentUser/Module.php:80 src/Auth/EloquentUser/Module.php:149
+#: src/Auth/Password.php:89
 msgid "Passwords do not match!"
 msgstr "Hesla se neshodují!"
 
-#~ msgid "Restore"
-#~ msgstr "Obnovit"
+#: src/Auth/EloquentUser/Module.php:83 src/Auth/Password.php:93
+msgid "Password changed."
+msgstr "Heslo změněno."
+
+#: src/Auth/EloquentUser/Module.php:92 src/Auth/Password.php:68
+msgid "Current password"
+msgstr "Současné heslo"
+
+#: src/Auth/EloquentUser/Module.php:92 src/Auth/EloquentUser/Module.php:120
+msgid "You have to authorize the change with your current password."
+msgstr "Změna musí být autorizována tvým současným heslem."
+
+#: src/Auth/EloquentUser/Module.php:93 src/Auth/EloquentUser/Module.php:113
+#: src/Auth/Password.php:69
+msgid "New password"
+msgstr "Nové heslo"
+
+#: src/Auth/EloquentUser/Module.php:94 src/Auth/EloquentUser/Module.php:114
+#: src/Auth/Password.php:70
+msgid "Confirm new password"
+msgstr "Potvrď nové heslo"
+
+#: src/Auth/EloquentUser/Module.php:116
+msgid "Updated"
+msgstr "Upraveno"
+
+#: src/Auth/EloquentUser/Module.php:117
+msgid "Created"
+msgstr "Vytvořeno"
+
+#: src/Auth/EloquentUser/Module.php:119
+msgid "Role"
+msgstr "Role"
+
+#: src/Auth/EloquentUser/Module.php:134
+msgid "Login must not be empty!"
+msgstr "Login nesmí být prázdný!"
+
+#: src/Auth/EloquentUser/Module.php:138
+msgid "Login already exists!"
+msgstr "Login už existuje!"
+
+#: src/Auth/EloquentUser/Module.php:163 src/Auth/EloquentUser/Module.php:171
+msgid "You cannot delete yourself!"
+msgstr "Nemůžeš smazat sám sebe!"
+
+#: src/Auth/Password.php:76
+msgid "Cannot save new password."
+msgstr "Nedaří se uložit nové heslo."
+
+#: src/Core.php:167
+msgid "Wrong credentials!"
+msgstr "Chybné přihlašovací údaje!"
+
+#: src/Core.php:171 src/Core.php:197
+msgid "Not authorized to run Eladmin."
+msgstr "Nemáš oprávnění spustit Eladmin."
+
+#: src/Core.php:398
+msgid "You are not authorized to access any module!"
+msgstr "Nemáš oprávnění přistupovat k žádnému modulu!"
+
+#: src/Core.php:431
+msgid "CSRF token not valid! Try reloading page."
+msgstr "Neplatný CSRF token! Zkus znovu načíst stránku."
+
+#: src/Core.php:500
+#, php-format
+msgid "Authorization class %s does not implement IAuth interface."
+msgstr "Třída pro autorizaci %s musí implementovat rozhraní IAuth."
+
+#: src/Exception/BadRequestException.php:8
+msgid "Invalid arguments!"
+msgstr "Neplatné argumenty!"
+
+#: src/Exception/Exception.php:8
+msgid "Something went wrong!"
+msgstr "Něco se pokazilo!"
+
+#: src/Exception/UnauthorizedException.php:8
+msgid "Unauthorized access!"
+msgstr "Neautorizovaný přístup!"
+
+#: src/Modules/Crud/Chainset/Action.php:48
+msgid "Are you sure?"
+msgstr "Opravdu?"
+
+#: src/Modules/Crud/Chainset/Column.php:280
+msgid "Date or time format is not valid."
+msgstr "Nesprávný formát data a času."
+
+#: src/Modules/Crud/Crud.php:216
+msgid "Add"
+msgstr "Přidat"
+
+#: src/Modules/Crud/Crud.php:222
+msgid "Restore"
+msgstr "Obnovit"
+
+#: src/Modules/Crud/Crud.php:280
+msgid "Entry not identified."
+msgstr "Záznam nenalezen."
+
+#: src/Modules/Crud/Crud.php:433
+msgid "Entry modified."
+msgstr "Záznam byl změněn."
+
+#: src/Modules/Crud/Crud.php:442
+msgid "Entry added."
+msgstr "Záznam byl přidán."
+
+#: src/Modules/Crud/Crud.php:450
+msgid "Entry deleted."
+msgstr "Záznam byl vymazán."
+
+#: src/Modules/Crud/Crud.php:458
+msgid "Entry moved to trash."
+msgstr "Záznam přesunut do koše."
+
+#: src/Modules/Crud/Crud.php:466
+msgid "Entry restored."
+msgstr "Záznam byl obnoven."
+
+#: src/Modules/Eloquent/Crud.php:51 src/Modules/Eloquent/Crud.php:54
+#, php-format
+msgid "You have to set $model property to %s module!"
+msgstr "Je třeba nastavit vlastnost $model modulu %s!"
+
+#: src/Modules/Eloquent/Crud.php:95 src/Modules/Eloquent/Crud.php:108
+#: src/Modules/Eloquent/Crud.php:124 src/Modules/Eloquent/Crud.php:130
+#: src/Modules/Eloquent/Crud.php:179 src/Modules/Eloquent/Crud.php:191
+msgid "Entry not found!"
+msgstr "Záznam nenalezen!"
+
+#: src/Modules/Eloquent/Crud.php:181 src/Modules/Eloquent/Crud.php:188
+msgid "This CRUD doesn't support soft deletes!"
+msgstr "CRUD nepodporuje přesouvání do koše!"
+
+#~ msgid "Loading data"
+#~ msgstr "Načítám data"
+
+#~ msgid "Nothing found!"
+#~ msgstr "Nic nenalezeno!"
+
+#~ msgid "Search"
+#~ msgstr "Vyhledat"
+
+#~ msgid "Entry deleted. It can be restored from Trash later."
+#~ msgstr "Záznam byl vymazán. Lze ho později obnovit z Koše."
+
+#~ msgid "Deleted forever!"
+#~ msgstr "Smazáno navždy!"
 
 #~ msgid "Edit"
 #~ msgstr "Upravit"
