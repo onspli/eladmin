@@ -208,7 +208,7 @@ function rowFactory(id, values, actions){
   var action_td = $('<td class="text-right"></td>');
 
   if (actions.length) {
-    var action_dropdown = $('<span class="dropdown actions-dropdown"><button class="btn btn-secondary m-1 dropdown-toggle" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button></span>');
+    var action_dropdown = $('<span class="dropdown actions-dropdown"><button class="btn btn-secondary m-1 dropdown-toggle" type="button" data-boundary="viewport" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button></span>');
     var action_div = $('<div class="dropdown-menu"></div>');
 
     for (action of actions)
