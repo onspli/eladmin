@@ -13,7 +13,7 @@ protected $childClass = Column::class;
 public function getConfig() {
   $config = [];
   foreach($this as $column) {
-    if($column->nonlistable ?? false)
+    if (!$column->listable)
       continue;
     $configArr = [];
     if (!$column->raw) {
