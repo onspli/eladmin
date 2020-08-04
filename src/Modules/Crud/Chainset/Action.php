@@ -14,6 +14,7 @@ class Action extends Eladmin\Chainset\Child {
   public $done = '';
   public $bulk = null;
   public $form = false;
+  public $filter = null;
 
   final public function getName() {
     return $this->_getKey();
@@ -40,6 +41,11 @@ class Action extends Eladmin\Chainset\Child {
   public function hidden() {
     $this->nonlistable();
     $this->noneditable();
+    return $this;
+  }
+
+  public function filter($func) {
+    $this->filter = $func;
     return $this;
   }
 

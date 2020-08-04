@@ -24,8 +24,15 @@
 <?php
 $elaActions = [];
 foreach ($module->getCrudActions() as $action) {
-  if(!$module->auth($action->getName())) continue;
-  if($action->noneditable) continue;
+  if (!$module->auth($action->getName()))
+    continue;
+  if ($action->noneditable)
+    continue;
+  if ($action->filter !== null) {
+    $show = ($action->filter)($row);
+    if (!$show)
+      continue;
+  }
   $elaActions[] = $action;
 }
 ?>

@@ -309,11 +309,16 @@ private function rowValuesArray($row) {
 private function rowActionsArray($row) {
   $crudActions = $this->getCrudActions();
   $actions = array();
-  foreach($crudActions as $action) {
-    if(!$this->auth($action->getName()))
+  foreach ($crudActions as $action) {
+    if (!$this->auth($action->getName()))
       continue;
-    if($action->nonlistable)
+    if ($action->nonlistable)
       continue;
+    if ($action->filter !== null) {
+      $show = ($action->filter)($row);
+      if (!$show)
+        continue;
+    }
     $actions[] = $action->getName();
   }
   return $actions;
@@ -340,7 +345,7 @@ private function validateAndModify(){
   foreach ($columns as $key => $column) {
     if ($column->setformat) {
       $value = $column->evalProperty('setformat', $_POST);
-      if (array_key_exists($key, $_POST)) {
+      if (isset($value) || array_key_exists($key, $_POST)) {
         $_POST[$key] = $value;
       }
     }

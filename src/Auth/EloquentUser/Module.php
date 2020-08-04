@@ -103,7 +103,8 @@ protected function crudActions() {
   unset($actions->delete);
   $actions->authorizedDelete->style('danger')->label(__('Delete'))
                             ->icon('<i class="fas fa-trash-alt"></i>')->confirm()
-                            ->nonlistable()->done('modalClose();');
+                            ->nonlistable()->done('modalClose();')
+                            ->filter(function($row) { return $row['id'] != $this->user()->id; });
   return $actions;
 }
 

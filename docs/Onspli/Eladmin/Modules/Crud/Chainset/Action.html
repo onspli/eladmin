@@ -93,7 +93,7 @@
             <h2>Properties</h2>
 
             <table class="table table-condensed">
-                                                                                                                                                                                                                                                                                                                                                                                              <tr>
+                                                                                                                                                                                                                                                                                                                                                                                                                  <tr>
     <td class="type" id="property_label">
                 public                        
     </td>
@@ -174,7 +174,16 @@
     <td></td>
 </tr>
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </table>
+                                              <tr>
+    <td class="type" id="property_filter">
+                public                        
+    </td>
+    <td>$filter</td>
+    <td class="last"></td>
+    <td></td>
+</tr>
+
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </table>
 
     
             <h2>Public Methods</h2>
@@ -368,6 +377,20 @@
     </div>
     <div class="col-md-8 type">
         <a href="#method_hidden">hidden</a>()
+        
+                    <p class="no-description">No description</p>
+            </div>
+    <div class="col-md-2"></div>
+</div>
+
+                                      <div class="row">
+    <div class="col-md-1 type">
+                            </div>
+    <div class="col-md-1 type">
+        
+    </div>
+    <div class="col-md-8 type">
+        <a href="#method_filter">filter</a>($func)
         
                     <p class="no-description">No description</p>
             </div>
@@ -584,19 +607,19 @@
     <div class="col-md-2"></div>
 </div>
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          </div>
 
 
         <h2>Protected Methods</h2>
 
             <div class="container-fluid underlined">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </div>
 
 
         <h2>Private Methods</h2>
 
             <div class="container-fluid underlined">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </div>
 
 
         <h2>Details</h2>
@@ -982,7 +1005,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getName">
-        <div class="location">at         line 18</div>
+        <div class="location">at         line 19</div>
         <code>final                    
     <strong>getName</strong>()
         </code>
@@ -1001,7 +1024,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getAction">
-        <div class="location">at         line 22</div>
+        <div class="location">at         line 23</div>
         <code>final                    
     <strong>getAction</strong>()
         </code>
@@ -1020,7 +1043,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_hidden">
-        <div class="location">at         line 40</div>
+        <div class="location">at         line 41</div>
         <code>                    
     <strong>hidden</strong>()
         </code>
@@ -1038,8 +1061,37 @@
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_filter">
+        <div class="location">at         line 47</div>
+        <code>                    
+    <strong>filter</strong>($func)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$func</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_confirm">
-        <div class="location">at         line 46</div>
+        <div class="location">at         line 52</div>
         <code>                    
     <strong>confirm</strong>($str = &#039;&#039;)
         </code>
@@ -1068,7 +1120,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_done">
-        <div class="location">at         line 53</div>
+        <div class="location">at         line 59</div>
         <code>                    
     <strong>done</strong>($js = &#039;&#039;)
         </code>
@@ -1097,7 +1149,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_bulk">
-        <div class="location">at         line 58</div>
+        <div class="location">at         line 64</div>
         <code>                    
     <strong>bulk</strong>()
         </code>
@@ -1116,7 +1168,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_nonbulk">
-        <div class="location">at         line 63</div>
+        <div class="location">at         line 69</div>
         <code>                    
     <strong>nonbulk</strong>()
         </code>
@@ -1135,7 +1187,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_form">
-        <div class="location">at         line 68</div>
+        <div class="location">at         line 74</div>
         <code>                    
     <strong>form</strong>()
         </code>
@@ -1154,7 +1206,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_nonform">
-        <div class="location">at         line 74</div>
+        <div class="location">at         line 80</div>
         <code>                    
     <strong>nonform</strong>()
         </code>
@@ -1173,7 +1225,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_nonlistable">
-        <div class="location">at         line 79</div>
+        <div class="location">at         line 85</div>
         <code>                    
     <strong>nonlistable</strong>()
         </code>
@@ -1192,7 +1244,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_listable">
-        <div class="location">at         line 84</div>
+        <div class="location">at         line 90</div>
         <code>                    
     <strong>listable</strong>()
         </code>
@@ -1211,7 +1263,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_noneditable">
-        <div class="location">at         line 89</div>
+        <div class="location">at         line 95</div>
         <code>                    
     <strong>noneditable</strong>()
         </code>
@@ -1230,7 +1282,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_editable">
-        <div class="location">at         line 94</div>
+        <div class="location">at         line 100</div>
         <code>                    
     <strong>editable</strong>()
         </code>
@@ -1249,7 +1301,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_danger">
-        <div class="location">at         line 99</div>
+        <div class="location">at         line 105</div>
         <code>                    
     <strong>danger</strong>()
         </code>
@@ -1268,7 +1320,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_primary">
-        <div class="location">at         line 104</div>
+        <div class="location">at         line 110</div>
         <code>                    
     <strong>primary</strong>()
         </code>
@@ -1287,7 +1339,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_secondary">
-        <div class="location">at         line 109</div>
+        <div class="location">at         line 115</div>
         <code>                    
     <strong>secondary</strong>()
         </code>
@@ -1306,7 +1358,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_success">
-        <div class="location">at         line 114</div>
+        <div class="location">at         line 120</div>
         <code>                    
     <strong>success</strong>()
         </code>
@@ -1325,7 +1377,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_warning">
-        <div class="location">at         line 119</div>
+        <div class="location">at         line 125</div>
         <code>                    
     <strong>warning</strong>()
         </code>
