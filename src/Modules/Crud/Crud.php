@@ -227,7 +227,7 @@ protected function crudFilters() {
 /**
 * Get columns chainset.
 */
-final public function getCrudColumns() {
+final public function getCrudColumns() : Chainset\Columns {
   if ($this->crudColumns === null)
     $this->crudColumns = $this->crudColumns();
   return $this->crudColumns;
@@ -236,7 +236,7 @@ final public function getCrudColumns() {
 /**
 * Get actions chainset.
 */
-final public function getCrudActions() {
+final public function getCrudActions() : Chainset\Actions {
   if ($this->crudActions === null)
     $this->crudActions = $this->crudActions();
   return $this->crudActions;
@@ -245,7 +245,7 @@ final public function getCrudActions() {
 /**
 * Get filters chainset.
 */
-final public function getCrudFilters() {
+final public function getCrudFilters() : Chainset\Filters {
   if ($this->crudFilters === null)
     $this->crudFilters = $this->crudFilters();
   return $this->crudFilters;

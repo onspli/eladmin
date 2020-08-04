@@ -188,7 +188,7 @@
                 public                        
     </td>
     <td>$listformat</td>
-    <td class="last"></td>
+    <td class="last">fromat for listing</td>
     <td></td>
 </tr>
 
@@ -197,7 +197,7 @@
                 public                        
     </td>
     <td>$getformat</td>
-    <td class="last"></td>
+    <td class="last">format for editing</td>
     <td></td>
 </tr>
 
@@ -206,7 +206,7 @@
                 public                        
     </td>
     <td>$setformat</td>
-    <td class="last"></td>
+    <td class="last">format for updating</td>
     <td></td>
 </tr>
 
@@ -215,7 +215,7 @@
                 public                        
     </td>
     <td>$validate</td>
-    <td class="last"></td>
+    <td class="last">validation callback</td>
     <td></td>
 </tr>
 
@@ -394,13 +394,12 @@
     <div class="col-md-1 type">
         final                    </div>
     <div class="col-md-1 type">
-        
+        string|null
     </div>
     <div class="col-md-8 type">
-        <a href="#method_getValue">getValue</a>($row, $forEditing = false)
+        <a href="#method_getValue">getValue</a>(array $row, $forEditing = false)
         
-                    <p class="no-description">No description</p>
-            </div>
+                    <p>Extract value of the column from $row array</p>    </div>
     <div class="col-md-2"></div>
 </div>
 
@@ -411,10 +410,9 @@
         
     </div>
     <div class="col-md-8 type">
-        <a href="#method_evalProperty">evalProperty</a>($prop, $row)
+        <a href="#method_evalProperty">evalProperty</a>(string $prop, array $row)
         
-                    <p class="no-description">No description</p>
-            </div>
+                    <p>Eval property</p>    </div>
     <div class="col-md-2"></div>
 </div>
 
@@ -662,8 +660,7 @@ Add nonlistable flag</p>    </div>
     <div class="col-md-8 type">
         <a href="#method_format">format</a>($func)
         
-                    <p class="no-description">No description</p>
-            </div>
+                    <p>Format for listing</p>    </div>
     <div class="col-md-2"></div>
 </div>
 
@@ -676,8 +673,7 @@ Add nonlistable flag</p>    </div>
     <div class="col-md-8 type">
         <a href="#method_get">get</a>($func)
         
-                    <p class="no-description">No description</p>
-            </div>
+                    <p>Format for editing</p>    </div>
     <div class="col-md-2"></div>
 </div>
 
@@ -690,22 +686,7 @@ Add nonlistable flag</p>    </div>
     <div class="col-md-8 type">
         <a href="#method_set">set</a>($func)
         
-                    <p class="no-description">No description</p>
-            </div>
-    <div class="col-md-2"></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-                            </div>
-    <div class="col-md-1 type">
-        
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_datetime">datetime</a>($format)
-        
-                    <p class="no-description">No description</p>
-            </div>
+                    <p>Format user input for updating the entry</p>    </div>
     <div class="col-md-2"></div>
 </div>
 
@@ -718,24 +699,23 @@ Add nonlistable flag</p>    </div>
     <div class="col-md-8 type">
         <a href="#method_validate">validate</a>($func)
         
-                    <p class="no-description">No description</p>
-            </div>
+                    <p>Validate user input</p>    </div>
     <div class="col-md-2"></div>
 </div>
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      </div>
 
 
         <h2>Protected Methods</h2>
 
             <div class="container-fluid underlined">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </div>
 
 
         <h2>Private Methods</h2>
 
             <div class="container-fluid underlined">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </div>
 
 
         <h2>Details</h2>
@@ -1121,7 +1101,7 @@ Add nonlistable flag</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_getName">
-        <div class="location">at         line 66</div>
+        <div class="location">at         line 81</div>
         <code>final                    string
     <strong>getName</strong>()
         </code>
@@ -1151,21 +1131,23 @@ Add nonlistable flag</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_getValue">
-        <div class="location">at         line 70</div>
-        <code>final                    
-    <strong>getValue</strong>($row, $forEditing = false)
+        <div class="location">at         line 88</div>
+        <code>final                    string|null
+    <strong>getValue</strong>(array $row, $forEditing = false)
         </code>
     </h3>
     <div class="details">
             
     
 
+                    <div class="method-description">
+                                    <p>Extract value of the column from $row array</p>                                                </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
                     <tr>
-                <td></td>
+                <td>array</td>
                 <td>$row</td>
                 <td></td>
             </tr>
@@ -1177,6 +1159,15 @@ Add nonlistable flag</p>    </div>
             </table>
 
             
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string|null</td>
+            <td></td>
+        </tr>
+    </table>
+
             
             
                     </div>
@@ -1185,26 +1176,28 @@ Add nonlistable flag</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_evalProperty">
-        <div class="location">at         line 86</div>
+        <div class="location">at         line 104</div>
         <code>final                    
-    <strong>evalProperty</strong>($prop, $row)
+    <strong>evalProperty</strong>(string $prop, array $row)
         </code>
     </h3>
     <div class="details">
             
     
 
+                    <div class="method-description">
+                                    <p>Eval property</p>                                                </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
                     <tr>
-                <td></td>
+                <td>string</td>
                 <td>$prop</td>
                 <td></td>
             </tr>
                     <tr>
-                <td></td>
+                <td>array</td>
                 <td>$row</td>
                 <td></td>
             </tr>
@@ -1219,7 +1212,7 @@ Add nonlistable flag</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_raw">
-        <div class="location">at         line 102</div>
+        <div class="location">at         line 120</div>
         <code>                    
     <strong>raw</strong>()
         </code>
@@ -1240,7 +1233,7 @@ Add nonlistable flag</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_escaped">
-        <div class="location">at         line 110</div>
+        <div class="location">at         line 128</div>
         <code>                    
     <strong>escaped</strong>()
         </code>
@@ -1261,7 +1254,7 @@ Add nonlistable flag</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_nonlistable">
-        <div class="location">at         line 119</div>
+        <div class="location">at         line 137</div>
         <code>                    
     <strong>nonlistable</strong>()
         </code>
@@ -1282,7 +1275,7 @@ Add nonlistable flag</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_listable">
-        <div class="location">at         line 129</div>
+        <div class="location">at         line 147</div>
         <code>                    
     <strong>listable</strong>()
         </code>
@@ -1303,7 +1296,7 @@ Add nonlistable flag</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_nonsearchable">
-        <div class="location">at         line 137</div>
+        <div class="location">at         line 155</div>
         <code>                    
     <strong>nonsearchable</strong>()
         </code>
@@ -1324,7 +1317,7 @@ Add nonlistable flag</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_searchable">
-        <div class="location">at         line 145</div>
+        <div class="location">at         line 163</div>
         <code>                    
     <strong>searchable</strong>()
         </code>
@@ -1345,7 +1338,7 @@ Add nonlistable flag</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_nonsortable">
-        <div class="location">at         line 153</div>
+        <div class="location">at         line 171</div>
         <code>                    
     <strong>nonsortable</strong>()
         </code>
@@ -1366,7 +1359,7 @@ Add nonlistable flag</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_sortable">
-        <div class="location">at         line 161</div>
+        <div class="location">at         line 179</div>
         <code>                    
     <strong>sortable</strong>()
         </code>
@@ -1387,7 +1380,7 @@ Add nonlistable flag</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_noneditable">
-        <div class="location">at         line 170</div>
+        <div class="location">at         line 188</div>
         <code>                    
     <strong>noneditable</strong>()
         </code>
@@ -1408,7 +1401,7 @@ Add nonlistable flag</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_editable">
-        <div class="location">at         line 179</div>
+        <div class="location">at         line 197</div>
         <code>                    
     <strong>editable</strong>()
         </code>
@@ -1429,7 +1422,7 @@ Add nonlistable flag</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_disabled">
-        <div class="location">at         line 187</div>
+        <div class="location">at         line 205</div>
         <code>                    
     <strong>disabled</strong>()
         </code>
@@ -1450,7 +1443,7 @@ Add nonlistable flag</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_enabled">
-        <div class="location">at         line 195</div>
+        <div class="location">at         line 213</div>
         <code>                    
     <strong>enabled</strong>()
         </code>
@@ -1471,7 +1464,7 @@ Add nonlistable flag</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_limit">
-        <div class="location">at         line 204</div>
+        <div class="location">at         line 222</div>
         <code>                    
     <strong>limit</strong>(<abbr title="Onspli\Eladmin\Modules\Crud\Chainset\integer">integer</abbr> $len)
         </code>
@@ -1502,7 +1495,7 @@ Add nonlistable flag</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_input">
-        <div class="location">at         line 212</div>
+        <div class="location">at         line 230</div>
         <code>                    
     <strong>input</strong>($type)
         </code>
@@ -1533,7 +1526,7 @@ Add nonlistable flag</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_password">
-        <div class="location">at         line 221</div>
+        <div class="location">at         line 239</div>
         <code>                    
     <strong>password</strong>()
         </code>
@@ -1555,7 +1548,7 @@ Add nonlistable flag</p>                                                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_textarea">
-        <div class="location">at         line 230</div>
+        <div class="location">at         line 248</div>
         <code>                    
     <strong>textarea</strong>()
         </code>
@@ -1576,7 +1569,7 @@ Add nonlistable flag</p>                                                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_select">
-        <div class="location">at         line 238</div>
+        <div class="location">at         line 256</div>
         <code>                    
     <strong>select</strong>($options = [])
         </code>
@@ -1607,7 +1600,7 @@ Add nonlistable flag</p>                                                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_hidden">
-        <div class="location">at         line 247</div>
+        <div class="location">at         line 265</div>
         <code>                    
     <strong>hidden</strong>()
         </code>
@@ -1628,7 +1621,7 @@ Add nonlistable flag</p>                                                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_format">
-        <div class="location">at         line 254</div>
+        <div class="location">at         line 275</div>
         <code>                    
     <strong>format</strong>($func)
         </code>
@@ -1637,6 +1630,8 @@ Add nonlistable flag</p>                                                </div>
             
     
 
+                    <div class="method-description">
+                                    <p>Format for listing</p>                                                </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
@@ -1657,7 +1652,7 @@ Add nonlistable flag</p>                                                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_get">
-        <div class="location">at         line 259</div>
+        <div class="location">at         line 283</div>
         <code>                    
     <strong>get</strong>($func)
         </code>
@@ -1666,6 +1661,8 @@ Add nonlistable flag</p>                                                </div>
             
     
 
+                    <div class="method-description">
+                                    <p>Format for editing</p>                                                </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
@@ -1686,7 +1683,7 @@ Add nonlistable flag</p>                                                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_set">
-        <div class="location">at         line 264</div>
+        <div class="location">at         line 291</div>
         <code>                    
     <strong>set</strong>($func)
         </code>
@@ -1695,6 +1692,8 @@ Add nonlistable flag</p>                                                </div>
             
     
 
+                    <div class="method-description">
+                                    <p>Format user input for updating the entry</p>                                                </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
@@ -1714,37 +1713,8 @@ Add nonlistable flag</p>                                                </div>
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_datetime">
-        <div class="location">at         line 269</div>
-        <code>                    
-    <strong>datetime</strong>($format)
-        </code>
-    </h3>
-    <div class="details">
-            
-    
-
-                <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td></td>
-                <td>$format</td>
-                <td></td>
-            </tr>
-            </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
                     <h3 id="method_validate">
-        <div class="location">at         line 286</div>
+        <div class="location">at         line 299</div>
         <code>                    
     <strong>validate</strong>($func)
         </code>
@@ -1753,6 +1723,8 @@ Add nonlistable flag</p>                                                </div>
             
     
 
+                    <div class="method-description">
+                                    <p>Validate user input</p>                                                </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 

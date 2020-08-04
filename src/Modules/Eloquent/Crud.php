@@ -193,13 +193,6 @@ protected function restore($id) : void {
 }
 
 /**
-* Check if table for the model exists in the database;
-*/
-protected function tableExists() : bool {
-  return $this->model()->getConnection()->getSchemaBuilder()->hasTable($this->model()->getTable());
-}
-
-/**
 * Get an array of table columns.
 */
 protected function tableColumns() : array {

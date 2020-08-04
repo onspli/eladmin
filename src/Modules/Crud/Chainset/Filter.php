@@ -13,17 +13,7 @@ class Filter extends Eladmin\Chainset\Child {
 
   public function select($options){
     $this->input = 'select';
-    if(is_subclass_of($options, \Illuminate\Database\Eloquent\Model::class)){
-      $this->selectOptions = function() use($options){
-        $rows = $options::all();
-        $ret = [''=>''];
-        foreach($rows as $row) $ret[$row->getKey()] = $row->elaRepresentativeColumn?$row->{$row->elaRepresentativeColumn}:$row->getKey();
-        return $ret;
-      };
-
-    } else{
-      $this->selectOptions = $options;
-    }
+    $this->selectOptions = $options;
     return $this;
   }
 }

@@ -55,9 +55,24 @@ public $limit = 24;
 */
 public $input = 'text';
 
+/**
+* fromat for listing
+*/
 public $listformat = null;
+
+/**
+* format for editing
+*/
 public $getformat = null;
+
+/**
+* format for updating
+*/
 public $setformat = null;
+
+/**
+* validation callback
+*/
 public $validate = null;
 
 /**
@@ -67,23 +82,26 @@ final public function getName() : string {
   return $this->_getKey();
 }
 
-final public function getValue($row, $forEditing = false){
+/**
+* Extract value of the column from $row array
+*/
+final public function getValue(array $row, $forEditing = false) : ?string {
   $column = $this->getName();
-  $value = null;
+  $value = $row[$column] ?? null;
 
-  if ($this->getformat) {
-    $value = $this->evalProperty('getformat', $row);
-  } else {
-    $value = $row[$column] ?? null;
-  }
   if (!$forEditing || $this->disabled) {
     $value = $this->listformat ? $this->evalProperty('listformat', $row) : $value;
+  } else {
+    $value = $this->getformat ? $this->evalProperty('getformat', $row) : $value;
   }
 
   return $value;
 }
 
-final public function evalProperty($prop, $row) {
+/**
+* Eval property
+*/
+final public function evalProperty(string $prop, array $row) {
   if (!isset($this->$prop)) {
     return null;
   }
@@ -251,38 +269,33 @@ public function hidden() {
   return $this;
 }
 
+/**
+* Format for listing
+*/
 public function format($func) {
   $this->listformat = $func;
   return $this;
 }
 
+/**
+* Format for editing
+*/
 public function get($func) {
   $this->getformat = $func;
   return $this;
 }
 
+/**
+* Format user input for updating the entry
+*/
 public function set($func) {
   $this->setformat = $func;
   return $this;
 }
 
-public function datetime($format) {
-  $this->get(function($val, $row) use($format) {
-    $carbon = \Carbon\Carbon::parse($val);
-    if($carbon->year < 1) return '';
-    return $carbon->format($format);
-  });
-  $this->set(function($val) use($format) {
-    if (!$val) return 0;
-    try {
-      return \Carbon\Carbon::createFromFormat($format, $val);
-    } catch(\Exception $e) {
-      throw new Exception\BadRequestException(__('Date or time format is not valid.'));
-    }
-  });
-  return $this;
-}
-
+/**
+* Validate user input
+*/
 public function validate($func) {
   $this->validate = $func;
   return $this;
