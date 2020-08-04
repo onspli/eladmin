@@ -223,7 +223,7 @@ protected function crudActions() {
 
   if ($this->implementsSoftDeletes()) {
     $actions->restore->style('success')->label(__('Restore'))->icon('<i class="fas fa-recycle"></i>')->bulk()->hidden();
-    $actions->softDelete->style('danger')->label(__('Move to trash'))->icon('<i class="fas fa-trash-alt"></i>')->bulk()->done('modalClose();');
+    $actions->softDelete->style('danger')->label(__('Move to trash'))->icon('<i class="fas fa-trash-alt"></i>')->bulk()->done('modalClose();')->confirm();
     $actions->delete->hidden();
   } else {
     $actions->delete->listable()->editable();
