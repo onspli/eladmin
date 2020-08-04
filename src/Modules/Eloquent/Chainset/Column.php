@@ -12,7 +12,7 @@ public function datetime($format, $allowNull = false) {
       return null;
     return $carbon->format($format);
   });
-  $this->format(function($val, $row) use($format) {
+  $this->list(function($val, $row) use($format) {
     $carbon = \Carbon\Carbon::parse($val);
     if (!$carbon)
       return null;

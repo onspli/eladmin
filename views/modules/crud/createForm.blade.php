@@ -7,7 +7,7 @@
 @section('modal-body')
   <form id="modal-form" data-elaaction="create">
     @foreach($module->getCrudColumns() as $column)
-      <?php if ($column->noneditable) continue; ?>
+      <?php if (!$column->editable) continue; ?>
       @component('components.inputs.'.$column->input, ['column' => $column, 'row' => $row])
       @endcomponent
     @endforeach

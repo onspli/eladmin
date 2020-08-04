@@ -209,7 +209,7 @@ protected function crudColumns(){
   $tableColumns = $this->tableColumns();
   // add all columns from the table
   foreach ($tableColumns as $column)
-    $columns->$column;
+    $columns->$column->enabled()->sortable()->searchable();
   // disable editing for primary key
   $columns->{$this->primary()}->disabled();
   // hide and disable deleted_at column

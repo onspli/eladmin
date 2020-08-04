@@ -25,7 +25,7 @@ class Tickets extends Eladmin\Modules\Eloquent\Crud {
 
   protected function crudActions() {
     $actions = parent::crudActions();
-    $actions->cancel->label('Cancel')->bulk()->nonlistable();
+    $actions->cancel->label('Cancel')->bulk()->nonlistable()->filter(function($row) { return $row['status'] != 'cancelled'; });
     return $actions;
   }
 

@@ -23,27 +23,27 @@ public $raw = false;
 /**
 * Should we show the column in the table?
 */
-public $nonlistable = false;
+public $listable = true;
 
 /**
 * Should we show the column in the edit form?
 */
-public $noneditable = false;
+public $editable = true;
 
 /**
 * Can we edit the value in the form?
 */
-public $disabled = false;
+public $disabled = true;
 
 /**
 * Should we use this column for searching?
 */
-public $nonsearchable = false;
+public $searchable = false;
 
 /**
 * Can we sort the table by this column?
 */
-public $nonsortable = false;
+public $sortable = false;
 
 /**
 * Max length of value to be shown in the table.
@@ -132,12 +132,9 @@ public function escaped() {
 
 /**
 * Do not show the column in the table.
-* Also ad nonsearchable and nonsortable flag.
 */
 public function nonlistable() {
-  $this->nonlistable = true;
-  $this->nonsearchable();
-  $this->nonsortable();
+  $this->listable = false;
   return $this;
 }
 
@@ -145,7 +142,7 @@ public function nonlistable() {
 * Show the column in the table.
 */
 public function listable() {
-  $this->nonlistable = false;
+  $this->listable = true;
   return $this;
 }
 
@@ -153,7 +150,7 @@ public function listable() {
 * Do not use the column for searching.
 */
 public function nonsearchable() {
-  $this->nonsearchable = true;
+  $this->searchable = false;
   return $this;
 }
 
@@ -161,7 +158,7 @@ public function nonsearchable() {
 * Use the column for searching.
 */
 public function searchable() {
-  $this->nonsearchable = false;
+  $this->searchable = true;
   return $this;
 }
 
@@ -169,7 +166,7 @@ public function searchable() {
 * Do not sort by the column.
 */
 public function nonsortable() {
-  $this->nonsortable = true;
+  $this->sortable = false;
   return $this;
 }
 
@@ -177,17 +174,15 @@ public function nonsortable() {
 * Use the column for sorting.
 */
 public function sortable() {
-  $this->nonsortable = false;
+  $this->sortable = true;
   return $this;
 }
 
 /**
 * Hide the column in the edit form.
-* Also sets disabled flag.
 */
 public function noneditable() {
-  $this->noneditable = true;
-  $this->disabled();
+  $this->editable = false;
   return $this;
 }
 
@@ -195,7 +190,7 @@ public function noneditable() {
 * Show the column in the edit form.
 */
 public function editable() {
-  $this->noneditable = false;
+  $this->editable = true;
   return $this;
 }
 
@@ -272,7 +267,7 @@ public function hidden() {
 /**
 * Format for listing
 */
-public function format($func) {
+public function list($func) {
   $this->listformat = $func;
   return $this;
 }

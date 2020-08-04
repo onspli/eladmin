@@ -296,7 +296,7 @@ private function rowValuesArray($row) {
   $crudColumns = $this->getCrudColumns();
   $values = [];
   foreach($crudColumns as $column) {
-    if($column->nonlistable ?? false)
+    if (!$column->listable)
       continue;
     $values[] = $column->getValue($row);
   }
@@ -312,7 +312,7 @@ private function rowActionsArray($row) {
   foreach ($crudActions as $action) {
     if (!$this->auth($action->getName()))
       continue;
-    if ($action->nonlistable)
+    if (!$action->listable)
       continue;
     if ($action->filter !== null) {
       $show = ($action->filter)($row);
@@ -331,13 +331,13 @@ private function validateAndModify(){
   $columns = $this->getCrudColumns();
   // unset columns which we shouldn't recieve
   foreach ($_POST as $key => $value) {
-    if (!isset($columns->$key) || $columns->$key->disabled || $columns->$key->noneditable) {
+    if (!isset($columns->$key) || $columns->$key->disabled || !$columns->$key->editable) {
       unset($_POST[$key]);
     }
   }
   // validate values
   foreach ($columns as $key => $column) {
-    if ($columns->$key->disabled || $columns->$key->noneditable)
+    if ($columns->$key->disabled || !$columns->$key->editable)
       continue;
     $column->evalProperty('validate', $_POST);
   }

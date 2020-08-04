@@ -5,127 +5,223 @@ use \Onspli\Eladmin;
 
 class Action extends Eladmin\Chainset\Child {
 
-  public $label = null;
-  public $nonlistable = false;
-  public $noneditable = false;
-  public $style = 'secondary';
-  public $icon = '<i class="fas fa-play"></i>';
-  public $confirm = null;
-  public $done = '';
-  public $bulk = null;
-  public $form = false;
-  public $filter = null;
+/**
+* Action label.
+*/
+public $label = null;
 
-  final public function getName() {
-    return $this->_getKey();
+/**
+* Show action in crud table.
+*/
+public $listable = true;
+
+/**
+* Show action in edit form.
+*/
+public $editable = true;
+
+/**
+* Action style.
+*/
+public $style = 'secondary';
+
+/**
+* Action icon
+*/
+public $icon = '<i class="fas fa-play"></i>';
+
+/**
+* Confirmation question string.
+*/
+public $confirm = null;
+
+/**
+* JS code to be executed when action ends successfully.
+*/
+public $done = '';
+
+/**
+* Enable as bulk action.
+*/
+public $bulk = null;
+
+/**
+* Improper action - it generates form.
+*/
+public $form = false;
+
+/**
+* Callback to determinate if the action should be visible for a particular item.
+*/
+public $filter = null;
+
+/**
+* Get normalized name of action
+*/
+final public function getName() {
+  return $this->_getKey();
+}
+
+/**
+*
+*/
+final public function getAction() {
+  $action = [
+    'done' => $this->done,
+    'label' => $this->label ?? ucfirst($this->getName()),
+    'style' => $this->style,
+    'icon' => $this->icon,
+    'form' => $this->form
+  ];
+
+  if (isset($this->title)) {
+    $action['title'] = $this->title;
   }
-
-  final public function getAction() {
-    $action = [
-      'done' => $this->done,
-      'label' => $this->label ?? ucfirst($this->getName()),
-      'style' => $this->style,
-      'icon' => $this->icon,
-      'form' => $this->form
-    ];
-
-    if (isset($this->title)) {
-      $action['title'] = $this->title;
-    }
-    if (isset($this->confirm)) {
-      $action['confirm'] = $this->confirm;
-    }
-    return $action;
+  if (isset($this->confirm)) {
+    $action['confirm'] = $this->confirm;
   }
+  return $action;
+}
 
-  public function hidden() {
-    $this->nonlistable();
-    $this->noneditable();
-    return $this;
-  }
+/**
+* Shortcut for nonlistable && noneditable
+*/
+public function hidden() {
+  $this->nonlistable();
+  $this->noneditable();
+  return $this;
+}
 
-  public function filter($func) {
-    $this->filter = $func;
-    return $this;
-  }
+/**
+* Filter.
+*/
+public function filter($func) {
+  $this->filter = $func;
+  return $this;
+}
 
-  public function confirm($str = '') {
-    if ($str === '')
-      $str = __('Are you sure?');
-    $this->confirm = $str;
-    return $this;
-  }
+/**
+* Confirm.
+*/
+public function confirm($str = '') {
+  if ($str === '')
+    $str = __('Are you sure?');
+  $this->confirm = $str;
+  return $this;
+}
 
-  public function done($js=''){
-    $this->done = $js;
-    return $this;
-  }
+/**
+* JS to be done after action.
+*/
+public function done($js=''){
+  $this->done = $js;
+  return $this;
+}
 
-  public function bulk(){
-    $this->bulk = true;
-    return $this;
-  }
+/**
+* Bulk action
+*/
+public function bulk(){
+  $this->bulk = true;
+  return $this;
+}
 
-  public function nonbulk(){
-    $this->bulk = null;
-    return $this;
-  }
+/**
+* Not a bulk action
+*/
+public function nonbulk(){
+  $this->bulk = null;
+  return $this;
+}
 
-  public function form(){
-    $this->form = true;
-    $this->noneditable();
-    return $this;
-  }
+/**
+* Form action.
+* Also adds noneditable - cannot show form when edit form already shown.
+*/
+public function form(){
+  $this->form = true;
+  $this->noneditable();
+  return $this;
+}
 
-  public function nonform(){
-    $this->form = false;
-    return $this;
-  }
+/**
+* Not form action
+*/
+public function nonform(){
+  $this->form = false;
+  return $this;
+}
 
-  public function nonlistable(){
-    $this->nonlistable = true;
-    return $this;
-  }
+/**
+* Do not show in crud table
+*/
+public function nonlistable(){
+  $this->listable = false;
+  return $this;
+}
 
-  public function listable(){
-    $this->nonlistable = false;
-    return $this;
-  }
+/**
+* Show in crud table
+*/
+public function listable(){
+  $this->listable = true;
+  return $this;
+}
 
-  public function noneditable(){
-    $this->noneditable = true;
-    return $this;
-  }
+/**
+* Do not show in edit form
+*/
+public function noneditable(){
+  $this->editable = false;
+  return $this;
+}
 
-  public function editable(){
-    $this->noneditable = false;
-    return $this;
-  }
+/**
+* Show in edit form
+*/
+public function editable(){
+  $this->editable = true;
+  return $this;
+}
 
-  public function danger(){
-    $this->style = 'danger';
-    return $this;
-  }
+/**
+* Style - danger
+*/
+public function danger(){
+  $this->style = 'danger';
+  return $this;
+}
 
-  public function primary(){
-    $this->style = 'primary';
-    return $this;
-  }
+/**
+* Style - primary
+*/
+public function primary(){
+  $this->style = 'primary';
+  return $this;
+}
 
-  public function secondary(){
-    $this->style = 'secondary';
-    return $this;
-  }
+/**
+* Style . secondary
+*/
+public function secondary(){
+  $this->style = 'secondary';
+  return $this;
+}
 
-  public function success(){
-    $this->style = 'success';
-    return $this;
-  }
+/**
+* Style - success
+*/
+public function success(){
+  $this->style = 'success';
+  return $this;
+}
 
-  public function warning(){
-    $this->style = 'warning';
-    return $this;
-  }
-
+/**
+* Style - warning
+*/
+public function warning(){
+  $this->style = 'warning';
+  return $this;
+}
 
 }
