@@ -7,8 +7,8 @@ class Events extends Eladmin\Modules\Eloquent\Crud {
   protected function crudColumns() {
     $columns = parent::crudColumns();
     $columns->when->datetime('j.n.Y');
-    $columns->created_at->datetime('j.n.Y H:i:s', true);
-    $columns->updated_at->datetime('j.n.Y H:i:s', true);
+    $columns->created_at->datetime('j.n.Y H:i:s');
+    $columns->updated_at->datetime('j.n.Y H:i:s');
     return $columns;
   }
 }

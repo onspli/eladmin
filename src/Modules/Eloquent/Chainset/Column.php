@@ -20,7 +20,7 @@ public function datetime($format, $allowNull = false) {
   });
   $this->set(function($val) use($format, $allowNull) {
     if (!$val){
-      if ($allowNull)
+      if ($this->disabled || !$this->editable || $allowNull)
         return null;
       else
         throw new Exception\BadRequestException(__('Date or time cannot be empty.'));
