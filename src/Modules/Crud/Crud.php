@@ -317,10 +317,8 @@ private function validateAndModify(){
   foreach ($columns as $key => $column) {
     if ($column->setformat) {
       $value = $column->evalProperty('setformat', $_POST);
-      if ($value !== null) {
+      if (array_key_exists($key, $_POST)) {
         $_POST[$key] = $value;
-      } else {
-        unset($_POST[$key]);
       }
     }
   }

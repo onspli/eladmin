@@ -101,7 +101,7 @@ final public function getValue(array $row, $forEditing = false) : ?string {
 /**
 * Eval property
 */
-final public function evalProperty(string $prop, array $row) {
+final public function evalProperty(string $prop, array &$row) {
   if (!isset($this->$prop)) {
     return null;
   }
