@@ -128,7 +128,7 @@
             <h2>Properties</h2>
 
             <table class="table table-condensed">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  <tr>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          <tr>
     <td class="type" id="property_title">
                         protected                
     </td>
@@ -173,7 +173,34 @@
     <td><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#property_actionRoles"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></td>
 </tr>
 
-                                                                                                                              <tr>
+                                                                  <tr>
+    <td class="type" id="property_crudColumns">
+                        protected                
+    </td>
+    <td>$crudColumns</td>
+    <td class="last"></td>
+    <td></td>
+</tr>
+
+                                              <tr>
+    <td class="type" id="property_crudActions">
+                        protected                
+    </td>
+    <td>$crudActions</td>
+    <td class="last">Actions chainset class</td>
+    <td><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#property_crudActions"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a></small></td>
+</tr>
+
+                                              <tr>
+    <td class="type" id="property_crudFilters">
+                        protected                
+    </td>
+    <td>$crudFilters</td>
+    <td class="last">Filters chainset class</td>
+    <td><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#property_crudFilters"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a></small></td>
+</tr>
+
+                                                                                                          <tr>
     <td class="type" id="property_model">
                         protected                
     </td>
@@ -182,7 +209,7 @@
     <td></td>
 </tr>
 
-                                                                                                                                                                                                                                                                                                                          <tr>
+                                                                                                                                                                                                                                                                                                                                                                                      <tr>
     <td class="type" id="property_imodel">
                                 private        
     </td>
@@ -1180,7 +1207,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_prepare">
-        <div class="location">at         line 87</div>
+        <div class="location">at         line 89</div>
         <code>                    void
     <strong>prepare</strong>()
         </code>
@@ -1295,7 +1322,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_views">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_views"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 257</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_views"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 278</div>
         <code>            protected        array
     <strong>views</strong>()
         </code>
@@ -1710,7 +1737,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_implementsSoftDeletes">
-        <div class="location">at         line 22</div>
+        <div class="location">at         line 24</div>
         <code>                    bool
     <strong>implementsSoftDeletes</strong>()
         </code>
@@ -1740,7 +1767,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_implementsSearch">
-        <div class="location">at         line 34</div>
+        <div class="location">at         line 36</div>
         <code>                    bool
     <strong>implementsSearch</strong>()
         </code>
@@ -1770,7 +1797,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_implementsPaging">
-        <div class="location">at         line 30</div>
+        <div class="location">at         line 32</div>
         <code>                    bool
     <strong>implementsPaging</strong>()
         </code>
@@ -1800,7 +1827,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_implementsSorting">
-        <div class="location">at         line 26</div>
+        <div class="location">at         line 28</div>
         <code>                    bool
     <strong>implementsSorting</strong>()
         </code>
@@ -1830,7 +1857,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_implementsFilters">
-        <div class="location">at         line 38</div>
+        <div class="location">at         line 40</div>
         <code>                    bool
     <strong>implementsFilters</strong>()
         </code>
@@ -1860,7 +1887,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_primary">
-        <div class="location">at         line 63</div>
+        <div class="location">at         line 65</div>
         <code>                    string
     <strong>primary</strong>()
         </code>
@@ -1890,7 +1917,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_create">
-        <div class="location">at         line 100</div>
+        <div class="location">at         line 102</div>
         <code>            protected        void
     <strong>create</strong>(array $row)
         </code>
@@ -1930,7 +1957,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_update">
-        <div class="location">at         line 105</div>
+        <div class="location">at         line 107</div>
         <code>            protected        void
     <strong>update</strong>(array $row, $id)
         </code>
@@ -1975,7 +2002,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_get">
-        <div class="location">at         line 112</div>
+        <div class="location">at         line 114</div>
         <code>            protected        array
     <strong>get</strong>($id)
         </code>
@@ -2016,7 +2043,7 @@ Returns row as an associative array ['columnName' => 'value']</p>               
             </div>
                     <div class="method-item">
                     <h3 id="method_delete">
-        <div class="location">at         line 120</div>
+        <div class="location">at         line 122</div>
         <code>            protected        void
     <strong>delete</strong>($id)
         </code>
@@ -2056,7 +2083,7 @@ Returns row as an associative array ['columnName' => 'value']</p>               
             </div>
                     <div class="method-item">
                     <h3 id="method_softDelete">
-        <div class="location">at         line 176</div>
+        <div class="location">at         line 178</div>
         <code>            protected        void
     <strong>softDelete</strong>($id)
         </code>
@@ -2096,7 +2123,7 @@ Returns row as an associative array ['columnName' => 'value']</p>               
             </div>
                     <div class="method-item">
                     <h3 id="method_restore">
-        <div class="location">at         line 186</div>
+        <div class="location">at         line 188</div>
         <code>            protected        void
     <strong>restore</strong>($id)
         </code>
@@ -2136,7 +2163,7 @@ Returns row as an associative array ['columnName' => 'value']</p>               
             </div>
                     <div class="method-item">
                     <h3 id="method_read">
-        <div class="location">at         line 135</div>
+        <div class="location">at         line 137</div>
         <code>            protected        array
     <strong>read</strong>(array $request, $totalResults)
         </code>
@@ -2182,7 +2209,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_crudColumns">
-        <div class="location">at         line 205</div>
+        <div class="location">at         line 207</div>
         <code>            protected        
     <strong>crudColumns</strong>()
         </code>
@@ -2203,7 +2230,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_crudActions">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_crudActions"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 197</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_crudActions"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 214</div>
         <code>            protected        
     <strong>crudActions</strong>()
         </code>
@@ -2224,7 +2251,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_crudFilters">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_crudFilters"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 223</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_crudFilters"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 242</div>
         <code>            protected        
     <strong>crudFilters</strong>()
         </code>
@@ -2245,7 +2272,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_getCrudColumns">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_getCrudColumns"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 230</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_getCrudColumns"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 251</div>
         <code>final                    <a href="../../../../Onspli/Eladmin/Modules/Crud/Chainset/Columns.html"><abbr title="Onspli\Eladmin\Modules\Crud\Chainset\Columns">Columns</abbr></a>
     <strong>getCrudColumns</strong>()
         </code>
@@ -2275,7 +2302,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_getCrudActions">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_getCrudActions"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 239</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_getCrudActions"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 260</div>
         <code>final                    <a href="../../../../Onspli/Eladmin/Modules/Crud/Chainset/Actions.html"><abbr title="Onspli\Eladmin\Modules\Crud\Chainset\Actions">Actions</abbr></a>
     <strong>getCrudActions</strong>()
         </code>
@@ -2305,7 +2332,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_getCrudFilters">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_getCrudFilters"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 248</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_getCrudFilters"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 269</div>
         <code>final                    <a href="../../../../Onspli/Eladmin/Modules/Crud/Chainset/Filters.html"><abbr title="Onspli\Eladmin\Modules\Crud\Chainset\Filters">Filters</abbr></a>
     <strong>getCrudFilters</strong>()
         </code>
@@ -2335,7 +2362,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_id">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_id"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 265</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_id"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 286</div>
         <code>            protected        
     <strong>id</strong>($throwIfNull = true)
         </code>
@@ -2366,7 +2393,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_rowValuesArray">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_rowValuesArray"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 274</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_rowValuesArray"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 295</div>
         <code>                private    
     <strong>rowValuesArray</strong>($row)
         </code>
@@ -2397,7 +2424,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_rowActionsArray">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_rowActionsArray"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 288</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_rowActionsArray"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 309</div>
         <code>                private    
     <strong>rowActionsArray</strong>($row)
         </code>
@@ -2428,7 +2455,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_validateAndModify">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_validateAndModify"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 304</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_validateAndModify"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 325</div>
         <code>                private    
     <strong>validateAndModify</strong>()
         </code>
@@ -2449,7 +2476,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_actionCreateForm">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionCreateForm"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 340</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionCreateForm"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 361</div>
         <code>                    
     <strong>actionCreateForm</strong>()
         </code>
@@ -2470,7 +2497,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_actionUpdateForm">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionUpdateForm"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 349</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionUpdateForm"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 370</div>
         <code>                    
     <strong>actionUpdateForm</strong>()
         </code>
@@ -2491,7 +2518,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_actionRead">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionRead"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 358</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionRead"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 379</div>
         <code>                    
     <strong>actionRead</strong>()
         </code>
@@ -2512,7 +2539,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_actionUpdate">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionUpdate"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 417</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionUpdate"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 438</div>
         <code>                    
     <strong>actionUpdate</strong>()
         </code>
@@ -2533,7 +2560,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_actionCreate">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionCreate"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 426</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionCreate"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 447</div>
         <code>                    
     <strong>actionCreate</strong>()
         </code>
@@ -2554,7 +2581,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_actionDelete">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionDelete"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 435</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionDelete"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 456</div>
         <code>                    
     <strong>actionDelete</strong>()
         </code>
@@ -2575,7 +2602,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_actionSoftDelete">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionSoftDelete"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 443</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionSoftDelete"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 464</div>
         <code>                    
     <strong>actionSoftDelete</strong>()
         </code>
@@ -2596,7 +2623,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_actionRestore">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionRestore"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 451</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionRestore"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 472</div>
         <code>                    
     <strong>actionRestore</strong>()
         </code>
@@ -2617,7 +2644,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_model">
-        <div class="location">at         line 45</div>
+        <div class="location">at         line 47</div>
         <code>            protected        
     <strong>model</strong>()
         </code>
@@ -2638,7 +2665,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_updateOrCreate">
-        <div class="location">at         line 70</div>
+        <div class="location">at         line 72</div>
         <code>                private    void
     <strong>updateOrCreate</strong>($entry, $row)
         </code>
@@ -2683,7 +2710,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_tableColumns">
-        <div class="location">at         line 198</div>
+        <div class="location">at         line 200</div>
         <code>            protected        array
     <strong>tableColumns</strong>()
         </code>

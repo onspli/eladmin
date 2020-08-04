@@ -88,19 +88,34 @@ const ASC = 'asc';
 const DESC = 'desc';
 
 /**
+* Columns chainset class
+*/
+protected $crudColumns = Chainset\Columns::class;
+
+/**
+* Actions chainset class
+*/
+protected $crudActions = Chainset\Actions::class;
+
+/**
+* Filters chainset class
+*/
+protected $crudFilters = Chainset\Filters::class;
+
+/**
 * Cached columns chainset
 */
-private $crudColumns = null;
+private $crudColumnsCached = null;
 
 /**
 * Cached actions chainset;
 */
-private $crudActions = null;
+private $crudActionsCached = null;
 
 /**
 * Cached filters chainset.
 */
-private $crudFilters = null;
+private $crudFiltersCached = null;
 
 /**
 * IMPLEMENT. Does CRUD use soft deletes?
@@ -187,7 +202,9 @@ abstract protected function read(array $request, &$totalResults) : array;
 * IMPLEMENT. Default columns chainset. Override to configure columns.
 */
 protected function crudColumns() {
-  $columns = new Chainset\Columns;
+  if (!is_a($this->crudColumns, Chainset\Columns::class, true))
+    throw new Exception\Exception($this->crudColumns . ' is not a subclass of ' . Chainset\Columns::class);
+  $columns = new $this->crudColumns;
   return $columns;
 }
 
@@ -195,7 +212,9 @@ protected function crudColumns() {
 * Default actions chainset. Override to configure actions.
 */
 protected function crudActions() {
-  $actions = new Chainset\Actions;
+  if (!is_a($this->crudActions, Chainset\Actions::class, true))
+    throw new Exception\Exception($this->crudActions . ' is not a subclass of ' . Chainset\Actions::class);
+  $actions = new $this->crudActions;
 
   $actions->create->icon('<i class="fas fa-plus-circle"></i>')->label(__('Add'))->hidden();
   $actions->updateForm->hidden()->label('')->style('primary')->icon('<i class="fas fa-edit"></i>')->nonbulk();
@@ -221,34 +240,36 @@ protected function crudActions() {
 * Default filters chainset. Override to configure filters.
 */
 protected function crudFilters() {
-  return new Chainset\Filters;
+  if (!is_a($this->crudFilters, Chainset\Filters::class, true))
+    throw new Exception\Exception($this->crudFilters . ' is not a subclass of ' . Chainset\Filters::class);
+  return new $this->crudFilters;
 }
 
 /**
 * Get columns chainset.
 */
 final public function getCrudColumns() : Chainset\Columns {
-  if ($this->crudColumns === null)
-    $this->crudColumns = $this->crudColumns();
-  return $this->crudColumns;
+  if ($this->crudColumnsCached === null)
+    $this->crudColumnsCached = $this->crudColumns();
+  return $this->crudColumnsCached;
 }
 
 /**
 * Get actions chainset.
 */
 final public function getCrudActions() : Chainset\Actions {
-  if ($this->crudActions === null)
-    $this->crudActions = $this->crudActions();
-  return $this->crudActions;
+  if ($this->crudActionsCached === null)
+    $this->crudActionsCached = $this->crudActions();
+  return $this->crudActionsCached;
 }
 
 /**
 * Get filters chainset.
 */
 final public function getCrudFilters() : Chainset\Filters {
-  if ($this->crudFilters === null)
-    $this->crudFilters = $this->crudFilters();
-  return $this->crudFilters;
+  if ($this->crudFiltersCached === null)
+    $this->crudFiltersCached = $this->crudFilters();
+  return $this->crudFiltersCached;
 }
 
 /**
@@ -310,7 +331,9 @@ private function validateAndModify(){
     }
   }
   // validate values
-  foreach ($columns as $column) {
+  foreach ($columns as $key => $column) {
+    if ($columns->$key->disabled || $columns->$key->noneditable)
+      continue;
     $column->evalProperty('validate', $_POST);
   }
   // modify values

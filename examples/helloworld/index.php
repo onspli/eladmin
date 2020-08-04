@@ -4,6 +4,13 @@ use Onspli\Eladmin;
 
 class Events extends Eladmin\Modules\Eloquent\Crud {
   protected $model = Examples\Eloquent\Event::class;
+  protected function crudColumns() {
+    $columns = parent::crudColumns();
+    $columns->when->datetime('j.n.Y');
+    $columns->created_at->datetime('j.n.Y H:i:s', true);
+    $columns->updated_at->datetime('j.n.Y H:i:s', true);
+    return $columns;
+  }
 }
 
 class Tickets extends Eladmin\Modules\Eloquent\Crud {

@@ -192,7 +192,7 @@ restore
             <h2>Properties</h2>
 
             <table class="table table-condensed">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  <tr>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          <tr>
     <td class="type" id="property_title">
                         protected                
     </td>
@@ -237,29 +237,56 @@ restore
     <td><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#property_actionRoles"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></td>
 </tr>
 
-                                                                                                                                                                                                                                                                                                      <tr>
+                                                                  <tr>
     <td class="type" id="property_crudColumns">
-                                private        
+                        protected                
     </td>
     <td>$crudColumns</td>
-    <td class="last">Cached columns chainset</td>
+    <td class="last">Columns chainset class</td>
     <td></td>
 </tr>
 
                                               <tr>
     <td class="type" id="property_crudActions">
-                                private        
+                        protected                
     </td>
     <td>$crudActions</td>
-    <td class="last">Cached actions chainset;</td>
+    <td class="last">Actions chainset class</td>
     <td></td>
 </tr>
 
                                               <tr>
     <td class="type" id="property_crudFilters">
-                                private        
+                        protected                
     </td>
     <td>$crudFilters</td>
+    <td class="last">Filters chainset class</td>
+    <td></td>
+</tr>
+
+                                                                                                                                                                                                                                                                                                                                              <tr>
+    <td class="type" id="property_crudColumnsCached">
+                                private        
+    </td>
+    <td>$crudColumnsCached</td>
+    <td class="last">Cached columns chainset</td>
+    <td></td>
+</tr>
+
+                                              <tr>
+    <td class="type" id="property_crudActionsCached">
+                                private        
+    </td>
+    <td>$crudActionsCached</td>
+    <td class="last">Cached actions chainset;</td>
+    <td></td>
+</tr>
+
+                                              <tr>
+    <td class="type" id="property_crudFiltersCached">
+                                private        
+    </td>
+    <td>$crudFiltersCached</td>
     <td class="last">Cached filters chainset.</td>
     <td></td>
 </tr>
@@ -1253,7 +1280,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_prepare">
-        <div class="location">at         line 329</div>
+        <div class="location">at         line 350</div>
         <code>                    void
     <strong>prepare</strong>()
         </code>
@@ -1368,7 +1395,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_views">
-        <div class="location">at         line 257</div>
+        <div class="location">at         line 278</div>
         <code>            protected        array
     <strong>views</strong>()
         </code>
@@ -1783,7 +1810,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_implementsSoftDeletes">
-        <div class="location">at         line 108</div>
+        <div class="location">at         line 123</div>
         <code>                    bool
     <strong>implementsSoftDeletes</strong>()
         </code>
@@ -1813,7 +1840,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_implementsSearch">
-        <div class="location">at         line 115</div>
+        <div class="location">at         line 130</div>
         <code>                    bool
     <strong>implementsSearch</strong>()
         </code>
@@ -1843,7 +1870,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_implementsPaging">
-        <div class="location">at         line 122</div>
+        <div class="location">at         line 137</div>
         <code>                    bool
     <strong>implementsPaging</strong>()
         </code>
@@ -1873,7 +1900,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_implementsSorting">
-        <div class="location">at         line 129</div>
+        <div class="location">at         line 144</div>
         <code>                    bool
     <strong>implementsSorting</strong>()
         </code>
@@ -1903,7 +1930,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_implementsFilters">
-        <div class="location">at         line 136</div>
+        <div class="location">at         line 151</div>
         <code>                    bool
     <strong>implementsFilters</strong>()
         </code>
@@ -1933,7 +1960,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_primary">
-        <div class="location">at         line 143</div>
+        <div class="location">at         line 158</div>
         <code>    abstract                string
     <strong>primary</strong>()
         </code>
@@ -1963,7 +1990,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_create">
-        <div class="location">at         line 149</div>
+        <div class="location">at         line 164</div>
         <code>    abstract        protected        void
     <strong>create</strong>(array $values)
         </code>
@@ -2003,7 +2030,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_update">
-        <div class="location">at         line 156</div>
+        <div class="location">at         line 171</div>
         <code>    abstract        protected        void
     <strong>update</strong>(array $values, $id)
         </code>
@@ -2048,7 +2075,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_get">
-        <div class="location">at         line 162</div>
+        <div class="location">at         line 177</div>
         <code>    abstract        protected        array
     <strong>get</strong>($id)
         </code>
@@ -2089,7 +2116,7 @@ Returns row as an associative array ['columnName' => 'value']</p>               
             </div>
                     <div class="method-item">
                     <h3 id="method_delete">
-        <div class="location">at         line 167</div>
+        <div class="location">at         line 182</div>
         <code>    abstract        protected        void
     <strong>delete</strong>($id)
         </code>
@@ -2129,7 +2156,7 @@ Returns row as an associative array ['columnName' => 'value']</p>               
             </div>
                     <div class="method-item">
                     <h3 id="method_softDelete">
-        <div class="location">at         line 172</div>
+        <div class="location">at         line 187</div>
         <code>    abstract        protected        void
     <strong>softDelete</strong>($id)
         </code>
@@ -2169,7 +2196,7 @@ Returns row as an associative array ['columnName' => 'value']</p>               
             </div>
                     <div class="method-item">
                     <h3 id="method_restore">
-        <div class="location">at         line 177</div>
+        <div class="location">at         line 192</div>
         <code>    abstract        protected        void
     <strong>restore</strong>($id)
         </code>
@@ -2209,7 +2236,7 @@ Returns row as an associative array ['columnName' => 'value']</p>               
             </div>
                     <div class="method-item">
                     <h3 id="method_read">
-        <div class="location">at         line 184</div>
+        <div class="location">at         line 199</div>
         <code>    abstract        protected        array
     <strong>read</strong>(array $request, $totalResults)
         </code>
@@ -2255,7 +2282,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_crudColumns">
-        <div class="location">at         line 189</div>
+        <div class="location">at         line 204</div>
         <code>            protected        
     <strong>crudColumns</strong>()
         </code>
@@ -2276,7 +2303,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_crudActions">
-        <div class="location">at         line 197</div>
+        <div class="location">at         line 214</div>
         <code>            protected        
     <strong>crudActions</strong>()
         </code>
@@ -2297,7 +2324,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_crudFilters">
-        <div class="location">at         line 223</div>
+        <div class="location">at         line 242</div>
         <code>            protected        
     <strong>crudFilters</strong>()
         </code>
@@ -2318,7 +2345,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_getCrudColumns">
-        <div class="location">at         line 230</div>
+        <div class="location">at         line 251</div>
         <code>final                    <a href="../../../../Onspli/Eladmin/Modules/Crud/Chainset/Columns.html"><abbr title="Onspli\Eladmin\Modules\Crud\Chainset\Columns">Columns</abbr></a>
     <strong>getCrudColumns</strong>()
         </code>
@@ -2348,7 +2375,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_getCrudActions">
-        <div class="location">at         line 239</div>
+        <div class="location">at         line 260</div>
         <code>final                    <a href="../../../../Onspli/Eladmin/Modules/Crud/Chainset/Actions.html"><abbr title="Onspli\Eladmin\Modules\Crud\Chainset\Actions">Actions</abbr></a>
     <strong>getCrudActions</strong>()
         </code>
@@ -2378,7 +2405,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_getCrudFilters">
-        <div class="location">at         line 248</div>
+        <div class="location">at         line 269</div>
         <code>final                    <a href="../../../../Onspli/Eladmin/Modules/Crud/Chainset/Filters.html"><abbr title="Onspli\Eladmin\Modules\Crud\Chainset\Filters">Filters</abbr></a>
     <strong>getCrudFilters</strong>()
         </code>
@@ -2408,7 +2435,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_id">
-        <div class="location">at         line 265</div>
+        <div class="location">at         line 286</div>
         <code>            protected        
     <strong>id</strong>($throwIfNull = true)
         </code>
@@ -2439,7 +2466,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_rowValuesArray">
-        <div class="location">at         line 274</div>
+        <div class="location">at         line 295</div>
         <code>                private    
     <strong>rowValuesArray</strong>($row)
         </code>
@@ -2470,7 +2497,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_rowActionsArray">
-        <div class="location">at         line 288</div>
+        <div class="location">at         line 309</div>
         <code>                private    
     <strong>rowActionsArray</strong>($row)
         </code>
@@ -2501,7 +2528,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_validateAndModify">
-        <div class="location">at         line 304</div>
+        <div class="location">at         line 325</div>
         <code>                private    
     <strong>validateAndModify</strong>()
         </code>
@@ -2522,7 +2549,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_actionCreateForm">
-        <div class="location">at         line 340</div>
+        <div class="location">at         line 361</div>
         <code>                    
     <strong>actionCreateForm</strong>()
         </code>
@@ -2543,7 +2570,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_actionUpdateForm">
-        <div class="location">at         line 349</div>
+        <div class="location">at         line 370</div>
         <code>                    
     <strong>actionUpdateForm</strong>()
         </code>
@@ -2564,7 +2591,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_actionRead">
-        <div class="location">at         line 358</div>
+        <div class="location">at         line 379</div>
         <code>                    
     <strong>actionRead</strong>()
         </code>
@@ -2585,7 +2612,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_actionUpdate">
-        <div class="location">at         line 417</div>
+        <div class="location">at         line 438</div>
         <code>                    
     <strong>actionUpdate</strong>()
         </code>
@@ -2606,7 +2633,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_actionCreate">
-        <div class="location">at         line 426</div>
+        <div class="location">at         line 447</div>
         <code>                    
     <strong>actionCreate</strong>()
         </code>
@@ -2627,7 +2654,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_actionDelete">
-        <div class="location">at         line 435</div>
+        <div class="location">at         line 456</div>
         <code>                    
     <strong>actionDelete</strong>()
         </code>
@@ -2648,7 +2675,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_actionSoftDelete">
-        <div class="location">at         line 443</div>
+        <div class="location">at         line 464</div>
         <code>                    
     <strong>actionSoftDelete</strong>()
         </code>
@@ -2669,7 +2696,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_actionRestore">
-        <div class="location">at         line 451</div>
+        <div class="location">at         line 472</div>
         <code>                    
     <strong>actionRestore</strong>()
         </code>

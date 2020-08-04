@@ -19,6 +19,8 @@ protected $model = null;
 */
 private $imodel = null;
 
+protected $crudColumns = Chainset\Columns::class;
+
 public function implementsSoftDeletes() : bool {
   return method_exists($this->model, 'trashed');
 }
