@@ -98,6 +98,10 @@ public function __construct(?array $modules = null) {
 
 
 final static public function errorHandler($errno, $errstr, $errfile, $errline) {
+  // error_reporting() will return 0 when the call that triggered the error was preceded by an @.
+  if (error_reporting() == 0) {
+    return;
+  }
   throw new \ErrorException($errstr, $errno, 0, $errfile, $errline);
 }
 
@@ -486,7 +490,7 @@ private function initCache() : void {
   if(!$this->cache)
     throw new Exception\Exception('Set '.static::class.'::$cache property to a path to some writeable directory.');
   if (!file_exists($this->cache)) {
-    $result = mkdir($this->cache);
+    @$result = mkdir($this->cache);
     if (!$result)
       throw new Exception\Exception('Cannot create Blade cache directory '.$this->cache.'.');
   }
