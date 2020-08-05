@@ -6,18 +6,17 @@ use \Onspli\Eladmin;
 class Column extends Eladmin\Modules\Crud\Chainset\Column {
 
 public function datetime($format, $allowNull = false) {
-  $this->get(function($val, $row) use($format) {
+  $get = function($val, $row) use($format, $allowNull) {
+    if (!$val && $allowNull)
+      return null;
     $carbon = \Carbon\Carbon::parse($val);
     if (!$carbon)
       return null;
     return $carbon->format($format);
-  });
-  $this->list(function($val, $row) use($format) {
-    $carbon = \Carbon\Carbon::parse($val);
-    if (!$carbon)
-      return null;
-    return $carbon->format($format);
-  });
+  };
+
+  $this->get($get);
+  $this->list($get);
   $this->set(function($val) use($format, $allowNull) {
     if (!$val){
       if ($this->disabled || !$this->editable || $allowNull)
@@ -28,8 +27,6 @@ public function datetime($format, $allowNull = false) {
     try {
       return \Carbon\Carbon::createFromFormat($format, $val);
     } catch(\Throwable $e) {
-      throw new Exception\BadRequestException(__('Date or time format is not valid.'));
-    } catch(\Exception $e) {
       throw new Exception\BadRequestException(__('Date or time format is not valid.'));
     }
   });
