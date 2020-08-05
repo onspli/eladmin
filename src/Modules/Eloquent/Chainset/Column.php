@@ -6,7 +6,7 @@ use \Onspli\Eladmin;
 class Column extends Eladmin\Modules\Crud\Chainset\Column {
 
 public function datetime($format, $allowNull = false) {
-  $get = function($val, $row) use($format, $allowNull) {
+  $get = function($val) use($format, $allowNull) {
     if (!$val && $allowNull)
       return null;
     $carbon = \Carbon\Carbon::parse($val);
@@ -15,6 +15,9 @@ public function datetime($format, $allowNull = false) {
     return $carbon->format($format);
   };
 
+  if ($allowNull == false && !isset($this->default)) {
+    $this->default($get);
+  }
   $this->get($get);
   $this->list($get);
   $this->set(function($val) use($format, $allowNull) {

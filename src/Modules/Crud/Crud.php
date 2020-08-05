@@ -171,7 +171,18 @@ abstract protected function create(array $values) : void;
 abstract protected function update(array $values, $id) : void;
 
 /**
-* IMPLEMENT. Read one row, or get default one ($id = null)
+* Read default row
+* Returns row as an associative array ['columnName' => 'value']
+*/
+protected function default() : array {
+  $row = [];
+  $this->defaults($row);
+  $this->modify($row);
+  return $row;
+}
+
+/**
+* IMPLEMENT. Read one row.
 * Returns row as an associative array ['columnName' => 'value']
 */
 abstract protected function get($id) : array;
@@ -283,7 +294,7 @@ protected function views() : array {
 /**
 * Return ID of the row which should be affected by the action.
 */
-protected function id($throwIfNull = true) {
+protected function id($throwIfNull = false) {
   if (!isset($_GET['id']) && $throwIfNull)
     throw new Exception\BadRequestException(__('Entry not found!'));
   return $_GET['id'] ?? null;
@@ -325,28 +336,51 @@ private function rowActionsArray($row) {
 }
 
 /**
-* Validate and modify values before saving.
+* unset columns which we shouldn't recieve before update
 */
-private function validateAndModify(){
+private function unset(array &$row) : void {
   $columns = $this->getCrudColumns();
-  // unset columns which we shouldn't recieve
-  foreach ($_POST as $key => $value) {
+  foreach ($row as $key => $value) {
     if (!isset($columns->$key) || $columns->$key->disabled || !$columns->$key->editable) {
-      unset($_POST[$key]);
+      unset($row[$key]);
     }
   }
-  // validate values
+}
+
+/**
+* set defaults
+*/
+private function defaults(array &$row) : void {
+  $columns = $this->getCrudColumns();
+  foreach ($columns as $key => $column) {
+    if (isset($row[$key]) || !isset($column->default))
+      continue;
+    $row[$key] = $column->evalProperty('default');
+  }
+}
+
+/**
+* validate columns before update
+*/
+private function validate(array $row) : void {
+  $columns = $this->getCrudColumns();
   foreach ($columns as $key => $column) {
     if ($columns->$key->disabled || !$columns->$key->editable)
       continue;
-    $column->evalProperty('validate', $_POST);
+    $column->evalProperty('validate', $row);
   }
-  // modify values
+}
+
+/**
+* modify values before update
+*/
+private function modify(array &$row) : void {
+  $columns = $this->getCrudColumns();
   foreach ($columns as $key => $column) {
     if ($column->setformat) {
-      $value = $column->evalProperty('setformat', $_POST);
-      if (isset($value) || array_key_exists($key, $_POST)) {
-        $_POST[$key] = $value;
+      $value = $column->evalProperty('setformat', $row);
+      if (isset($value) || array_key_exists($key, $row)) {
+        $row[$key] = $value;
       }
     }
   }
@@ -354,8 +388,10 @@ private function validateAndModify(){
 
 public function prepare() : void {
   if (($_GET['update'] ?? null) && $this->auth('update')) {
-    $this->validateAndModify();
-    $this->update($_POST, $this->id());
+    $this->unset($_POST);
+    $this->validate($_POST);
+    $this->modify($_POST);
+    $this->update($_POST, $this->id(true));
   }
 }
 
@@ -366,7 +402,7 @@ public function prepare() : void {
 public function actionCreateForm(){
   if(!$this->auth('create'))
     throw new Exception\UnauthorizedException();
-  $this->renderHtml($this->render('createForm', ['row' => $this->get(null)]));
+  $this->renderHtml($this->render('createForm', ['row' => $this->default()]));
 }
 
 /**
@@ -375,7 +411,7 @@ public function actionCreateForm(){
 public function actionUpdateForm(){
   if(!$this->auth('read'))
     throw new Exception\UnauthorizedException();
-  $this->renderHtml($this->render('updateForm', ['row' => $this->get($this->id())]));
+  $this->renderHtml($this->render('updateForm', ['row' => $this->get($this->id(true))]));
 }
 
 /**
@@ -441,8 +477,10 @@ public function actionRead() {
 * ACTION. Edit database entry.
 */
 public function actionUpdate(){
-  $this->validateAndModify();
-  $this->update($_POST, $this->id());
+  $this->unset($_POST);
+  $this->validate($_POST);
+  $this->modify($_POST);
+  $this->update($_POST, $this->id(true));
   $this->renderText(__('Entry modified.'));
 }
 
@@ -450,7 +488,10 @@ public function actionUpdate(){
 * ACTION. Create database entry.
 */
 public function actionCreate(){
-  $this->validateAndModify();
+  $this->unset($_POST);
+  $this->defaults($_POST);
+  $this->validate($_POST);
+  $this->modify($_POST);
   $this->create($_POST);
   $this->renderText(__('Entry added.'));
 }
@@ -459,7 +500,7 @@ public function actionCreate(){
 * ACTION. Hard delete.
 */
 public function actionDelete(){
-  $this->delete($this->id());
+  $this->delete($this->id(true));
   $this->renderText(__('Entry deleted.'));
 }
 
@@ -467,7 +508,7 @@ public function actionDelete(){
 * ACTION. Soft delete.
 */
 public function actionSoftDelete(){
-  $this->softDelete($this->id());
+  $this->softDelete($this->id(true));
   $this->renderText(__('Entry moved to trash.'));
 }
 
@@ -475,7 +516,7 @@ public function actionSoftDelete(){
 * ACTION. Restore.
 */
 public function actionRestore(){
-  $this->restore($this->id());
+  $this->restore($this->id(true));
   $this->renderText(__('Entry restored.'));
 }
 

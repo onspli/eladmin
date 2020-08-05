@@ -76,6 +76,11 @@ public $setformat = null;
 public $validate = null;
 
 /**
+* columns default value
+*/
+public $default = null;
+
+/**
 * Get internal name of the column.
 */
 final public function getName() : string {
@@ -101,14 +106,14 @@ final public function getValue(array $row, $forEditing = false) : ?string {
 /**
 * Eval property
 */
-final public function evalProperty(string $prop, array &$row) {
+final public function evalProperty(string $prop, array &$row = []) {
   if (!isset($this->$prop)) {
     return null;
   }
 
   $column = $this->getName();
   if (is_callable($this->$prop)) {
-    return ($this->$prop)($row[$column] ?? null, $row, $column);
+    return ($this->$prop)($row[$column] ?? null, $row);
   } else {
     return $this->$prop;
   }
@@ -119,6 +124,14 @@ final public function evalProperty(string $prop, array &$row) {
 */
 public function raw() {
   $this->raw = true;
+  return $this;
+}
+
+/**
+* Set default value
+*/
+public function default($value) {
+  $this->default = $value;
   return $this;
 }
 

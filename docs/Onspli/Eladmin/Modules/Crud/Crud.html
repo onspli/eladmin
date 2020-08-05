@@ -531,7 +531,7 @@ restore
     <div class="col-md-2"></div>
 </div>
 
-                                                                                                                                                                                                                          <div class="row">
+                                                                                                                                                                                                                                            <div class="row">
     <div class="col-md-1 type">
         final                    </div>
     <div class="col-md-1 type">
@@ -570,7 +570,7 @@ restore
     <div class="col-md-2"></div>
 </div>
 
-                                                                                                              <div class="row">
+                                                                                                                                                                    <div class="row">
     <div class="col-md-1 type">
                             </div>
     <div class="col-md-1 type">
@@ -765,7 +765,7 @@ restore
     <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#method_renderJson"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
 </div>
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </div>
 
 
         <h2>Protected Methods</h2>
@@ -825,6 +825,20 @@ restore
 
                                       <div class="row">
     <div class="col-md-1 type">
+                            </div>
+    <div class="col-md-1 type">
+        array
+    </div>
+    <div class="col-md-8 type">
+        <a href="#method_default">default</a>()
+        
+                    <p>Read default row
+Returns row as an associative array ['columnName' => 'value']</p>    </div>
+    <div class="col-md-2"></div>
+</div>
+
+                                      <div class="row">
+    <div class="col-md-1 type">
                 abstract            </div>
     <div class="col-md-1 type">
         array
@@ -832,8 +846,7 @@ restore
     <div class="col-md-8 type">
         <a href="#method_get">get</a>($id)
         
-                    <p>IMPLEMENT. Read one row, or get default one ($id = null)
-Returns row as an associative array ['columnName' => 'value']</p>    </div>
+                    <p>IMPLEMENT. Read one row.</p>    </div>
     <div class="col-md-2"></div>
 </div>
 
@@ -935,19 +948,19 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
         
     </div>
     <div class="col-md-8 type">
-        <a href="#method_id">id</a>($throwIfNull = true)
+        <a href="#method_id">id</a>($throwIfNull = false)
         
                     <p>Return ID of the row which should be affected by the action.</p>    </div>
     <div class="col-md-2"></div>
 </div>
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              </div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </div>
 
 
         <h2>Private Methods</h2>
 
             <div class="container-fluid underlined">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <div class="row">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  <div class="row">
     <div class="col-md-1 type">
                             </div>
     <div class="col-md-1 type">
@@ -977,16 +990,55 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
     <div class="col-md-1 type">
                             </div>
     <div class="col-md-1 type">
-        
+        void
     </div>
     <div class="col-md-8 type">
-        <a href="#method_validateAndModify">validateAndModify</a>()
+        <a href="#method_unset">unset</a>(array $row)
         
-                    <p>Validate and modify values before saving.</p>    </div>
+                    <p>unset columns which we shouldn't recieve before update</p>    </div>
     <div class="col-md-2"></div>
 </div>
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </div>
+                                      <div class="row">
+    <div class="col-md-1 type">
+                            </div>
+    <div class="col-md-1 type">
+        void
+    </div>
+    <div class="col-md-8 type">
+        <a href="#method_defaults">defaults</a>(array $row)
+        
+                    <p>set defaults</p>    </div>
+    <div class="col-md-2"></div>
+</div>
+
+                                      <div class="row">
+    <div class="col-md-1 type">
+                            </div>
+    <div class="col-md-1 type">
+        void
+    </div>
+    <div class="col-md-8 type">
+        <a href="#method_validate">validate</a>(array $row)
+        
+                    <p>validate columns before update</p>    </div>
+    <div class="col-md-2"></div>
+</div>
+
+                                      <div class="row">
+    <div class="col-md-1 type">
+                            </div>
+    <div class="col-md-1 type">
+        void
+    </div>
+    <div class="col-md-8 type">
+        <a href="#method_modify">modify</a>(array $row)
+        
+                    <p>modify values before update</p>    </div>
+    <div class="col-md-2"></div>
+</div>
+
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </div>
 
 
         <h2>Details</h2>
@@ -1280,7 +1332,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_prepare">
-        <div class="location">at         line 355</div>
+        <div class="location">at         line 389</div>
         <code>                    void
     <strong>prepare</strong>()
         </code>
@@ -1395,7 +1447,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_views">
-        <div class="location">at         line 278</div>
+        <div class="location">at         line 289</div>
         <code>            protected        array
     <strong>views</strong>()
         </code>
@@ -2074,8 +2126,39 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_get">
+                    <h3 id="method_default">
         <div class="location">at         line 177</div>
+        <code>            protected        array
+    <strong>default</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Read default row
+Returns row as an associative array ['columnName' => 'value']</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_get">
+        <div class="location">at         line 188</div>
         <code>    abstract        protected        array
     <strong>get</strong>($id)
         </code>
@@ -2085,8 +2168,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
     
 
                     <div class="method-description">
-                                    <p>IMPLEMENT. Read one row, or get default one ($id = null)
-Returns row as an associative array ['columnName' => 'value']</p>                                                </div>
+                                    <p>IMPLEMENT. Read one row.</p>                    <p>Returns row as an associative array ['columnName' => 'value']</p>                            </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
@@ -2116,7 +2198,7 @@ Returns row as an associative array ['columnName' => 'value']</p>               
             </div>
                     <div class="method-item">
                     <h3 id="method_delete">
-        <div class="location">at         line 182</div>
+        <div class="location">at         line 193</div>
         <code>    abstract        protected        void
     <strong>delete</strong>($id)
         </code>
@@ -2156,7 +2238,7 @@ Returns row as an associative array ['columnName' => 'value']</p>               
             </div>
                     <div class="method-item">
                     <h3 id="method_softDelete">
-        <div class="location">at         line 187</div>
+        <div class="location">at         line 198</div>
         <code>    abstract        protected        void
     <strong>softDelete</strong>($id)
         </code>
@@ -2196,7 +2278,7 @@ Returns row as an associative array ['columnName' => 'value']</p>               
             </div>
                     <div class="method-item">
                     <h3 id="method_restore">
-        <div class="location">at         line 192</div>
+        <div class="location">at         line 203</div>
         <code>    abstract        protected        void
     <strong>restore</strong>($id)
         </code>
@@ -2236,7 +2318,7 @@ Returns row as an associative array ['columnName' => 'value']</p>               
             </div>
                     <div class="method-item">
                     <h3 id="method_read">
-        <div class="location">at         line 199</div>
+        <div class="location">at         line 210</div>
         <code>    abstract        protected        array
     <strong>read</strong>(array $request, $totalResults)
         </code>
@@ -2282,7 +2364,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_crudColumns">
-        <div class="location">at         line 204</div>
+        <div class="location">at         line 215</div>
         <code>            protected        
     <strong>crudColumns</strong>()
         </code>
@@ -2303,7 +2385,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_crudActions">
-        <div class="location">at         line 214</div>
+        <div class="location">at         line 225</div>
         <code>            protected        
     <strong>crudActions</strong>()
         </code>
@@ -2324,7 +2406,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_crudFilters">
-        <div class="location">at         line 242</div>
+        <div class="location">at         line 253</div>
         <code>            protected        
     <strong>crudFilters</strong>()
         </code>
@@ -2345,7 +2427,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_getCrudColumns">
-        <div class="location">at         line 251</div>
+        <div class="location">at         line 262</div>
         <code>final                    <a href="../../../../Onspli/Eladmin/Modules/Crud/Chainset/Columns.html"><abbr title="Onspli\Eladmin\Modules\Crud\Chainset\Columns">Columns</abbr></a>
     <strong>getCrudColumns</strong>()
         </code>
@@ -2375,7 +2457,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_getCrudActions">
-        <div class="location">at         line 260</div>
+        <div class="location">at         line 271</div>
         <code>final                    <a href="../../../../Onspli/Eladmin/Modules/Crud/Chainset/Actions.html"><abbr title="Onspli\Eladmin\Modules\Crud\Chainset\Actions">Actions</abbr></a>
     <strong>getCrudActions</strong>()
         </code>
@@ -2405,7 +2487,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_getCrudFilters">
-        <div class="location">at         line 269</div>
+        <div class="location">at         line 280</div>
         <code>final                    <a href="../../../../Onspli/Eladmin/Modules/Crud/Chainset/Filters.html"><abbr title="Onspli\Eladmin\Modules\Crud\Chainset\Filters">Filters</abbr></a>
     <strong>getCrudFilters</strong>()
         </code>
@@ -2435,9 +2517,9 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_id">
-        <div class="location">at         line 286</div>
+        <div class="location">at         line 297</div>
         <code>            protected        
-    <strong>id</strong>($throwIfNull = true)
+    <strong>id</strong>($throwIfNull = false)
         </code>
     </h3>
     <div class="details">
@@ -2466,7 +2548,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_rowValuesArray">
-        <div class="location">at         line 295</div>
+        <div class="location">at         line 306</div>
         <code>                private    
     <strong>rowValuesArray</strong>($row)
         </code>
@@ -2497,7 +2579,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_rowActionsArray">
-        <div class="location">at         line 309</div>
+        <div class="location">at         line 320</div>
         <code>                private    
     <strong>rowActionsArray</strong>($row)
         </code>
@@ -2527,10 +2609,10 @@ $totalResults needs to be set to number of results without paging applied</p>   
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_validateAndModify">
-        <div class="location">at         line 330</div>
-        <code>                private    
-    <strong>validateAndModify</strong>()
+                    <h3 id="method_unset">
+        <div class="location">at         line 341</div>
+        <code>                private    void
+    <strong>unset</strong>(array $row)
         </code>
     </h3>
     <div class="details">
@@ -2538,9 +2620,148 @@ $totalResults needs to be set to number of results without paging applied</p>   
     
 
                     <div class="method-description">
-                                    <p>Validate and modify values before saving.</p>                                                </div>
+                                    <p>unset columns which we shouldn't recieve before update</p>                                                </div>
                 <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$row</td>
+                <td></td>
+            </tr>
+            </table>
+
             
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_defaults">
+        <div class="location">at         line 353</div>
+        <code>                private    void
+    <strong>defaults</strong>(array $row)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>set defaults</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$row</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_validate">
+        <div class="location">at         line 365</div>
+        <code>                private    void
+    <strong>validate</strong>(array $row)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>validate columns before update</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$row</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_modify">
+        <div class="location">at         line 377</div>
+        <code>                private    void
+    <strong>modify</strong>(array $row)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>modify values before update</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$row</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
             
             
                     </div>
@@ -2549,7 +2770,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_actionCreateForm">
-        <div class="location">at         line 366</div>
+        <div class="location">at         line 402</div>
         <code>                    
     <strong>actionCreateForm</strong>()
         </code>
@@ -2570,7 +2791,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_actionUpdateForm">
-        <div class="location">at         line 375</div>
+        <div class="location">at         line 411</div>
         <code>                    
     <strong>actionUpdateForm</strong>()
         </code>
@@ -2591,7 +2812,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_actionRead">
-        <div class="location">at         line 384</div>
+        <div class="location">at         line 420</div>
         <code>                    
     <strong>actionRead</strong>()
         </code>
@@ -2612,7 +2833,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_actionUpdate">
-        <div class="location">at         line 443</div>
+        <div class="location">at         line 479</div>
         <code>                    
     <strong>actionUpdate</strong>()
         </code>
@@ -2633,7 +2854,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_actionCreate">
-        <div class="location">at         line 452</div>
+        <div class="location">at         line 490</div>
         <code>                    
     <strong>actionCreate</strong>()
         </code>
@@ -2654,7 +2875,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_actionDelete">
-        <div class="location">at         line 461</div>
+        <div class="location">at         line 502</div>
         <code>                    
     <strong>actionDelete</strong>()
         </code>
@@ -2675,7 +2896,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_actionSoftDelete">
-        <div class="location">at         line 469</div>
+        <div class="location">at         line 510</div>
         <code>                    
     <strong>actionSoftDelete</strong>()
         </code>
@@ -2696,7 +2917,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_actionRestore">
-        <div class="location">at         line 477</div>
+        <div class="location">at         line 518</div>
         <code>                    
     <strong>actionRestore</strong>()
         </code>

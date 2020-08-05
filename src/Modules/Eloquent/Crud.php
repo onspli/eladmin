@@ -80,7 +80,6 @@ private function updateOrCreate($entry, $row) : void {
   }
 
   $entry->save();
-  $entry->refresh();
 }
 
 /**
@@ -112,11 +111,10 @@ protected function update(array $row, $id) : void {
 }
 
 protected function get($id) : array {
-  if ($id === null)
-    return $this->model()->toArray();
-
-  $row = $this->model()->find($id)->toArray();
-  return $row;
+  $row = $this->model()->find($id);
+  if (!$row)
+    throw new Exception\BadRequestException( __('Entry not found!') );
+  return $row->toArray();
 }
 
 protected function delete($id) : void {
