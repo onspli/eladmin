@@ -88,6 +88,11 @@ const ASC = 'asc';
 const DESC = 'desc';
 
 /**
+* Default crud request
+*/
+public $defaults = [];
+
+/**
 * Columns chainset class
 */
 protected $crudColumns = Chainset\Columns::class;

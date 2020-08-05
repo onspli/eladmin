@@ -16,6 +16,8 @@ class Events extends Eladmin\Modules\Eloquent\Crud {
 class Tickets extends Eladmin\Modules\Eloquent\Crud {
   protected $model = Examples\Eloquent\Ticket::class;
 
+  public $defaults = ['sortBy' => 'name', 'direction' => 'desc'];
+
   protected function crudColumns() {
     $columns = parent::crudColumns();
     $columns->updated_at->nonlistable();

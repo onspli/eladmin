@@ -1,7 +1,7 @@
 /**
 * Holding crud filter config.
 */
-var crudRequest = {
+var crudRequest = $.extend({}, {
   sortBy : null,
   direction : null,
   resultsPerPage : 10,
@@ -10,7 +10,7 @@ var crudRequest = {
   filters : {},
   trash : 0,
   onlyIds : 0
-};
+}, defaultCrudRequest);
 
 /**
 * Holding response values
