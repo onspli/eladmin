@@ -150,7 +150,7 @@ protected function crudColumns() {
     }
   });
   $cols->passwordhash->set(function($ph, $row) {
-    if ($row['newpassword']) {
+    if ($row['newpassword'] ?? false) {
       return $row['newpassword'];
     }
     return null;
