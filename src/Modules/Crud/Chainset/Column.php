@@ -228,7 +228,7 @@ public function enabled() {
 * Doesn't have any effect on raw (unescaped) columns.
 */
 public function limit($len) {
-  $this->listlimit = $len;
+  $this->limit = $len;
   return $this;
 }
 
