@@ -110,14 +110,14 @@ protected function crudActions() {
 
 protected function crudColumns() {
   $cols = parent::crudColumns();
-  $cols->newpassword->label(__('New password'))->nonlistable()->editable()->password();
-  $cols->newpasswordconfirm->label(__('Confirm new password'))->nonlistable()->editable()->password();
+  $cols->newpassword->label(__('New password'))->nonlistable()->editable()->password()->enabled();
+  $cols->newpasswordconfirm->label(__('Confirm new password'))->nonlistable()->editable()->password()->enabled();
   $cols->passwordhash->hidden()->disabled();
   $cols->updated_at->label(__('Updated'))->nonlistable();
   $cols->created_at->label(__('Created'));
   $cols->login->label(__('Login'));
   $cols->role->label(__('Role'));
-  $cols->authpassword->label('Password')->desc(__('You have to authorize the change with your current password.'))->nonlistable()->password();
+  $cols->authpassword->label('Password')->desc(__('You have to authorize the change with your current password.'))->nonlistable()->password()->enabled();
 
   if ($this->possibleRoles !== null) {
     $cols->role->select($this->possibleRoles);
