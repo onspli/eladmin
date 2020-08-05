@@ -26,6 +26,7 @@ class Tickets extends Eladmin\Modules\Eloquent\Crud {
   protected function crudActions() {
     $actions = parent::crudActions();
     $actions->cancel->label('Cancel')->bulk()->nonlistable()->filter(function($row) { return $row['status'] != 'cancelled'; });
+    $actions->data->done('alert(this.data.msg);');
     return $actions;
   }
 
@@ -35,6 +36,10 @@ class Tickets extends Eladmin\Modules\Eloquent\Crud {
     $this->model()->status = 'cancelled';
     $this->model()->save();
     $this->renderText('Cancelled.');
+  }
+
+  public function actionData() {
+    $this->renderJson(['msg' => 'Ahoj']);
   }
 }
 

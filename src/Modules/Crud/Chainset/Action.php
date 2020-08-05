@@ -113,7 +113,7 @@ public function confirm($str = '') {
 /**
 * JS to be done after action.
 */
-public function done($js=''){
+public function done($js){
   $this->done = $js;
   return $this;
 }
