@@ -227,7 +227,7 @@ public function enabled() {
 * Max length of value to be shown in the table.
 * Doesn't have any effect on raw (unescaped) columns.
 */
-public function limit(integer $len) {
+public function limit($len) {
   $this->listlimit = $len;
   return $this;
 }
