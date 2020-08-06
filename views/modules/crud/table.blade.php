@@ -2,8 +2,8 @@
       <tr>
         <th class="text-center"><input class="bulk-all" type="checkbox"></th>
 @foreach($module->getCrudColumns() as $column => $config)
-<?php if($config->nonlistable) continue; ?>
-        @if($config->nonsortable || !$module->implementsSorting())
+<?php if (!$config->listable) continue; ?>
+        @if(!$config->sortable || !$module->implementsSorting())
         <th class="noselect">
           {{ $config->label ?? $column }}
         </th>

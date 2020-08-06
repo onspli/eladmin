@@ -4,6 +4,8 @@ use \Illuminate\Database\Eloquent;
 
 class Event extends Eloquent\Model {
 
+  protected $dates = ['when'];
+
   function __construct() {
     parent::__construct();
     $schema = $this->getConnection()->getSchemaBuilder();

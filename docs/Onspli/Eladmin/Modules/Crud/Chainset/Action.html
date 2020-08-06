@@ -93,30 +93,30 @@
             <h2>Properties</h2>
 
             <table class="table table-condensed">
-                                                                                                                                                                                                                                                                                                                                                                                              <tr>
+                                                                                                                                                                                                                                                                                                                                                                                                                  <tr>
     <td class="type" id="property_label">
                 public                        
     </td>
     <td>$label</td>
-    <td class="last"></td>
+    <td class="last">Action label.</td>
     <td></td>
 </tr>
 
                                               <tr>
-    <td class="type" id="property_nonlistable">
+    <td class="type" id="property_listable">
                 public                        
     </td>
-    <td>$nonlistable</td>
-    <td class="last"></td>
+    <td>$listable</td>
+    <td class="last">Show action in crud table.</td>
     <td></td>
 </tr>
 
                                               <tr>
-    <td class="type" id="property_noneditable">
+    <td class="type" id="property_editable">
                 public                        
     </td>
-    <td>$noneditable</td>
-    <td class="last"></td>
+    <td>$editable</td>
+    <td class="last">Show action in edit form.</td>
     <td></td>
 </tr>
 
@@ -125,7 +125,7 @@
                 public                        
     </td>
     <td>$style</td>
-    <td class="last"></td>
+    <td class="last">Action style.</td>
     <td></td>
 </tr>
 
@@ -134,7 +134,7 @@
                 public                        
     </td>
     <td>$icon</td>
-    <td class="last"></td>
+    <td class="last">Action icon</td>
     <td></td>
 </tr>
 
@@ -143,7 +143,7 @@
                 public                        
     </td>
     <td>$confirm</td>
-    <td class="last"></td>
+    <td class="last">Confirmation question string.</td>
     <td></td>
 </tr>
 
@@ -152,7 +152,7 @@
                 public                        
     </td>
     <td>$done</td>
-    <td class="last"></td>
+    <td class="last">JS code to be executed when action ends successfully.</td>
     <td></td>
 </tr>
 
@@ -161,7 +161,7 @@
                 public                        
     </td>
     <td>$bulk</td>
-    <td class="last"></td>
+    <td class="last">Enable as bulk action.</td>
     <td></td>
 </tr>
 
@@ -170,11 +170,20 @@
                 public                        
     </td>
     <td>$form</td>
-    <td class="last"></td>
+    <td class="last">Improper action - it generates form.</td>
     <td></td>
 </tr>
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </table>
+                                              <tr>
+    <td class="type" id="property_filter">
+                public                        
+    </td>
+    <td>$filter</td>
+    <td class="last">Callback to determinate if the action should be visible for a particular item.</td>
+    <td></td>
+</tr>
+
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </table>
 
     
             <h2>Public Methods</h2>
@@ -341,8 +350,7 @@
     <div class="col-md-8 type">
         <a href="#method_getName">getName</a>()
         
-                    <p class="no-description">No description</p>
-            </div>
+                    <p>Get normalized name of action</p>    </div>
     <div class="col-md-2"></div>
 </div>
 
@@ -369,8 +377,20 @@
     <div class="col-md-8 type">
         <a href="#method_hidden">hidden</a>()
         
-                    <p class="no-description">No description</p>
-            </div>
+                    <p>Shortcut for nonlistable &amp;&amp; noneditable</p>    </div>
+    <div class="col-md-2"></div>
+</div>
+
+                                      <div class="row">
+    <div class="col-md-1 type">
+                            </div>
+    <div class="col-md-1 type">
+        
+    </div>
+    <div class="col-md-8 type">
+        <a href="#method_filter">filter</a>($func)
+        
+                    <p>Filter.</p>    </div>
     <div class="col-md-2"></div>
 </div>
 
@@ -383,8 +403,7 @@
     <div class="col-md-8 type">
         <a href="#method_confirm">confirm</a>($str = &#039;&#039;)
         
-                    <p class="no-description">No description</p>
-            </div>
+                    <p>Confirm.</p>    </div>
     <div class="col-md-2"></div>
 </div>
 
@@ -395,10 +414,9 @@
         
     </div>
     <div class="col-md-8 type">
-        <a href="#method_done">done</a>($js = &#039;&#039;)
+        <a href="#method_done">done</a>($js)
         
-                    <p class="no-description">No description</p>
-            </div>
+                    <p>JS to be done after action.</p>    </div>
     <div class="col-md-2"></div>
 </div>
 
@@ -411,8 +429,7 @@
     <div class="col-md-8 type">
         <a href="#method_bulk">bulk</a>()
         
-                    <p class="no-description">No description</p>
-            </div>
+                    <p>Bulk action</p>    </div>
     <div class="col-md-2"></div>
 </div>
 
@@ -425,8 +442,7 @@
     <div class="col-md-8 type">
         <a href="#method_nonbulk">nonbulk</a>()
         
-                    <p class="no-description">No description</p>
-            </div>
+                    <p>Not a bulk action</p>    </div>
     <div class="col-md-2"></div>
 </div>
 
@@ -439,8 +455,7 @@
     <div class="col-md-8 type">
         <a href="#method_form">form</a>()
         
-                    <p class="no-description">No description</p>
-            </div>
+                    <p>Form action.</p>    </div>
     <div class="col-md-2"></div>
 </div>
 
@@ -453,8 +468,7 @@
     <div class="col-md-8 type">
         <a href="#method_nonform">nonform</a>()
         
-                    <p class="no-description">No description</p>
-            </div>
+                    <p>Not form action</p>    </div>
     <div class="col-md-2"></div>
 </div>
 
@@ -467,8 +481,7 @@
     <div class="col-md-8 type">
         <a href="#method_nonlistable">nonlistable</a>()
         
-                    <p class="no-description">No description</p>
-            </div>
+                    <p>Do not show in crud table</p>    </div>
     <div class="col-md-2"></div>
 </div>
 
@@ -481,8 +494,7 @@
     <div class="col-md-8 type">
         <a href="#method_listable">listable</a>()
         
-                    <p class="no-description">No description</p>
-            </div>
+                    <p>Show in crud table</p>    </div>
     <div class="col-md-2"></div>
 </div>
 
@@ -495,8 +507,7 @@
     <div class="col-md-8 type">
         <a href="#method_noneditable">noneditable</a>()
         
-                    <p class="no-description">No description</p>
-            </div>
+                    <p>Do not show in edit form</p>    </div>
     <div class="col-md-2"></div>
 </div>
 
@@ -509,8 +520,7 @@
     <div class="col-md-8 type">
         <a href="#method_editable">editable</a>()
         
-                    <p class="no-description">No description</p>
-            </div>
+                    <p>Show in edit form</p>    </div>
     <div class="col-md-2"></div>
 </div>
 
@@ -523,8 +533,7 @@
     <div class="col-md-8 type">
         <a href="#method_danger">danger</a>()
         
-                    <p class="no-description">No description</p>
-            </div>
+                    <p>Style - danger</p>    </div>
     <div class="col-md-2"></div>
 </div>
 
@@ -537,8 +546,7 @@
     <div class="col-md-8 type">
         <a href="#method_primary">primary</a>()
         
-                    <p class="no-description">No description</p>
-            </div>
+                    <p>Style - primary</p>    </div>
     <div class="col-md-2"></div>
 </div>
 
@@ -551,8 +559,7 @@
     <div class="col-md-8 type">
         <a href="#method_secondary">secondary</a>()
         
-                    <p class="no-description">No description</p>
-            </div>
+                    <p>Style . secondary</p>    </div>
     <div class="col-md-2"></div>
 </div>
 
@@ -565,8 +572,7 @@
     <div class="col-md-8 type">
         <a href="#method_success">success</a>()
         
-                    <p class="no-description">No description</p>
-            </div>
+                    <p>Style - success</p>    </div>
     <div class="col-md-2"></div>
 </div>
 
@@ -579,24 +585,23 @@
     <div class="col-md-8 type">
         <a href="#method_warning">warning</a>()
         
-                    <p class="no-description">No description</p>
-            </div>
+                    <p>Style - warning</p>    </div>
     <div class="col-md-2"></div>
 </div>
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          </div>
 
 
         <h2>Protected Methods</h2>
 
             <div class="container-fluid underlined">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </div>
 
 
         <h2>Private Methods</h2>
 
             <div class="container-fluid underlined">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </div>
 
 
         <h2>Details</h2>
@@ -982,7 +987,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getName">
-        <div class="location">at         line 18</div>
+        <div class="location">at         line 61</div>
         <code>final                    
     <strong>getName</strong>()
         </code>
@@ -991,6 +996,8 @@
             
     
 
+                    <div class="method-description">
+                                    <p>Get normalized name of action</p>                                                </div>
                 <div class="tags">
             
             
@@ -1001,7 +1008,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getAction">
-        <div class="location">at         line 22</div>
+        <div class="location">at         line 68</div>
         <code>final                    
     <strong>getAction</strong>()
         </code>
@@ -1020,7 +1027,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_hidden">
-        <div class="location">at         line 40</div>
+        <div class="location">at         line 89</div>
         <code>                    
     <strong>hidden</strong>()
         </code>
@@ -1029,6 +1036,8 @@
             
     
 
+                    <div class="method-description">
+                                    <p>Shortcut for nonlistable &amp;&amp; noneditable</p>                                                </div>
                 <div class="tags">
             
             
@@ -1038,8 +1047,39 @@
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_filter">
+        <div class="location">at         line 98</div>
+        <code>                    
+    <strong>filter</strong>($func)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Filter.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$func</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_confirm">
-        <div class="location">at         line 46</div>
+        <div class="location">at         line 106</div>
         <code>                    
     <strong>confirm</strong>($str = &#039;&#039;)
         </code>
@@ -1048,6 +1088,8 @@
             
     
 
+                    <div class="method-description">
+                                    <p>Confirm.</p>                                                </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
@@ -1068,15 +1110,17 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_done">
-        <div class="location">at         line 53</div>
+        <div class="location">at         line 116</div>
         <code>                    
-    <strong>done</strong>($js = &#039;&#039;)
+    <strong>done</strong>($js)
         </code>
     </h3>
     <div class="details">
             
     
 
+                    <div class="method-description">
+                                    <p>JS to be done after action.</p>                                                </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
@@ -1097,7 +1141,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_bulk">
-        <div class="location">at         line 58</div>
+        <div class="location">at         line 124</div>
         <code>                    
     <strong>bulk</strong>()
         </code>
@@ -1106,6 +1150,8 @@
             
     
 
+                    <div class="method-description">
+                                    <p>Bulk action</p>                                                </div>
                 <div class="tags">
             
             
@@ -1116,7 +1162,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_nonbulk">
-        <div class="location">at         line 63</div>
+        <div class="location">at         line 132</div>
         <code>                    
     <strong>nonbulk</strong>()
         </code>
@@ -1125,6 +1171,8 @@
             
     
 
+                    <div class="method-description">
+                                    <p>Not a bulk action</p>                                                </div>
                 <div class="tags">
             
             
@@ -1135,7 +1183,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_form">
-        <div class="location">at         line 68</div>
+        <div class="location">at         line 141</div>
         <code>                    
     <strong>form</strong>()
         </code>
@@ -1144,6 +1192,8 @@
             
     
 
+                    <div class="method-description">
+                                    <p>Form action.</p>                    <p>Also adds noneditable - cannot show form when edit form already shown.</p>                            </div>
                 <div class="tags">
             
             
@@ -1154,7 +1204,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_nonform">
-        <div class="location">at         line 74</div>
+        <div class="location">at         line 150</div>
         <code>                    
     <strong>nonform</strong>()
         </code>
@@ -1163,6 +1213,8 @@
             
     
 
+                    <div class="method-description">
+                                    <p>Not form action</p>                                                </div>
                 <div class="tags">
             
             
@@ -1173,7 +1225,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_nonlistable">
-        <div class="location">at         line 79</div>
+        <div class="location">at         line 158</div>
         <code>                    
     <strong>nonlistable</strong>()
         </code>
@@ -1182,6 +1234,8 @@
             
     
 
+                    <div class="method-description">
+                                    <p>Do not show in crud table</p>                                                </div>
                 <div class="tags">
             
             
@@ -1192,7 +1246,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_listable">
-        <div class="location">at         line 84</div>
+        <div class="location">at         line 166</div>
         <code>                    
     <strong>listable</strong>()
         </code>
@@ -1201,6 +1255,8 @@
             
     
 
+                    <div class="method-description">
+                                    <p>Show in crud table</p>                                                </div>
                 <div class="tags">
             
             
@@ -1211,7 +1267,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_noneditable">
-        <div class="location">at         line 89</div>
+        <div class="location">at         line 174</div>
         <code>                    
     <strong>noneditable</strong>()
         </code>
@@ -1220,6 +1276,8 @@
             
     
 
+                    <div class="method-description">
+                                    <p>Do not show in edit form</p>                                                </div>
                 <div class="tags">
             
             
@@ -1230,7 +1288,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_editable">
-        <div class="location">at         line 94</div>
+        <div class="location">at         line 182</div>
         <code>                    
     <strong>editable</strong>()
         </code>
@@ -1239,6 +1297,8 @@
             
     
 
+                    <div class="method-description">
+                                    <p>Show in edit form</p>                                                </div>
                 <div class="tags">
             
             
@@ -1249,7 +1309,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_danger">
-        <div class="location">at         line 99</div>
+        <div class="location">at         line 190</div>
         <code>                    
     <strong>danger</strong>()
         </code>
@@ -1258,6 +1318,8 @@
             
     
 
+                    <div class="method-description">
+                                    <p>Style - danger</p>                                                </div>
                 <div class="tags">
             
             
@@ -1268,7 +1330,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_primary">
-        <div class="location">at         line 104</div>
+        <div class="location">at         line 198</div>
         <code>                    
     <strong>primary</strong>()
         </code>
@@ -1277,6 +1339,8 @@
             
     
 
+                    <div class="method-description">
+                                    <p>Style - primary</p>                                                </div>
                 <div class="tags">
             
             
@@ -1287,7 +1351,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_secondary">
-        <div class="location">at         line 109</div>
+        <div class="location">at         line 206</div>
         <code>                    
     <strong>secondary</strong>()
         </code>
@@ -1296,6 +1360,8 @@
             
     
 
+                    <div class="method-description">
+                                    <p>Style . secondary</p>                                                </div>
                 <div class="tags">
             
             
@@ -1306,7 +1372,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_success">
-        <div class="location">at         line 114</div>
+        <div class="location">at         line 214</div>
         <code>                    
     <strong>success</strong>()
         </code>
@@ -1315,6 +1381,8 @@
             
     
 
+                    <div class="method-description">
+                                    <p>Style - success</p>                                                </div>
                 <div class="tags">
             
             
@@ -1325,7 +1393,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_warning">
-        <div class="location">at         line 119</div>
+        <div class="location">at         line 222</div>
         <code>                    
     <strong>warning</strong>()
         </code>
@@ -1334,6 +1402,8 @@
             
     
 
+                    <div class="method-description">
+                                    <p>Style - warning</p>                                                </div>
                 <div class="tags">
             
             

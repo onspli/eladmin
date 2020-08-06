@@ -9,7 +9,7 @@
 
   @section('form-body')
   @foreach($module->getCrudColumns() as $column)
-    <?php if($column->noneditable) continue; ?>
+    <?php if (!$column->editable) continue; ?>
     @component('components.inputs.'.$column->input, ['column' => $column, 'row' => $row])
     @endcomponent
   @endforeach
@@ -24,8 +24,15 @@
 <?php
 $elaActions = [];
 foreach ($module->getCrudActions() as $action) {
-  if(!$module->auth($action->getName())) continue;
-  if($action->noneditable) continue;
+  if (!$module->auth($action->getName()))
+    continue;
+  if (!$action->editable)
+    continue;
+  if ($action->filter !== null) {
+    $show = ($action->filter)($row);
+    if (!$show)
+      continue;
+  }
   $elaActions[] = $action;
 }
 ?>

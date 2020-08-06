@@ -88,19 +88,39 @@ const ASC = 'asc';
 const DESC = 'desc';
 
 /**
+* Default crud request
+*/
+public $defaults = [];
+
+/**
+* Columns chainset class
+*/
+protected $crudColumns = Chainset\Columns::class;
+
+/**
+* Actions chainset class
+*/
+protected $crudActions = Chainset\Actions::class;
+
+/**
+* Filters chainset class
+*/
+protected $crudFilters = Chainset\Filters::class;
+
+/**
 * Cached columns chainset
 */
-private $crudColumns = null;
+private $crudColumnsCached = null;
 
 /**
 * Cached actions chainset;
 */
-private $crudActions = null;
+private $crudActionsCached = null;
 
 /**
 * Cached filters chainset.
 */
-private $crudFilters = null;
+private $crudFiltersCached = null;
 
 /**
 * IMPLEMENT. Does CRUD use soft deletes?
@@ -156,7 +176,18 @@ abstract protected function create(array $values) : void;
 abstract protected function update(array $values, $id) : void;
 
 /**
-* IMPLEMENT. Read one row, or get default one ($id = null)
+* Read default row
+* Returns row as an associative array ['columnName' => 'value']
+*/
+protected function default() : array {
+  $row = [];
+  $this->defaults($row);
+  $this->modify($row);
+  return $row;
+}
+
+/**
+* IMPLEMENT. Read one row.
 * Returns row as an associative array ['columnName' => 'value']
 */
 abstract protected function get($id) : array;
@@ -187,7 +218,9 @@ abstract protected function read(array $request, &$totalResults) : array;
 * IMPLEMENT. Default columns chainset. Override to configure columns.
 */
 protected function crudColumns() {
-  $columns = new Chainset\Columns;
+  if (!is_a($this->crudColumns, Chainset\Columns::class, true))
+    throw new Exception\Exception($this->crudColumns . ' is not a subclass of ' . Chainset\Columns::class);
+  $columns = new $this->crudColumns;
   return $columns;
 }
 
@@ -195,7 +228,9 @@ protected function crudColumns() {
 * Default actions chainset. Override to configure actions.
 */
 protected function crudActions() {
-  $actions = new Chainset\Actions;
+  if (!is_a($this->crudActions, Chainset\Actions::class, true))
+    throw new Exception\Exception($this->crudActions . ' is not a subclass of ' . Chainset\Actions::class);
+  $actions = new $this->crudActions;
 
   $actions->create->icon('<i class="fas fa-plus-circle"></i>')->label(__('Add'))->hidden();
   $actions->updateForm->hidden()->label('')->style('primary')->icon('<i class="fas fa-edit"></i>')->nonbulk();
@@ -204,7 +239,7 @@ protected function crudActions() {
 
   if ($this->implementsSoftDeletes()) {
     $actions->restore->style('success')->label(__('Restore'))->icon('<i class="fas fa-recycle"></i>')->bulk()->hidden();
-    $actions->softDelete->style('danger')->label(__('Move to trash'))->icon('<i class="fas fa-trash-alt"></i>')->bulk()->done('modalClose();');
+    $actions->softDelete->style('danger')->label(__('Move to trash'))->icon('<i class="fas fa-trash-alt"></i>')->bulk()->done('modalClose();')->confirm();
     $actions->delete->hidden();
   } else {
     $actions->delete->listable()->editable();
@@ -221,34 +256,36 @@ protected function crudActions() {
 * Default filters chainset. Override to configure filters.
 */
 protected function crudFilters() {
-  return new Chainset\Filters;
+  if (!is_a($this->crudFilters, Chainset\Filters::class, true))
+    throw new Exception\Exception($this->crudFilters . ' is not a subclass of ' . Chainset\Filters::class);
+  return new $this->crudFilters;
 }
 
 /**
 * Get columns chainset.
 */
-final public function getCrudColumns() {
-  if ($this->crudColumns === null)
-    $this->crudColumns = $this->crudColumns();
-  return $this->crudColumns;
+final public function getCrudColumns() : Chainset\Columns {
+  if ($this->crudColumnsCached === null)
+    $this->crudColumnsCached = $this->crudColumns();
+  return $this->crudColumnsCached;
 }
 
 /**
 * Get actions chainset.
 */
-final public function getCrudActions() {
-  if ($this->crudActions === null)
-    $this->crudActions = $this->crudActions();
-  return $this->crudActions;
+final public function getCrudActions() : Chainset\Actions {
+  if ($this->crudActionsCached === null)
+    $this->crudActionsCached = $this->crudActions();
+  return $this->crudActionsCached;
 }
 
 /**
 * Get filters chainset.
 */
-final public function getCrudFilters() {
-  if ($this->crudFilters === null)
-    $this->crudFilters = $this->crudFilters();
-  return $this->crudFilters;
+final public function getCrudFilters() : Chainset\Filters {
+  if ($this->crudFiltersCached === null)
+    $this->crudFiltersCached = $this->crudFilters();
+  return $this->crudFiltersCached;
 }
 
 /**
@@ -262,7 +299,7 @@ protected function views() : array {
 /**
 * Return ID of the row which should be affected by the action.
 */
-protected function id($throwIfNull = true) {
+protected function id($throwIfNull = false) {
   if (!isset($_GET['id']) && $throwIfNull)
     throw new Exception\BadRequestException(__('Entry not found!'));
   return $_GET['id'] ?? null;
@@ -275,7 +312,7 @@ private function rowValuesArray($row) {
   $crudColumns = $this->getCrudColumns();
   $values = [];
   foreach($crudColumns as $column) {
-    if($column->nonlistable ?? false)
+    if (!$column->listable)
       continue;
     $values[] = $column->getValue($row);
   }
@@ -288,39 +325,67 @@ private function rowValuesArray($row) {
 private function rowActionsArray($row) {
   $crudActions = $this->getCrudActions();
   $actions = array();
-  foreach($crudActions as $action) {
-    if(!$this->auth($action->getName()))
+  foreach ($crudActions as $action) {
+    if (!$this->auth($action->getName()))
       continue;
-    if($action->nonlistable)
+    if (!$action->listable)
       continue;
+    if ($action->filter !== null) {
+      $show = ($action->filter)($row);
+      if (!$show)
+        continue;
+    }
     $actions[] = $action->getName();
   }
   return $actions;
 }
 
 /**
-* Validate and modify values before saving.
+* unset columns which we shouldn't recieve before update
 */
-private function validateAndModify(){
+private function unset(array &$row) : void {
   $columns = $this->getCrudColumns();
-  // unset columns which we shouldn't recieve
-  foreach ($_POST as $key => $value) {
-    if (!isset($columns->$key) || $columns->$key->disabled || $columns->$key->noneditable) {
-      unset($_POST[$key]);
+  foreach ($row as $key => $value) {
+    if (!isset($columns->$key) || $columns->$key->disabled || !$columns->$key->editable) {
+      unset($row[$key]);
     }
   }
-  // validate values
-  foreach ($columns as $column) {
-    $column->evalProperty('validate', $_POST);
+}
+
+/**
+* set defaults
+*/
+private function defaults(array &$row) : void {
+  $columns = $this->getCrudColumns();
+  foreach ($columns as $key => $column) {
+    if (isset($row[$key]) || !isset($column->default))
+      continue;
+    $row[$key] = $column->evalProperty('default');
   }
-  // modify values
+}
+
+/**
+* validate columns before update
+*/
+private function validate(array $row) : void {
+  $columns = $this->getCrudColumns();
+  foreach ($columns as $key => $column) {
+    if ($columns->$key->disabled || !$columns->$key->editable)
+      continue;
+    $column->evalProperty('validate', $row);
+  }
+}
+
+/**
+* modify values before update
+*/
+private function modify(array &$row) : void {
+  $columns = $this->getCrudColumns();
   foreach ($columns as $key => $column) {
     if ($column->setformat) {
-      $value = $column->evalProperty('setformat', $_POST);
-      if ($value !== null) {
-        $_POST[$key] = $value;
-      } else {
-        unset($_POST[$key]);
+      $value = $column->evalProperty('setformat', $row);
+      if (isset($value) || array_key_exists($key, $row)) {
+        $row[$key] = $value;
       }
     }
   }
@@ -328,8 +393,10 @@ private function validateAndModify(){
 
 public function prepare() : void {
   if (($_GET['update'] ?? null) && $this->auth('update')) {
-    $this->validateAndModify();
-    $this->update($_POST, $this->id());
+    $this->unset($_POST);
+    $this->validate($_POST);
+    $this->modify($_POST);
+    $this->update($_POST, $this->id(true));
   }
 }
 
@@ -340,7 +407,7 @@ public function prepare() : void {
 public function actionCreateForm(){
   if(!$this->auth('create'))
     throw new Exception\UnauthorizedException();
-  $this->renderHtml($this->render('createForm', ['row' => $this->get(null)]));
+  $this->renderHtml($this->render('createForm', ['row' => $this->default()]));
 }
 
 /**
@@ -349,7 +416,7 @@ public function actionCreateForm(){
 public function actionUpdateForm(){
   if(!$this->auth('read'))
     throw new Exception\UnauthorizedException();
-  $this->renderHtml($this->render('updateForm', ['row' => $this->get($this->id())]));
+  $this->renderHtml($this->render('updateForm', ['row' => $this->get($this->id(true))]));
 }
 
 /**
@@ -415,8 +482,10 @@ public function actionRead() {
 * ACTION. Edit database entry.
 */
 public function actionUpdate(){
-  $this->validateAndModify();
-  $this->update($_POST, $this->id());
+  $this->unset($_POST);
+  $this->validate($_POST);
+  $this->modify($_POST);
+  $this->update($_POST, $this->id(true));
   $this->renderText(__('Entry modified.'));
 }
 
@@ -424,7 +493,10 @@ public function actionUpdate(){
 * ACTION. Create database entry.
 */
 public function actionCreate(){
-  $this->validateAndModify();
+  $this->unset($_POST);
+  $this->defaults($_POST);
+  $this->validate($_POST);
+  $this->modify($_POST);
   $this->create($_POST);
   $this->renderText(__('Entry added.'));
 }
@@ -433,7 +505,7 @@ public function actionCreate(){
 * ACTION. Hard delete.
 */
 public function actionDelete(){
-  $this->delete($this->id());
+  $this->delete($this->id(true));
   $this->renderText(__('Entry deleted.'));
 }
 
@@ -441,7 +513,7 @@ public function actionDelete(){
 * ACTION. Soft delete.
 */
 public function actionSoftDelete(){
-  $this->softDelete($this->id());
+  $this->softDelete($this->id(true));
   $this->renderText(__('Entry moved to trash.'));
 }
 
@@ -449,7 +521,7 @@ public function actionSoftDelete(){
 * ACTION. Restore.
 */
 public function actionRestore(){
-  $this->restore($this->id());
+  $this->restore($this->id(true));
   $this->renderText(__('Entry restored.'));
 }
 

@@ -127,7 +127,16 @@
             <h2>Properties</h2>
 
             <table class="table table-condensed">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          <tr>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  <tr>
+    <td class="type" id="property_defaultRequest">
+                public                        
+    </td>
+    <td>$defaultRequest</td>
+    <td class="last">Default crud request</td>
+    <td><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#property_defaultRequest"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a></small></td>
+</tr>
+
+                                                                                                                                                                                                                                                                                  <tr>
     <td class="type" id="property_title">
                         protected                
     </td>
@@ -172,7 +181,34 @@
     <td><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#property_actionRoles"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></td>
 </tr>
 
-                                                                                                                              <tr>
+                                                                                      <tr>
+    <td class="type" id="property_crudColumns">
+                        protected                
+    </td>
+    <td>$crudColumns</td>
+    <td class="last"></td>
+    <td><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Modules/Eloquent/Crud.html#property_crudColumns"><abbr title="Onspli\Eladmin\Modules\Eloquent\Crud">Crud</abbr></a></small></td>
+</tr>
+
+                                              <tr>
+    <td class="type" id="property_crudActions">
+                        protected                
+    </td>
+    <td>$crudActions</td>
+    <td class="last">Actions chainset class</td>
+    <td><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#property_crudActions"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a></small></td>
+</tr>
+
+                                              <tr>
+    <td class="type" id="property_crudFilters">
+                        protected                
+    </td>
+    <td>$crudFilters</td>
+    <td class="last">Filters chainset class</td>
+    <td><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#property_crudFilters"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a></small></td>
+</tr>
+
+                                                                                                          <tr>
     <td class="type" id="property_model">
                         protected                
     </td>
@@ -190,7 +226,7 @@
     <td></td>
 </tr>
 
-                                                                                                                                                                                                                                                                                                                        </table>
+                                                                                                                                                                                                                                                                                                                                                                                                        </table>
 
     
             <h2>Public Methods</h2>
@@ -309,7 +345,7 @@
     <div class="col-md-8 type">
         <a href="#method_prepare">prepare</a>()
         
-                    <p>Prepare action. Initialise model() with the requested db entry.</p>    </div>
+                    <p>Runs before any action is executed.</p>    </div>
     <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Modules/Eloquent/Crud.html#method_prepare"><abbr title="Onspli\Eladmin\Modules\Eloquent\Crud">Crud</abbr></a></small></div>
 </div>
 
@@ -426,15 +462,15 @@
     <div class="col-md-8 type">
         <a href="#method_primary">primary</a>()
         
-                    <p>Primary column name.</p>    </div>
+                    <p>IMPLEMENT. Name of primary key column. Default is 'id'.</p>    </div>
     <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Modules/Eloquent/Crud.html#method_primary"><abbr title="Onspli\Eladmin\Modules\Eloquent\Crud">Crud</abbr></a></small></div>
 </div>
 
-                                                                                                                                                                                                                          <div class="row">
+                                                                                                                                                                                                                                            <div class="row">
     <div class="col-md-1 type">
         final                    </div>
     <div class="col-md-1 type">
-        
+        <a href="../../../../Onspli/Eladmin/Modules/Crud/Chainset/Columns.html"><abbr title="Onspli\Eladmin\Modules\Crud\Chainset\Columns">Columns</abbr></a>
     </div>
     <div class="col-md-8 type">
         <a href="#method_getCrudColumns">getCrudColumns</a>()
@@ -447,7 +483,7 @@
     <div class="col-md-1 type">
         final                    </div>
     <div class="col-md-1 type">
-        
+        <a href="../../../../Onspli/Eladmin/Modules/Crud/Chainset/Actions.html"><abbr title="Onspli\Eladmin\Modules\Crud\Chainset\Actions">Actions</abbr></a>
     </div>
     <div class="col-md-8 type">
         <a href="#method_getCrudActions">getCrudActions</a>()
@@ -460,7 +496,7 @@
     <div class="col-md-1 type">
         final                    </div>
     <div class="col-md-1 type">
-        
+        <a href="../../../../Onspli/Eladmin/Modules/Crud/Chainset/Filters.html"><abbr title="Onspli\Eladmin\Modules\Crud\Chainset\Filters">Filters</abbr></a>
     </div>
     <div class="col-md-8 type">
         <a href="#method_getCrudFilters">getCrudFilters</a>()
@@ -469,7 +505,7 @@
     <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_getCrudFilters"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a></small></div>
 </div>
 
-                                                                                                              <div class="row">
+                                                                                                                                                                    <div class="row">
     <div class="col-md-1 type">
                             </div>
     <div class="col-md-1 type">
@@ -573,7 +609,7 @@
     <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionRestore"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a></small></div>
 </div>
 
-                                                                                                              <div class="row">
+                                                                                            <div class="row">
     <div class="col-md-1 type">
                             </div>
     <div class="col-md-1 type">
@@ -798,7 +834,7 @@ Retrurn null if Eladmin edit profile dialog should be disabled.</p>    </div>
     <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#method_renderJson"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
 </div>
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      </div>
 
 
         <h2>Protected Methods</h2>
@@ -863,10 +899,23 @@ Retrurn null if Eladmin edit profile dialog should be disabled.</p>    </div>
         array
     </div>
     <div class="col-md-8 type">
+        <a href="#method_default">default</a>()
+        
+                    <p>Read default row
+Returns row as an associative array ['columnName' => 'value']</p>    </div>
+    <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_default"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a></small></div>
+</div>
+
+                                      <div class="row">
+    <div class="col-md-1 type">
+                            </div>
+    <div class="col-md-1 type">
+        array
+    </div>
+    <div class="col-md-8 type">
         <a href="#method_get">get</a>($id)
         
-                    <p>IMPLEMENT. Read one row, or get default one ($id = null)
-Returns row as an associative array ['columnName' => 'value']</p>    </div>
+                    <p>IMPLEMENT. Read one row.</p>    </div>
     <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Modules/Eloquent/Crud.html#method_get"><abbr title="Onspli\Eladmin\Modules\Eloquent\Crud">Crud</abbr></a></small></div>
 </div>
 
@@ -931,7 +980,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
     <div class="col-md-8 type">
         <a href="#method_crudColumns">crudColumns</a>()
         
-                    <p>Default columns setting.</p>    </div>
+                    <p>IMPLEMENT. Default columns chainset. Override to configure columns.</p>    </div>
     <div class="col-md-2"></div>
 </div>
 
@@ -968,13 +1017,13 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
         
     </div>
     <div class="col-md-8 type">
-        <a href="#method_id">id</a>($throwIfNull = true)
+        <a href="#method_id">id</a>($throwIfNull = false)
         
                     <p>Return ID of the row which should be affected by the action.</p>    </div>
     <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_id"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a></small></div>
 </div>
 
-                                                                                                                                                                                                                                            <div class="row">
+                                                                                                                                                                                                                                                                                                  <div class="row">
     <div class="col-md-1 type">
                             </div>
     <div class="col-md-1 type">
@@ -991,19 +1040,6 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
     <div class="col-md-1 type">
                             </div>
     <div class="col-md-1 type">
-        bool
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_tableExists">tableExists</a>()
-        
-                    <p>Check if table for the model exists in the database;</p>    </div>
-    <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Modules/Eloquent/Crud.html#method_tableExists"><abbr title="Onspli\Eladmin\Modules\Eloquent\Crud">Crud</abbr></a></small></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-                            </div>
-    <div class="col-md-1 type">
         array
     </div>
     <div class="col-md-8 type">
@@ -1013,13 +1049,13 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
     <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Modules/Eloquent/Crud.html#method_tableColumns"><abbr title="Onspli\Eladmin\Modules\Eloquent\Crud">Crud</abbr></a></small></div>
 </div>
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              </div>
 
 
         <h2>Private Methods</h2>
 
             <div class="container-fluid underlined">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </div>
 
 
         <h2>Details</h2>
@@ -1313,7 +1349,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_prepare">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Eloquent/Crud.html#method_prepare"><abbr title="Onspli\Eladmin\Modules\Eloquent\Crud">Crud</abbr></a> at         line 87</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Eloquent/Crud.html#method_prepare"><abbr title="Onspli\Eladmin\Modules\Eloquent\Crud">Crud</abbr></a> at         line 88</div>
         <code>                    void
     <strong>prepare</strong>()
         </code>
@@ -1323,7 +1359,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
     
 
                     <div class="method-description">
-                                    <p>Prepare action. Initialise model() with the requested db entry.</p>                                                </div>
+                                    <p>Runs before any action is executed.</p>                                                </div>
                 <div class="tags">
             
                             <h4>Return Value</h4>
@@ -1428,7 +1464,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_views">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_views"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 257</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_views"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 294</div>
         <code>            protected        array
     <strong>views</strong>()
         </code>
@@ -1843,7 +1879,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_implementsSoftDeletes">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Eloquent/Crud.html#method_implementsSoftDeletes"><abbr title="Onspli\Eladmin\Modules\Eloquent\Crud">Crud</abbr></a> at         line 22</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Eloquent/Crud.html#method_implementsSoftDeletes"><abbr title="Onspli\Eladmin\Modules\Eloquent\Crud">Crud</abbr></a> at         line 24</div>
         <code>                    bool
     <strong>implementsSoftDeletes</strong>()
         </code>
@@ -1873,7 +1909,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_implementsSearch">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Eloquent/Crud.html#method_implementsSearch"><abbr title="Onspli\Eladmin\Modules\Eloquent\Crud">Crud</abbr></a> at         line 34</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Eloquent/Crud.html#method_implementsSearch"><abbr title="Onspli\Eladmin\Modules\Eloquent\Crud">Crud</abbr></a> at         line 36</div>
         <code>                    bool
     <strong>implementsSearch</strong>()
         </code>
@@ -1903,7 +1939,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_implementsPaging">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Eloquent/Crud.html#method_implementsPaging"><abbr title="Onspli\Eladmin\Modules\Eloquent\Crud">Crud</abbr></a> at         line 30</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Eloquent/Crud.html#method_implementsPaging"><abbr title="Onspli\Eladmin\Modules\Eloquent\Crud">Crud</abbr></a> at         line 32</div>
         <code>                    bool
     <strong>implementsPaging</strong>()
         </code>
@@ -1933,7 +1969,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_implementsSorting">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Eloquent/Crud.html#method_implementsSorting"><abbr title="Onspli\Eladmin\Modules\Eloquent\Crud">Crud</abbr></a> at         line 26</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Eloquent/Crud.html#method_implementsSorting"><abbr title="Onspli\Eladmin\Modules\Eloquent\Crud">Crud</abbr></a> at         line 28</div>
         <code>                    bool
     <strong>implementsSorting</strong>()
         </code>
@@ -1963,7 +1999,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_implementsFilters">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Eloquent/Crud.html#method_implementsFilters"><abbr title="Onspli\Eladmin\Modules\Eloquent\Crud">Crud</abbr></a> at         line 38</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Eloquent/Crud.html#method_implementsFilters"><abbr title="Onspli\Eladmin\Modules\Eloquent\Crud">Crud</abbr></a> at         line 40</div>
         <code>                    bool
     <strong>implementsFilters</strong>()
         </code>
@@ -1993,7 +2029,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_primary">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Eloquent/Crud.html#method_primary"><abbr title="Onspli\Eladmin\Modules\Eloquent\Crud">Crud</abbr></a> at         line 63</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Eloquent/Crud.html#method_primary"><abbr title="Onspli\Eladmin\Modules\Eloquent\Crud">Crud</abbr></a> at         line 65</div>
         <code>                    string
     <strong>primary</strong>()
         </code>
@@ -2003,7 +2039,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
     
 
                     <div class="method-description">
-                                    <p>Primary column name.</p>                                                </div>
+                                    <p>IMPLEMENT. Name of primary key column. Default is 'id'.</p>                                                </div>
                 <div class="tags">
             
                             <h4>Return Value</h4>
@@ -2023,7 +2059,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_create">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Eloquent/Crud.html#method_create"><abbr title="Onspli\Eladmin\Modules\Eloquent\Crud">Crud</abbr></a> at         line 100</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Eloquent/Crud.html#method_create"><abbr title="Onspli\Eladmin\Modules\Eloquent\Crud">Crud</abbr></a> at         line 101</div>
         <code>            protected        void
     <strong>create</strong>(array $row)
         </code>
@@ -2063,7 +2099,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_update">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Eloquent/Crud.html#method_update"><abbr title="Onspli\Eladmin\Modules\Eloquent\Crud">Crud</abbr></a> at         line 105</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Eloquent/Crud.html#method_update"><abbr title="Onspli\Eladmin\Modules\Eloquent\Crud">Crud</abbr></a> at         line 106</div>
         <code>            protected        void
     <strong>update</strong>(array $row, $id)
         </code>
@@ -2107,8 +2143,39 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_default">
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_default"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 182</div>
+        <code>            protected        array
+    <strong>default</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Read default row
+Returns row as an associative array ['columnName' => 'value']</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_get">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Eloquent/Crud.html#method_get"><abbr title="Onspli\Eladmin\Modules\Eloquent\Crud">Crud</abbr></a> at         line 112</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Eloquent/Crud.html#method_get"><abbr title="Onspli\Eladmin\Modules\Eloquent\Crud">Crud</abbr></a> at         line 113</div>
         <code>            protected        array
     <strong>get</strong>($id)
         </code>
@@ -2118,8 +2185,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
     
 
                     <div class="method-description">
-                                    <p>IMPLEMENT. Read one row, or get default one ($id = null)
-Returns row as an associative array ['columnName' => 'value']</p>                                                </div>
+                                    <p>IMPLEMENT. Read one row.</p>                    <p>Returns row as an associative array ['columnName' => 'value']</p>                            </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
@@ -2315,7 +2381,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_crudColumns">
-        <div class="location">at         line 110</div>
+        <div class="location">at         line 111</div>
         <code>            protected        
     <strong>crudColumns</strong>()
         </code>
@@ -2325,7 +2391,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
     
 
                     <div class="method-description">
-                                    <p>Default columns setting.</p>                                                </div>
+                                    <p>IMPLEMENT. Default columns chainset. Override to configure columns.</p>                                                </div>
                 <div class="tags">
             
             
@@ -2357,7 +2423,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_crudFilters">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_crudFilters"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 223</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_crudFilters"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 258</div>
         <code>            protected        
     <strong>crudFilters</strong>()
         </code>
@@ -2378,8 +2444,8 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_getCrudColumns">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_getCrudColumns"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 230</div>
-        <code>final                    
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_getCrudColumns"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 267</div>
+        <code>final                    <a href="../../../../Onspli/Eladmin/Modules/Crud/Chainset/Columns.html"><abbr title="Onspli\Eladmin\Modules\Crud\Chainset\Columns">Columns</abbr></a>
     <strong>getCrudColumns</strong>()
         </code>
     </h3>
@@ -2391,6 +2457,15 @@ $totalResults needs to be set to number of results without paging applied</p>   
                                     <p>Get columns chainset.</p>                                                </div>
                 <div class="tags">
             
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../../Onspli/Eladmin/Modules/Crud/Chainset/Columns.html"><abbr title="Onspli\Eladmin\Modules\Crud\Chainset\Columns">Columns</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
             
             
                     </div>
@@ -2399,8 +2474,8 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_getCrudActions">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_getCrudActions"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 239</div>
-        <code>final                    
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_getCrudActions"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 276</div>
+        <code>final                    <a href="../../../../Onspli/Eladmin/Modules/Crud/Chainset/Actions.html"><abbr title="Onspli\Eladmin\Modules\Crud\Chainset\Actions">Actions</abbr></a>
     <strong>getCrudActions</strong>()
         </code>
     </h3>
@@ -2412,6 +2487,15 @@ $totalResults needs to be set to number of results without paging applied</p>   
                                     <p>Get actions chainset.</p>                                                </div>
                 <div class="tags">
             
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../../Onspli/Eladmin/Modules/Crud/Chainset/Actions.html"><abbr title="Onspli\Eladmin\Modules\Crud\Chainset\Actions">Actions</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
             
             
                     </div>
@@ -2420,8 +2504,8 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_getCrudFilters">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_getCrudFilters"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 248</div>
-        <code>final                    
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_getCrudFilters"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 285</div>
+        <code>final                    <a href="../../../../Onspli/Eladmin/Modules/Crud/Chainset/Filters.html"><abbr title="Onspli\Eladmin\Modules\Crud\Chainset\Filters">Filters</abbr></a>
     <strong>getCrudFilters</strong>()
         </code>
     </h3>
@@ -2433,6 +2517,15 @@ $totalResults needs to be set to number of results without paging applied</p>   
                                     <p>Get filters chainset.</p>                                                </div>
                 <div class="tags">
             
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../../Onspli/Eladmin/Modules/Crud/Chainset/Filters.html"><abbr title="Onspli\Eladmin\Modules\Crud\Chainset\Filters">Filters</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
             
             
                     </div>
@@ -2441,9 +2534,9 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_id">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_id"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 265</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_id"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 302</div>
         <code>            protected        
-    <strong>id</strong>($throwIfNull = true)
+    <strong>id</strong>($throwIfNull = false)
         </code>
     </h3>
     <div class="details">
@@ -2472,7 +2565,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_rowValuesArray">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_rowValuesArray"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 274</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_rowValuesArray"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 311</div>
         <code>                private    
     <strong>rowValuesArray</strong>($row)
         </code>
@@ -2503,7 +2596,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_rowActionsArray">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_rowActionsArray"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 288</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_rowActionsArray"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 325</div>
         <code>                private    
     <strong>rowActionsArray</strong>($row)
         </code>
@@ -2533,10 +2626,10 @@ $totalResults needs to be set to number of results without paging applied</p>   
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_validateAndModify">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_validateAndModify"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 304</div>
-        <code>                private    
-    <strong>validateAndModify</strong>()
+                    <h3 id="method_unset">
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_unset"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 346</div>
+        <code>                private    void
+    <strong>unset</strong>(array $row)
         </code>
     </h3>
     <div class="details">
@@ -2544,9 +2637,148 @@ $totalResults needs to be set to number of results without paging applied</p>   
     
 
                     <div class="method-description">
-                                    <p>Validate and modify values before saving.</p>                                                </div>
+                                    <p>unset columns which we shouldn't recieve before update</p>                                                </div>
                 <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$row</td>
+                <td></td>
+            </tr>
+            </table>
+
             
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_defaults">
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_defaults"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 358</div>
+        <code>                private    void
+    <strong>defaults</strong>(array $row)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>set defaults</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$row</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_validate">
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_validate"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 370</div>
+        <code>                private    void
+    <strong>validate</strong>(array $row)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>validate columns before update</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$row</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_modify">
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_modify"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 382</div>
+        <code>                private    void
+    <strong>modify</strong>(array $row)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>modify values before update</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$row</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
             
             
                     </div>
@@ -2555,7 +2787,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_actionCreateForm">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionCreateForm"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 340</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionCreateForm"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 407</div>
         <code>                    
     <strong>actionCreateForm</strong>()
         </code>
@@ -2576,7 +2808,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_actionUpdateForm">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionUpdateForm"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 349</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionUpdateForm"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 416</div>
         <code>                    
     <strong>actionUpdateForm</strong>()
         </code>
@@ -2597,7 +2829,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_actionRead">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionRead"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 358</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionRead"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 425</div>
         <code>                    
     <strong>actionRead</strong>()
         </code>
@@ -2618,7 +2850,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_actionUpdate">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionUpdate"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 417</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionUpdate"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 484</div>
         <code>                    
     <strong>actionUpdate</strong>()
         </code>
@@ -2639,7 +2871,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_actionCreate">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionCreate"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 426</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionCreate"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 495</div>
         <code>                    
     <strong>actionCreate</strong>()
         </code>
@@ -2660,7 +2892,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_actionDelete">
-        <div class="location">at         line 166</div>
+        <div class="location">at         line 167</div>
         <code>                    
     <strong>actionDelete</strong>()
         </code>
@@ -2681,7 +2913,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_actionSoftDelete">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionSoftDelete"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 443</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionSoftDelete"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 515</div>
         <code>                    
     <strong>actionSoftDelete</strong>()
         </code>
@@ -2702,7 +2934,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_actionRestore">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionRestore"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 451</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionRestore"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 523</div>
         <code>                    
     <strong>actionRestore</strong>()
         </code>
@@ -2723,7 +2955,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_model">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Eloquent/Crud.html#method_model"><abbr title="Onspli\Eladmin\Modules\Eloquent\Crud">Crud</abbr></a> at         line 45</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Eloquent/Crud.html#method_model"><abbr title="Onspli\Eladmin\Modules\Eloquent\Crud">Crud</abbr></a> at         line 47</div>
         <code>            protected        
     <strong>model</strong>()
         </code>
@@ -2744,7 +2976,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_updateOrCreate">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Eloquent/Crud.html#method_updateOrCreate"><abbr title="Onspli\Eladmin\Modules\Eloquent\Crud">Crud</abbr></a> at         line 70</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Eloquent/Crud.html#method_updateOrCreate"><abbr title="Onspli\Eladmin\Modules\Eloquent\Crud">Crud</abbr></a> at         line 72</div>
         <code>                private    void
     <strong>updateOrCreate</strong>($entry, $row)
         </code>
@@ -2788,38 +3020,8 @@ $totalResults needs to be set to number of results without paging applied</p>   
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_tableExists">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Eloquent/Crud.html#method_tableExists"><abbr title="Onspli\Eladmin\Modules\Eloquent\Crud">Crud</abbr></a> at         line 198</div>
-        <code>            protected        bool
-    <strong>tableExists</strong>()
-        </code>
-    </h3>
-    <div class="details">
-            
-    
-
-                    <div class="method-description">
-                                    <p>Check if table for the model exists in the database;</p>                                                </div>
-                <div class="tags">
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td>bool</td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
                     <h3 id="method_tableColumns">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Eloquent/Crud.html#method_tableColumns"><abbr title="Onspli\Eladmin\Modules\Eloquent\Crud">Crud</abbr></a> at         line 205</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Eloquent/Crud.html#method_tableColumns"><abbr title="Onspli\Eladmin\Modules\Eloquent\Crud">Crud</abbr></a> at         line 198</div>
         <code>            protected        array
     <strong>tableColumns</strong>()
         </code>
@@ -3140,7 +3342,7 @@ Retrurn null if Eladmin edit profile dialog should be disabled.</p>             
             </div>
                     <div class="method-item">
                     <h3 id="method_actionAuthorizedDelete">
-        <div class="location">at         line 160</div>
+        <div class="location">at         line 161</div>
         <code>                    
     <strong>actionAuthorizedDelete</strong>()
         </code>

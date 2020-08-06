@@ -4,10 +4,19 @@ use Onspli\Eladmin;
 
 class Events extends Eladmin\Modules\Eloquent\Crud {
   protected $model = Examples\Eloquent\Event::class;
+  protected function crudColumns() {
+    $columns = parent::crudColumns();
+    $columns->when->datetime('j.n.Y')->default('2.9.2012')->disabled();
+    $columns->created_at->datetime('j.n.Y H:i:s');
+    $columns->updated_at->datetime('j.n.Y H:i:s');
+    return $columns;
+  }
 }
 
 class Tickets extends Eladmin\Modules\Eloquent\Crud {
   protected $model = Examples\Eloquent\Ticket::class;
+
+  public $defaults = ['sortBy' => 'name', 'direction' => 'desc'];
 
   protected function crudColumns() {
     $columns = parent::crudColumns();
@@ -18,7 +27,8 @@ class Tickets extends Eladmin\Modules\Eloquent\Crud {
 
   protected function crudActions() {
     $actions = parent::crudActions();
-    $actions->cancel->label('Cancel')->bulk()->nonlistable();
+    $actions->cancel->label('Cancel')->bulk()->nonlistable()->filter(function($row) { return $row['status'] != 'cancelled'; });
+    $actions->data->done('alert(this.data.msg);');
     return $actions;
   }
 
@@ -28,6 +38,10 @@ class Tickets extends Eladmin\Modules\Eloquent\Crud {
     $this->model()->status = 'cancelled';
     $this->model()->save();
     $this->renderText('Cancelled.');
+  }
+
+  public function actionData() {
+    $this->renderJson(['msg' => 'Ahoj']);
   }
 }
 

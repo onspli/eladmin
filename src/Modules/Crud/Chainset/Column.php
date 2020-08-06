@@ -23,27 +23,27 @@ public $raw = false;
 /**
 * Should we show the column in the table?
 */
-public $nonlistable = false;
+public $listable = true;
 
 /**
 * Should we show the column in the edit form?
 */
-public $noneditable = false;
+public $editable = true;
 
 /**
 * Can we edit the value in the form?
 */
-public $disabled = false;
+public $disabled = true;
 
 /**
 * Should we use this column for searching?
 */
-public $nonsearchable = false;
+public $searchable = false;
 
 /**
 * Can we sort the table by this column?
 */
-public $nonsortable = false;
+public $sortable = false;
 
 /**
 * Max length of value to be shown in the table.
@@ -55,10 +55,30 @@ public $limit = 24;
 */
 public $input = 'text';
 
+/**
+* fromat for listing
+*/
 public $listformat = null;
+
+/**
+* format for editing
+*/
 public $getformat = null;
+
+/**
+* format for updating
+*/
 public $setformat = null;
+
+/**
+* validation callback
+*/
 public $validate = null;
+
+/**
+* columns default value
+*/
+public $default = null;
 
 /**
 * Get internal name of the column.
@@ -67,30 +87,33 @@ final public function getName() : string {
   return $this->_getKey();
 }
 
-final public function getValue($row, $forEditing = false){
+/**
+* Extract value of the column from $row array
+*/
+final public function getValue(array $row, $forEditing = false) : ?string {
   $column = $this->getName();
-  $value = null;
+  $value = $row[$column] ?? null;
 
-  if ($this->getformat) {
-    $value = $this->evalProperty('getformat', $row);
-  } else {
-    $value = $row[$column] ?? null;
-  }
   if (!$forEditing || $this->disabled) {
     $value = $this->listformat ? $this->evalProperty('listformat', $row) : $value;
+  } else {
+    $value = $this->getformat ? $this->evalProperty('getformat', $row) : $value;
   }
 
   return $value;
 }
 
-final public function evalProperty($prop, $row) {
+/**
+* Eval property
+*/
+final public function evalProperty(string $prop, array &$row = []) {
   if (!isset($this->$prop)) {
     return null;
   }
 
   $column = $this->getName();
   if (is_callable($this->$prop)) {
-    return ($this->$prop)($row[$column] ?? null, $row, $column);
+    return ($this->$prop)($row[$column] ?? null, $row);
   } else {
     return $this->$prop;
   }
@@ -105,6 +128,14 @@ public function raw() {
 }
 
 /**
+* Set default value
+*/
+public function default($value) {
+  $this->default = $value;
+  return $this;
+}
+
+/**
 * Output escaped value.
 */
 public function escaped() {
@@ -114,12 +145,9 @@ public function escaped() {
 
 /**
 * Do not show the column in the table.
-* Also ad nonsearchable and nonsortable flag.
 */
 public function nonlistable() {
-  $this->nonlistable = true;
-  $this->nonsearchable();
-  $this->nonsortable();
+  $this->listable = false;
   return $this;
 }
 
@@ -127,7 +155,7 @@ public function nonlistable() {
 * Show the column in the table.
 */
 public function listable() {
-  $this->nonlistable = false;
+  $this->listable = true;
   return $this;
 }
 
@@ -135,7 +163,7 @@ public function listable() {
 * Do not use the column for searching.
 */
 public function nonsearchable() {
-  $this->nonsearchable = true;
+  $this->searchable = false;
   return $this;
 }
 
@@ -143,7 +171,7 @@ public function nonsearchable() {
 * Use the column for searching.
 */
 public function searchable() {
-  $this->nonsearchable = false;
+  $this->searchable = true;
   return $this;
 }
 
@@ -151,7 +179,7 @@ public function searchable() {
 * Do not sort by the column.
 */
 public function nonsortable() {
-  $this->nonsortable = true;
+  $this->sortable = false;
   return $this;
 }
 
@@ -159,17 +187,15 @@ public function nonsortable() {
 * Use the column for sorting.
 */
 public function sortable() {
-  $this->nonsortable = false;
+  $this->sortable = true;
   return $this;
 }
 
 /**
 * Hide the column in the edit form.
-* Also sets disabled flag.
 */
 public function noneditable() {
-  $this->noneditable = true;
-  $this->disabled();
+  $this->editable = false;
   return $this;
 }
 
@@ -177,7 +203,7 @@ public function noneditable() {
 * Show the column in the edit form.
 */
 public function editable() {
-  $this->noneditable = false;
+  $this->editable = true;
   return $this;
 }
 
@@ -201,8 +227,8 @@ public function enabled() {
 * Max length of value to be shown in the table.
 * Doesn't have any effect on raw (unescaped) columns.
 */
-public function limit(integer $len) {
-  $this->listlimit = $len;
+public function limit($len) {
+  $this->limit = $len;
   return $this;
 }
 
@@ -251,38 +277,33 @@ public function hidden() {
   return $this;
 }
 
-public function format($func) {
+/**
+* Format for listing
+*/
+public function list($func) {
   $this->listformat = $func;
   return $this;
 }
 
+/**
+* Format for editing
+*/
 public function get($func) {
   $this->getformat = $func;
   return $this;
 }
 
+/**
+* Format user input for updating the entry
+*/
 public function set($func) {
   $this->setformat = $func;
   return $this;
 }
 
-public function datetime($format) {
-  $this->get(function($val, $row) use($format) {
-    $carbon = \Carbon\Carbon::parse($val);
-    if($carbon->year < 1) return '';
-    return $carbon->format($format);
-  });
-  $this->set(function($val) use($format) {
-    if (!$val) return 0;
-    try {
-      return \Carbon\Carbon::createFromFormat($format, $val);
-    } catch(\Exception $e) {
-      throw new Exception\BadRequestException(__('Date or time format is not valid.'));
-    }
-  });
-  return $this;
-}
-
+/**
+* Validate user input
+*/
 public function validate($func) {
   $this->validate = $func;
   return $this;

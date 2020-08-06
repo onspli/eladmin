@@ -19,6 +19,8 @@ protected $model = null;
 */
 private $imodel = null;
 
+protected $crudColumns = Chainset\Columns::class;
+
 public function implementsSoftDeletes() : bool {
   return method_exists($this->model, 'trashed');
 }
@@ -78,7 +80,6 @@ private function updateOrCreate($entry, $row) : void {
   }
 
   $entry->save();
-  $entry->refresh();
 }
 
 /**
@@ -110,11 +111,10 @@ protected function update(array $row, $id) : void {
 }
 
 protected function get($id) : array {
-  if ($id === null)
-    return $this->model()->toArray();
-
-  $row = $this->model()->find($id)->toArray();
-  return $row;
+  $row = $this->model()->find($id);
+  if (!$row)
+    throw new Exception\BadRequestException( __('Entry not found!') );
+  return $row->toArray();
 }
 
 protected function delete($id) : void {
@@ -142,7 +142,7 @@ protected function read(array $request, &$totalResults) : array {
   $search = $request['search'];
   if ($search && $this->implementsSearch()) {
     foreach ($this->getCrudColumns() as $column) {
-      if ($column->nonsearchable)
+      if (!$column->searchable)
         continue;
       $q = $q->orWhere($column->getName(), 'LIKE', '%' . $search . '%');
     }
@@ -193,13 +193,6 @@ protected function restore($id) : void {
 }
 
 /**
-* Check if table for the model exists in the database;
-*/
-protected function tableExists() : bool {
-  return $this->model()->getConnection()->getSchemaBuilder()->hasTable($this->model()->getTable());
-}
-
-/**
 * Get an array of table columns.
 */
 protected function tableColumns() : array {
@@ -214,7 +207,7 @@ protected function crudColumns(){
   $tableColumns = $this->tableColumns();
   // add all columns from the table
   foreach ($tableColumns as $column)
-    $columns->$column;
+    $columns->$column->enabled()->sortable()->searchable();
   // disable editing for primary key
   $columns->{$this->primary()}->disabled();
   // hide and disable deleted_at column

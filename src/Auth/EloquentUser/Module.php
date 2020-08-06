@@ -103,20 +103,21 @@ protected function crudActions() {
   unset($actions->delete);
   $actions->authorizedDelete->style('danger')->label(__('Delete'))
                             ->icon('<i class="fas fa-trash-alt"></i>')->confirm()
-                            ->nonlistable()->done('modalClose();');
+                            ->nonlistable()->done('modalClose();')
+                            ->filter(function($row) { return $row['id'] != $this->user()->id; });
   return $actions;
 }
 
 protected function crudColumns() {
   $cols = parent::crudColumns();
-  $cols->newpassword->label(__('New password'))->nonlistable()->editable()->password();
-  $cols->newpasswordconfirm->label(__('Confirm new password'))->nonlistable()->editable()->password();
+  $cols->newpassword->label(__('New password'))->nonlistable()->editable()->password()->enabled();
+  $cols->newpasswordconfirm->label(__('Confirm new password'))->nonlistable()->editable()->password()->enabled();
   $cols->passwordhash->hidden()->disabled();
   $cols->updated_at->label(__('Updated'))->nonlistable();
   $cols->created_at->label(__('Created'));
   $cols->login->label(__('Login'));
   $cols->role->label(__('Role'));
-  $cols->authpassword->label('Password')->desc(__('You have to authorize the change with your current password.'))->nonlistable()->password();
+  $cols->authpassword->label('Password')->desc(__('You have to authorize the change with your current password.'))->nonlistable()->password()->enabled();
 
   if ($this->possibleRoles !== null) {
     $cols->role->select($this->possibleRoles);
@@ -149,7 +150,7 @@ protected function crudColumns() {
     }
   });
   $cols->passwordhash->set(function($ph, $row) {
-    if ($row['newpassword']) {
+    if ($row['newpassword'] ?? false) {
       return $row['newpassword'];
     }
     return null;

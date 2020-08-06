@@ -144,7 +144,13 @@ function elaElementRequest(element, request) {
 */
 $(document).on('eladone', '*[data-eladone]', function(e, data, status, xhr) {
   console.debug('done: ' + $(this).data('eladone'));
-  var exe = new Function($(this).data('eladone'));
+  var response = {
+    el: this,
+    data: data,
+    status: status,
+    xhr: xhr
+  };
+  var exe = new Function($(this).data('eladone')).bind(response);
   exe();
 });
 
