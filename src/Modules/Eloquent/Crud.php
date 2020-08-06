@@ -212,7 +212,7 @@ protected function crudColumns(){
   $columns->{$this->primary()}->disabled();
   // hide and disable deleted_at column
   if ($this->implementsSoftDeletes())
-    $columns->{$this->model()->getDeletedAtColumn()}->hidden();
+    $columns->{$this->model()->getDeletedAtColumn()}->hidden()->nonsearchable();
 
   if (in_array($this->model::CREATED_AT, $tableColumns))
     $columns->{$this->model::CREATED_AT}->disabled()->nonsearchable();

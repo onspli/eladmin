@@ -1,7 +1,7 @@
 <div class="actions mb-3 mt-3 ">
 <span class="mr-2">
 @if($module->auth('create') && isset($module->getCrudActions()->create))
-  <button id="crudadd" type="button" class="btn btn-success mr-1" data-elaaction="createForm">
+  <button id="crudadd" type="button" class="btn btn-success mr-1 mb-3" data-elaaction="createForm">
     {!! $module->getCrudActions()->create->icon !!} {{ $module->getCrudActions()->create->label }}
   </button>
 @endif
@@ -14,7 +14,7 @@
 @endif
 
 @if($module->implementsSoftDeletes())
-  <button class="btn btn-secondary crud-trash mr-1" data-toggle="collapse"><i class="fas fa-trash-restore"></i> {{ __('Trash') }}</button>
+  <button class="btn btn-secondary crud-trash mr-1 mb-3" data-toggle="collapse"><i class="fas fa-trash-restore"></i> {{ __('Trash') }}</button>
 @endif
 </span>
 
@@ -29,7 +29,7 @@ foreach ($module->getCrudActions() as $action) {
 
 @if(sizeof($elaActions))
 <span class="dropdown actions-dropdown bulk-action">
-  <button class="btn btn-primary mr-1 dropdown-toggle bulk-action" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i> {{ __('Actions')}}</button>
+  <button class="btn btn-primary mr-1 dropdown-toggle bulk-action mb-3" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i> {{ __('Actions')}}</button>
   <div class="dropdown-menu">
   @foreach($elaActions as $action)
     <?php $actionArr = $action->getAction(); ?>
@@ -54,19 +54,19 @@ foreach ($module->getCrudActions() as $action) {
 @if($module->implementsSoftDeletes())
 
 @if($module->auth('softDelete') && isset($module->getCrudActions()->softDelete) && $module->getCrudActions()->softDelete->bulk)
-<button type="button" class="bulk-action btn btn-danger mr-1" data-bulkconfirm="{{ __('Move to trash.') }}" data-elabulkaction="softDelete">
+<button type="button" class="bulk-action btn btn-danger mr-1 mb-3" data-bulkconfirm="{{ __('Move to trash.') }}" data-elabulkaction="softDelete">
   <i class="fas fa-trash-alt"></i>
 </button>
 @endif
 
 @if($module->auth('restore') && isset($module->getCrudActions()->restore) && $module->getCrudActions()->restore->bulk)
-<button type="button" class="bulk-action-trash btn btn-success mr-1" data-bulkconfirm="{{ __('Restore items.') }}" data-elabulkaction="restore">
+<button type="button" class="bulk-action-trash btn btn-success mr-1 mb-3" data-bulkconfirm="{{ __('Restore items.') }}" data-elabulkaction="restore">
   <i class="fas fa-recycle"></i>
 </button>
 @endif
 
 @if($module->auth('delete') && isset($module->getCrudActions()->delete) && $module->getCrudActions()->delete->bulk)
-<button type="button" class="bulk-action-trash btn btn-danger mr-1" data-bulkconfirm="{{ __('Delete items.') }}" data-elabulkaction="delete">
+<button type="button" class="bulk-action-trash btn btn-danger mr-1 mb-3" data-bulkconfirm="{{ __('Delete items.') }}" data-elabulkaction="delete">
   <i class="fas fa-trash-alt"></i>
 </button>
 @endif
@@ -74,7 +74,7 @@ foreach ($module->getCrudActions() as $action) {
 @else
 
 @if($module->auth('delete') && isset($module->getCrudActions()->delete) && $module->getCrudActions()->delete->bulk)
-<button type="button" class="bulk-action btn btn-danger mr-1" data-bulkconfirm="{{ __('Delete items.') }}" data-elabulkaction="delete">
+<button type="button" class="bulk-action btn btn-danger mr-1 mb-3" data-bulkconfirm="{{ __('Delete items.') }}" data-elabulkaction="delete">
   <i class="fas fa-trash-alt"></i>
 </button>
 @endif

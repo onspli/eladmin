@@ -39,7 +39,7 @@ foreach ($module->getCrudActions() as $action) {
 
 @section('actions')
 @if(sizeof($elaActions))
-<span class="dropdown actions-dropdown mr-auto">
+<span class="dropup actions-dropdown mr-auto">
   <button class="btn btn-primary m-1 dropdown-toggle" type="button" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i> <span class="d-none d-sm-inline">{{ __('Actions')}}</span></button>
   <div class="dropdown-menu">
   @foreach($elaActions as $action)
