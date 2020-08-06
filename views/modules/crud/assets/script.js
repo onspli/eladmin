@@ -245,7 +245,7 @@ function actionLinkFactory(name, id){
     button.attr('data-confirm', action.confirm ? action.confirm : action.action);
   button.attr('class', 'dropdown-item text-' + (action.style ? action.style : 'primary'));
   if (action.icon) {
-    button.html(action.icon + ' <span class="d-none d-lg-inline">' + (action.label ? action.label : '') + '</span>');
+    button.html(action.icon + ' ' + (action.label ? action.label : ''));
   } else {
     button.html(action.label ? action.label : '');
   }

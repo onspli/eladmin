@@ -155,10 +155,10 @@ final public function requestUrl(?string $action = null, array $args = []) : str
 }
 
 /**
-* Create asset url, file path relative to /assets directory. Default $version = time()
+* Create asset url, file path relative to /assets directory. Default $version = eladmin version
 */
 final public function assetUrl(string $path, ?string $version = null) : string {
-   return $this->requestUrl(null, ['elaasset' => $path, 'ver' => $version ?? time()]);
+   return $this->requestUrl(null, ['ver' => $version ?? $this->core()->version(), 'elaasset' => $path]);
 }
 
 /**

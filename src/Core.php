@@ -45,6 +45,11 @@ protected $cache = __DIR__ . '/../cache';
 protected $views = null;
 
 /**
+* asset cache expiration in secs
+*/
+protected $assetCacheExpiration = 2592000;
+
+/**
 * override to set monolog report level, null disables logging
 */
 protected $logLevel = null;
@@ -351,6 +356,7 @@ public function renderAsset(string $path) : void {
   if ($content === false)
     throw new Exception\Exception('Could not read asset ' . $path . '.');
   header('Content-type:' . $contentType);
+  header('Cache-Control: max-age=' . intval($this->assetCacheExpiration));
   echo $content;
 }
 
