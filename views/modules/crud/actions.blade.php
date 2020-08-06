@@ -8,7 +8,7 @@
 
 @if($module->implementsFilters())
 @foreach($module->getCrudFilters() as $filter)
-  <button href="#crud-filters"  class="btn btn-secondary crud-filters mr-1" data-toggle="collapse"><i class="fas fa-filter"></i> <span class="d-none d-sm-inline">{{ __('Filters') }}</span></button>
+  <button href="#crud-filters"  class="btn btn-secondary crud-filters mr-1 mb-3" data-toggle="collapse"><i class="fas fa-filter"></i> <span class="d-none d-sm-inline">{{ __('Filters') }}</span></button>
   @break
 @endforeach
 @endif
