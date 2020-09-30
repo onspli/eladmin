@@ -141,11 +141,13 @@ protected function read(array $request, &$totalResults) : array {
 
   $search = $request['search'];
   if ($search && $this->implementsSearch()) {
-    foreach ($this->getCrudColumns() as $column) {
-      if (!$column->searchable)
-        continue;
-      $q = $q->orWhere($column->getName(), 'LIKE', '%' . $search . '%');
-    }
+    $q = $q->where( function ($subQ) use ($search) {
+      foreach ($this->getCrudColumns() as $column) {
+        if (!$column->searchable)
+          continue;
+        $subQ = $subQ->orWhere($column->getName(), 'LIKE', '%' . $search . '%');
+      }
+    } );
   }
 
   if ($this->implementsFilters()) {
