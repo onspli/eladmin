@@ -103,9 +103,10 @@ public function __construct(?array $modules = null) {
 
 
 final static public function errorHandler($errno, $errstr, $errfile, $errline) {
-  // error_reporting() will return 0 when the call that triggered the error was preceded by an @.
-  if (error_reporting() == 0) {
-    return;
+  // Respect the @ operator. Since PHP 8, error_reporting() is no longer 0 inside @,
+  // it is masked to fatal errors only, so test the error level against it.
+  if (!(error_reporting() & $errno)) {
+    return false;
   }
   throw new \ErrorException($errstr, $errno, 0, $errfile, $errline);
 }
@@ -114,7 +115,7 @@ final static public function errorHandler($errno, $errstr, $errfile, $errline) {
 * Run Eladmin. It's just a wrapper of method runNoCatch catching exceptions.
 */
 final public function run() : void {
-  set_error_handler(array(self::class, 'errorHandler'), (E_ALL | E_STRICT) &  ~(E_DEPRECATED | E_USER_DEPRECATED));
+  set_error_handler(array(self::class, 'errorHandler'), E_ALL & ~(E_DEPRECATED | E_USER_DEPRECATED));
   try {
     $this->runNoCatch();
   } catch(Exception\UnauthorizedException $e) {
@@ -261,7 +262,11 @@ public function blade() : Blade {
   } else {
     $views = $this->views();
   }
-  return new Blade($views, $this->cache);
+  // illuminate/view resolves the blade compiler from the global container instance,
+  // so the container used by Blade has to be registered as the global one.
+  $container = new \Jenssegers\Blade\Container();
+  \Illuminate\Container\Container::setInstance($container);
+  return new Blade($views, $this->cache, $container);
 }
 
 /**
