@@ -306,7 +306,7 @@ public function blade() : Blade {
 * Get eladmin version.
 */
 final public function version() : string {
-  return "v0.4.0";
+  return "v0.4.1";
 }
 
 /**
