@@ -17,7 +17,7 @@ use \Jenssegers\Blade\Blade;
 *
 *
 * To configure the module you may define properties as shown in the following example.
-* ```lang-php
+* ```php
 * class MyModule extends Eladmin\Module {
 *
 * // set module's name
@@ -206,7 +206,7 @@ private function setRoles(?array $roles, ?string $action = null) : void {
 * Extends array of directories of views and assets.
 *
 * Example:
-* ```lang-php
+* ```php
 * public function views() : array {
 *  return array_merge([__DIR__ . '/my_module'], parent::views());
 * }

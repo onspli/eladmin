@@ -36,11 +36,10 @@
         "test": "phpunit --testdox",
         "test:unit": "phpunit --testdox --testsuite unit",
         "test:integration": "phpunit --testdox --testsuite integration",
-        "docs:install": "php -r \"copy('http://get.sensiolabs.org/sami.phar', 'sami.phar');\"",
-        "docs:update": "php sami.phar update sami.config.php",
-        "docs:render": "rm -rf docs; php sami.phar render sami.config.php"
+        "docs:install": "php -r \"copy('https://doctum.long-term.support/releases/5.6/doctum.phar', 'doctum.phar');\"",
+        "docs:build": "rm -rf docs && php doctum.phar update doctum.config.php --force"
     },
     "archive": {
-        "exclude": ["/docs", "/docs-theme", "/examples", "/screenshots", "/tests", "/_config.yml", "/sami.config.php", "/.github", "/.gitignore"]
+        "exclude": ["/docs", "/docs-theme", "/examples", "/screenshots", "/tests", "/_config.yml", "/doctum.config.php", "/.github", "/.gitignore"]
     }
 }

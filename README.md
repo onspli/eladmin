@@ -40,5 +40,11 @@ Integration tests serve the app in `tests/integration/fixture` with PHP built-in
 
 To try it in a browser: `php -S localhost:8000 -t examples/helloworld`.
 
+API docs in `docs/` are generated from docblocks by [Doctum](https://github.com/code-lts/doctum) with the theme in `docs-theme/`:
+```
+composer docs:install   # downloads doctum.phar (once)
+composer docs:build     # regenerates docs/
+```
+
 ## Contact
 ondrej.splichal@gmail.com

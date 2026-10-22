@@ -5,6 +5,7 @@
 /examples/work
 /password
 /mono.log
-/sami.phar
+/doctum.phar
+/.doctum-cache
 /.phpunit.cache
 /phpunit.xml

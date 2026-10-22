@@ -7,33 +7,42 @@
 
             <link rel="stylesheet" type="text/css" href="../../css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="../../css/bootstrap-theme.min.css">
-        <link rel="stylesheet" type="text/css" href="../../css/sami.css">
+        <link rel="stylesheet" type="text/css" href="../../css/doctum.css">
+        <link rel="stylesheet" type="text/css" href="../../fonts/doctum-font.css">
         <link rel="stylesheet" type="text/css" href="../../prism.css">
         <link rel="stylesheet" type="text/css" href="../../style.css">
-        <script src="../../js/jquery-1.11.1.min.js"></script>
-        <script src="../../js/bootstrap.min.js"></script>
-        <script src="../../js/typeahead.min.js"></script>
-        <script src="../../sami.js"></script>
+        <script src="../../js/jquery-3.5.1.slim.min.js"></script>
+        <script async defer src="../../doctum.js"></script>
+        <script async defer src="../../js/bootstrap.min.js"></script>
+        <script async defer src="../../js/autocomplete.min.js"></script>
         <meta name="MobileOptimized" content="width">
         <meta name="HandheldFriendly" content="true">
         <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-    
-    
+
     </head>
 
-    <body id="class" data-name="class:Onspli_Eladmin_IAuth" data-root-path="../../">
+    <body id="class" data-name="class:Onspli_Eladmin_IAuth" data-root-path="../../" data-search-index-url="../../doctum-search.json">
             <div id="content">
         <div id="left-column">
                 <div id="control-panel">
-                <script>
-            $('option[data-version="'+window.projectVersion+'"]').prop('selected', true);
-        </script>
-        <form id="search-form" action="../../search.html" method="GET">
-            <span class="glyphicon glyphicon-search"></span>
+                <div class="search-bar hidden" id="search-progress-bar-container">
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" id="search-progress-bar"
+                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+            </div>
+        </div>
+        <form id="search-form" action="../../search.html">
+            <span class="icon icon-search"></span>
             <input name="search"
+                   id="doctum-search-auto-complete"
                    class="typeahead form-control"
                    type="search"
-                   placeholder="Search">
+                   placeholder="Search"
+                   spellcheck="false"
+                   autocorrect="off"
+                   autocomplete="off"
+                   autocapitalize="off">
+            <div class="auto-complete-results" id="auto-complete-results"></div>
         </form>
     </div>
 
@@ -55,8 +64,8 @@
             <div class="collapse navbar-collapse" id="navbar-elements">
                 <ul class="nav navbar-nav">
                     <li><a href="../../classes.html">Classes</a></li>
-                                            <li><a href="../../namespaces.html">Namespaces</a></li>
-                                        <li><a href="../../interfaces.html">Interfaces</a></li>
+                    <li><a href="../../namespaces.html">Namespaces</a></li>
+                    <li><a href="../../interfaces.html">Interfaces</a></li>
                     <li><a href="../../traits.html">Traits</a></li>
                     <li><a href="../../doc-index.html">Index</a></li>
                     <li><a href="../../search.html">Search</a></li>
@@ -72,37 +81,39 @@
             </ol>
         </div>
                 <div id="page-content">
-                
     <div class="page-header">
-        <h1>
-            IAuth
-                
-        </h1>
+        <h1>IAuth    
+            </h1>
     </div>
 
-    <p>    interface
+    
+    <p>        interface
     <strong>IAuth</strong>
 </p>
 
         
+        
     
+        
 
-    
-    
-            <h2>Constants</h2>
-
-            <table class="table table-condensed">
+            
+        
+            <h2>Constants</h2>    <table class="table table-condensed">
                     <tr>
-                <td>NOONE</td>
+                <td>
+                                                                                                                        NOONE
+                                    </td>
                 <td class="last">
-                    <p><em>Noone can access.</em></p>
+                    <p><em><p>Noone can access.</p></em></p>
                     <p></p>
                 </td>
             </tr>
                     <tr>
-                <td>ANYONE</td>
+                <td>
+                                                                                                                        ANYONE
+                                    </td>
                 <td class="last">
-                    <p><em>Anyone can access.</em></p>
+                    <p><em><p>Anyone can access.</p></em></p>
                     <p></p>
                 </td>
             </tr>
@@ -110,148 +121,114 @@
 
     
     
-            <h2>Public Methods</h2>
+                                                                    <h2>Public Methods</h2>
 
-            <div class="container-fluid underlined">
-                            <div class="row">
-    <div class="col-md-1 type">
-                            </div>
-    <div class="col-md-1 type">
-        array|null
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_loginFields">loginFields</a>()
+                    <div class="container-fluid underlined">
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_loginFields">loginFields</a>()
         
-                    <p>Return an array of login fields in the form of field_name=>[label=>input label, type=>input_type]
-Retrurn null if Eladmin login dialog should be disabled (and you want to do authentication on your own)</p>    </div>
-    <div class="col-md-2"></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-                            </div>
-    <div class="col-md-1 type">
-        void
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_unauthorized">unauthorized</a>()
+                                            <p><p>Return an array of login fields in the form of field_name=&gt;[label=&gt;input label, type=&gt;input_type]
+Retrurn null if Eladmin login dialog should be disabled (and you want to do authentication on your own)</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_unauthorized">unauthorized</a>()
         
-                    <p>This method is called when user is not autorized and loginFileds returns null.</p>    </div>
-    <div class="col-md-2"></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-                            </div>
-    <div class="col-md-1 type">
-        void
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_login">login</a>(array $fields)
+                                            <p><p>This method is called when user is not autorized and loginFileds returns null.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_login">login</a>(array $fields)
         
-                    <p>Eladmin calls this method during authentication.</p>    </div>
-    <div class="col-md-2"></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-                            </div>
-    <div class="col-md-1 type">
-        array|null
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_accountFields">accountFields</a>()
+                                            <p><p>Eladmin calls this method during authentication.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_accountFields">accountFields</a>()
         
-                    <p>Return an array of profile fields in the form of field_name=>[label=>input label, type=>input_type]
-Retrurn null if Eladmin edit profile dialog should be disabled.</p>    </div>
-    <div class="col-md-2"></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-                            </div>
-    <div class="col-md-1 type">
-        void
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_accountUpdate">accountUpdate</a>(array $fileds)
+                                            <p><p>Return an array of profile fields in the form of field_name=&gt;[label=&gt;input label, type=&gt;input_type]
+Retrurn null if Eladmin edit profile dialog should be disabled.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_accountUpdate">accountUpdate</a>(array $fileds)
         
-                    <p>Eladmin calls this method during profile update.</p>    </div>
-    <div class="col-md-2"></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-                            </div>
-    <div class="col-md-1 type">
-        void
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_logout">logout</a>()
+                                            <p><p>Eladmin calls this method during profile update.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_logout">logout</a>()
         
-                    <p>Logout.</p>    </div>
-    <div class="col-md-2"></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-                            </div>
-    <div class="col-md-1 type">
-        bool
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_authorize">authorize</a>(array $authorizedRoles = self::ANYONE)
+                                            <p>Logout.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_authorize">authorize</a>(array $authorizedRoles = self::ANYONE)
         
-                    <p>Check if user is logged in. Also check if user has one of the $authorizedRoles (if specified).</p>    </div>
-    <div class="col-md-2"></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-                            </div>
-    <div class="col-md-1 type">
-        string
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_userName">userName</a>()
+                                            <p><p>Check if user is logged in. Also check if user has one of the $authorizedRoles (if specified).</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_userName">userName</a>()
         
-                    <p>Get user's name to show it in admin.</p>    </div>
-    <div class="col-md-2"></div>
-</div>
+                                            <p><p>Get user's name to show it in admin.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+            </div>
 
-                                                                                                                                                                              </div>
-
-
-        <h2>Protected Methods</h2>
-
-            <div class="container-fluid underlined">
-                                                                                                                                                                                                                                                                                                                    </div>
-
-
-        <h2>Private Methods</h2>
-
-            <div class="container-fluid underlined">
-                                                                                                                                                                                                                                                                                                                    </div>
-
-
+                                                                                            
         <h2>Details</h2>
 
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method_loginFields">
-        <div class="location">at         line 21</div>
+        <div class="location">at line 21</div>
         <code>                    array|null
     <strong>loginFields</strong>()
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>Return an array of login fields in the form of field_name=>[label=>input label, type=>input_type]
-Retrurn null if Eladmin login dialog should be disabled (and you want to do authentication on your own)</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>Return an array of login fields in the form of field_name=&gt;[label=&gt;input label, type=&gt;input_type]
+Retrurn null if Eladmin login dialog should be disabled (and you want to do authentication on your own)</p></p>                        
+        </div>
+        <div class="tags">
             
                             <h4>Return Value</h4>
 
@@ -264,24 +241,27 @@ Retrurn null if Eladmin login dialog should be disabled (and you want to do auth
 
             
             
+            
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_unauthorized">
-        <div class="location">at         line 27</div>
+        <div class="location">at line 27</div>
         <code>                    void
     <strong>unauthorized</strong>()
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>This method is called when user is not autorized and loginFileds returns null.</p>                    <p>You can redirect to your own login page. Or leave it empty to show HTTP 401.</p>                            </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>This method is called when user is not autorized and loginFileds returns null.</p></p>                <p><p>You can redirect to your own login page. Or leave it empty to show HTTP 401.</p></p>        
+        </div>
+        <div class="tags">
             
                             <h4>Return Value</h4>
 
@@ -294,24 +274,27 @@ Retrurn null if Eladmin login dialog should be disabled (and you want to do auth
 
             
             
+            
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_login">
-        <div class="location">at         line 32</div>
+        <div class="location">at line 32</div>
         <code>                    void
     <strong>login</strong>(array $fields)
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>Eladmin calls this method during authentication.</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>Eladmin calls this method during authentication.</p></p>                        
+        </div>
+        <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
@@ -334,25 +317,28 @@ Retrurn null if Eladmin login dialog should be disabled (and you want to do auth
 
             
             
+            
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_accountFields">
-        <div class="location">at         line 38</div>
+        <div class="location">at line 38</div>
         <code>                    array|null
     <strong>accountFields</strong>()
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>Return an array of profile fields in the form of field_name=>[label=>input label, type=>input_type]
-Retrurn null if Eladmin edit profile dialog should be disabled.</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>Return an array of profile fields in the form of field_name=&gt;[label=&gt;input label, type=&gt;input_type]
+Retrurn null if Eladmin edit profile dialog should be disabled.</p></p>                        
+        </div>
+        <div class="tags">
             
                             <h4>Return Value</h4>
 
@@ -365,24 +351,27 @@ Retrurn null if Eladmin edit profile dialog should be disabled.</p>             
 
             
             
+            
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_accountUpdate">
-        <div class="location">at         line 43</div>
+        <div class="location">at line 43</div>
         <code>                    void
     <strong>accountUpdate</strong>(array $fileds)
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>Eladmin calls this method during profile update.</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>Eladmin calls this method during profile update.</p></p>                        
+        </div>
+        <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
@@ -405,24 +394,27 @@ Retrurn null if Eladmin edit profile dialog should be disabled.</p>             
 
             
             
+            
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_logout">
-        <div class="location">at         line 48</div>
+        <div class="location">at line 48</div>
         <code>                    void
     <strong>logout</strong>()
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>Logout.</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p>Logout.</p>                        
+        </div>
+        <div class="tags">
             
                             <h4>Return Value</h4>
 
@@ -435,24 +427,27 @@ Retrurn null if Eladmin edit profile dialog should be disabled.</p>             
 
             
             
+            
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_authorize">
-        <div class="location">at         line 53</div>
+        <div class="location">at line 53</div>
         <code>                    bool
     <strong>authorize</strong>(array $authorizedRoles = self::ANYONE)
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>Check if user is logged in. Also check if user has one of the $authorizedRoles (if specified).</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>Check if user is logged in. Also check if user has one of the $authorizedRoles (if specified).</p></p>                        
+        </div>
+        <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
@@ -475,24 +470,27 @@ Retrurn null if Eladmin edit profile dialog should be disabled.</p>             
 
             
             
+            
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_userName">
-        <div class="location">at         line 58</div>
+        <div class="location">at line 58</div>
         <code>                    string
     <strong>userName</strong>()
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>Get user's name to show it in admin.</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>Get user's name to show it in admin.</p></p>                        
+        </div>
+        <div class="tags">
             
                             <h4>Return Value</h4>
 
@@ -505,6 +503,7 @@ Retrurn null if Eladmin edit profile dialog should be disabled.</p>             
 
             
             
+            
                     </div>
     </div>
 
@@ -512,14 +511,9 @@ Retrurn null if Eladmin edit profile dialog should be disabled.</p>             
             </div>
 
     
-            </div>
-                <div id="footer">
-        Generated by <a href="http://sami.sensiolabs.org/">Sami, the API Documentation Generator</a>.
+</div><div id="footer">
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.</div></div>
     </div>
-
-        </div>
-    </div>
-
         <script src="../../prism.js"></script>
     </body>
 

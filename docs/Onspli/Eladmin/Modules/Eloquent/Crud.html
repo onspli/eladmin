@@ -7,33 +7,42 @@
 
             <link rel="stylesheet" type="text/css" href="../../../../css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="../../../../css/bootstrap-theme.min.css">
-        <link rel="stylesheet" type="text/css" href="../../../../css/sami.css">
+        <link rel="stylesheet" type="text/css" href="../../../../css/doctum.css">
+        <link rel="stylesheet" type="text/css" href="../../../../fonts/doctum-font.css">
         <link rel="stylesheet" type="text/css" href="../../../../prism.css">
         <link rel="stylesheet" type="text/css" href="../../../../style.css">
-        <script src="../../../../js/jquery-1.11.1.min.js"></script>
-        <script src="../../../../js/bootstrap.min.js"></script>
-        <script src="../../../../js/typeahead.min.js"></script>
-        <script src="../../../../sami.js"></script>
+        <script src="../../../../js/jquery-3.5.1.slim.min.js"></script>
+        <script async defer src="../../../../doctum.js"></script>
+        <script async defer src="../../../../js/bootstrap.min.js"></script>
+        <script async defer src="../../../../js/autocomplete.min.js"></script>
         <meta name="MobileOptimized" content="width">
         <meta name="HandheldFriendly" content="true">
         <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-    
-    
+
     </head>
 
-    <body id="class" data-name="class:Onspli_Eladmin_Modules_Eloquent_Crud" data-root-path="../../../../">
+    <body id="class" data-name="class:Onspli_Eladmin_Modules_Eloquent_Crud" data-root-path="../../../../" data-search-index-url="../../../../doctum-search.json">
             <div id="content">
         <div id="left-column">
                 <div id="control-panel">
-                <script>
-            $('option[data-version="'+window.projectVersion+'"]').prop('selected', true);
-        </script>
-        <form id="search-form" action="../../../../search.html" method="GET">
-            <span class="glyphicon glyphicon-search"></span>
+                <div class="search-bar hidden" id="search-progress-bar-container">
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" id="search-progress-bar"
+                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+            </div>
+        </div>
+        <form id="search-form" action="../../../../search.html">
+            <span class="icon icon-search"></span>
             <input name="search"
+                   id="doctum-search-auto-complete"
                    class="typeahead form-control"
                    type="search"
-                   placeholder="Search">
+                   placeholder="Search"
+                   spellcheck="false"
+                   autocorrect="off"
+                   autocomplete="off"
+                   autocapitalize="off">
+            <div class="auto-complete-results" id="auto-complete-results"></div>
         </form>
     </div>
 
@@ -55,8 +64,8 @@
             <div class="collapse navbar-collapse" id="navbar-elements">
                 <ul class="nav navbar-nav">
                     <li><a href="../../../../classes.html">Classes</a></li>
-                                            <li><a href="../../../../namespaces.html">Namespaces</a></li>
-                                        <li><a href="../../../../interfaces.html">Interfaces</a></li>
+                    <li><a href="../../../../namespaces.html">Namespaces</a></li>
+                    <li><a href="../../../../interfaces.html">Interfaces</a></li>
                     <li><a href="../../../../traits.html">Traits</a></li>
                     <li><a href="../../../../doc-index.html">Index</a></li>
                     <li><a href="../../../../search.html">Search</a></li>
@@ -72,53 +81,59 @@
             </ol>
         </div>
                 <div id="page-content">
-                
     <div class="page-header">
-        <h1>
-            Crud
-                
-        </h1>
+        <h1>Crud    
+            </h1>
     </div>
 
-    <p>abstract     class
+    
+    <p>    abstract     class
     <strong>Crud</strong>        extends <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a>
 </p>
 
         
+        
     
+        
 
             <div class="description">
-            <p>Crud module for Eloquent model.</p>                                </div>
-    
-    
-            <h2>Constants</h2>
-
-            <table class="table table-condensed">
+            <p><p>Crud module for Eloquent model.</p></p>                    </div>
+            
+        
+            <h2>Constants</h2>    <table class="table table-condensed">
                     <tr>
-                <td>ACTION_PREFIX</td>
+                <td>
+                                                                                                                        ACTION_PREFIX
+                                    </td>
                 <td class="last">
-                    <p><em>Action methods prefix</em></p>
+                    <p><em><p>Action methods prefix</p></em></p>
                     <p></p>
                 </td>
             </tr>
                     <tr>
-                <td>INFINITY</td>
+                <td>
+                                                                                                                        INFINITY
+                                    </td>
                 <td class="last">
-                    <p><em>Constant. Infinite number of results requested.</em></p>
+                    <p><em><p>Constant. Infinite number of results requested.</p></em></p>
                     <p></p>
                 </td>
             </tr>
                     <tr>
-                <td>ASC</td>
+                <td>
+                                                                                                                        ASC
+                                    </td>
                 <td class="last">
-                    <p><em>Constant. Ascending order.</em></p>
+                    <p><em><p>Constant. Ascending order.</p></em></p>
                     <p></p>
                 </td>
             </tr>
                     <tr>
-                <td>DESC</td>
+                <td>
+                                                                                                                        DESC
+                                    </td>
                 <td class="last">
-                    <p><em>Constant. Descending order.</em></p>
+                    <p><em><p>Constant. Descending order.</p></em></p>
                     <p></p>
                 </td>
             </tr>
@@ -128,833 +143,788 @@
             <h2>Properties</h2>
 
             <table class="table table-condensed">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              <tr>
-    <td class="type" id="property_defaults">
-                public                        
-    </td>
-    <td>$defaults</td>
-    <td class="last">Default crud request</td>
-    <td><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#property_defaults"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a></small></td>
-</tr>
-
-                                                                                                                                                                                                                                                              <tr>
-    <td class="type" id="property_title">
-                        protected                
-    </td>
-    <td>$title</td>
-    <td class="last">override to set module's name</td>
-    <td><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#property_title"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></td>
-</tr>
-
-                                              <tr>
-    <td class="type" id="property_icon">
-                        protected                
-    </td>
-    <td>$icon</td>
-    <td class="last">override to set module's icon</td>
-    <td><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#property_icon"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></td>
-</tr>
-
-                                              <tr>
-    <td class="type" id="property_views">
-                        protected                
-    </td>
-    <td>$views</td>
-    <td class="last">Add views directory to module;</td>
-    <td><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#property_views"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></td>
-</tr>
-
-                                              <tr>
-    <td class="type" id="property_roles">
-                        protected                
-    </td>
-    <td>$roles</td>
-    <td class="last">override to set authorized roles</td>
-    <td><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#property_roles"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></td>
-</tr>
-
-                                              <tr>
-    <td class="type" id="property_actionRoles">
-                        protected                
-    </td>
-    <td>$actionRoles</td>
-    <td class="last">override to set authorized roles</td>
-    <td><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#property_actionRoles"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></td>
-</tr>
-
-                                                                                      <tr>
-    <td class="type" id="property_crudColumns">
-                        protected                
-    </td>
-    <td>$crudColumns</td>
-    <td class="last"></td>
-    <td></td>
-</tr>
-
-                                              <tr>
-    <td class="type" id="property_crudActions">
-                        protected                
-    </td>
-    <td>$crudActions</td>
-    <td class="last">Actions chainset class</td>
-    <td><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#property_crudActions"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a></small></td>
-</tr>
-
-                                              <tr>
-    <td class="type" id="property_crudFilters">
-                        protected                
-    </td>
-    <td>$crudFilters</td>
-    <td class="last">Filters chainset class</td>
-    <td><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#property_crudFilters"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a></small></td>
-</tr>
-
-                                                                                                          <tr>
-    <td class="type" id="property_model">
-                        protected                
-    </td>
-    <td>$model</td>
-    <td class="last">Model class name. Must be overriden.</td>
-    <td></td>
-</tr>
-
-                                                                                                                                                                                                                                                                                                                                                                                                          <tr>
-    <td class="type" id="property_imodel">
-                                private        
-    </td>
-    <td>$imodel</td>
-    <td class="last">Model instance</td>
-    <td></td>
-</tr>
-
-                        </table>
+                    <tr>
+                <td class="type" id="property_core">
+                                                            private                    
+                                                                                
+                                    </td>
+                <td>$core</td>
+                <td class="last"><p>Eladmin core instance</p></td>
+                <td><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#property_core">
+<abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_elakey">
+                                                            private                    
+                                                                                
+                                    </td>
+                <td>$elakey</td>
+                <td class="last"><p>Module's elakey</p></td>
+                <td><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#property_elakey">
+<abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_title">
+                                        protected                                        
+                                                                                
+                                    </td>
+                <td>$title</td>
+                <td class="last"><p>override to set module's name</p></td>
+                <td><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#property_title">
+<abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_icon">
+                                        protected                                        
+                                                                                
+                                    </td>
+                <td>$icon</td>
+                <td class="last"><p>override to set module's icon</p></td>
+                <td><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#property_icon">
+<abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_views">
+                                        protected                                        
+                                                                                
+                                    </td>
+                <td>$views</td>
+                <td class="last"><p>Add views directory to module;</p></td>
+                <td><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#property_views">
+<abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_roles">
+                                        protected                                        
+                                                                                
+                                    </td>
+                <td>$roles</td>
+                <td class="last"><p>override to set authorized roles</p></td>
+                <td><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#property_roles">
+<abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_actionRoles">
+                                        protected                                        
+                                                                                
+                                    </td>
+                <td>$actionRoles</td>
+                <td class="last"><p>override to set authorized roles</p></td>
+                <td><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#property_actionRoles">
+<abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_actionsParsed">
+                                                            private                    
+                                                                                
+                                    </td>
+                <td>$actionsParsed</td>
+                <td class="last"><p>normalizing action names for elaActionRoles is expensive, we want to do it only once</p></td>
+                <td><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#property_actionsParsed">
+<abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_defaults">
+                                                                                
+                                                                                
+                                    </td>
+                <td>$defaults</td>
+                <td class="last"><p>Default crud request</p></td>
+                <td><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#property_defaults">
+<abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_crudColumns">
+                                        protected                                        
+                                                                                
+                                    </td>
+                <td>$crudColumns</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_crudActions">
+                                        protected                                        
+                                                                                
+                                    </td>
+                <td>$crudActions</td>
+                <td class="last"><p>Actions chainset class</p></td>
+                <td><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#property_crudActions">
+<abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_crudFilters">
+                                        protected                                        
+                                                                                
+                                    </td>
+                <td>$crudFilters</td>
+                <td class="last"><p>Filters chainset class</p></td>
+                <td><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#property_crudFilters">
+<abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_crudColumnsCached">
+                                                            private                    
+                                                                                
+                                    </td>
+                <td>$crudColumnsCached</td>
+                <td class="last"><p>Cached columns chainset</p></td>
+                <td><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#property_crudColumnsCached">
+<abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_crudActionsCached">
+                                                            private                    
+                                                                                
+                                    </td>
+                <td>$crudActionsCached</td>
+                <td class="last"><p>Cached actions chainset;</p></td>
+                <td><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#property_crudActionsCached">
+<abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_crudFiltersCached">
+                                                            private                    
+                                                                                
+                                    </td>
+                <td>$crudFiltersCached</td>
+                <td class="last"><p>Cached filters chainset.</p></td>
+                <td><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#property_crudFiltersCached">
+<abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_model">
+                                        protected                                        
+                                                                                
+                                    </td>
+                <td>$model</td>
+                <td class="last"><p>Model class name. Must be overriden.</p></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_imodel">
+                                                            private                    
+                                                                                
+                                    </td>
+                <td>$imodel</td>
+                <td class="last"><p>Model instance</p></td>
+                <td></td>
+            </tr>
+            </table>
 
     
-            <h2>Public Methods</h2>
+                                                                    <h2>Public Methods</h2>
 
-            <div class="container-fluid underlined">
-                            <div class="row">
-    <div class="col-md-1 type">
-                            </div>
-    <div class="col-md-1 type">
+                    <div class="container-fluid underlined">
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method___construct">__construct</a>($core, $elakey)
         
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method___construct">__construct</a>($core, $elakey)
+                                            <p><p>Each module has to be initialized with eladmin instance and its own elakey.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#method___construct">
+<abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../../Onspli/Eladmin/Core.html"><abbr title="Onspli\Eladmin\Core">Core</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_core">core</a>()
         
-                    <p>Each module has to be initialized with eladmin instance and its own elakey.</p>    </div>
-    <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#method___construct"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
-</div>
+                                            <p><p>Return core instance</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#method_core">
+<abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_elakey">elakey</a>()
+        
+                                            <p><p>Each module has its elakey - index in modules array - used to address requests.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#method_elakey">
+<abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_auth">auth</a>(string|null $action = null)
+        
+                                            <p><p>Check if user is authorized to do action, or athorized to access module at all.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#method_auth">
+<abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_title">title</a>()
+        
+                                            <p><p>Get name of the module.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#method_title">
+<abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_icon">icon</a>()
+        
+                                            <p><p>Get icon of the module.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#method_icon">
+<abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_requestUrl">requestUrl</a>(string|null $action = null, array $args = [])
+        
+                                            <p><p>Return url for this module.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#method_requestUrl">
+<abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_assetUrl">assetUrl</a>(string $path, string|null $version = null)
+        
+                                            <p><p>Create asset url, file path relative to /assets directory. Default $version = eladmin version</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#method_assetUrl">
+<abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_prepare">prepare</a>()
+        
+                                            <p><p>Prepare action. Initialise model() with the requested db entry.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_roles">roles</a>(string|null $action = null)
+        
+                                            <p><p>Get roles authorized to work with the module, or specific action. Empty array means any role is authorized.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#method_roles">
+<abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_render">render</a>(string $template, array $args = [])
+        
+                                            <p><p>Return rendered view.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#method_render">
+<abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_renderAsset">renderAsset</a>(string $path)
+        
+                                            <p><p>Determinate asset content-type and render it.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#method_renderAsset">
+<abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_implementsSoftDeletes">implementsSoftDeletes</a>()
+        
+                                            <p><p>IMPLEMENT. Does CRUD use soft deletes?</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_implementsSearch">implementsSearch</a>()
+        
+                                            <p><p>IMPLEMENT. Does CRUD support searching?</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_implementsPaging">implementsPaging</a>()
+        
+                                            <p><p>IMPLEMENT. Does CRUD support paging?</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_implementsSorting">implementsSorting</a>()
+        
+                                            <p><p>IMPLEMENT. Does CRUD support sorting?</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_implementsFilters">implementsFilters</a>()
+        
+                                            <p><p>IMPLEMENT. Does CRUD support filtering?</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_primary">primary</a>()
+        
+                                            <p><p>Primary column name.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../../Onspli/Eladmin/Modules/Crud/Chainset/Columns.html"><abbr title="Onspli\Eladmin\Modules\Crud\Chainset\Columns">Columns</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getCrudColumns">getCrudColumns</a>()
+        
+                                            <p><p>Get columns chainset.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_getCrudColumns">
+<abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../../Onspli/Eladmin/Modules/Crud/Chainset/Actions.html"><abbr title="Onspli\Eladmin\Modules\Crud\Chainset\Actions">Actions</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getCrudActions">getCrudActions</a>()
+        
+                                            <p><p>Get actions chainset.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_getCrudActions">
+<abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../../Onspli/Eladmin/Modules/Crud/Chainset/Filters.html"><abbr title="Onspli\Eladmin\Modules\Crud\Chainset\Filters">Filters</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getCrudFilters">getCrudFilters</a>()
+        
+                                            <p><p>Get filters chainset.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_getCrudFilters">
+<abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_actionCreateForm">actionCreateForm</a>()
+        
+                                            <p><p>ACTION. Show form - create entry.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionCreateForm">
+<abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_actionUpdateForm">actionUpdateForm</a>()
+        
+                                            <p><p>ACTION. Show form - edit entry.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionUpdateForm">
+<abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_actionRead">actionRead</a>()
+        
+                                            <p><p>ACTION. List database entries.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionRead">
+<abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_actionUpdate">actionUpdate</a>()
+        
+                                            <p><p>ACTION. Edit database entry.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionUpdate">
+<abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_actionCreate">actionCreate</a>()
+        
+                                            <p><p>ACTION. Create database entry.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionCreate">
+<abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_actionDelete">actionDelete</a>()
+        
+                                            <p><p>ACTION. Hard delete.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionDelete">
+<abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_actionSoftDelete">actionSoftDelete</a>()
+        
+                                            <p><p>ACTION. Soft delete.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionSoftDelete">
+<abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_actionRestore">actionRestore</a>()
+        
+                                            <p><p>ACTION. Restore.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionRestore">
+<abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_actions">actions</a>()
+        
+                                            <p><p>Return array of all defined actions.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#method_actions">
+<abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_hasAction">hasAction</a>(string $action)
+        
+                                            <p><p>Check if actions is defined.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#method_hasAction">
+<abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_isAction">isAction</a>(string $action)
+        
+                                            <p><p>Check if actions is executed.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#method_isAction">
+<abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_parseAction">parseAction</a>(string $action)
+        
+                                            <p><p>We want action keys to be case insensitive. This converts action to lowercase.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#method_parseAction">
+<abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_renderText">renderText</a>(string|null $str = null)
+        
+                                            <p><p>Convinient method for plain text output. Sets HTTP header text/plain and echo $str.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#method_renderText">
+<abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_renderHtml">renderHtml</a>(string|null $str = null)
+        
+                                            <p><p>Convinient method for html output. Sets HTTP header text/html and echo $str.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#method_renderHtml">
+<abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_renderJson">renderJson</a>(array|null $json = null)
+        
+                                            <p><p>Convinient method for json output. Sets HTTP header application/json and echo serialized $json.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#method_renderJson">
+<abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
+            </div>
+            </div>
 
-                                      <div class="row">
-    <div class="col-md-1 type">
-        final                    </div>
-    <div class="col-md-1 type">
-        <a href="../../../../Onspli/Eladmin/Core.html"><abbr title="Onspli\Eladmin\Core">Core</abbr></a>
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_core">core</a>()
-        
-                    <p>Return core instance</p>    </div>
-    <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#method_core"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
-</div>
+                                                            <h2>Protected Methods</h2>
 
-                                      <div class="row">
-    <div class="col-md-1 type">
-        final                    </div>
-    <div class="col-md-1 type">
-        string
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_elakey">elakey</a>()
+                    <div class="container-fluid underlined">
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_views">views</a>()
         
-                    <p>Each module has its elakey - index in modules array - used to address requests.</p>    </div>
-    <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#method_elakey"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
-</div>
+                                            <p><p>Extends views directory.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_views">
+<abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <abbr title="Jenssegers\Blade\Blade">Blade</abbr>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_blade">blade</a>()
+        
+                                            <p><p>Return Blade instance</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#method_blade">
+<abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_create">create</a>(array $row)
+        
+                                            <p><p>IMPLEMENT. Create item.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_update">update</a>(array $row, mixed $id)
+        
+                                            <p><p>IMPLEMENT. Update item.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_default">default</a>()
+        
+                                            <p><p>Read default row
+Returns row as an associative array ['columnName' =&gt; 'value']</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_default">
+<abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_get">get</a>($id)
+        
+                                            <p><p>IMPLEMENT. Read one row.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_delete">delete</a>($id)
+        
+                                            <p><p>IMPLEMENT. Hard delete row.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_softDelete">softDelete</a>($id)
+        
+                                            <p><p>IMPLEMENT. Soft delete row.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_restore">restore</a>($id)
+        
+                                            <p><p>IMPLEMENT. Restore soft deleted row.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_read">read</a>(array $request, $totalResults)
+        
+                                            <p><p>IMPLEMENT. Fetch an array of rows.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_crudColumns">crudColumns</a>()
+        
+                                            <p><p>Default columns setting.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_crudActions">crudActions</a>()
+        
+                                            <p><p>Default actions chainset. Override to configure actions.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_crudActions">
+<abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_crudFilters">crudFilters</a>()
+        
+                                            <p><p>Default filters chainset. Override to configure filters.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_crudFilters">
+<abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_id">id</a>($throwIfNull = false)
+        
+                                            <p><p>Return ID of the row which should be affected by the action.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_id">
+<abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_model">model</a>()
+        
+                                            <p><p>Return model instance for action.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_tableColumns">tableColumns</a>()
+        
+                                            <p><p>Get an array of table columns.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+            </div>
 
-                                      <div class="row">
-    <div class="col-md-1 type">
-        final                    </div>
-    <div class="col-md-1 type">
-        bool
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_auth">auth</a>(string|null $action = null)
-        
-                    <p>Check if user is authorized to do action, or athorized to access module at all.</p>    </div>
-    <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#method_auth"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
-</div>
+                                                            <h2>Private Methods</h2>
 
-                                      <div class="row">
-    <div class="col-md-1 type">
-                            </div>
-    <div class="col-md-1 type">
-        string
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_title">title</a>()
+                    <div class="container-fluid underlined">
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_updateOrCreate">updateOrCreate</a>($entry, $row)
         
-                    <p>Get name of the module.</p>    </div>
-    <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#method_title"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
-</div>
+                                            <p><p>Update or create entry.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_rowToArray">rowToArray</a>($row)
+        
+                                            <p><p>Convert model to array keeping dates in the database format (e.g. 2020-08-05 12:49:07).</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+            </div>
 
-                                      <div class="row">
-    <div class="col-md-1 type">
-                            </div>
-    <div class="col-md-1 type">
-        string
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_icon">icon</a>()
-        
-                    <p>Get icon of the module.</p>    </div>
-    <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#method_icon"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-        final                    </div>
-    <div class="col-md-1 type">
-        string
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_requestUrl">requestUrl</a>(string|null $action = null, array $args = [])
-        
-                    <p>Return url for this module.</p>    </div>
-    <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#method_requestUrl"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-        final                    </div>
-    <div class="col-md-1 type">
-        string
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_assetUrl">assetUrl</a>(string $path, string|null $version = null)
-        
-                    <p>Create asset url, file path relative to /assets directory. Default $version = eladmin version</p>    </div>
-    <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#method_assetUrl"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-                            </div>
-    <div class="col-md-1 type">
-        void
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_prepare">prepare</a>()
-        
-                    <p>Prepare action. Initialise model() with the requested db entry.</p>    </div>
-    <div class="col-md-2"></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-        final                    </div>
-    <div class="col-md-1 type">
-        array|null
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_roles">roles</a>(string|null $action = null)
-        
-                    <p>Get roles authorized to work with the module, or specific action. Empty array means any role is authorized.</p>    </div>
-    <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#method_roles"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
-</div>
-
-                                                                                            <div class="row">
-    <div class="col-md-1 type">
-        final                    </div>
-    <div class="col-md-1 type">
-        string
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_render">render</a>(string $template, array $args = [])
-        
-                    <p>Return rendered view.</p>    </div>
-    <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#method_render"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-                            </div>
-    <div class="col-md-1 type">
-        void
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_renderAsset">renderAsset</a>(string $path)
-        
-                    <p>Determinate asset content-type and render it.</p>    </div>
-    <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#method_renderAsset"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
-</div>
-
-                                                                                                                                                                    <div class="row">
-    <div class="col-md-1 type">
-                            </div>
-    <div class="col-md-1 type">
-        bool
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_implementsSoftDeletes">implementsSoftDeletes</a>()
-        
-                    <p>IMPLEMENT. Does CRUD use soft deletes?</p>    </div>
-    <div class="col-md-2"></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-                            </div>
-    <div class="col-md-1 type">
-        bool
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_implementsSearch">implementsSearch</a>()
-        
-                    <p>IMPLEMENT. Does CRUD support searching?</p>    </div>
-    <div class="col-md-2"></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-                            </div>
-    <div class="col-md-1 type">
-        bool
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_implementsPaging">implementsPaging</a>()
-        
-                    <p>IMPLEMENT. Does CRUD support paging?</p>    </div>
-    <div class="col-md-2"></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-                            </div>
-    <div class="col-md-1 type">
-        bool
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_implementsSorting">implementsSorting</a>()
-        
-                    <p>IMPLEMENT. Does CRUD support sorting?</p>    </div>
-    <div class="col-md-2"></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-                            </div>
-    <div class="col-md-1 type">
-        bool
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_implementsFilters">implementsFilters</a>()
-        
-                    <p>IMPLEMENT. Does CRUD support filtering?</p>    </div>
-    <div class="col-md-2"></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-                            </div>
-    <div class="col-md-1 type">
-        string
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_primary">primary</a>()
-        
-                    <p>Primary column name.</p>    </div>
-    <div class="col-md-2"></div>
-</div>
-
-                                                                                                                                                                                                                                            <div class="row">
-    <div class="col-md-1 type">
-        final                    </div>
-    <div class="col-md-1 type">
-        <a href="../../../../Onspli/Eladmin/Modules/Crud/Chainset/Columns.html"><abbr title="Onspli\Eladmin\Modules\Crud\Chainset\Columns">Columns</abbr></a>
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_getCrudColumns">getCrudColumns</a>()
-        
-                    <p>Get columns chainset.</p>    </div>
-    <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_getCrudColumns"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a></small></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-        final                    </div>
-    <div class="col-md-1 type">
-        <a href="../../../../Onspli/Eladmin/Modules/Crud/Chainset/Actions.html"><abbr title="Onspli\Eladmin\Modules\Crud\Chainset\Actions">Actions</abbr></a>
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_getCrudActions">getCrudActions</a>()
-        
-                    <p>Get actions chainset.</p>    </div>
-    <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_getCrudActions"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a></small></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-        final                    </div>
-    <div class="col-md-1 type">
-        <a href="../../../../Onspli/Eladmin/Modules/Crud/Chainset/Filters.html"><abbr title="Onspli\Eladmin\Modules\Crud\Chainset\Filters">Filters</abbr></a>
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_getCrudFilters">getCrudFilters</a>()
-        
-                    <p>Get filters chainset.</p>    </div>
-    <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_getCrudFilters"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a></small></div>
-</div>
-
-                                                                                                                                                                    <div class="row">
-    <div class="col-md-1 type">
-                            </div>
-    <div class="col-md-1 type">
-        
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_actionCreateForm">actionCreateForm</a>()
-        
-                    <p>ACTION. Show form - create entry.</p>    </div>
-    <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionCreateForm"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a></small></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-                            </div>
-    <div class="col-md-1 type">
-        
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_actionUpdateForm">actionUpdateForm</a>()
-        
-                    <p>ACTION. Show form - edit entry.</p>    </div>
-    <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionUpdateForm"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a></small></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-                            </div>
-    <div class="col-md-1 type">
-        
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_actionRead">actionRead</a>()
-        
-                    <p>ACTION. List database entries.</p>    </div>
-    <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionRead"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a></small></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-                            </div>
-    <div class="col-md-1 type">
-        
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_actionUpdate">actionUpdate</a>()
-        
-                    <p>ACTION. Edit database entry.</p>    </div>
-    <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionUpdate"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a></small></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-                            </div>
-    <div class="col-md-1 type">
-        
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_actionCreate">actionCreate</a>()
-        
-                    <p>ACTION. Create database entry.</p>    </div>
-    <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionCreate"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a></small></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-                            </div>
-    <div class="col-md-1 type">
-        
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_actionDelete">actionDelete</a>()
-        
-                    <p>ACTION. Hard delete.</p>    </div>
-    <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionDelete"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a></small></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-                            </div>
-    <div class="col-md-1 type">
-        
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_actionSoftDelete">actionSoftDelete</a>()
-        
-                    <p>ACTION. Soft delete.</p>    </div>
-    <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionSoftDelete"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a></small></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-                            </div>
-    <div class="col-md-1 type">
-        
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_actionRestore">actionRestore</a>()
-        
-                    <p>ACTION. Restore.</p>    </div>
-    <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionRestore"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a></small></div>
-</div>
-
-                                                                                                                                                                                                                                                                                                                                                                                  <div class="row">
-    <div class="col-md-1 type">
-        final                static    </div>
-    <div class="col-md-1 type">
-        array
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_actions">actions</a>()
-        
-                    <p>Return array of all defined actions.</p>    </div>
-    <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#method_actions"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-        final                static    </div>
-    <div class="col-md-1 type">
-        bool
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_hasAction">hasAction</a>(string $action)
-        
-                    <p>Check if actions is defined.</p>    </div>
-    <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#method_hasAction"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-        final                static    </div>
-    <div class="col-md-1 type">
-        bool
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_isAction">isAction</a>(string $action)
-        
-                    <p>Check if actions is executed.</p>    </div>
-    <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#method_isAction"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-        final                static    </div>
-    <div class="col-md-1 type">
-        string
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_parseAction">parseAction</a>(string $action)
-        
-                    <p>We want action keys to be case insensitive. This converts action to lowercase.</p>    </div>
-    <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#method_parseAction"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-        final                static    </div>
-    <div class="col-md-1 type">
-        void
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_renderText">renderText</a>(string|null $str = null)
-        
-                    <p>Convinient method for plain text output. Sets HTTP header text/plain and echo $str.</p>    </div>
-    <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#method_renderText"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-        final                static    </div>
-    <div class="col-md-1 type">
-        void
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_renderHtml">renderHtml</a>(string|null $str = null)
-        
-                    <p>Convinient method for html output. Sets HTTP header text/html and echo $str.</p>    </div>
-    <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#method_renderHtml"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-        final                static    </div>
-    <div class="col-md-1 type">
-        void
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_renderJson">renderJson</a>(array|null $json = null)
-        
-                    <p>Convinient method for json output. Sets HTTP header application/json and echo serialized $json.</p>    </div>
-    <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#method_renderJson"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
-</div>
-
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  </div>
-
-
-        <h2>Protected Methods</h2>
-
-            <div class="container-fluid underlined">
-                                                                                                                                                                                                                                  <div class="row">
-    <div class="col-md-1 type">
-                            </div>
-    <div class="col-md-1 type">
-        array
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_views">views</a>()
-        
-                    <p>Extends array of directories of views and assets.</p>    </div>
-    <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_views"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a></small></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-                            </div>
-    <div class="col-md-1 type">
-        <abbr title="Jenssegers\Blade\Blade">Blade</abbr>
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_blade">blade</a>()
-        
-                    <p>Return Blade instance</p>    </div>
-    <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Module.html#method_blade"><abbr title="Onspli\Eladmin\Module">Module</abbr></a></small></div>
-</div>
-
-                                                                                                                                                                                                                                                                                                                    <div class="row">
-    <div class="col-md-1 type">
-                            </div>
-    <div class="col-md-1 type">
-        void
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_create">create</a>(array $row)
-        
-                    <p>IMPLEMENT. Create item.</p>    </div>
-    <div class="col-md-2"></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-                            </div>
-    <div class="col-md-1 type">
-        void
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_update">update</a>(array $row, $id)
-        
-                    <p>IMPLEMENT. Update item.</p>    </div>
-    <div class="col-md-2"></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-                            </div>
-    <div class="col-md-1 type">
-        array
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_default">default</a>()
-        
-                    <p>Read default row
-Returns row as an associative array ['columnName' => 'value']</p>    </div>
-    <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_default"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a></small></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-                            </div>
-    <div class="col-md-1 type">
-        array
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_get">get</a>($id)
-        
-                    <p>IMPLEMENT. Read one row.</p>    </div>
-    <div class="col-md-2"></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-                            </div>
-    <div class="col-md-1 type">
-        void
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_delete">delete</a>($id)
-        
-                    <p>IMPLEMENT. Hard delete row.</p>    </div>
-    <div class="col-md-2"></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-                            </div>
-    <div class="col-md-1 type">
-        void
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_softDelete">softDelete</a>($id)
-        
-                    <p>IMPLEMENT. Soft delete row.</p>    </div>
-    <div class="col-md-2"></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-                            </div>
-    <div class="col-md-1 type">
-        void
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_restore">restore</a>($id)
-        
-                    <p>IMPLEMENT. Restore soft deleted row.</p>    </div>
-    <div class="col-md-2"></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-                            </div>
-    <div class="col-md-1 type">
-        array
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_read">read</a>(array $request, $totalResults)
-        
-                    <p>IMPLEMENT. Fetch an array of rows.</p>    </div>
-    <div class="col-md-2"></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-                            </div>
-    <div class="col-md-1 type">
-        
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_crudColumns">crudColumns</a>()
-        
-                    <p>Default columns setting.</p>    </div>
-    <div class="col-md-2"></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-                            </div>
-    <div class="col-md-1 type">
-        
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_crudActions">crudActions</a>()
-        
-                    <p>Default actions chainset. Override to configure actions.</p>    </div>
-    <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_crudActions"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a></small></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-                            </div>
-    <div class="col-md-1 type">
-        
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_crudFilters">crudFilters</a>()
-        
-                    <p>Default filters chainset. Override to configure filters.</p>    </div>
-    <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_crudFilters"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a></small></div>
-</div>
-
-                                                                                            <div class="row">
-    <div class="col-md-1 type">
-                            </div>
-    <div class="col-md-1 type">
-        
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_id">id</a>($throwIfNull = false)
-        
-                    <p>Return ID of the row which should be affected by the action.</p>    </div>
-    <div class="col-md-2"><small>from&nbsp;<a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_id"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a></small></div>
-</div>
-
-                                                                                                                                                                                                                                                                                                  <div class="row">
-    <div class="col-md-1 type">
-                            </div>
-    <div class="col-md-1 type">
-        
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_model">model</a>()
-        
-                    <p>Return model instance for action.</p>    </div>
-    <div class="col-md-2"></div>
-</div>
-
-                                                        <div class="row">
-    <div class="col-md-1 type">
-                            </div>
-    <div class="col-md-1 type">
-        array
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_tableColumns">tableColumns</a>()
-        
-                    <p>Get an array of table columns.</p>    </div>
-    <div class="col-md-2"></div>
-</div>
-
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      </div>
-
-
-        <h2>Private Methods</h2>
-
-            <div class="container-fluid underlined">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <div class="row">
-    <div class="col-md-1 type">
-                            </div>
-    <div class="col-md-1 type">
-        void
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_updateOrCreate">updateOrCreate</a>($entry, $row)
-        
-                    <p>Update or create entry.</p>    </div>
-    <div class="col-md-2"></div>
-</div>
-
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </div>
-
-
+                            
         <h2>Details</h2>
 
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Module.html#method___construct"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 96</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Module.html#method___construct">
+<abbr title="Onspli\Eladmin\Module">Module</abbr></a> at line 96</div>
         <code>                    
     <strong>__construct</strong>($core, $elakey)
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>Each module has to be initialized with eladmin instance and its own elakey.</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>Each module has to be initialized with eladmin instance and its own elakey.</p></p>                        
+        </div>
+        <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
@@ -973,24 +943,28 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
             
             
             
+            
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_core">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Module.html#method_core"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 104</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Module.html#method_core">
+<abbr title="Onspli\Eladmin\Module">Module</abbr></a> at line 104</div>
         <code>final                    <a href="../../../../Onspli/Eladmin/Core.html"><abbr title="Onspli\Eladmin\Core">Core</abbr></a>
     <strong>core</strong>()
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>Return core instance</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>Return core instance</p></p>                        
+        </div>
+        <div class="tags">
             
                             <h4>Return Value</h4>
 
@@ -1003,24 +977,28 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
 
             
             
+            
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_elakey">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Module.html#method_elakey"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 111</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Module.html#method_elakey">
+<abbr title="Onspli\Eladmin\Module">Module</abbr></a> at line 111</div>
         <code>final                    string
     <strong>elakey</strong>()
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>Each module has its elakey - index in modules array - used to address requests.</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>Each module has its elakey - index in modules array - used to address requests.</p></p>                        
+        </div>
+        <div class="tags">
             
                             <h4>Return Value</h4>
 
@@ -1033,24 +1011,28 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
 
             
             
+            
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_auth">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Module.html#method_auth"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 118</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Module.html#method_auth">
+<abbr title="Onspli\Eladmin\Module">Module</abbr></a> at line 118</div>
         <code>final                    bool
     <strong>auth</strong>(string|null $action = null)
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>Check if user is authorized to do action, or athorized to access module at all.</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>Check if user is authorized to do action, or athorized to access module at all.</p></p>                        
+        </div>
+        <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
@@ -1073,24 +1055,28 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
 
             
             
+            
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_title">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Module.html#method_title"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 133</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Module.html#method_title">
+<abbr title="Onspli\Eladmin\Module">Module</abbr></a> at line 133</div>
         <code>                    string
     <strong>title</strong>()
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>Get name of the module.</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>Get name of the module.</p></p>                        
+        </div>
+        <div class="tags">
             
                             <h4>Return Value</h4>
 
@@ -1101,6 +1087,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
         </tr>
     </table>
 
+            
             
             
                     </div>
@@ -1109,18 +1096,21 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_icon">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Module.html#method_icon"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 140</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Module.html#method_icon">
+<abbr title="Onspli\Eladmin\Module">Module</abbr></a> at line 140</div>
         <code>                    string
     <strong>icon</strong>()
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>Get icon of the module.</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>Get icon of the module.</p></p>                        
+        </div>
+        <div class="tags">
             
                             <h4>Return Value</h4>
 
@@ -1133,24 +1123,28 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
 
             
             
+            
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_requestUrl">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Module.html#method_requestUrl"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 147</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Module.html#method_requestUrl">
+<abbr title="Onspli\Eladmin\Module">Module</abbr></a> at line 147</div>
         <code>final                    string
     <strong>requestUrl</strong>(string|null $action = null, array $args = [])
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>Return url for this module.</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>Return url for this module.</p></p>                        
+        </div>
+        <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
@@ -1178,24 +1172,28 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
 
             
             
+            
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_assetUrl">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Module.html#method_assetUrl"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 160</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Module.html#method_assetUrl">
+<abbr title="Onspli\Eladmin\Module">Module</abbr></a> at line 160</div>
         <code>final                    string
     <strong>assetUrl</strong>(string $path, string|null $version = null)
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>Create asset url, file path relative to /assets directory. Default $version = eladmin version</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>Create asset url, file path relative to /assets directory. Default $version = eladmin version</p></p>                        
+        </div>
+        <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
@@ -1223,24 +1221,27 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
 
             
             
+            
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_prepare">
-        <div class="location">at         line 88</div>
+        <div class="location">at line 88</div>
         <code>                    void
     <strong>prepare</strong>()
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>Prepare action. Initialise model() with the requested db entry.</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>Prepare action. Initialise model() with the requested db entry.</p></p>                        
+        </div>
+        <div class="tags">
             
                             <h4>Return Value</h4>
 
@@ -1253,24 +1254,28 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
 
             
             
+            
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_roles">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Module.html#method_roles"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 174</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Module.html#method_roles">
+<abbr title="Onspli\Eladmin\Module">Module</abbr></a> at line 174</div>
         <code>final                    array|null
     <strong>roles</strong>(string|null $action = null)
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>Get roles authorized to work with the module, or specific action. Empty array means any role is authorized.</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>Get roles authorized to work with the module, or specific action. Empty array means any role is authorized.</p></p>                        
+        </div>
+        <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
@@ -1293,24 +1298,28 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
 
             
             
+            
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_setRoles">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Module.html#method_setRoles"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 195</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Module.html#method_setRoles">
+<abbr title="Onspli\Eladmin\Module">Module</abbr></a> at line 195</div>
         <code>                private    void
     <strong>setRoles</strong>(array|null $roles, string|null $action = null)
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>Set roles authorized to work with the module, or specific action. Empty array means any role is authorized.</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>Set roles authorized to work with the module, or specific action. Empty array means any role is authorized.</p></p>                        
+        </div>
+        <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
@@ -1338,30 +1347,28 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
 
             
             
+            
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_views">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_views"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 294</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_views">
+<abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at line 294</div>
         <code>            protected        array
     <strong>views</strong>()
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>Extends array of directories of views and assets.</p>                    <p>Example:</p>
-
-<pre><code class="lang-php">public function views() : array {
- return array_merge([__DIR__ . '/my_module'], parent::views());
-}
-</code></pre>
-</p>                            </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>Extends views directory.</p></p>                        
+        </div>
+        <div class="tags">
             
                             <h4>Return Value</h4>
 
@@ -1374,24 +1381,28 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
 
             
             
+            
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_blade">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Module.html#method_blade"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 228</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Module.html#method_blade">
+<abbr title="Onspli\Eladmin\Module">Module</abbr></a> at line 228</div>
         <code>            protected        <abbr title="Jenssegers\Blade\Blade">Blade</abbr>
     <strong>blade</strong>()
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>Return Blade instance</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>Return Blade instance</p></p>                        
+        </div>
+        <div class="tags">
             
                             <h4>Return Value</h4>
 
@@ -1404,24 +1415,28 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
 
             
             
+            
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_render">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Module.html#method_render"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 235</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Module.html#method_render">
+<abbr title="Onspli\Eladmin\Module">Module</abbr></a> at line 235</div>
         <code>final                    string
     <strong>render</strong>(string $template, array $args = [])
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>Return rendered view.</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>Return rendered view.</p></p>                        
+        </div>
+        <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
@@ -1449,24 +1464,28 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
 
             
             
+            
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_renderAsset">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Module.html#method_renderAsset"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 243</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Module.html#method_renderAsset">
+<abbr title="Onspli\Eladmin\Module">Module</abbr></a> at line 243</div>
         <code>                    void
     <strong>renderAsset</strong>(string $path)
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>Determinate asset content-type and render it.</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>Determinate asset content-type and render it.</p></p>                        
+        </div>
+        <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
@@ -1489,24 +1508,28 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
 
             
             
+            
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_actions">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Module.html#method_actions"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 250</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Module.html#method_actions">
+<abbr title="Onspli\Eladmin\Module">Module</abbr></a> at line 250</div>
         <code>final        static            array
     <strong>actions</strong>()
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>Return array of all defined actions.</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>Return array of all defined actions.</p></p>                        
+        </div>
+        <div class="tags">
             
                             <h4>Return Value</h4>
 
@@ -1519,24 +1542,28 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
 
             
             
+            
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_hasAction">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Module.html#method_hasAction"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 267</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Module.html#method_hasAction">
+<abbr title="Onspli\Eladmin\Module">Module</abbr></a> at line 267</div>
         <code>final        static            bool
     <strong>hasAction</strong>(string $action)
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>Check if actions is defined.</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>Check if actions is defined.</p></p>                        
+        </div>
+        <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
@@ -1557,6 +1584,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
         </tr>
     </table>
 
+            
             
             
                     </div>
@@ -1565,18 +1593,21 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_isAction">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Module.html#method_isAction"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 274</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Module.html#method_isAction">
+<abbr title="Onspli\Eladmin\Module">Module</abbr></a> at line 274</div>
         <code>final        static            bool
     <strong>isAction</strong>(string $action)
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>Check if actions is executed.</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>Check if actions is executed.</p></p>                        
+        </div>
+        <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
@@ -1599,24 +1630,28 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
 
             
             
+            
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_parseAction">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Module.html#method_parseAction"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 281</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Module.html#method_parseAction">
+<abbr title="Onspli\Eladmin\Module">Module</abbr></a> at line 281</div>
         <code>final        static            string
     <strong>parseAction</strong>(string $action)
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>We want action keys to be case insensitive. This converts action to lowercase.</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>We want action keys to be case insensitive. This converts action to lowercase.</p></p>                        
+        </div>
+        <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
@@ -1639,24 +1674,28 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
 
             
             
+            
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_renderText">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Module.html#method_renderText"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 288</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Module.html#method_renderText">
+<abbr title="Onspli\Eladmin\Module">Module</abbr></a> at line 288</div>
         <code>final        static            void
     <strong>renderText</strong>(string|null $str = null)
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>Convinient method for plain text output. Sets HTTP header text/plain and echo $str.</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>Convinient method for plain text output. Sets HTTP header text/plain and echo $str.</p></p>                        
+        </div>
+        <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
@@ -1677,6 +1716,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
         </tr>
     </table>
 
+            
             
             
                     </div>
@@ -1685,18 +1725,21 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_renderHtml">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Module.html#method_renderHtml"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 297</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Module.html#method_renderHtml">
+<abbr title="Onspli\Eladmin\Module">Module</abbr></a> at line 297</div>
         <code>final        static            void
     <strong>renderHtml</strong>(string|null $str = null)
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>Convinient method for html output. Sets HTTP header text/html and echo $str.</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>Convinient method for html output. Sets HTTP header text/html and echo $str.</p></p>                        
+        </div>
+        <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
@@ -1719,24 +1762,28 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
 
             
             
+            
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_renderJson">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Module.html#method_renderJson"><abbr title="Onspli\Eladmin\Module">Module</abbr></a> at         line 306</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Module.html#method_renderJson">
+<abbr title="Onspli\Eladmin\Module">Module</abbr></a> at line 306</div>
         <code>final        static            void
     <strong>renderJson</strong>(array|null $json = null)
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>Convinient method for json output. Sets HTTP header application/json and echo serialized $json.</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>Convinient method for json output. Sets HTTP header application/json and echo serialized $json.</p></p>                        
+        </div>
+        <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
@@ -1759,24 +1806,27 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
 
             
             
+            
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_implementsSoftDeletes">
-        <div class="location">at         line 24</div>
+        <div class="location">at line 24</div>
         <code>                    bool
     <strong>implementsSoftDeletes</strong>()
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>IMPLEMENT. Does CRUD use soft deletes?</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>IMPLEMENT. Does CRUD use soft deletes?</p></p>                        
+        </div>
+        <div class="tags">
             
                             <h4>Return Value</h4>
 
@@ -1787,6 +1837,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
         </tr>
     </table>
 
+            
             
             
                     </div>
@@ -1795,18 +1846,20 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_implementsSearch">
-        <div class="location">at         line 36</div>
+        <div class="location">at line 36</div>
         <code>                    bool
     <strong>implementsSearch</strong>()
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>IMPLEMENT. Does CRUD support searching?</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>IMPLEMENT. Does CRUD support searching?</p></p>                        
+        </div>
+        <div class="tags">
             
                             <h4>Return Value</h4>
 
@@ -1817,6 +1870,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
         </tr>
     </table>
 
+            
             
             
                     </div>
@@ -1825,18 +1879,20 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_implementsPaging">
-        <div class="location">at         line 32</div>
+        <div class="location">at line 32</div>
         <code>                    bool
     <strong>implementsPaging</strong>()
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>IMPLEMENT. Does CRUD support paging?</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>IMPLEMENT. Does CRUD support paging?</p></p>                        
+        </div>
+        <div class="tags">
             
                             <h4>Return Value</h4>
 
@@ -1847,6 +1903,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
         </tr>
     </table>
 
+            
             
             
                     </div>
@@ -1855,18 +1912,20 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_implementsSorting">
-        <div class="location">at         line 28</div>
+        <div class="location">at line 28</div>
         <code>                    bool
     <strong>implementsSorting</strong>()
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>IMPLEMENT. Does CRUD support sorting?</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>IMPLEMENT. Does CRUD support sorting?</p></p>                        
+        </div>
+        <div class="tags">
             
                             <h4>Return Value</h4>
 
@@ -1877,6 +1936,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
         </tr>
     </table>
 
+            
             
             
                     </div>
@@ -1885,18 +1945,20 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_implementsFilters">
-        <div class="location">at         line 40</div>
+        <div class="location">at line 40</div>
         <code>                    bool
     <strong>implementsFilters</strong>()
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>IMPLEMENT. Does CRUD support filtering?</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>IMPLEMENT. Does CRUD support filtering?</p></p>                        
+        </div>
+        <div class="tags">
             
                             <h4>Return Value</h4>
 
@@ -1909,24 +1971,27 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
 
             
             
+            
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_primary">
-        <div class="location">at         line 65</div>
+        <div class="location">at line 65</div>
         <code>                    string
     <strong>primary</strong>()
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>Primary column name.</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>Primary column name.</p></p>                        
+        </div>
+        <div class="tags">
             
                             <h4>Return Value</h4>
 
@@ -1939,24 +2004,27 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
 
             
             
+            
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_create">
-        <div class="location">at         line 101</div>
+        <div class="location">at line 101</div>
         <code>            protected        void
     <strong>create</strong>(array $row)
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>IMPLEMENT. Create item.</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>IMPLEMENT. Create item.</p></p>                        
+        </div>
+        <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
@@ -1977,6 +2045,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
         </tr>
     </table>
 
+            
             
             
                     </div>
@@ -1985,18 +2054,20 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_update">
-        <div class="location">at         line 106</div>
+        <div class="location">at line 106</div>
         <code>            protected        void
-    <strong>update</strong>(array $row, $id)
+    <strong>update</strong>(array $row, mixed $id)
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>IMPLEMENT. Update item.</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>IMPLEMENT. Update item.</p></p>                        
+        </div>
+        <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
@@ -2006,9 +2077,9 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
                 <td></td>
             </tr>
                     <tr>
-                <td></td>
+                <td>mixed</td>
                 <td>$id</td>
-                <td>id of item to be updated</td>
+                <td><p>id of item to be updated</p></td>
             </tr>
             </table>
 
@@ -2022,6 +2093,7 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
         </tr>
     </table>
 
+            
             
             
                     </div>
@@ -2030,19 +2102,22 @@ Returns row as an associative array ['columnName' => 'value']</p>    </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_default">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_default"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 182</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_default">
+<abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at line 182</div>
         <code>            protected        array
     <strong>default</strong>()
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>Read default row
-Returns row as an associative array ['columnName' => 'value']</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>Read default row
+Returns row as an associative array ['columnName' =&gt; 'value']</p></p>                        
+        </div>
+        <div class="tags">
             
                             <h4>Return Value</h4>
 
@@ -2053,6 +2128,7 @@ Returns row as an associative array ['columnName' => 'value']</p>               
         </tr>
     </table>
 
+            
             
             
                     </div>
@@ -2061,18 +2137,20 @@ Returns row as an associative array ['columnName' => 'value']</p>               
             </div>
                     <div class="method-item">
                     <h3 id="method_get">
-        <div class="location">at         line 113</div>
+        <div class="location">at line 113</div>
         <code>            protected        array
     <strong>get</strong>($id)
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>IMPLEMENT. Read one row.</p>                    <p>Returns row as an associative array ['columnName' => 'value']</p>                            </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>IMPLEMENT. Read one row.</p></p>                <p><p>Returns row as an associative array ['columnName' =&gt; 'value']</p></p>        
+        </div>
+        <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
@@ -2095,24 +2173,27 @@ Returns row as an associative array ['columnName' => 'value']</p>               
 
             
             
+            
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_delete">
-        <div class="location">at         line 120</div>
+        <div class="location">at line 120</div>
         <code>            protected        void
     <strong>delete</strong>($id)
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>IMPLEMENT. Hard delete row.</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>IMPLEMENT. Hard delete row.</p></p>                        
+        </div>
+        <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
@@ -2133,6 +2214,7 @@ Returns row as an associative array ['columnName' => 'value']</p>               
         </tr>
     </table>
 
+            
             
             
                     </div>
@@ -2141,18 +2223,20 @@ Returns row as an associative array ['columnName' => 'value']</p>               
             </div>
                     <div class="method-item">
                     <h3 id="method_softDelete">
-        <div class="location">at         line 176</div>
+        <div class="location">at line 180</div>
         <code>            protected        void
     <strong>softDelete</strong>($id)
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>IMPLEMENT. Soft delete row.</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>IMPLEMENT. Soft delete row.</p></p>                        
+        </div>
+        <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
@@ -2173,6 +2257,7 @@ Returns row as an associative array ['columnName' => 'value']</p>               
         </tr>
     </table>
 
+            
             
             
                     </div>
@@ -2181,18 +2266,20 @@ Returns row as an associative array ['columnName' => 'value']</p>               
             </div>
                     <div class="method-item">
                     <h3 id="method_restore">
-        <div class="location">at         line 186</div>
+        <div class="location">at line 190</div>
         <code>            protected        void
     <strong>restore</strong>($id)
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>IMPLEMENT. Restore soft deleted row.</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>IMPLEMENT. Restore soft deleted row.</p></p>                        
+        </div>
+        <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
@@ -2215,25 +2302,28 @@ Returns row as an associative array ['columnName' => 'value']</p>               
 
             
             
+            
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_read">
-        <div class="location">at         line 135</div>
+        <div class="location">at line 135</div>
         <code>            protected        array
     <strong>read</strong>(array $request, $totalResults)
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>IMPLEMENT. Fetch an array of rows.</p>                    <p>Row is an associative array ['columnName' => 'value']
-$totalResults needs to be set to number of results without paging applied</p>                            </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>IMPLEMENT. Fetch an array of rows.</p></p>                <p><p>Row is an associative array ['columnName' =&gt; 'value']
+$totalResults needs to be set to number of results without paging applied</p></p>        
+        </div>
+        <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
@@ -2261,24 +2351,28 @@ $totalResults needs to be set to number of results without paging applied</p>   
 
             
             
+            
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_crudColumns">
-        <div class="location">at         line 205</div>
+        <div class="location">at line 229</div>
         <code>            protected        
     <strong>crudColumns</strong>()
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>Default columns setting.</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>Default columns setting.</p></p>                        
+        </div>
+        <div class="tags">
+            
             
             
             
@@ -2288,18 +2382,22 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_crudActions">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_crudActions"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 230</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_crudActions">
+<abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at line 230</div>
         <code>            protected        
     <strong>crudActions</strong>()
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>Default actions chainset. Override to configure actions.</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>Default actions chainset. Override to configure actions.</p></p>                        
+        </div>
+        <div class="tags">
+            
             
             
             
@@ -2309,18 +2407,22 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_crudFilters">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_crudFilters"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 258</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_crudFilters">
+<abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at line 258</div>
         <code>            protected        
     <strong>crudFilters</strong>()
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>Default filters chainset. Override to configure filters.</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>Default filters chainset. Override to configure filters.</p></p>                        
+        </div>
+        <div class="tags">
+            
             
             
             
@@ -2330,18 +2432,21 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_getCrudColumns">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_getCrudColumns"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 267</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_getCrudColumns">
+<abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at line 267</div>
         <code>final                    <a href="../../../../Onspli/Eladmin/Modules/Crud/Chainset/Columns.html"><abbr title="Onspli\Eladmin\Modules\Crud\Chainset\Columns">Columns</abbr></a>
     <strong>getCrudColumns</strong>()
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>Get columns chainset.</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>Get columns chainset.</p></p>                        
+        </div>
+        <div class="tags">
             
                             <h4>Return Value</h4>
 
@@ -2354,24 +2459,28 @@ $totalResults needs to be set to number of results without paging applied</p>   
 
             
             
+            
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_getCrudActions">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_getCrudActions"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 276</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_getCrudActions">
+<abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at line 276</div>
         <code>final                    <a href="../../../../Onspli/Eladmin/Modules/Crud/Chainset/Actions.html"><abbr title="Onspli\Eladmin\Modules\Crud\Chainset\Actions">Actions</abbr></a>
     <strong>getCrudActions</strong>()
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>Get actions chainset.</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>Get actions chainset.</p></p>                        
+        </div>
+        <div class="tags">
             
                             <h4>Return Value</h4>
 
@@ -2384,24 +2493,28 @@ $totalResults needs to be set to number of results without paging applied</p>   
 
             
             
+            
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_getCrudFilters">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_getCrudFilters"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 285</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_getCrudFilters">
+<abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at line 285</div>
         <code>final                    <a href="../../../../Onspli/Eladmin/Modules/Crud/Chainset/Filters.html"><abbr title="Onspli\Eladmin\Modules\Crud\Chainset\Filters">Filters</abbr></a>
     <strong>getCrudFilters</strong>()
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>Get filters chainset.</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>Get filters chainset.</p></p>                        
+        </div>
+        <div class="tags">
             
                             <h4>Return Value</h4>
 
@@ -2414,24 +2527,28 @@ $totalResults needs to be set to number of results without paging applied</p>   
 
             
             
+            
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_id">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_id"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 302</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_id">
+<abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at line 302</div>
         <code>            protected        
     <strong>id</strong>($throwIfNull = false)
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>Return ID of the row which should be affected by the action.</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>Return ID of the row which should be affected by the action.</p></p>                        
+        </div>
+        <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
@@ -2445,24 +2562,28 @@ $totalResults needs to be set to number of results without paging applied</p>   
             
             
             
+            
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_rowValuesArray">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_rowValuesArray"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 311</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_rowValuesArray">
+<abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at line 311</div>
         <code>                private    
     <strong>rowValuesArray</strong>($row)
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>generate array of values for one row</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>generate array of values for one row</p></p>                        
+        </div>
+        <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
@@ -2473,6 +2594,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </tr>
             </table>
 
+            
             
             
             
@@ -2482,18 +2604,21 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_rowActionsArray">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_rowActionsArray"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 325</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_rowActionsArray">
+<abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at line 325</div>
         <code>                private    
     <strong>rowActionsArray</strong>($row)
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>generate array of actions for one item</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>generate array of actions for one item</p></p>                        
+        </div>
+        <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
@@ -2504,6 +2629,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </tr>
             </table>
 
+            
             
             
             
@@ -2513,18 +2639,21 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_unset">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_unset"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 346</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_unset">
+<abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at line 346</div>
         <code>                private    void
     <strong>unset</strong>(array $row)
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>unset columns which we shouldn't recieve before update</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>unset columns which we shouldn't recieve before update</p></p>                        
+        </div>
+        <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
@@ -2545,6 +2674,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
         </tr>
     </table>
 
+            
             
             
                     </div>
@@ -2553,18 +2683,21 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_defaults">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_defaults"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 358</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_defaults">
+<abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at line 358</div>
         <code>                private    void
     <strong>defaults</strong>(array $row)
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>set defaults</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>set defaults</p></p>                        
+        </div>
+        <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
@@ -2585,6 +2718,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
         </tr>
     </table>
 
+            
             
             
                     </div>
@@ -2593,18 +2727,21 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_validate">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_validate"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 370</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_validate">
+<abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at line 370</div>
         <code>                private    void
     <strong>validate</strong>(array $row)
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>validate columns before update</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>validate columns before update</p></p>                        
+        </div>
+        <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
@@ -2625,6 +2762,7 @@ $totalResults needs to be set to number of results without paging applied</p>   
         </tr>
     </table>
 
+            
             
             
                     </div>
@@ -2633,18 +2771,21 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_modify">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_modify"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 382</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_modify">
+<abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at line 382</div>
         <code>                private    void
     <strong>modify</strong>(array $row)
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>modify values before update</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>modify values before update</p></p>                        
+        </div>
+        <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
@@ -2667,24 +2808,74 @@ $totalResults needs to be set to number of results without paging applied</p>   
 
             
             
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_isSortableBy">
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_isSortableBy">
+<abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at line 398</div>
+        <code>                private    bool
+    <strong>isSortableBy</strong>($column)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Check if rows can be sorted by the column. Sorting by columns hidden from the table
+would leak information about their values.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$column</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_actionCreateForm">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionCreateForm"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 407</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionCreateForm">
+<abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at line 420</div>
         <code>                    
     <strong>actionCreateForm</strong>()
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>ACTION. Show form - create entry.</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>ACTION. Show form - create entry.</p></p>                        
+        </div>
+        <div class="tags">
+            
             
             
             
@@ -2694,18 +2885,22 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_actionUpdateForm">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionUpdateForm"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 416</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionUpdateForm">
+<abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at line 429</div>
         <code>                    
     <strong>actionUpdateForm</strong>()
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>ACTION. Show form - edit entry.</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>ACTION. Show form - edit entry.</p></p>                        
+        </div>
+        <div class="tags">
+            
             
             
             
@@ -2715,18 +2910,22 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_actionRead">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionRead"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 425</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionRead">
+<abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at line 438</div>
         <code>                    
     <strong>actionRead</strong>()
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>ACTION. List database entries.</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>ACTION. List database entries.</p></p>                        
+        </div>
+        <div class="tags">
+            
             
             
             
@@ -2736,18 +2935,22 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_actionUpdate">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionUpdate"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 484</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionUpdate">
+<abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at line 499</div>
         <code>                    
     <strong>actionUpdate</strong>()
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>ACTION. Edit database entry.</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>ACTION. Edit database entry.</p></p>                        
+        </div>
+        <div class="tags">
+            
             
             
             
@@ -2757,18 +2960,22 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_actionCreate">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionCreate"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 495</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionCreate">
+<abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at line 510</div>
         <code>                    
     <strong>actionCreate</strong>()
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>ACTION. Create database entry.</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>ACTION. Create database entry.</p></p>                        
+        </div>
+        <div class="tags">
+            
             
             
             
@@ -2778,18 +2985,22 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_actionDelete">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionDelete"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 507</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionDelete">
+<abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at line 522</div>
         <code>                    
     <strong>actionDelete</strong>()
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>ACTION. Hard delete.</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>ACTION. Hard delete.</p></p>                        
+        </div>
+        <div class="tags">
+            
             
             
             
@@ -2799,18 +3010,22 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_actionSoftDelete">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionSoftDelete"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 515</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionSoftDelete">
+<abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at line 530</div>
         <code>                    
     <strong>actionSoftDelete</strong>()
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>ACTION. Soft delete.</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>ACTION. Soft delete.</p></p>                        
+        </div>
+        <div class="tags">
+            
             
             
             
@@ -2820,18 +3035,22 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_actionRestore">
-        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionRestore"><abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at         line 523</div>
+        <div class="location">in <a href="../../../../Onspli/Eladmin/Modules/Crud/Crud.html#method_actionRestore">
+<abbr title="Onspli\Eladmin\Modules\Crud\Crud">Crud</abbr></a> at line 538</div>
         <code>                    
     <strong>actionRestore</strong>()
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>ACTION. Restore.</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>ACTION. Restore.</p></p>                        
+        </div>
+        <div class="tags">
+            
             
             
             
@@ -2841,18 +3060,21 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_model">
-        <div class="location">at         line 47</div>
+        <div class="location">at line 47</div>
         <code>            protected        
     <strong>model</strong>()
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>Return model instance for action.</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>Return model instance for action.</p></p>                        
+        </div>
+        <div class="tags">
+            
             
             
             
@@ -2862,18 +3084,20 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_updateOrCreate">
-        <div class="location">at         line 72</div>
+        <div class="location">at line 72</div>
         <code>                private    void
     <strong>updateOrCreate</strong>($entry, $row)
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>Update or create entry.</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>Update or create entry.</p></p>                        
+        </div>
+        <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
@@ -2901,24 +3125,38 @@ $totalResults needs to be set to number of results without paging applied</p>   
 
             
             
+            
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_tableColumns">
-        <div class="location">at         line 198</div>
-        <code>            protected        array
-    <strong>tableColumns</strong>()
+                    <h3 id="method_rowToArray">
+        <div class="location">at line 204</div>
+        <code>                private    array
+    <strong>rowToArray</strong>($row)
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>Get an array of table columns.</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>Convert model to array keeping dates in the database format (e.g. 2020-08-05 12:49:07).</p></p>                <p><p>Eloquent 7+ serializes dates as ISO-8601 by default, older versions used the database format.
+Dates serialized with custom format (model's serializeDate or datetime:<format> cast) are kept untouched.</p></p>        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$row</td>
+                <td></td>
+            </tr>
+            </table>
+
             
                             <h4>Return Value</h4>
 
@@ -2931,6 +3169,40 @@ $totalResults needs to be set to number of results without paging applied</p>   
 
             
             
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_tableColumns">
+        <div class="location">at line 222</div>
+        <code>            protected        array
+    <strong>tableColumns</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get an array of table columns.</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
                     </div>
     </div>
 
@@ -2938,14 +3210,9 @@ $totalResults needs to be set to number of results without paging applied</p>   
             </div>
 
     
-            </div>
-                <div id="footer">
-        Generated by <a href="http://sami.sensiolabs.org/">Sami, the API Documentation Generator</a>.
+</div><div id="footer">
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.</div></div>
     </div>
-
-        </div>
-    </div>
-
         <script src="../../../../prism.js"></script>
     </body>
 

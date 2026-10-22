@@ -7,33 +7,42 @@
 
             <link rel="stylesheet" type="text/css" href="../../../../css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="../../../../css/bootstrap-theme.min.css">
-        <link rel="stylesheet" type="text/css" href="../../../../css/sami.css">
+        <link rel="stylesheet" type="text/css" href="../../../../css/doctum.css">
+        <link rel="stylesheet" type="text/css" href="../../../../fonts/doctum-font.css">
         <link rel="stylesheet" type="text/css" href="../../../../prism.css">
         <link rel="stylesheet" type="text/css" href="../../../../style.css">
-        <script src="../../../../js/jquery-1.11.1.min.js"></script>
-        <script src="../../../../js/bootstrap.min.js"></script>
-        <script src="../../../../js/typeahead.min.js"></script>
-        <script src="../../../../sami.js"></script>
+        <script src="../../../../js/jquery-3.5.1.slim.min.js"></script>
+        <script async defer src="../../../../doctum.js"></script>
+        <script async defer src="../../../../js/bootstrap.min.js"></script>
+        <script async defer src="../../../../js/autocomplete.min.js"></script>
         <meta name="MobileOptimized" content="width">
         <meta name="HandheldFriendly" content="true">
         <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-    
-    
+
     </head>
 
-    <body id="class" data-name="class:Onspli_Eladmin_Auth_EloquentUser_User" data-root-path="../../../../">
+    <body id="class" data-name="class:Onspli_Eladmin_Auth_EloquentUser_User" data-root-path="../../../../" data-search-index-url="../../../../doctum-search.json">
             <div id="content">
         <div id="left-column">
                 <div id="control-panel">
-                <script>
-            $('option[data-version="'+window.projectVersion+'"]').prop('selected', true);
-        </script>
-        <form id="search-form" action="../../../../search.html" method="GET">
-            <span class="glyphicon glyphicon-search"></span>
+                <div class="search-bar hidden" id="search-progress-bar-container">
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" id="search-progress-bar"
+                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+            </div>
+        </div>
+        <form id="search-form" action="../../../../search.html">
+            <span class="icon icon-search"></span>
             <input name="search"
+                   id="doctum-search-auto-complete"
                    class="typeahead form-control"
                    type="search"
-                   placeholder="Search">
+                   placeholder="Search"
+                   spellcheck="false"
+                   autocorrect="off"
+                   autocomplete="off"
+                   autocapitalize="off">
+            <div class="auto-complete-results" id="auto-complete-results"></div>
         </form>
     </div>
 
@@ -55,8 +64,8 @@
             <div class="collapse navbar-collapse" id="navbar-elements">
                 <ul class="nav navbar-nav">
                     <li><a href="../../../../classes.html">Classes</a></li>
-                                            <li><a href="../../../../namespaces.html">Namespaces</a></li>
-                                        <li><a href="../../../../interfaces.html">Interfaces</a></li>
+                    <li><a href="../../../../namespaces.html">Namespaces</a></li>
+                    <li><a href="../../../../interfaces.html">Interfaces</a></li>
                     <li><a href="../../../../traits.html">Traits</a></li>
                     <li><a href="../../../../doc-index.html">Index</a></li>
                     <li><a href="../../../../search.html">Search</a></li>
@@ -72,114 +81,104 @@
             </ol>
         </div>
                 <div id="page-content">
-                
     <div class="page-header">
-        <h1>
-            User
-                
-        </h1>
+        <h1>User    
+            </h1>
     </div>
 
-    <p>    class
+    
+    <p>        class
     <strong>User</strong>        extends <abbr title="Illuminate\Database\Eloquent\Model">Model</abbr>
 </p>
 
         
+        
     
+        
 
-    
-    
+            
+        
     
             <h2>Properties</h2>
 
             <table class="table table-condensed">
-                                                                                          <tr>
-    <td class="type" id="property_table">
-                        protected                
-    </td>
-    <td>$table</td>
-    <td class="last"></td>
-    <td></td>
-</tr>
-
-                                                    </table>
+                    <tr>
+                <td class="type" id="property_table">
+                                        protected                                        
+                                                                                
+                                    </td>
+                <td>$table</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+            </table>
 
     
-            <h2>Public Methods</h2>
+                                                                    <h2>Public Methods</h2>
 
-            <div class="container-fluid underlined">
-                            <div class="row">
-    <div class="col-md-1 type">
-                            </div>
-    <div class="col-md-1 type">
+                    <div class="container-fluid underlined">
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method___construct">__construct</a>()
         
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method___construct">__construct</a>()
-        
-                    <p class="no-description">No description</p>
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
             </div>
-    <div class="col-md-2"></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-                            </div>
-    <div class="col-md-1 type">
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_setPasswordhashAttribute">setPasswordhashAttribute</a>($value)
         
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_setPasswordhashAttribute">setPasswordhashAttribute</a>($value)
-        
-                    <p class="no-description">No description</p>
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
             </div>
-    <div class="col-md-2"></div>
-</div>
-
-                                                                                                      </div>
-
-
-        <h2>Protected Methods</h2>
-
-            <div class="container-fluid underlined">
-                                                                <div class="row">
-    <div class="col-md-1 type">
-                            </div>
-    <div class="col-md-1 type">
-        
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_createTable">createTable</a>()
-        
-                    <p class="no-description">No description</p>
             </div>
-    <div class="col-md-2"></div>
-</div>
 
-                                                                                    </div>
+                                                            <h2>Protected Methods</h2>
 
+                    <div class="container-fluid underlined">
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_createTable">createTable</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+            </div>
 
-        <h2>Private Methods</h2>
-
-            <div class="container-fluid underlined">
-                                                                                                                                </div>
-
-
+                                                            
         <h2>Details</h2>
 
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location">at         line 9</div>
+        <div class="location">at line 9</div>
         <code>                    
     <strong>__construct</strong>()
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                <div class="tags">
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
             
             
             
@@ -189,16 +188,21 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_setPasswordhashAttribute">
-        <div class="location">at         line 16</div>
+        <div class="location">at line 16</div>
         <code>                    
     <strong>setPasswordhashAttribute</strong>($value)
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                <div class="tags">
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
@@ -212,22 +216,29 @@
             
             
             
+            
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_createTable">
-        <div class="location">at         line 20</div>
+        <div class="location">at line 20</div>
         <code>            protected        
     <strong>createTable</strong>()
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                <div class="tags">
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
             
             
             
@@ -238,14 +249,9 @@
             </div>
 
     
-            </div>
-                <div id="footer">
-        Generated by <a href="http://sami.sensiolabs.org/">Sami, the API Documentation Generator</a>.
+</div><div id="footer">
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.</div></div>
     </div>
-
-        </div>
-    </div>
-
         <script src="../../../../prism.js"></script>
     </body>
 

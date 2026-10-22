@@ -21,7 +21,7 @@ use \Onspli\Eladmin\Exception;
 *
 * ### Action read
 * Request:
-* ```lang-js
+* ```js
 * {
 *   post : {
 *     onlyIds : <bool - return only ids, paging not applied>,
@@ -40,7 +40,7 @@ use \Onspli\Eladmin\Exception;
 * }
 * ```
 * Response (request.onlyIds == false):
-* ```lang-js
+* ```js
 * {
 *   totalResults : <total number of results on all pages>,
 *   ids : [
@@ -61,7 +61,7 @@ use \Onspli\Eladmin\Exception;
 * }
 * ```
 * Response (request.onlyIds == true):
-* ```lang-js
+* ```js
 * [
 *   <first item id>,
 *   <second item id>,

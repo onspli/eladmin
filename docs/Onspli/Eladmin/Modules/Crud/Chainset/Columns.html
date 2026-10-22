@@ -7,33 +7,42 @@
 
             <link rel="stylesheet" type="text/css" href="../../../../../css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="../../../../../css/bootstrap-theme.min.css">
-        <link rel="stylesheet" type="text/css" href="../../../../../css/sami.css">
+        <link rel="stylesheet" type="text/css" href="../../../../../css/doctum.css">
+        <link rel="stylesheet" type="text/css" href="../../../../../fonts/doctum-font.css">
         <link rel="stylesheet" type="text/css" href="../../../../../prism.css">
         <link rel="stylesheet" type="text/css" href="../../../../../style.css">
-        <script src="../../../../../js/jquery-1.11.1.min.js"></script>
-        <script src="../../../../../js/bootstrap.min.js"></script>
-        <script src="../../../../../js/typeahead.min.js"></script>
-        <script src="../../../../../sami.js"></script>
+        <script src="../../../../../js/jquery-3.5.1.slim.min.js"></script>
+        <script async defer src="../../../../../doctum.js"></script>
+        <script async defer src="../../../../../js/bootstrap.min.js"></script>
+        <script async defer src="../../../../../js/autocomplete.min.js"></script>
         <meta name="MobileOptimized" content="width">
         <meta name="HandheldFriendly" content="true">
         <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-    
-    
+
     </head>
 
-    <body id="class" data-name="class:Onspli_Eladmin_Modules_Crud_Chainset_Columns" data-root-path="../../../../../">
+    <body id="class" data-name="class:Onspli_Eladmin_Modules_Crud_Chainset_Columns" data-root-path="../../../../../" data-search-index-url="../../../../../doctum-search.json">
             <div id="content">
         <div id="left-column">
                 <div id="control-panel">
-                <script>
-            $('option[data-version="'+window.projectVersion+'"]').prop('selected', true);
-        </script>
-        <form id="search-form" action="../../../../../search.html" method="GET">
-            <span class="glyphicon glyphicon-search"></span>
+                <div class="search-bar hidden" id="search-progress-bar-container">
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" id="search-progress-bar"
+                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+            </div>
+        </div>
+        <form id="search-form" action="../../../../../search.html">
+            <span class="icon icon-search"></span>
             <input name="search"
+                   id="doctum-search-auto-complete"
                    class="typeahead form-control"
                    type="search"
-                   placeholder="Search">
+                   placeholder="Search"
+                   spellcheck="false"
+                   autocorrect="off"
+                   autocomplete="off"
+                   autocapitalize="off">
+            <div class="auto-complete-results" id="auto-complete-results"></div>
         </form>
     </div>
 
@@ -55,8 +64,8 @@
             <div class="collapse navbar-collapse" id="navbar-elements">
                 <ul class="nav navbar-nav">
                     <li><a href="../../../../../classes.html">Classes</a></li>
-                                            <li><a href="../../../../../namespaces.html">Namespaces</a></li>
-                                        <li><a href="../../../../../interfaces.html">Interfaces</a></li>
+                    <li><a href="../../../../../namespaces.html">Namespaces</a></li>
+                    <li><a href="../../../../../interfaces.html">Interfaces</a></li>
                     <li><a href="../../../../../traits.html">Traits</a></li>
                     <li><a href="../../../../../doc-index.html">Index</a></li>
                     <li><a href="../../../../../search.html">Search</a></li>
@@ -72,280 +81,283 @@
             </ol>
         </div>
                 <div id="page-content">
-                
     <div class="page-header">
-        <h1>
-            Columns
-                
-        </h1>
+        <h1>Columns    
+            </h1>
     </div>
 
-    <p>    class
+    
+    <p>        class
     <strong>Columns</strong>        extends <a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html"><abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a>
 </p>
 
         
+        
     
+        
 
-    
-    
+            
+        
     
             <h2>Properties</h2>
 
             <table class="table table-condensed">
-                                                                                                                                                                                                                                                          <tr>
-    <td class="type" id="property_childClass">
-                        protected                
-    </td>
-    <td>$childClass</td>
-    <td class="last"></td>
-    <td></td>
-</tr>
-
-                                                                                                                                                                                                                    </table>
+                    <tr>
+                <td class="type" id="property_childClass">
+                                        protected                                        
+                                                                                
+                                    </td>
+                <td>$childClass</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_position">
+                                                            private                    
+                                                                                
+                                    </td>
+                <td>$position</td>
+                <td class="last"></td>
+                <td><small>from&nbsp;<a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#property_position">
+<abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_first">
+                                                            private                    
+                                                                                
+                                    </td>
+                <td>$first</td>
+                <td class="last"></td>
+                <td><small>from&nbsp;<a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#property_first">
+<abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_last">
+                                                            private                    
+                                                                                
+                                    </td>
+                <td>$last</td>
+                <td class="last"></td>
+                <td><small>from&nbsp;<a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#property_last">
+<abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_children">
+                                                            private                    
+                                                                                
+                                    </td>
+                <td>$children</td>
+                <td class="last"></td>
+                <td><small>from&nbsp;<a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#property_children">
+<abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a></small></td>
+            </tr>
+            </table>
 
     
-            <h2>Public Methods</h2>
+                                                                    <h2>Public Methods</h2>
 
-            <div class="container-fluid underlined">
-                            <div class="row">
-    <div class="col-md-1 type">
-                            </div>
-    <div class="col-md-1 type">
+                    <div class="container-fluid underlined">
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method___construct">__construct</a>($childClass = null)
         
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method___construct">__construct</a>($childClass = null)
-        
-                    <p class="no-description">No description</p>
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#method___construct">
+<abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a></small></div>
             </div>
-    <div class="col-md-2"><small>from&nbsp;<a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#method___construct"><abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a></small></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-                            </div>
-    <div class="col-md-1 type">
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method___isset">__isset</a>($key)
         
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method___isset">__isset</a>($key)
-        
-                    <p class="no-description">No description</p>
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#method___isset">
+<abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a></small></div>
             </div>
-    <div class="col-md-2"><small>from&nbsp;<a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#method___isset"><abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a></small></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-        final                    </div>
-    <div class="col-md-1 type">
-        void
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_cutChild">cutChild</a>(string $key)
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_cutChild">cutChild</a>(string $key)
         
-                    <p>Remove child from linked list.</p>    </div>
-    <div class="col-md-2"><small>from&nbsp;<a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#method_cutChild"><abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a></small></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-                            </div>
-    <div class="col-md-1 type">
-        
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method___unset">__unset</a>($key)
-        
-                    <p class="no-description">No description</p>
+                                            <p><p>Remove child from linked list.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#method_cutChild">
+<abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a></small></div>
             </div>
-    <div class="col-md-2"><small>from&nbsp;<a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#method___unset"><abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a></small></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-                            </div>
-    <div class="col-md-1 type">
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method___unset">__unset</a>($key)
         
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method___get">__get</a>($key)
-        
-                    <p class="no-description">No description</p>
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#method___unset">
+<abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a></small></div>
             </div>
-    <div class="col-md-2"><small>from&nbsp;<a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#method___get"><abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a></small></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-        final                    </div>
-    <div class="col-md-1 type">
-        void
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_setFirst">setFirst</a>(string|null $key)
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method___get">__get</a>($key)
         
-                    <p class="no-description">No description</p>
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#method___get">
+<abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a></small></div>
             </div>
-    <div class="col-md-2"><small>from&nbsp;<a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#method_setFirst"><abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a></small></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-        final                    </div>
-    <div class="col-md-1 type">
-        string|null
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_getFirst">getFirst</a>()
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_setFirst">setFirst</a>(string|null $key)
         
-                    <p class="no-description">No description</p>
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#method_setFirst">
+<abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a></small></div>
             </div>
-    <div class="col-md-2"><small>from&nbsp;<a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#method_getFirst"><abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a></small></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-        final                    </div>
-    <div class="col-md-1 type">
-        void
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_setLast">setLast</a>(string|null $key)
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getFirst">getFirst</a>()
         
-                    <p class="no-description">No description</p>
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#method_getFirst">
+<abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a></small></div>
             </div>
-    <div class="col-md-2"><small>from&nbsp;<a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#method_setLast"><abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a></small></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-        final                    </div>
-    <div class="col-md-1 type">
-        string|null
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_getLast">getLast</a>()
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_setLast">setLast</a>(string|null $key)
         
-                    <p class="no-description">No description</p>
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#method_setLast">
+<abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a></small></div>
             </div>
-    <div class="col-md-2"><small>from&nbsp;<a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#method_getLast"><abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a></small></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-        final                    </div>
-    <div class="col-md-1 type">
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getLast">getLast</a>()
         
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_current">current</a>()
-        
-                    <p class="no-description">No description</p>
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#method_getLast">
+<abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a></small></div>
             </div>
-    <div class="col-md-2"><small>from&nbsp;<a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#method_current"><abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a></small></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-        final                    </div>
-    <div class="col-md-1 type">
+                    <div class="row">
+                <div class="col-md-2 type">
+                    mixed
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_current">current</a>()
         
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_key">key</a>()
-        
-                    <p class="no-description">No description</p>
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#method_current">
+<abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a></small></div>
             </div>
-    <div class="col-md-2"><small>from&nbsp;<a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#method_key"><abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a></small></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-        final                    </div>
-    <div class="col-md-1 type">
-        void
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_next">next</a>()
+                    <div class="row">
+                <div class="col-md-2 type">
+                    mixed
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_key">key</a>()
         
-                    <p class="no-description">No description</p>
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#method_key">
+<abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a></small></div>
             </div>
-    <div class="col-md-2"><small>from&nbsp;<a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#method_next"><abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a></small></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-        final                    </div>
-    <div class="col-md-1 type">
-        void
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_rewind">rewind</a>()
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_next">next</a>()
         
-                    <p class="no-description">No description</p>
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#method_next">
+<abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a></small></div>
             </div>
-    <div class="col-md-2"><small>from&nbsp;<a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#method_rewind"><abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a></small></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-        final                    </div>
-    <div class="col-md-1 type">
-        bool
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_valid">valid</a>()
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_rewind">rewind</a>()
         
-                    <p class="no-description">No description</p>
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#method_rewind">
+<abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a></small></div>
             </div>
-    <div class="col-md-2"><small>from&nbsp;<a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#method_valid"><abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a></small></div>
-</div>
-
-                                      <div class="row">
-    <div class="col-md-1 type">
-                            </div>
-    <div class="col-md-1 type">
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_valid">valid</a>()
         
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_getConfig">getConfig</a>()
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#method_valid">
+<abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getConfig">getConfig</a>()
         
-                    <p>generate array of actions for one column</p>    </div>
-    <div class="col-md-2"></div>
-</div>
+                                            <p><p>generate array of actions for one column</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+            </div>
 
-                                                                                                                                                                                                                                                                                                            </div>
-
-
-        <h2>Protected Methods</h2>
-
-            <div class="container-fluid underlined">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </div>
-
-
-        <h2>Private Methods</h2>
-
-            <div class="container-fluid underlined">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </div>
-
-
+                                                                                            
         <h2>Details</h2>
 
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location">in <a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#method___construct"><abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a> at         line 30</div>
+        <div class="location">in <a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#method___construct">
+<abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a> at line 30</div>
         <code>                    
     <strong>__construct</strong>($childClass = null)
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                <div class="tags">
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
@@ -359,22 +371,29 @@
             
             
             
+            
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method___isset">
-        <div class="location">in <a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#method___isset"><abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a> at         line 36</div>
+        <div class="location">in <a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#method___isset">
+<abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a> at line 36</div>
         <code>                    
     <strong>__isset</strong>($key)
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                <div class="tags">
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
@@ -388,24 +407,28 @@
             
             
             
+            
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_cutChild">
-        <div class="location">in <a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#method_cutChild"><abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a> at         line 43</div>
+        <div class="location">in <a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#method_cutChild">
+<abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a> at line 43</div>
         <code>final                    void
     <strong>cutChild</strong>(string $key)
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>Remove child from linked list.</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>Remove child from linked list.</p></p>                        
+        </div>
+        <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
@@ -428,22 +451,29 @@
 
             
             
+            
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method___unset">
-        <div class="location">in <a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#method___unset"><abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a> at         line 60</div>
+        <div class="location">in <a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#method___unset">
+<abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a> at line 60</div>
         <code>                    
     <strong>__unset</strong>($key)
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                <div class="tags">
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
@@ -454,6 +484,7 @@
             </tr>
             </table>
 
+            
             
             
             
@@ -463,16 +494,22 @@
             </div>
                     <div class="method-item">
                     <h3 id="method___get">
-        <div class="location">in <a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#method___get"><abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a> at         line 67</div>
+        <div class="location">in <a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#method___get">
+<abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a> at line 67</div>
         <code>                    
     <strong>__get</strong>($key)
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                <div class="tags">
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
@@ -483,6 +520,7 @@
             </tr>
             </table>
 
+            
             
             
             
@@ -492,16 +530,22 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_setFirst">
-        <div class="location">in <a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#method_setFirst"><abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a> at         line 85</div>
+        <div class="location">in <a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#method_setFirst">
+<abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a> at line 85</div>
         <code>final                    void
     <strong>setFirst</strong>(string|null $key)
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                <div class="tags">
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
@@ -522,6 +566,7 @@
         </tr>
     </table>
 
+            
             
             
                     </div>
@@ -530,16 +575,22 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getFirst">
-        <div class="location">in <a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#method_getFirst"><abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a> at         line 89</div>
+        <div class="location">in <a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#method_getFirst">
+<abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a> at line 89</div>
         <code>final                    string|null
     <strong>getFirst</strong>()
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                <div class="tags">
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
             
                             <h4>Return Value</h4>
 
@@ -552,22 +603,29 @@
 
             
             
+            
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_setLast">
-        <div class="location">in <a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#method_setLast"><abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a> at         line 93</div>
+        <div class="location">in <a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#method_setLast">
+<abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a> at line 93</div>
         <code>final                    void
     <strong>setLast</strong>(string|null $key)
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                <div class="tags">
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
@@ -590,22 +648,29 @@
 
             
             
+            
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_getLast">
-        <div class="location">in <a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#method_getLast"><abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a> at         line 97</div>
+        <div class="location">in <a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#method_getLast">
+<abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a> at line 97</div>
         <code>final                    string|null
     <strong>getLast</strong>()
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                <div class="tags">
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
             
                             <h4>Return Value</h4>
 
@@ -618,22 +683,39 @@
 
             
             
+            
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_current">
-        <div class="location">in <a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#method_current"><abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a> at         line 101</div>
-        <code>final                    
+        <div class="location">in <a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#method_current">
+<abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a> at line 101</div>
+        <code>final                    mixed
     <strong>current</strong>()
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                <div class="tags">
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>mixed</td>
+            <td></td>
+        </tr>
+    </table>
+
             
             
             
@@ -643,16 +725,32 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_key">
-        <div class="location">in <a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#method_key"><abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a> at         line 105</div>
-        <code>final                    
+        <div class="location">in <a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#method_key">
+<abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a> at line 105</div>
+        <code>final                    mixed
     <strong>key</strong>()
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                <div class="tags">
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>mixed</td>
+            <td></td>
+        </tr>
+    </table>
+
             
             
             
@@ -662,16 +760,22 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_next">
-        <div class="location">in <a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#method_next"><abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a> at         line 109</div>
+        <div class="location">in <a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#method_next">
+<abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a> at line 109</div>
         <code>final                    void
     <strong>next</strong>()
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                <div class="tags">
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
             
                             <h4>Return Value</h4>
 
@@ -682,6 +786,7 @@
         </tr>
     </table>
 
+            
             
             
                     </div>
@@ -690,16 +795,22 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_rewind">
-        <div class="location">in <a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#method_rewind"><abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a> at         line 115</div>
+        <div class="location">in <a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#method_rewind">
+<abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a> at line 115</div>
         <code>final                    void
     <strong>rewind</strong>()
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                <div class="tags">
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
             
                             <h4>Return Value</h4>
 
@@ -712,22 +823,29 @@
 
             
             
+            
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_valid">
-        <div class="location">in <a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#method_valid"><abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a> at         line 119</div>
+        <div class="location">in <a href="../../../../../Onspli/Eladmin/Chainset/Chainset.html#method_valid">
+<abbr title="Onspli\Eladmin\Chainset\Chainset">Chainset</abbr></a> at line 119</div>
         <code>final                    bool
     <strong>valid</strong>()
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                <div class="tags">
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
             
                             <h4>Return Value</h4>
 
@@ -740,24 +858,28 @@
 
             
             
+            
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_getConfig">
-        <div class="location">at         line 13</div>
+        <div class="location">at line 13</div>
         <code>                    
     <strong>getConfig</strong>()
         </code>
     </h3>
-    <div class="details">
+    <div class="details">    
             
     
+            
 
-                    <div class="method-description">
-                                    <p>generate array of actions for one column</p>                                                </div>
-                <div class="tags">
+        <div class="method-description">
+                            <p><p>generate array of actions for one column</p></p>                        
+        </div>
+        <div class="tags">
+            
             
             
             
@@ -768,14 +890,9 @@
             </div>
 
     
-            </div>
-                <div id="footer">
-        Generated by <a href="http://sami.sensiolabs.org/">Sami, the API Documentation Generator</a>.
+</div><div id="footer">
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.</div></div>
     </div>
-
-        </div>
-    </div>
-
         <script src="../../../../../prism.js"></script>
     </body>
 
