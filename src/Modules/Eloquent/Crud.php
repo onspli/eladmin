@@ -114,7 +114,7 @@ protected function get($id) : array {
   $row = $this->model()->find($id);
   if (!$row)
     throw new Exception\BadRequestException( __('Entry not found!') );
-  return $row->toArray();
+  return $this->rowToArray($row);
 }
 
 protected function delete($id) : void {
@@ -171,7 +171,9 @@ protected function read(array $request, &$totalResults) : array {
     $q = $q->offset(($page - 1) * $resultsPerPage)->limit($resultsPerPage);
   }
 
-  $rows = $q->get()->toArray();
+  $rows = [];
+  foreach ($q->get() as $row)
+    $rows[] = $this->rowToArray($row);
   return $rows;
 }
 
@@ -192,6 +194,26 @@ protected function restore($id) : void {
   if (!$row)
     throw new Exception\BadRequestException( __('Entry not found!') );
   $row->restore();
+}
+
+/**
+* Convert model to array keeping dates in the database format (e.g. 2020-08-05 12:49:07).
+* Eloquent 7+ serializes dates as ISO-8601 by default, older versions used the database format.
+* Dates serialized with custom format (model's serializeDate or datetime:<format> cast) are kept untouched.
+*/
+private function rowToArray($row) : array {
+  $array = $row->toArray();
+  foreach ($array as $key => $value) {
+    if (!is_string($value))
+      continue;
+    $date = $row->getAttribute($key);
+    if (!$date instanceof \DateTimeInterface)
+      continue;
+    $iso = $date instanceof \DateTimeImmutable ? \Carbon\CarbonImmutable::instance($date)->toJSON() : \Carbon\Carbon::instance($date)->toJSON();
+    if ($value === $iso)
+      $array[$key] = $date->format($row->getDateFormat());
+  }
+  return $array;
 }
 
 /**

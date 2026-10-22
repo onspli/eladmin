@@ -1,11 +1,11 @@
 <?php
+namespace Onspli\Eladmin\Tests\Unit;
+
 use PHPUnit\Framework\TestCase;
 use Onspli\Eladmin\Chainset\Chainset;
 use Onspli\Eladmin\Chainset\Child;
 
-final class ChainsetTest extends TestCase
-{
-
+final class ChainsetTest extends TestCase {
 
   public function testAddAndDeleteChild() : void {
     $cs = new Chainset;
@@ -19,67 +19,67 @@ final class ChainsetTest extends TestCase
     $this->assertFalse(isset($cs->child));
   }
 
-    public function testSetPropertiesToChild() : void {
-      $cs = new Chainset;
-      $cs->child->prop1('val1')->prop2('val2');
-      $cs->child->prop3('val3');
+  public function testSetPropertiesToChild() : void {
+    $cs = new Chainset;
+    $cs->child->prop1('val1')->prop2('val2');
+    $cs->child->prop3('val3');
 
-      $this->assertEquals('val1', $cs->child->prop1);
-      $this->assertEquals('val2', $cs->child->prop2);
-      $this->assertEquals('val3', $cs->child->prop3);
-    }
+    $this->assertEquals('val1', $cs->child->prop1);
+    $this->assertEquals('val2', $cs->child->prop2);
+    $this->assertEquals('val3', $cs->child->prop3);
+  }
 
-    public function testOrder() : void {
-      $cs = new Chainset;
-      $cs->word1->val('Hello');
-      $cs->word3->val('world');
-      $cs->word2->val('!');
-      $res = "";
-      foreach($cs as $word) $res .= $word->val." ";
-      $this->assertEquals("Hello world ! ", $res);
-    }
+  public function testOrder() : void {
+    $cs = new Chainset;
+    $cs->word1->val('Hello');
+    $cs->word3->val('world');
+    $cs->word2->val('!');
+    $this->assertEquals("Hello world ! ", $this->join($cs));
+  }
 
-    public function testBefore() : void {
-      $cs = new Chainset;
-      $cs->word1->val('Hello');
-      $cs->word2->val('!');
-      $cs->word3->val('world')->before('word2');
-      $res = "";
-      foreach($cs as $word) $res .= $word->val." ";
-      $this->assertEquals("Hello world ! ", $res);
-    }
+  public function testBefore() : void {
+    $cs = new Chainset;
+    $cs->word1->val('Hello');
+    $cs->word2->val('!');
+    $cs->word3->val('world')->before('word2');
+    $this->assertEquals("Hello world ! ", $this->join($cs));
+  }
 
-    public function testBeforeNull() : void {
-      $cs = new Chainset;
-      $cs->word1->val('Hello');
-      $cs->word2->val('!');
-      $cs->word3->val('world');
-      $cs->word2->before(null);
-      $res = "";
-      foreach($cs as $word) $res .= $word->val." ";
-      $this->assertEquals("Hello world ! ", $res);
-    }
+  public function testBeforeNull() : void {
+    $cs = new Chainset;
+    $cs->word1->val('Hello');
+    $cs->word2->val('!');
+    $cs->word3->val('world');
+    $cs->word2->before(null);
+    $this->assertEquals("Hello world ! ", $this->join($cs));
+  }
 
-    public function testAfter() : void {
-      $cs = new Chainset;
-      $cs->word1->val('Hello');
-      $cs->word2->val('!');
-      $cs->word3->val('world');
-      $cs->word2->after('word3');
-      $res = "";
-      foreach($cs as $word) $res .= $word->val." ";
-      $this->assertEquals("Hello world ! ", $res);
-    }
+  public function testAfter() : void {
+    $cs = new Chainset;
+    $cs->word1->val('Hello');
+    $cs->word2->val('!');
+    $cs->word3->val('world');
+    $cs->word2->after('word3');
+    $this->assertEquals("Hello world ! ", $this->join($cs));
+  }
 
-    public function testAfterNull() : void {
-      $cs = new Chainset;
-      $cs->word3->val('world');
-      $cs->word1->val('Hello');
-      $cs->word2->val('!');
-      $cs->word1->after(null);
-      $res = "";
-      foreach($cs as $word) $res .= $word->val." ";
-      $this->assertEquals("Hello world ! ", $res);
-    }
+  public function testAfterNull() : void {
+    $cs = new Chainset;
+    $cs->word3->val('world');
+    $cs->word1->val('Hello');
+    $cs->word2->val('!');
+    $cs->word1->after(null);
+    $this->assertEquals("Hello world ! ", $this->join($cs));
+  }
+
+  /**
+  * Join values of children in chainset order.
+  */
+  private function join(Chainset $cs) : string {
+    $res = "";
+    foreach ($cs as $word)
+      $res .= $word->val . " ";
+    return $res;
+  }
 
 }

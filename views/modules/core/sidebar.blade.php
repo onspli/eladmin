@@ -6,3 +6,8 @@
   </a>
 @endforeach
 </div>
+@if($eladmin->iauth() !== null && $eladmin->iauth()->authorize())
+<div class="sidebar-footer text-muted small">
+  Eladmin {{ $eladmin->version() }} &middot; PHP {{ PHP_VERSION }}
+</div>
+@endif

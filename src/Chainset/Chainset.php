@@ -98,11 +98,11 @@ final public function getLast() : ?string {
   return $this->last;
 }
 
-final public function current() {
+final public function current() : mixed {
   return $this->children[$this->position];
 }
 
-final public function key() {
+final public function key() : mixed {
   return $this->position;
 }
 

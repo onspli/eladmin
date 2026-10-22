@@ -18,6 +18,7 @@ namespace Onspli\Eladmin\Chainset;
 * $columns->modified->timestamp('now');
 * ```
 */
+#[\AllowDynamicProperties]
 class Child {
 
 private $parent = null;

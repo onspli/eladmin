@@ -9,10 +9,10 @@
         }
     ],
     "require": {
-        "php" : "^7.2",
-        "gettext/gettext": "^4.6",
-        "monolog/monolog": "^2.1",
-        "jenssegers/blade": "^1.3"
+        "php" : "^8.1",
+        "gettext/gettext": "^4.8",
+        "monolog/monolog": "^2.9 || ^3.0",
+        "jenssegers/blade": "^2.0"
     },
     "suggest":{
         "illuminate/database": "Allows using Eloquent as a standalone package."
@@ -22,17 +22,24 @@
             "Onspli\\Eladmin\\": "src"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Onspli\\Eladmin\\Tests\\Unit\\": "tests/unit",
+            "Onspli\\Eladmin\\Tests\\Integration\\": "tests/integration"
+        }
+    },
     "require-dev": {
-        "illuminate/database": "^5.8",
-        "phpunit/phpunit": "^7"
+        "illuminate/database": "^10.0 || ^11.0",
+        "phpunit/phpunit": "^10.5"
     },
     "scripts": {
-        "test": "phpunit --testdox tests/unit",
-        "docs:install": "php -r \"copy('http://get.sensiolabs.org/sami.phar', 'sami.phar');\"",
-        "docs:update": "php sami.phar update sami.config.php",
-        "docs:render": "rm -rf docs; php sami.phar render sami.config.php"
+        "test": "phpunit --testdox",
+        "test:unit": "phpunit --testdox --testsuite unit",
+        "test:integration": "phpunit --testdox --testsuite integration",
+        "docs:install": "php -r \"copy('https://doctum.long-term.support/releases/5.6/doctum.phar', 'doctum.phar');\"",
+        "docs:build": "rm -rf docs && php doctum.phar update doctum.config.php --force"
     },
     "archive": {
-        "exclude": ["/docs", "/docs-theme", "/examples", "/screenshots", "/tests", "/_config.yml", "/sami.config.php", "/.github", "/.gitignore"]
+        "exclude": ["/docs", "/docs-theme", "/examples", "/screenshots", "/tests", "/_config.yml", "/doctum.config.php", "/.github", "/.gitignore"]
     }
 }

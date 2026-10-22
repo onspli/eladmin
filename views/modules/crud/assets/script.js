@@ -178,7 +178,8 @@ function str_limit(str, maxLength, substitute = "..."){
 */
 function rowFactory(id, values, actions){
   var tr = $('<tr></tr>');
-  var bulk_td = $('<td class="text-center"><input class="bulk" type="checkbox" data-id="' + id + '"></td>');
+  var bulk_td = $('<td class="text-center"><input class="bulk" type="checkbox"></td>');
+  bulk_td.find('input').attr('data-id', id);
   tr.append(bulk_td);
   for (var i = 0; i < values.length; i++) {
     var value = '';

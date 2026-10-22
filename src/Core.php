@@ -65,6 +65,11 @@ protected $logFile = __DIR__ . '/../mono.log';
 private $imodules = [];
 
 /**
+* keys of modules the user is not authorized to work with
+*/
+private $unauthorizedModules = [];
+
+/**
 * authorization instance
 */
 private $iauth = null;
@@ -103,9 +108,10 @@ public function __construct(?array $modules = null) {
 
 
 final static public function errorHandler($errno, $errstr, $errfile, $errline) {
-  // error_reporting() will return 0 when the call that triggered the error was preceded by an @.
-  if (error_reporting() == 0) {
-    return;
+  // Respect the @ operator. Since PHP 8, error_reporting() is no longer 0 inside @,
+  // it is masked to fatal errors only, so test the error level against it.
+  if (!(error_reporting() & $errno)) {
+    return false;
   }
   throw new \ErrorException($errstr, $errno, 0, $errfile, $errline);
 }
@@ -114,29 +120,46 @@ final static public function errorHandler($errno, $errstr, $errfile, $errline) {
 * Run Eladmin. It's just a wrapper of method runNoCatch catching exceptions.
 */
 final public function run() : void {
-  set_error_handler(array(self::class, 'errorHandler'), (E_ALL | E_STRICT) &  ~(E_DEPRECATED | E_USER_DEPRECATED));
+  set_error_handler(array(self::class, 'errorHandler'), E_ALL & ~(E_DEPRECATED | E_USER_DEPRECATED));
   try {
     $this->runNoCatch();
   } catch(Exception\UnauthorizedException $e) {
-    if ($this->auth !== null)
+    if ($this->iauth !== null && !$e instanceof Exception\CSRFException) {
       $this->iauth->logout();
+      $this->renewSession();
+    }
     if (!static::isAjaxRequest())
       $this->redirect();
-    header("HTTP/1.1 401 Unauthorized");
+    static::errorHeaders("HTTP/1.1 401 Unauthorized");
     echo $e->getMessage();
   } catch(Exception\BadRequestException $e) {
-    header("HTTP/1.1 400 Bad Request");
+    static::errorHeaders("HTTP/1.1 400 Bad Request");
     echo $e->getMessage();
   } catch(Exception\Exception $e) {
-    header("HTTP/1.1 500 Internal Server Error");
+    static::errorHeaders("HTTP/1.1 500 Internal Server Error");
     echo $e->getMessage();
   } catch (\Throwable $e) {
-    header("HTTP/1.1 500 Internal Server Error");
-    echo $e->getMessage();
-  } catch(\Exception $e) {
-    header("HTTP/1.1 500 Internal Server Error");
-    echo $e->getMessage();
+    // messages of non-eladmin exceptions are not meant to contain HTML and may contain user input
+    static::errorHeaders("HTTP/1.1 500 Internal Server Error");
+    echo static::escape($e->getMessage());
   }
+}
+
+/**
+* Send status line and headers of an error response.
+*/
+static private function errorHeaders(string $status) : void {
+  if (headers_sent())
+    return;
+  header($status);
+  header('X-Content-Type-Options: nosniff');
+}
+
+/**
+* Escape string to be safely included in HTML.
+*/
+static private function escape(?string $str) : string {
+  return htmlspecialchars($str ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 }
 
 /**
@@ -148,8 +171,13 @@ final public function runNoCatch() : void {
   $this->actionkey();
   $this->modulekey();
 
-  $asset = $this->assetpath();
-  if ($asset !== null) {
+  if (isset($_GET['elaasset'])) {
+    // Assets of the core are public, the login page needs them. Assets of modules require authorization.
+    if ($this->modulekey() !== '') {
+      $this->initSessions(true);
+      $this->initAuthorization();
+    }
+    $asset = $this->assetpath();
     $this->module()->renderAsset($asset);
     return;
   }
@@ -160,13 +188,16 @@ final public function runNoCatch() : void {
 
   // Authentication and authorization.
   if ($this->auth !== null) {
-    $isLogout = isset($_GET['elalogout']);
+    // Logout and login don't use CSRF tokens, reject them when they come from another site.
+    $isLogout = isset($_GET['elalogout']) && !static::isCrossSiteRequest();
     if ($isLogout) {
       throw new Exception\UnauthorizedException();
     }
 
     $isLogin = isset($_GET['elalogin']);
     if ($isLogin) {
+      if (static::isCrossSiteRequest())
+        throw new Exception\BadRequestException(__('Cross-site login request rejected.'));
       $this->iauth->login($_POST);
     }
 
@@ -175,6 +206,8 @@ final public function runNoCatch() : void {
       if (!$isAuthorized) {
         throw new Exception\UnauthorizedException(__("Wrong credentials!"));
       } else {
+        // prevent session fixation, new session id and CSRF token after login
+        $this->renewSession();
         // check if user is authorized to work with eladmin
         if (!$this->auth())
           throw new Exception\UnauthorizedException(__('Not authorized to run Eladmin.'));
@@ -214,7 +247,8 @@ final public function runNoCatch() : void {
       $this->redirect($url);
       return;
     }
-    if($this->module() == $this)
+    // module() is null when user is not authorized to work with the module
+    if($this->module() === null || $this->module() == $this)
       self::redirect();
     else
       echo $this->module()->render('modules.core.module');
@@ -224,7 +258,7 @@ final public function runNoCatch() : void {
   // CSRF token comparsion
   $this->CSRFAuth();
   // Check if user is authorized to do the action.
-  if (!$this->module()->auth($this->actionkey())) {
+  if ($this->module() === null || !$this->module()->auth($this->actionkey())) {
     throw new Exception\UnauthorizedException();
   }
 
@@ -238,7 +272,7 @@ final public function runNoCatch() : void {
 
   // Check if action exists.
   if (!is_callable([$this->module(), $method]) || !$this->module()->hasAction($this->actionkey())) {
-    throw new Exception\BadRequestException('Class ' . $classname . ' does not have method ' . $method . '!');
+    throw new Exception\BadRequestException('Class ' . $classname . ' does not have method ' . static::escape($method) . '!');
   }
   $this->module()->prepare();
   call_user_func([$this->module(), $method]);
@@ -261,14 +295,18 @@ public function blade() : Blade {
   } else {
     $views = $this->views();
   }
-  return new Blade($views, $this->cache);
+  // illuminate/view resolves the blade compiler from the global container instance,
+  // so the container used by Blade has to be registered as the global one.
+  $container = new \Jenssegers\Blade\Container();
+  \Illuminate\Container\Container::setInstance($container);
+  return new Blade($views, $this->cache, $container);
 }
 
 /**
 * Get eladmin version.
 */
 final public function version() : string {
-  return "v0.3.0";
+  return "v0.4.0";
 }
 
 /**
@@ -304,12 +342,8 @@ final public function modulekey() : ?string {
 */
 final public function CSRFToken() : string {
   $token = $_SESSION['elacsrftoken'] ?? null;
-  if (!$token) {
-    $token = '';
-    $chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    for ($i = 0; $i < 16; $i++) {
-      $token .= substr($chars, rand(0, strlen($chars) - 1), 1);
-    }
+  if (!is_string($token) || !$token) {
+    $token = bin2hex(random_bytes(32));
     $_SESSION['elacsrftoken'] = $token;
   }
   return $token;
@@ -322,12 +356,12 @@ private function assetpath() : ?string {
   $path = $_GET['elaasset'] ?? null;
   if ($path === null)
     return null;
-  if (strpos($path, '..') !== false)
-    throw new Exception\UnauthorizedException('Asset filename ' . $path . ' cannot contain ".." due security issues.');
+  if (!is_string($path) || strpos($path, '..') !== false || strpos($path, "\0") !== false)
+    throw new Exception\UnauthorizedException('Asset filename cannot contain ".." due security issues.');
 
   $module = $this->module();
   if ($module === null)
-    throw new Exception\UnauthorizedException('Not authorized to access asset ' . $path . ' for module "' . $this->modulekey() . '".');
+    throw new Exception\UnauthorizedException('Not authorized to access asset ' . static::escape($path) . ' for module "' . static::escape($this->modulekey()) . '".');
 
   $dirs = $module->views();
   foreach ($dirs as $dir) {
@@ -335,7 +369,7 @@ private function assetpath() : ?string {
     if (file_exists($file))
       return $file;
   }
-  throw new Exception\BadRequestException('Asset ' . $path . ' not found  for module "' . $module->elakey() . '".');
+  throw new Exception\BadRequestException('Asset ' . static::escape($path) . ' not found  for module "' . static::escape($module->elakey()) . '".');
 }
 
 /**
@@ -350,11 +384,11 @@ public function renderAsset(string $path) : void {
   ];
   $contentType = $assetContentTypes[$extension] ?? null;
   if (!$contentType)
-    throw new Exception\UnauthorizedException('Asset extension ' . $extension . ' not allowed.');
+    throw new Exception\UnauthorizedException('Asset extension ' . static::escape($extension) . ' not allowed.');
 
   @$content = file_get_contents($path);
   if ($content === false)
-    throw new Exception\Exception('Could not read asset ' . $path . '.');
+    throw new Exception\Exception('Could not read asset ' . static::escape($path) . '.');
   header('Content-type:' . $contentType);
   header('Cache-Control: max-age=' . intval($this->assetCacheExpiration));
   echo $content;
@@ -369,11 +403,13 @@ final public function module(?string $elakey = null) : ?Module {
     throw new Exception\BadRequestException('No module requested!');
   if ($elakey === '')
     return $this;
+  if (isset($this->unauthorizedModules[$elakey]))
+    return null;
   // has the module been initialized?
   if (!isset($this->imodules[$elakey])) {
     $moduleclass = $this->modules[$elakey] ?? null;
     if ($moduleclass === null)
-      throw new Exception\BadRequestException('Unknown module "' . $elakey . '"!');
+      throw new Exception\BadRequestException('Unknown module "' . static::escape($elakey) . '"!');
     if (!is_subclass_of($moduleclass, Module::class))
       throw new Exception\Exception('Class ' . $moduleclass . ' is not Eladmin module.');
 
@@ -381,6 +417,7 @@ final public function module(?string $elakey = null) : ?Module {
     $roles = $imodule->roles();
     if ($this->iauth && ($roles === IAuth::NOONE || !$this->iauth->authorize($roles))) {
       unset($this->modules[$elakey]);
+      $this->unauthorizedModules[$elakey] = true;
       return null;
     }
     $this->imodules[$elakey] = $imodule;
@@ -425,6 +462,31 @@ static private function isAjaxRequest() : bool {
 }
 
 /**
+* Check if the browser reports the request was initiated by another site (Fetch Metadata).
+*/
+static private function isCrossSiteRequest() : bool {
+  return strtolower($_SERVER['HTTP_SEC_FETCH_SITE'] ?? '') === 'cross-site';
+}
+
+/**
+* Check if eladmin was requested over HTTPS.
+*/
+static private function isHttps() : bool {
+  return !empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off';
+}
+
+/**
+* Regenerate session id and CSRF token. Called on login and logout.
+*/
+private function renewSession() : void {
+  if (session_status() !== PHP_SESSION_ACTIVE)
+    return;
+  unset($_SESSION['elacsrftoken']);
+  if (!headers_sent())
+    session_regenerate_id(true);
+}
+
+/**
 * Redirect (or exit if ajax request). Default url = home
 */
 static private function redirect(string $url = '.') : void {
@@ -437,8 +499,9 @@ static private function redirect(string $url = '.') : void {
 * Check if CSRF token is valid
 */
 private function CSRFAuth() : void {
-  if ( ($_GET['elatoken'] ?? null) !== $this->CSRFToken()) {
-    throw new Exception\UnauthorizedException(__("CSRF token not valid! Try reloading page."));
+  $token = $_GET['elatoken'] ?? null;
+  if (!is_string($token) || !hash_equals($this->CSRFToken(), $token)) {
+    throw new Exception\CSRFException();
   }
 }
 
@@ -483,12 +546,29 @@ private function initLocalization() : void {
   }
 }
 
-private function initSessions() : void {
+/**
+* Start session unless the application already started it. $readOnly closes the session right away
+* and doesn't send cache headers (used for assets).
+*/
+private function initSessions(bool $readOnly = false) : void {
   $this->log->debug('init sessions');
-  if(!session_id())
-  {
-    session_start();
+  if (session_status() === PHP_SESSION_ACTIVE)
+    return;
+  // Not using strict mode on purpose - a request still carrying the old session id after login
+  // (e.g. favicon routed to index.php) would get a new empty session and log the user out.
+  // Session fixation is prevented by regenerating session id on login.
+  $options = [
+    'cookie_httponly' => 1,
+  ];
+  if (ini_get('session.cookie_samesite') === '')
+    $options['cookie_samesite'] = 'Lax';
+  if (static::isHttps())
+    $options['cookie_secure'] = 1;
+  if ($readOnly) {
+    $options['read_and_close'] = true;
+    $options['cache_limiter'] = '';
   }
+  session_start($options);
 }
 
 private function initCache() : void {

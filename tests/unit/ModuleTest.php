@@ -1,16 +1,22 @@
 <?php
+namespace Onspli\Eladmin\Tests\Unit;
+
 use PHPUnit\Framework\TestCase;
 use Onspli\Eladmin;
 
 class TModule extends Eladmin\Module {
-function __construct() {
 
-}
+  public function __construct() {
+
+  }
+
 }
 
 class ModuleRoles extends TModule {
+
   protected $roles = ['admin'];
-  protected $actionRoles = [ 'Read' => ['admin', 'user']];
+  protected $actionRoles = ['Read' => ['admin', 'user']];
+
 }
 
 final class ModuleTest extends TestCase {

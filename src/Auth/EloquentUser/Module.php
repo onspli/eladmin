@@ -159,6 +159,9 @@ protected function crudColumns() {
 }
 
 public function actionAuthorizedDelete(){
+  $authpassword = $_POST['authpassword'] ?? null;
+  if (!is_string($authpassword) || !password_verify($authpassword, $this->user()->passwordhash))
+    throw new Eladmin\Exception\BadRequestException(__('Current password is not correct!'));
   if($this->id() == $this->user()->id)
     throw new Eladmin\Exception\BadRequestException( __('You cannot delete yourself!'));
   parent::actionDelete();

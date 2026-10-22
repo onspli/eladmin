@@ -69,6 +69,18 @@ h1.sidebar-heading a{
   width: 15rem;
 }
 
+#sidebar-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+#sidebar-wrapper .sidebar-footer {
+  width: 15rem;
+  margin-top: auto;
+  padding: 1em;
+  text-align: center;
+}
+
 #page-content-wrapper {
   min-width: 100vw;
 }

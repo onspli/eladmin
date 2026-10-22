@@ -1,5 +1,5 @@
 {% extends "layout/layout.twig" %}
-{% from "macros.twig" import render_classes, breadcrumbs, namespace_link, class_link, property_link, method_link, hint_link, source_link, method_source_link, deprecated, deprecations, todo, todos %}
+{% from "macros.twig" import render_classes, breadcrumbs, namespace_link, class_link, property_link, method_link, hint_link, source_link, method_source_link, deprecated, deprecations, internals, categories, todo, todos, class_category_name %}
 {% block title %}{{ class|raw }} | {{ parent() }}{% endblock %}
 {% block body_class 'class' %}
 {% block page_id 'class:' ~ (class.name|replace({'\\': '_'})) %}
@@ -8,7 +8,7 @@
     {% if class.namespace %}
         <div class="namespace-breadcrumbs">
             <ol class="breadcrumb">
-                <li><span class="label label-default">{{ class.categoryName|raw }}</span></li>
+                <li><span class="label label-default">{{ class_category_name(class.getCategoryId()) }}</span></li>
                 {{ breadcrumbs(class.namespace) -}}
                 <li>{{ class.shortname|raw }}</li>
             </ol>
@@ -20,61 +20,67 @@
 
     <div class="page-header">
         <h1>
-            {{ class.name|split('\\')|last|raw }}
-            {{ deprecated(class) }}
+            {{- class.name|split('\\')|last|raw -}}
+            {{- deprecated(class) }}
+            {% if class.isReadOnly() %}<small><span class="label label-primary">{% trans 'read-only' %}</span></small>{% endif -%}
         </h1>
     </div>
 
+    {% if class.hasSince() %}
+        <i>{{ 'Since:'|trans }} {{ class.getSince() }}</i>
+        <br>
+    {% endif %}
+
     <p>{{ block('class_signature') }}</p>
 
+    {{ categories(class) }}
     {{ deprecations(class) }}
+    {{ internals(class) }}
 
     {% if class.shortdesc or class.longdesc %}
         <div class="description">
             {% if class.shortdesc -%}
-                <p>{{ class.shortdesc|desc(class) }}</p>
+                <p>{{ class.shortdesc|desc(class)|md_to_html }}</p>
             {%- endif %}
             {% if class.longdesc -%}
-                <p>{{ class.longdesc|desc(class) }}</p>
+                <p>{{ class.longdesc|desc(class)|md_to_html }}</p>
             {%- endif %}
-            {% if project.config('insert_todos') == true %}
-                {{ todos(class) }}
-            {% endif %}
         </div>
     {% endif %}
+    {{- todos(class) -}}
 
     {% if traits %}
-        <h2>Traits</h2>
+        <h2>{% trans 'Traits' %}</h2>
 
         {{ render_classes(traits) }}
     {% endif %}
 
     {% if constants %}
-        <h2>Constants</h2>
+        <h2>{% trans 'Constants' %}</h2>
 
-        {{ block('constants') }}
+        {{- block('constants') }}
     {% endif %}
 
     {% if properties %}
-        <h2>Properties</h2>
+        <h2>{% trans 'Properties' %}</h2>
 
         {{ block('properties') }}
     {% endif %}
 
     {% if methods %}
-        <h2>Public Methods</h2>
+        {# list methods grouped by visibility, static methods last; private methods only of the class itself #}
+        {% set all_methods = methods %}
+        {% for visibility in ['public', 'protected', 'private'] %}
+            {% set methods = all_methods|filter(m => attribute(m, visibility) and (visibility != 'private' or m.class is same as(class)))|sort((a, b) => a.static <=> b.static) %}
+            {% if methods %}
+                <h2>{{ visibility|capitalize }} Methods</h2>
 
-        {{ block('public_methods') }}
+                {{ block('methods') }}
+            {% endif %}
+        {% endfor %}
+        {% set methods = all_methods %}
 
-        <h2>Protected Methods</h2>
-
-        {{ block('protected_methods') }}
-
-        <h2>Private Methods</h2>
-
-        {{ block('private_methods') }}
-
-        <h2>Details</h2>
+        <h2>{% trans 'Details' %}</h2>
 
         {{ block('methods_details') }}
     {% endif %}
@@ -82,18 +88,24 @@
 {% endblock %}
 
 {% block class_signature -%}
+    {% if class.final %}final {% endif %}
     {% if not class.interface and class.abstract %}abstract {% endif %}
-    {{ class.categoryName|raw }}
+    {{ class_category_name(class.getCategoryId()) }}
     <strong>{{ class.shortname|raw }}</strong>
     {%- if class.parent %}
-        extends {{ class_link(class.parent) }}
+        {% trans 'extends' %} {{ class_link(class.parent) }}
     {%- endif %}
     {%- if class.interfaces|length > 0 %}
-        implements
+        {% trans 'implements' %}
         {% for interface in class.interfaces %}
             {{- class_link(interface) }}
             {%- if not loop.last %}, {% endif %}
         {%- endfor %}
+    {%- endif %}
+    {%- if class.hasMixins %}
+        {% for mixin in class.getMixins() %}
+            <i>mixin</i> {{ class_link(mixin.class) }}
+        {% endfor %}
     {%- endif %}
     {{- source_link(project, class) }}
 {% endblock %}
@@ -104,7 +116,7 @@
     {% if method.static %}static{% endif %}
     {% if method.protected %}protected{% endif %}
     {% if method.private %}private{% endif %}
-    {{ hint_link(method.hint) }}
+    {{ hint_link(method.hint, method.isIntersectionType()) }}
     <strong>{{ method.name|raw }}</strong>{{ block('method_parameters_signature') }}
 {%- endblock %}
 
@@ -118,9 +130,9 @@
     <table class="table table-condensed">
         {% for parameter in method.parameters %}
             <tr>
-                <td>{% if parameter.hint %}{{ hint_link(parameter.hint) }}{% endif %}</td>
+                <td>{% if parameter.hint %}{{ hint_link(parameter.hint, parameter.isIntersectionType()) }}{% endif %}</td>
                 <td>{%- if parameter.variadic %}...{% endif %}${{ parameter.name|raw }}</td>
-                <td>{{ parameter.shortdesc|desc(class) }}</td>
+                <td>{{ parameter.shortdesc|desc(class)|md_to_html }}</td>
             </tr>
         {% endfor %}
     </table>
@@ -129,8 +141,8 @@
 {% block return %}
     <table class="table table-condensed">
         <tr>
-            <td>{{ hint_link(method.hint) }}</td>
-            <td>{{ method.hintDesc|desc(class) }}</td>
+            <td>{{ hint_link(method.hint, method.isIntersectionType()) }}</td>
+            <td>{{ method.hintDesc|desc(class)|md_to_html }}</td>
         </tr>
     </table>
 {% endblock %}
@@ -140,7 +152,19 @@
         {% for exception in method.exceptions %}
             <tr>
                 <td>{{ class_link(exception[0]) }}</td>
-                <td>{{ exception[1]|desc(class) }}</td>
+                <td>{{ exception[1]|desc(class)|md_to_html }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
+
+{% block examples %}
+    <table class="table table-condensed">
+        {% for example in method.getExamples() %}
+            <tr>
+                <td><pre class="examples">
+                    {{- example|join(' ') -}}
+                </pre></td>
             </tr>
         {% endfor %}
     </table>
@@ -148,7 +172,7 @@
 
 {% block see %}
     <table class="table table-condensed">
-        {% for see in method.see %}
+        {% for see in method.getSee() %}
             <tr>
                 <td>
                     {% if see[4] %}
@@ -171,10 +195,22 @@
     <table class="table table-condensed">
         {% for constant in constants %}
             <tr>
-                <td>{{ constant.name|raw }}</td>
+                <td>
+                    {# Keep in order with an else if, it can be set by typehints and by annotations #}
+                    {# More restricted wins #}
+                    {% if constant.isPrivate() %}private
+                    {% elseif constant.isProtected() %}protected{% endif %}
+                    {% if constant.isInternal() %}<span class="label label-warning">{% trans 'internal' %}</span>{% endif %}
+                    {% if constant.isDeprecated() %}<span class="label label-danger">{% trans 'deprecated' %}</span>{% endif %}
+                    {{ constant.name|raw }}
+                    {% if constant.hasSince() %}
+                        <i>{{ 'Since:'|trans }} {{ constant.getSince() }}</i>
+                        <br>
+                    {% endif %}
+                </td>
                 <td class="last">
-                    <p><em>{{ constant.shortdesc|desc(class) }}</em></p>
-                    <p>{{ constant.longdesc|desc(class) }}</p>
+                    <p><em>{{ constant.shortdesc|desc(class)|md_to_html }}</em></p>
+                    <p>{{ constant.longdesc|desc(class)|md_to_html }}</p>
                 </td>
             </tr>
         {% endfor %}
@@ -184,116 +220,57 @@
 {% block properties %}
     <table class="table table-condensed">
         {% for property in properties %}
-            {% if property.static %}
-              {{ block('property_short') }}
-            {% endif %}
-        {% endfor %}
-        {% for property in properties %}
-            {% if property.public %}
-              {{ block('property_short') }}
-            {% endif %}
-        {% endfor %}
-        {% for property in properties %}
-            {% if property.protected %}
-              {{ block('property_short') }}
-            {% endif %}
-        {% endfor %}
-        {% for property in properties %}
-            {% if property.private and property.class is same as(class) %}
-              {{ block('property_short') }}
-            {% endif %}
+            <tr>
+                <td class="type" id="property_{{ property.name|raw }}">
+                    {% if property.isStatic() %}static{% endif %}
+                    {% if property.isProtected() %}protected{% endif %}
+                    {% if property.isPrivate() %}private{% endif %}
+                    {{ hint_link(property.hint, property.isIntersectionType()) }}
+                    {% if property.isInternal() %}<span class="label label-warning">{% trans 'internal' %}</span>{% endif %}
+                    {% if property.isDeprecated() %}<span class="label label-danger">{% trans 'deprecated' %}</span>{% endif %}
+                    {% if property.isReadOnly() %}<span class="label label-primary">{% trans 'read-only' %}</span>{% endif %}
+                    {% if property.isWriteOnly() %}<span class="label label-success">{% trans 'write-only' %}</span>{% endif %}
+
+                    {% if property.hasSince() %}
+                        <i>{{ 'Since:'|trans }} {{ property.getSince() }}</i>
+                        <br>
+                    {% endif %}
+                </td>
+                <td>${{ property.name|raw }}</td>
+                <td class="last">{{ property.shortdesc|desc(class)|md_to_html }}</td>
+                <td>
+                    {%- if property.class is not same as(class) -%}
+                        <small>{{ 'from&nbsp;%s'|trans|format(property_link(property, false, true))|raw }}</small>
+                    {%- endif -%}
+                </td>
+            </tr>
         {% endfor %}
     </table>
 {% endblock %}
 
-{% block property_short %}
-<tr>
-    <td class="type" id="property_{{ property.name|raw }}">
-        {% if property.static %}static{% endif %}
-        {% if property.public %}public{% endif %}
-        {% if property.protected %}protected{% endif %}
-        {% if property.private %}private{% endif %}
-        {{ hint_link(property.hint) }}
-    </td>
-    <td>${{ property.name|raw }}</td>
-    <td class="last">{{ property.shortdesc|desc(class) }}</td>
-    <td>
-        {%- if property.class is not same as(class) -%}
-            <small>from&nbsp;{{ property_link(property, false, true) }}</small>
-        {%- endif -%}
-    </td>
-</tr>
-{% endblock %}
-
-{% block public_methods %}
+{% block methods %}
     <div class="container-fluid underlined">
         {% for method in methods %}
-          {% if method.public and not method.static %}
-          {{ block('method_short') }}
-          {% endif %}
-        {% endfor %}
-        {% for method in methods %}
-          {% if method.public and method.static %}
-          {{ block('method_short') }}
-          {% endif %}
-        {% endfor %}
-    </div>
-{% endblock %}
-
-{% block protected_methods %}
-    <div class="container-fluid underlined">
-        {% for method in methods %}
-          {% if method.protected and not method.static %}
-          {{ block('method_short') }}
-          {% endif %}
-        {% endfor %}
-        {% for method in methods %}
-          {% if method.protected and method.static %}
-          {{ block('method_short') }}
-          {% endif %}
+            <div class="row">
+                <div class="col-md-2 type">
+                    {% if method.static %}static&nbsp;{% endif %}{{ hint_link(method.hint, method.isIntersectionType()) }}
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_{{ method.name|raw }}">{{ method.name|raw }}</a>{{ block('method_parameters_signature') }}
+                    {% if not method.shortdesc %}
+                        <p class="no-description">{% trans 'No description' %}</p>
+                    {% else %}
+                        <p>{{ method.shortdesc|desc(class)|md_to_html }}</p>
+                    {%- endif %}
+                </div>
+                <div class="col-md-2">
+                    {%- if method.class is not same as(class) -%}
+                        <small>{{ 'from&nbsp;%s'|trans|format(method_link(method, false, true))|raw }}</small>
+                    {%- endif -%}
+                </div>
+            </div>
         {% endfor %}
     </div>
-{% endblock %}
-
-{% block private_methods %}
-    <div class="container-fluid underlined">
-        {% for method in methods %}
-          {% if method.private and not method.static and method.class is same as(class) %}
-          {{ block('method_short') }}
-          {% endif %}
-        {% endfor %}
-        {% for method in methods %}
-          {% if method.private and method.static and method.class is same as(class) %}
-          {{ block('method_short') }}
-          {% endif %}
-        {% endfor %}
-    </div>
-{% endblock %}
-
-{% block method_short %}
-<div class="row">
-    <div class="col-md-1 type">
-        {% if method.final %}final{% endif %}
-        {% if method.abstract %}abstract{% endif %}
-        {% if method.static %}static{% endif %}
-    </div>
-    <div class="col-md-1 type">
-        {{ hint_link(method.hint) }}
-    </div>
-    <div class="col-md-8 type">
-        <a href="#method_{{ method.name|raw }}">{{ method.name|raw }}</a>{{ block('method_parameters_signature') }}
-        {% if not method.shortdesc %}
-            <p class="no-description">No description</p>
-        {% else %}
-            <p>{{ method.shortdesc|desc(class) }}</p>
-        {%- endif %}
-    </div>
-    <div class="col-md-2">
-        {%- if method.class is not same as(class) -%}
-            <small>from&nbsp;{{ method_link(method, false, true) }}</small>
-        {%- endif -%}
-    </div>
-</div>
 {% endblock %}
 
 {% block methods_details %}
@@ -308,52 +285,60 @@
 
 {% block method %}
     <h3 id="method_{{ method.name|raw }}">
-        <div class="location">{% if method.class is not same as(class) %}in {{ method_link(method, false, true) }} {% endif %}at {{ method_source_link(method) }}</div>
+        <div class="location">{% if method.class is not same as(class) %}{{ 'in %s'|trans|format(method_link(method, false, true))|raw }} {% endif %}{{ method_source_link(method) }}</div>
         <code>{{ block('method_signature') }}</code>
     </h3>
     <div class="details">
+        {%- if method.hasSince() -%}
+            <i>{{ 'Since:'|trans }} {{ method.getSince() }}</i>
+            <br>
+        {%- endif -%}
+        {{ categories(method) }}
         {{ deprecations(method) }}
+        {{ internals(method) }}
 
-        {% if method.shortdesc or method.longdesc %}
-            <div class="method-description">
-                {% if not method.shortdesc and not method.longdesc %}
-                    <p class="no-description">No description</p>
-                {% else %}
-                    {% if method.shortdesc -%}
-                    <p>{{ method.shortdesc|desc(class) }}</p>
-                    {%- endif %}
-                    {% if method.longdesc -%}
-                    <p>{{ method.longdesc|desc(class) }}</p>
-                    {%- endif %}
+        <div class="method-description">
+            {% if not method.shortdesc and not method.longdesc %}
+                <p class="no-description">{% trans 'No description' %}</p>
+            {% else %}
+                {% if method.shortdesc -%}
+                <p>{{ method.shortdesc|desc(class)|md_to_html }}</p>
                 {%- endif %}
-                {% if project.config('insert_todos') == true %}
-                    {{ todos(method) }}
-                {% endif %}
-            </div>
-        {% endif %}
+                {% if method.longdesc -%}
+                <p>{{ method.longdesc|desc(class)|md_to_html }}</p>
+                {%- endif %}
+            {%- endif %}
+            {{- todos(method) -}}
+        </div>
         <div class="tags">
             {% if method.parameters %}
-                <h4>Parameters</h4>
+                <h4>{% trans 'Parameters' %}</h4>
 
                 {{ block('parameters') }}
             {% endif %}
 
             {% if method.hintDesc or method.hint %}
-                <h4>Return Value</h4>
+                <h4>{% trans 'Return Value' %}</h4>
 
                 {{ block('return') }}
             {% endif %}
 
             {% if method.exceptions %}
-                <h4>Exceptions</h4>
+                <h4>{% trans 'Exceptions' %}</h4>
 
                 {{ block('exceptions') }}
             {% endif %}
 
             {% if method.tags('see') %}
-                <h4>See also</h4>
+                <h4>{% trans 'See also' %}</h4>
 
                 {{ block('see') }}
+            {% endif %}
+
+            {% if method.hasExamples() %}
+                <h4>{% trans 'Examples' %}</h4>
+
+                {{ block('examples') }}
             {% endif %}
         </div>
     </div>
