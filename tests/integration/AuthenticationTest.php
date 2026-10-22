@@ -81,6 +81,18 @@ final class AuthenticationTest extends IntegrationTestCase {
     $this->assertSame(401, $this->crudRead($client, $token)->status);
   }
 
+  public function testVersionFooterOnlyForLoggedInUser() : void {
+    $anonymous = $this->client()->get();
+    $this->assertSame(200, $anonymous->status);
+    $this->assertStringNotContainsString('sidebar-footer', $anonymous->body);
+    $this->assertStringNotContainsString(PHP_VERSION, $anonymous->body);
+
+    $response = $this->loggedInClient()->get(['elamodule' => 'items']);
+    $this->assertSame(200, $response->status);
+    $this->assertStringContainsString('sidebar-footer', $response->body);
+    $this->assertStringContainsString('PHP ' . PHP_VERSION, $response->body);
+  }
+
   public function testCrossSiteLogoutIsIgnored() : void {
     $client = $this->loggedInClient();
     $token = $this->csrfToken($client);
