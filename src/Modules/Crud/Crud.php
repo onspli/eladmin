@@ -391,6 +391,19 @@ private function modify(array &$row) : void {
   }
 }
 
+/**
+* Check if rows can be sorted by the column. Sorting by columns hidden from the table
+* would leak information about their values.
+*/
+private function isSortableBy($column) : bool {
+  if (!is_string($column) || $column === '')
+    return false;
+  if ($column === $this->primary() || $column === ($this->defaults['sortBy'] ?? null))
+    return true;
+  $columns = $this->getCrudColumns();
+  return isset($columns->$column) && $columns->$column->sortable && $columns->$column->listable;
+}
+
 public function prepare() : void {
   if (($_GET['update'] ?? null) && $this->auth('update')) {
     $this->unset($_POST);
@@ -445,12 +458,14 @@ public function actionRead() {
     $_POST['direction'] = null;
   }
 
-  if (!$_POST['sortBy']) {
+  if (!$this->isSortableBy($_POST['sortBy'] ?? null)) {
     $_POST['sortBy'] = $this->primary();
   }
-  if (!in_array($_POST['direction'], [self::ASC, self::DESC])) {
+  if (!in_array($_POST['direction'] ?? null, [self::ASC, self::DESC], true)) {
     $_POST['direction'] = self::DESC;
   }
+  $_POST['page'] = max(1, intval($_POST['page'] ?? 1));
+  $_POST['resultsPerPage'] = max(0, intval($_POST['resultsPerPage'] ?? self::INFINITY));
 
   $rows = $this->read($_POST, $totalResults);
 
