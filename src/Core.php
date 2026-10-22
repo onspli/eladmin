@@ -65,6 +65,11 @@ protected $logFile = __DIR__ . '/../mono.log';
 private $imodules = [];
 
 /**
+* keys of modules the user is not authorized to work with
+*/
+private $unauthorizedModules = [];
+
+/**
 * authorization instance
 */
 private $iauth = null;
@@ -242,7 +247,8 @@ final public function runNoCatch() : void {
       $this->redirect($url);
       return;
     }
-    if($this->module() == $this)
+    // module() is null when user is not authorized to work with the module
+    if($this->module() === null || $this->module() == $this)
       self::redirect();
     else
       echo $this->module()->render('modules.core.module');
@@ -252,7 +258,7 @@ final public function runNoCatch() : void {
   // CSRF token comparsion
   $this->CSRFAuth();
   // Check if user is authorized to do the action.
-  if (!$this->module()->auth($this->actionkey())) {
+  if ($this->module() === null || !$this->module()->auth($this->actionkey())) {
     throw new Exception\UnauthorizedException();
   }
 
@@ -300,7 +306,7 @@ public function blade() : Blade {
 * Get eladmin version.
 */
 final public function version() : string {
-  return "v0.3.0";
+  return "v0.4.0";
 }
 
 /**
@@ -397,6 +403,8 @@ final public function module(?string $elakey = null) : ?Module {
     throw new Exception\BadRequestException('No module requested!');
   if ($elakey === '')
     return $this;
+  if (isset($this->unauthorizedModules[$elakey]))
+    return null;
   // has the module been initialized?
   if (!isset($this->imodules[$elakey])) {
     $moduleclass = $this->modules[$elakey] ?? null;
@@ -409,6 +417,7 @@ final public function module(?string $elakey = null) : ?Module {
     $roles = $imodule->roles();
     if ($this->iauth && ($roles === IAuth::NOONE || !$this->iauth->authorize($roles))) {
       unset($this->modules[$elakey]);
+      $this->unauthorizedModules[$elakey] = true;
       return null;
     }
     $this->imodules[$elakey] = $imodule;
@@ -545,8 +554,10 @@ private function initSessions(bool $readOnly = false) : void {
   $this->log->debug('init sessions');
   if (session_status() === PHP_SESSION_ACTIVE)
     return;
+  // Not using strict mode on purpose - a request still carrying the old session id after login
+  // (e.g. favicon routed to index.php) would get a new empty session and log the user out.
+  // Session fixation is prevented by regenerating session id on login.
   $options = [
-    'use_strict_mode' => 1,
     'cookie_httponly' => 1,
   ];
   if (ini_get('session.cookie_samesite') === '')

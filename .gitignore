@@ -6,3 +6,5 @@
 /password
 /mono.log
 /sami.phar
+/.phpunit.cache
+/phpunit.xml

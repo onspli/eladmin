@@ -22,12 +22,20 @@
             "Onspli\\Eladmin\\": "src"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Onspli\\Eladmin\\Tests\\Unit\\": "tests/unit",
+            "Onspli\\Eladmin\\Tests\\Integration\\": "tests/integration"
+        }
+    },
     "require-dev": {
         "illuminate/database": "^10.0 || ^11.0",
         "phpunit/phpunit": "^10.5"
     },
     "scripts": {
-        "test": "phpunit --testdox tests/unit",
+        "test": "phpunit --testdox",
+        "test:unit": "phpunit --testdox --testsuite unit",
+        "test:integration": "phpunit --testdox --testsuite integration",
         "docs:install": "php -r \"copy('http://get.sensiolabs.org/sami.phar', 'sami.phar');\"",
         "docs:update": "php sami.phar update sami.config.php",
         "docs:render": "rm -rf docs; php sami.phar render sami.config.php"
