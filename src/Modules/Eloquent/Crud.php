@@ -218,9 +218,20 @@ private function rowToArray($row) : array {
 
 /**
 * Get an array of table columns.
+* MySQL/MariaDB are queried directly, because Laravel 11's getColumnListing()
+* selects generation_expression, which MySQL < 5.7 doesn't have.
 */
 protected function tableColumns() : array {
-  return $this->model()->getConnection()->getSchemaBuilder()->getColumnListing($this->model()->getTable());
+  $conn = $this->model()->getConnection();
+  $table = $this->model()->getTable();
+  if (!in_array($conn->getDriverName(), ['mysql', 'mariadb']))
+    return $conn->getSchemaBuilder()->getColumnListing($table);
+
+  $rows = $conn->select(
+    'select column_name as `name` from information_schema.columns where table_schema = ? and table_name = ? order by ordinal_position',
+    [$conn->getDatabaseName(), $conn->getTablePrefix() . $table]
+  );
+  return array_map(fn($row) => $row->name, $rows);
 }
 
 /**
